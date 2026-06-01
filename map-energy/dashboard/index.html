@@ -1,1 +1,320 @@
-Add MAP Energy dashboard page
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MAP Energy Dashboard | Aptica</title>
+  <meta name="description" content="Public operational and growth metrics for MAP Energy." />
+
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --panel-soft: #1f2937;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --success: #22c55e;
+      --border: rgba(255, 255, 255, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(56, 189, 248, 0.18), transparent 35%),
+        var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .page {
+      width: min(1100px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 48px 0;
+    }
+
+    .top-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 56px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .brand img {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      object-fit: contain;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.95rem;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+    }
+
+    .hero {
+      margin-bottom: 36px;
+    }
+
+    .eyebrow {
+      color: var(--accent);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      font-size: clamp(2.4rem, 6vw, 4.5rem);
+      line-height: 1;
+      margin: 0 0 18px;
+    }
+
+    .lead {
+      color: var(--muted);
+      max-width: 760px;
+      font-size: 1.15rem;
+      margin: 0;
+    }
+
+    .status-card {
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.15), rgba(56, 189, 248, 0.08));
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 24px;
+      margin-bottom: 28px;
+    }
+
+    .status-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(34, 197, 94, 0.12);
+      color: #bbf7d0;
+      border: 1px solid rgba(34, 197, 94, 0.35);
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-weight: 700;
+    }
+
+    .status-dot {
+      width: 10px;
+      height: 10px;
+      background: var(--success);
+      border-radius: 50%;
+      box-shadow: 0 0 18px rgba(34, 197, 94, 0.9);
+    }
+
+    .section {
+      margin-top: 36px;
+    }
+
+    .section h2 {
+      font-size: 1.35rem;
+      margin: 0 0 16px;
+    }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .metric-card {
+      background: rgba(17, 24, 39, 0.82);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 22px;
+      min-height: 150px;
+    }
+
+    .metric-label {
+      display: block;
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin-bottom: 14px;
+    }
+
+    .metric-value {
+      display: block;
+      font-size: 2.4rem;
+      line-height: 1;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .metric-note {
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin: 0;
+    }
+
+    .placeholder {
+      border-style: dashed;
+    }
+
+    footer {
+      color: var(--muted);
+      margin-top: 56px;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 800px) {
+      .top-nav {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .metric-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .page {
+        padding: 28px 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="page">
+    <nav class="top-nav">
+      <a class="brand" href="/map-energy/">
+        <img src="/map-energy/MAP%20Logo.png" alt="MAP Energy logo" />
+        <span>MAP Energy</span>
+      </a>
+
+      <div class="nav-links">
+        <a href="/map-energy/">App</a>
+        <a href="/map-energy/documentation/">Documentation</a>
+        <a href="/map-energy/privacy/">Privacy</a>
+        <a href="/map-energy/terms/">Terms</a>
+      </div>
+    </nav>
+
+    <section class="hero">
+      <p class="eyebrow">MAP Energy</p>
+      <h1>App Dashboard</h1>
+      <p class="lead">
+        Public operational and growth metrics for MAP Energy.
+      </p>
+    </section>
+
+    <section class="status-card">
+      <div class="status-row">
+        <div>
+          <h2>Status</h2>
+          <p class="metric-note">
+            High-level service status for MAP Energy.
+          </p>
+        </div>
+
+        <div class="status-pill">
+          <span class="status-dot"></span>
+          Operational
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>User Metrics</h2>
+      <div class="metric-grid">
+        <article class="metric-card">
+          <span class="metric-label">Registered users</span>
+          <strong class="metric-value">300+</strong>
+          <p class="metric-note">Total registered MAP Energy users.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Energy Connections</h2>
+      <div class="metric-grid">
+        <article class="metric-card">
+          <span class="metric-label">Tesla-connected sites</span>
+          <strong class="metric-value">—</strong>
+          <p class="metric-note">Connected Tesla Energy sites.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Automation Metrics</h2>
+      <div class="metric-grid">
+        <article class="metric-card">
+          <span class="metric-label">Automations run today</span>
+          <strong class="metric-value">—</strong>
+          <p class="metric-note">Automation executions recorded today.</p>
+        </article>
+
+        <article class="metric-card">
+          <span class="metric-label">Automations run last 7 days</span>
+          <strong class="metric-value">—</strong>
+          <p class="metric-note">Automation executions over the last week.</p>
+        </article>
+
+        <article class="metric-card">
+          <span class="metric-label">Success rate</span>
+          <strong class="metric-value">—</strong>
+          <p class="metric-note">Successful automations as a percentage.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>App Releases</h2>
+      <div class="metric-grid">
+        <article class="metric-card placeholder">
+          <span class="metric-label">Release tracking</span>
+          <strong class="metric-value">Soon</strong>
+          <p class="metric-note">
+            Latest iOS and Android version information will appear here once release tracking is available.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <footer>
+      <p>
+        This dashboard shows high-level, anonymised metrics only. No customer identifiers,
+        site keys, account numbers or raw integration data are displayed.
+      </p>
+    </footer>
+  </main>
+</body>
+</html>
