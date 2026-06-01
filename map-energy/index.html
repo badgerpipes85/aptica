@@ -249,6 +249,58 @@
       margin: 8px 0;
       color: var(--text-primary);
     }
+    
+    .public-metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 18px;
+    }
+    
+    @media (max-width: 860px) {
+      .public-metrics-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+    
+    @media (max-width: 560px) {
+      .public-metrics-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    .public-metric-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow);
+      padding: 20px;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+    
+    .public-metric-label {
+      display: block;
+      margin-bottom: 10px;
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+    
+    .public-metric-value {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 2rem;
+      line-height: 1;
+      font-weight: 850;
+      color: var(--text-primary);
+      letter-spacing: -0.04em;
+    }
+    
+    .public-metric-note {
+      margin: 0;
+      color: var(--text-secondary);
+      font-size: 0.92rem;
+    }
+    
     footer {
       margin-top: 24px;
       text-align: center;
@@ -301,6 +353,37 @@
         </div>
       </div>
     </header>
+    
+    <section class="section">
+      <h2 class="section-title">MAP Energy at a glance</h2>
+    
+      <div class="public-metrics-grid">
+        <article class="public-metric-card">
+          <span class="public-metric-label">Active monitored sites</span>
+          <strong class="public-metric-value">—</strong>
+          <p class="public-metric-note">Connected sites currently monitored by MAP Energy.</p>
+        </article>
+    
+        <article class="public-metric-card">
+          <span class="public-metric-label">Automations today</span>
+          <strong class="public-metric-value">—</strong>
+          <p class="public-metric-note">Automation runs recorded today.</p>
+        </article>
+    
+        <article class="public-metric-card">
+          <span class="public-metric-label">Automations last 7 days</span>
+          <strong class="public-metric-value">—</strong>
+          <p class="public-metric-note">Automation runs recorded over the last week.</p>
+        </article>
+    
+        <article class="public-metric-card">
+          <span class="public-metric-label">Success rate</span>
+          <strong class="public-metric-value">—</strong>
+          <p class="public-metric-note">Successful automations as a percentage.</p>
+        </article>
+      </div>
+    </section>
+    
     <section class="section">
       <h2 class="section-title">Built for connected home energy</h2>
       <div class="features-grid">
@@ -353,7 +436,6 @@
         </p>
         <div class="button-row">
           <a class="button button-primary" href="/map-energy/documentation/">Open Documentation</a>
-          <a class="button button-secondary" href="/map-energy/dashboard/">View Public Dashboard</a>
         </div>
       </div>
     </section>
