@@ -1,258 +1,249 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="en-GB">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MAP Energy Dashboard | Aptica</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>MAP Energy Dashboard – Aptica Ltd</title>
   <meta name="description" content="Public operational and growth metrics for MAP Energy." />
-
   <style>
     :root {
-      --bg: #0f172a;
-      --panel: #111827;
-      --panel-soft: #1f2937;
-      --text: #f8fafc;
-      --muted: #94a3b8;
-      --accent: #38bdf8;
-      --success: #22c55e;
-      --border: rgba(255, 255, 255, 0.12);
+      color-scheme: light dark;
+      --brand-blue: #2f80ed;
+      --brand-grey: #8c98a8;
+      --energy-yellow: #f2c94c;
+      --bg-primary: #f7f9fc;
+      --bg-card: rgba(255,255,255,0.82);
+      --border: rgba(47, 128, 237, 0.14);
+      --text-primary: #17212f;
+      --text-secondary: #5f6b7a;
+      --success: #27ae60;
+      --warning: #f2994a;
+      --shadow: 0 12px 30px rgba(24, 39, 75, 0.08);
+      --radius-xl: 22px;
+      --radius-lg: 16px;
+      --radius-md: 14px;
     }
-
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg-primary: #0d1117;
+        --bg-card: rgba(22, 27, 34, 0.88);
+        --border: rgba(255,255,255,0.08);
+        --text-primary: #f3f6fb;
+        --text-secondary: #a9b4c2;
+        --shadow: 0 16px 36px rgba(0, 0, 0, 0.34);
+      }
+    }
     * {
       box-sizing: border-box;
     }
-
+    html {
+      scroll-behavior: smooth;
+    }
     body {
       margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: var(--text-primary);
       background:
-        radial-gradient(circle at top left, rgba(56, 189, 248, 0.18), transparent 35%),
-        var(--bg);
-      color: var(--text);
-      line-height: 1.6;
+        linear-gradient(
+          to bottom,
+          rgba(47, 128, 237, 0.18) 0%,
+          rgba(242, 201, 76, 0.10) 30%,
+          var(--bg-primary) 70%
+        );
+      min-height: 100vh;
     }
-
-    .page {
-      width: min(1100px, calc(100% - 32px));
+    a {
+      color: var(--brand-blue);
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    .shell {
+      max-width: 1040px;
       margin: 0 auto;
-      padding: 48px 0;
+      padding: 28px 18px 64px;
     }
-
-    .top-nav {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 16px;
-      margin-bottom: 56px;
+    .hero,
+    .status-card,
+    .metric-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
     }
-
+    .hero {
+      padding: 24px 22px;
+      margin-bottom: 18px;
+    }
     .brand {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+    .logo {
+      height: 46px;
+      width: auto;
+    }
+    .brand-text {
+      font-size: 20px;
       font-weight: 700;
-      color: var(--text);
-      text-decoration: none;
+      letter-spacing: -0.01em;
     }
-
-    .brand img {
-      width: 42px;
-      height: 42px;
-      border-radius: 10px;
-      object-fit: contain;
+    .brand-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 18px 0 22px;
     }
-
     .nav-links {
       display: flex;
-      gap: 18px;
       flex-wrap: wrap;
+      gap: 14px;
+      margin-bottom: 20px;
     }
-
     .nav-links a {
-      color: var(--muted);
-      text-decoration: none;
       font-size: 0.95rem;
+      font-weight: 600;
     }
-
-    .nav-links a:hover {
-      color: var(--text);
-    }
-
-    .hero {
-      margin-bottom: 36px;
-    }
-
-    .eyebrow {
-      color: var(--accent);
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      font-size: 0.8rem;
-      margin-bottom: 12px;
-    }
-
     h1 {
-      font-size: clamp(2.4rem, 6vw, 4.5rem);
-      line-height: 1;
-      margin: 0 0 18px;
+      margin: 0 0 10px;
+      font-size: clamp(2rem,5vw,3rem);
+      line-height: 1.06;
+      letter-spacing: -0.03em;
     }
-
-    .lead {
-      color: var(--muted);
-      max-width: 760px;
-      font-size: 1.15rem;
+    .hero p {
       margin: 0;
+      color: var(--text-secondary);
+      font-size: 1rem;
+      max-width: 720px;
     }
-
     .status-card {
-      background: linear-gradient(135deg, rgba(34, 197, 94, 0.15), rgba(56, 189, 248, 0.08));
-      border: 1px solid var(--border);
-      border-radius: 24px;
-      padding: 24px;
-      margin-bottom: 28px;
+      padding: 20px;
+      margin: 18px 0 24px;
     }
-
     .status-row {
       display: flex;
-      align-items: center;
       justify-content: space-between;
+      align-items: center;
       gap: 16px;
       flex-wrap: wrap;
     }
-
+    .status-title {
+      margin: 0 0 4px;
+      font-size: 1.18rem;
+    }
+    .status-note {
+      margin: 0;
+      color: var(--text-secondary);
+    }
     .status-pill {
       display: inline-flex;
       align-items: center;
       gap: 10px;
-      background: rgba(34, 197, 94, 0.12);
-      color: #bbf7d0;
-      border: 1px solid rgba(34, 197, 94, 0.35);
-      padding: 8px 14px;
       border-radius: 999px;
-      font-weight: 700;
+      padding: 9px 14px;
+      font-weight: 800;
+      color: var(--success);
+      background: rgba(39, 174, 96, 0.12);
+      border: 1px solid rgba(39, 174, 96, 0.22);
     }
-
     .status-dot {
       width: 10px;
       height: 10px;
+      border-radius: 999px;
       background: var(--success);
-      border-radius: 50%;
-      box-shadow: 0 0 18px rgba(34, 197, 94, 0.9);
+      box-shadow: 0 0 16px rgba(39, 174, 96, 0.7);
     }
-
     .section {
-      margin-top: 36px;
+      margin-top: 26px;
     }
-
-    .section h2 {
-      font-size: 1.35rem;
-      margin: 0 0 16px;
+    .section-title {
+      margin: 0 0 14px;
+      font-size: 1.32rem;
+      letter-spacing: -0.02em;
     }
-
     .metric-grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 18px;
     }
-
-    .metric-card {
-      background: rgba(17, 24, 39, 0.82);
-      border: 1px solid var(--border);
-      border-radius: 22px;
-      padding: 22px;
-      min-height: 150px;
-    }
-
-    .metric-label {
-      display: block;
-      color: var(--muted);
-      font-size: 0.95rem;
-      margin-bottom: 14px;
-    }
-
-    .metric-value {
-      display: block;
-      font-size: 2.4rem;
-      line-height: 1;
-      font-weight: 800;
-      margin-bottom: 10px;
-    }
-
-    .metric-note {
-      color: var(--muted);
-      font-size: 0.9rem;
-      margin: 0;
-    }
-
-    .placeholder {
-      border-style: dashed;
-    }
-
-    footer {
-      color: var(--muted);
-      margin-top: 56px;
-      font-size: 0.9rem;
-    }
-
-    @media (max-width: 800px) {
-      .top-nav {
-        align-items: flex-start;
-        flex-direction: column;
-      }
-
+    @media (max-width: 860px) {
       .metric-grid {
         grid-template-columns: 1fr;
       }
-
-      .page {
-        padding: 28px 0;
-      }
+    }
+    .metric-card {
+      padding: 20px;
+      min-height: 146px;
+    }
+    .metric-label {
+      display: block;
+      margin-bottom: 10px;
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+    .metric-value {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 2.35rem;
+      line-height: 1;
+      font-weight: 850;
+      color: var(--text-primary);
+      letter-spacing: -0.04em;
+    }
+    .metric-note {
+      margin: 0;
+      color: var(--text-secondary);
+      font-size: 0.92rem;
+    }
+    .placeholder {
+      border-style: dashed;
+    }
+    footer {
+      margin-top: 28px;
+      text-align: center;
+      color: var(--text-secondary);
+      font-size: 0.94rem;
     }
   </style>
 </head>
-
 <body>
-  <main class="page">
-    <nav class="top-nav">
-      <a class="brand" href="/map-energy/">
-        <img src="/map-energy/MAP%20Logo.png" alt="MAP Energy logo" />
-        <span>MAP Energy</span>
-      </a>
-
-      <div class="nav-links">
+  <div class="shell">
+    <header class="hero">
+      <div class="brand">
+        <img src="/MAP%20Logo.png" alt="MAP Energy Logo" class="logo">
+        <span class="brand-text">MAP Energy</span>
+      </div>
+      <div class="brand-divider"></div>
+      <nav class="nav-links">
+        <a href="/">Aptica</a>
         <a href="/map-energy/">App</a>
         <a href="/map-energy/documentation/">Documentation</a>
         <a href="/map-energy/privacy/">Privacy</a>
         <a href="/map-energy/terms/">Terms</a>
-      </div>
-    </nav>
-
-    <section class="hero">
-      <p class="eyebrow">MAP Energy</p>
-      <h1>App Dashboard</h1>
-      <p class="lead">
-        Public operational and growth metrics for MAP Energy.
+      </nav>
+      <h1>MAP Energy Dashboard</h1>
+      <p>
+        Public operational and growth metrics for MAP Energy. This dashboard shows high-level, anonymised metrics only.
       </p>
-    </section>
-
+    </header>
     <section class="status-card">
       <div class="status-row">
         <div>
-          <h2>Status</h2>
-          <p class="metric-note">
-            High-level service status for MAP Energy.
-          </p>
+          <h2 class="status-title">Status</h2>
+          <p class="status-note">High-level service status for MAP Energy.</p>
         </div>
-
         <div class="status-pill">
           <span class="status-dot"></span>
           Operational
         </div>
       </div>
     </section>
-
     <section class="section">
-      <h2>User Metrics</h2>
+      <h2 class="section-title">User Metrics</h2>
       <div class="metric-grid">
         <article class="metric-card">
           <span class="metric-label">Registered users</span>
@@ -261,9 +252,8 @@
         </article>
       </div>
     </section>
-
     <section class="section">
-      <h2>Energy Connections</h2>
+      <h2 class="section-title">Energy Connections</h2>
       <div class="metric-grid">
         <article class="metric-card">
           <span class="metric-label">Tesla-connected sites</span>
@@ -272,22 +262,19 @@
         </article>
       </div>
     </section>
-
     <section class="section">
-      <h2>Automation Metrics</h2>
+      <h2 class="section-title">Automation Metrics</h2>
       <div class="metric-grid">
         <article class="metric-card">
           <span class="metric-label">Automations run today</span>
           <strong class="metric-value">—</strong>
           <p class="metric-note">Automation executions recorded today.</p>
         </article>
-
         <article class="metric-card">
           <span class="metric-label">Automations run last 7 days</span>
           <strong class="metric-value">—</strong>
-          <p class="metric-note">Automation executions over the last week.</p>
+          <p class="metric-note">Automation executions recorded over the last 7 days.</p>
         </article>
-
         <article class="metric-card">
           <span class="metric-label">Success rate</span>
           <strong class="metric-value">—</strong>
@@ -295,9 +282,8 @@
         </article>
       </div>
     </section>
-
     <section class="section">
-      <h2>App Releases</h2>
+      <h2 class="section-title">App Releases</h2>
       <div class="metric-grid">
         <article class="metric-card placeholder">
           <span class="metric-label">Release tracking</span>
@@ -308,13 +294,17 @@
         </article>
       </div>
     </section>
-
     <footer>
       <p>
-        This dashboard shows high-level, anonymised metrics only. No customer identifiers,
-        site keys, account numbers or raw integration data are displayed.
+        No customer identifiers, site keys, account numbers or raw integration data are displayed.
+      </p>
+      <p>
+        © <span id="year"></span> Aptica Ltd. All rights reserved.
       </p>
     </footer>
-  </main>
+  </div>
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
