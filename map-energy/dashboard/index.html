@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>MAP Energy Admin Dashboard – Aptica Ltd</title>
   <meta name="description" content="Private admin dashboard for MAP Energy operational metrics." />
+
   <style>
     :root {
       color-scheme: light dark;
@@ -315,15 +316,21 @@
 
       <div class="metric-grid">
         <article class="metric-card">
-          <span class="metric-label">Registered users</span>
-          <strong class="metric-value">300+</strong>
-          <p class="metric-note">Total registered MAP Energy users.</p>
+          <span class="metric-label">iOS premium users</span>
+          <strong class="metric-value loading" id="activeIosPremiumUsersMetric">—</strong>
+          <p class="metric-note">Premium users signed in with Apple.</p>
         </article>
 
         <article class="metric-card">
-          <span class="metric-label">Active subscriptions</span>
+          <span class="metric-label">Android premium users</span>
+          <strong class="metric-value loading" id="activeAndroidPremiumUsersMetric">—</strong>
+          <p class="metric-note">Premium users signed in with Android / Google.</p>
+        </article>
+
+        <article class="metric-card">
+          <span class="metric-label">Total premium users</span>
           <strong class="metric-value loading" id="activePremiumUsersMetric">—</strong>
-          <p class="metric-note">Users with premium status currently marked active.</p>
+          <p class="metric-note">All users with premium status currently marked active.</p>
         </article>
       </div>
     </section>
@@ -439,6 +446,8 @@
 
     function setMetricsError() {
       const ids = [
+        "activeIosPremiumUsersMetric",
+        "activeAndroidPremiumUsersMetric",
         "activePremiumUsersMetric",
         "activeSitesMetric",
         "automationsTodayMetric",
@@ -477,6 +486,16 @@
         }
 
         const metrics = await res.json();
+
+        setMetricText(
+          "activeIosPremiumUsersMetric",
+          formatNumber(metrics.active_ios_premium_users)
+        );
+
+        setMetricText(
+          "activeAndroidPremiumUsersMetric",
+          formatNumber(metrics.active_android_premium_users)
+        );
 
         setMetricText(
           "activePremiumUsersMetric",
@@ -524,4 +543,3 @@
   </script>
 </body>
 </html>
-
