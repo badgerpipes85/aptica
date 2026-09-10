@@ -1,408 +1,84 @@
 <!doctype html>
 <html lang="en-GB">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-
-<title>Aptica Ltd</title>
-
-<meta name="description" content="Aptica Ltd develops thoughtful software products across consumer and business categories." />
-<meta name="google-site-verification" content="k-FLbrBRSaHSCn-5ADusm_wQcv-NoxKc0Leo05dQphc" />
-
-<style>
-
-:root{
---bg:#f6f7fb;
---bg-accent-1:rgba(103,80,164,0.10);
---bg-accent-2:rgba(17,24,39,0.05);
---card:rgba(255,255,255,0.78);
---border:rgba(17,24,39,0.08);
---text:#111827;
---text-secondary:#5b6472;
---heading:#0f172a;
---link:#5b4ce6;
---link-hover:#4338ca;
---shadow:0 14px 34px rgba(15,23,42,0.07);
---radius-xl:24px;
---radius-lg:18px;
---radius-md:14px;
---max:1040px;
-}
-
-@media (prefers-color-scheme: dark){
-:root{
---bg:#0b1020;
---bg-accent-1:rgba(129,140,248,0.12);
---bg-accent-2:rgba(255,255,255,0.04);
---card:rgba(17,24,39,0.72);
---border:rgba(255,255,255,0.08);
---text:#eef2ff;
---text-secondary:#a7b0c0;
---heading:#ffffff;
---link:#a78bfa;
---link-hover:#c4b5fd;
---shadow:0 18px 40px rgba(0,0,0,0.28);
-}
-}
-
-*{ box-sizing:border-box; }
-
-html{ scroll-behavior:smooth; }
-
-body{
-margin:0;
-font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
-color:var(--text);
-line-height:1.65;
-background:
-radial-gradient(circle at top left, var(--bg-accent-1), transparent 32%),
-radial-gradient(circle at top right, var(--bg-accent-2), transparent 28%),
-var(--bg);
-}
-
-a{
-color:var(--link);
-text-decoration:none;
-}
-
-a:hover{
-color:var(--link-hover);
-text-decoration:underline;
-}
-
-.page{
-max-width:var(--max);
-margin:0 auto;
-padding:28px 18px 60px;
-}
-
-.hero{
-padding:42px 0 22px;
-}
-
-.eyebrow{
-display:inline-flex;
-align-items:center;
-gap:8px;
-padding:8px 12px;
-border-radius:999px;
-background:rgba(91,76,230,0.10);
-border:1px solid rgba(91,76,230,0.12);
-color:var(--link);
-font-size:0.85rem;
-font-weight:700;
-letter-spacing:0.01em;
-margin-bottom:18px;
-}
-
-.eyebrow::before{
-content:"";
-width:8px;
-height:8px;
-border-radius:999px;
-background:currentColor;
-opacity:0.85;
-}
-
-.hero-grid{
-display:grid;
-grid-template-columns:1.2fr 0.8fr;
-gap:22px;
-align-items:start;
-}
-
-@media (max-width: 860px){
-.hero-grid{
-grid-template-columns:1fr;
-}
-}
-
-.hero-copy h1{
-margin:0 0 14px;
-font-size:clamp(2.5rem, 7vw, 4.4rem);
-line-height:0.97;
-letter-spacing:-0.045em;
-color:var(--heading);
-}
-
-.hero-copy p{
-margin:0 0 14px;
-max-width:680px;
-font-size:1.05rem;
-color:var(--text-secondary);
-}
-
-.hero-panel,
-.section-card,
-.product-card{
-background:var(--card);
-border:1px solid var(--border);
-border-radius:var(--radius-xl);
-box-shadow:var(--shadow);
-backdrop-filter:blur(10px);
--webkit-backdrop-filter:blur(10px);
-}
-
-.hero-panel{
-padding:18px;
-}
-
-.metric{
-padding:14px 14px 16px;
-border-radius:16px;
-background:rgba(255,255,255,0.34);
-border:1px solid var(--border);
-}
-
-@media (prefers-color-scheme: dark){
-.metric{
-background:rgba(255,255,255,0.02);
-}
-}
-
-.metric + .metric{
-margin-top:12px;
-}
-
-.metric-label{
-display:block;
-margin-bottom:4px;
-font-size:0.82rem;
-color:var(--text-secondary);
-}
-
-.metric-value{
-font-size:1rem;
-font-weight:700;
-color:var(--heading);
-}
-
-.section{
-margin-top:34px;
-}
-
-.section-title{
-margin:0 0 14px;
-font-size:1.45rem;
-letter-spacing:-0.02em;
-color:var(--heading);
-}
-
-.section-card{
-padding:22px;
-}
-
-.products-grid{
-display:grid;
-grid-template-columns:repeat(2, minmax(0, 1fr));
-gap:18px;
-}
-
-@media (max-width: 760px){
-.products-grid{
-grid-template-columns:1fr;
-}
-}
-
-.product-card{
-padding:22px;
-}
-
-.product-badge{
-display:inline-block;
-padding:7px 11px;
-border-radius:999px;
-font-size:0.78rem;
-font-weight:700;
-background:rgba(17,24,39,0.08);
-color:var(--heading);
-margin-bottom:12px;
-}
-
-@media (prefers-color-scheme: dark){
-.product-badge{
-background:rgba(255,255,255,0.08);
-}
-}
-
-.product-title{
-margin:0 0 10px;
-font-size:1.18rem;
-font-weight:700;
-color:var(--heading);
-}
-
-.product-card p{
-margin:0 0 12px;
-color:var(--text-secondary);
-}
-
-.product-links{
-display:flex;
-flex-wrap:wrap;
-gap:14px;
-margin-top:12px;
-}
-
-.product-links a{
-font-weight:600;
-}
-
-.muted-list{
-margin:10px 0 0 18px;
-color:var(--text-secondary);
-}
-
-footer{
-margin-top:46px;
-padding-top:18px;
-border-top:1px solid var(--border);
-color:var(--text-secondary);
-font-size:0.95rem;
-}
-
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Aptica | Software Engineering &amp; Technology Consultancy</title>
+  <meta name="description" content="Aptica designs and builds mobile applications, cloud platforms, system integrations and intelligent automation for complex technology challenges.">
+  <meta name="google-site-verification" content="k-FLbrBRSaHSCn-5ADusm_wQcv-NoxKc0Leo05dQphc">
+  <meta name="theme-color" content="#0a0b17">
+  <link rel="stylesheet" href="/assets/css/site.css">
+  <script src="/assets/js/site.js" defer></script>
 </head>
-
 <body>
-
-<div class="page">
-
-<section class="hero">
-<img src="aptica-main-logo.png" alt="Aptica Ltd logo" style="height:100px; vertical-align:middle;">
-
-<div class="hero-grid">
-
-<div class="hero-copy">
-
-<h1>Software products with clarity, utility, and staying power.</h1>
-
-<p>
-Aptica Ltd develops software across consumer and business categories,
-with a focus on thoughtful product design, practical functionality,
-and reliable user experience.
-</p>
-
-<p>
-Our products may span energy, lifestyle, automation, and other software-led experiences.
-</p>
-
-</div>
-
-<div class="hero-panel">
-
-<div class="metric">
-<span class="metric-label">Company</span>
-<span class="metric-value">Aptica Ltd</span>
-</div>
-
-<div class="metric">
-<span class="metric-label">Focus</span>
-<span class="metric-value">Product software and digital tools</span>
-</div>
-
-<div class="metric">
-<span class="metric-label">Support</span>
-<span class="metric-value"><a href="mailto:support@aptica.uk">support@aptica.uk</a></span>
-</div>
-
-</div>
-</div>
-</section>
-
-<section class="section">
-
-<h2 class="section-title">Products</h2>
-
-<div class="products-grid">
-
-<article class="product-card">
-<div class="product-badge">Live</div>
-<h3 class="product-title">
-  <a href="/map-energy/documentation/">
-    MAP Energy
-  </a>
-</h3>
-
-<p>
-A mobile application for monitoring and automating home energy systems,
-with support for compatible third-party platforms and connected services.
-</p>
-
-<div class="product-links">
-  <a href="/map-energy/documentation/">Documentation</a>
-  <a href="/map-energy/privacy">Privacy Policy</a>
-  <a href="/map-energy/terms">Terms of Service</a>
-</div>
-
-</article>
-
-<article class="product-card">
-
-<div class="product-badge">Coming soon</div>
-
-<h3 class="product-title">Wine Club Hub</h3>
-
-<p>
-A forthcoming product focused on wine club experiences, member engagement,
-and supporting features for discovery and community.
-</p>
-
-</article>
-
-</div>
-</section>
-
-<section class="section">
-
-<h2 class="section-title">About Aptica</h2>
-
-<div class="section-card">
-
-<p>
-Aptica Ltd is a UK software company building focused digital products for real-world use cases.
-</p>
-
-<p>
-We design and operate applications that integrate with third-party platforms where appropriate,
-while keeping user experience, security, and maintainability at the centre of product development.
-</p>
-
-</div>
-
-</section>
-
-<section class="section">
-
-<h2 class="section-title">Support</h2>
-
-<div class="section-card">
-
-<p>
-For product, support, or legal enquiries, contact:
-<strong><a href="mailto:support@aptica.uk">support@aptica.uk</a></strong>
-</p>
-
-<ul class="muted-list">
-<li>Product support</li>
-<li>Privacy and legal enquiries</li>
-<li>Developer contact</li>
-</ul>
-
-</div>
-
-</section>
-
-<footer>
-© <span id="year"></span> Aptica Ltd<br />
-Company registered in England and Wales
-</footer>
-
-</div>
-
-<script>
-document.getElementById("year").textContent = new Date().getFullYear();
-</script>
-
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header" data-header>
+    <div class="nav-wrap">
+      <a class="brand" href="/" aria-label="Aptica home"><img src="/aptica-main-logo.png" alt="Aptica"></a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav"><span class="sr-only">Open navigation</span><span></span><span></span><span></span></button>
+      <nav class="site-nav" id="site-nav" aria-label="Main navigation">
+        <a href="#services">Services</a><a href="#work">Work</a><a href="#products">Products</a><a href="#about">About</a><a href="#contact">Contact</a>
+        <a class="button button-small" href="mailto:support@aptica.uk?subject=Project%20enquiry">Discuss a project</a>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+    <section class="hero section-dark">
+      <div class="hero-glow" aria-hidden="true"></div>
+      <div class="shell hero-grid">
+        <div class="hero-copy reveal">
+          <p class="eyebrow"><span></span> Independent software engineering</p>
+          <h1>Software that connects, automates and solves real problems.</h1>
+          <p class="hero-lead">Aptica designs and builds mobile applications, cloud platforms, system integrations and intelligent automation for businesses with complex technology challenges.</p>
+          <div class="button-row"><a class="button" href="mailto:support@aptica.uk?subject=Project%20enquiry">Discuss a project <span aria-hidden="true">↗</span></a><a class="button button-ghost" href="#work">Explore our work <span aria-hidden="true">↓</span></a></div>
+        </div>
+        <div class="system-visual reveal" aria-label="Connected system spanning mobile, cloud, energy and automation">
+          <div class="visual-grid" aria-hidden="true"></div><div class="system-orbit orbit-one" aria-hidden="true"></div><div class="system-orbit orbit-two" aria-hidden="true"></div>
+          <div class="system-core"><img src="/MAP Logo.png" alt="MAP Energy"><span>Connected energy</span></div>
+          <div class="system-node node-mobile"><span>01</span><strong>Mobile</strong><small>iOS + Android</small></div><div class="system-node node-cloud"><span>02</span><strong>Cloud</strong><small>Secure APIs</small></div><div class="system-node node-data"><span>03</span><strong>Live data</strong><small>Telemetry</small></div><div class="system-node node-auto"><span>04</span><strong>Automation</strong><small>Smart control</small></div>
+        </div>
+      </div>
+      <div class="shell hero-footer" aria-label="Core engineering disciplines"><span>Mobile</span><i></i><span>Cloud</span><i></i><span>Integrations</span><i></i><span>Automation</span></div>
+    </section>
+    <section class="section section-light" id="services">
+      <div class="shell">
+        <div class="section-heading reveal"><div><p class="kicker">What we do</p><h2>Engineering capability for complex systems.</h2></div><p>From a focused product build to a multi-platform integration, Aptica brings strategic thinking and practical engineering together.</p></div>
+        <div class="services-grid">
+          <article class="service-card reveal"><span class="service-number">01</span><h3>Mobile App Development</h3><p>Native iOS and Android apps, subscriptions, notifications and connected customer experiences.</p><div class="card-line"></div></article>
+          <article class="service-card reveal"><span class="service-number">02</span><h3>API &amp; Systems Integration</h3><p>REST and GraphQL APIs, authentication, enterprise platforms and third-party services.</p><div class="card-line"></div></article>
+          <article class="service-card reveal"><span class="service-number">03</span><h3>Automation &amp; Connected Systems</h3><p>Event-driven workflows, scheduled automation, telemetry, IoT and intelligent control.</p><div class="card-line"></div></article>
+          <article class="service-card reveal"><span class="service-number">04</span><h3>Cloud &amp; Backend Engineering</h3><p>Secure APIs, databases, authentication, monitoring and reliable backend services.</p><div class="card-line"></div></article>
+          <article class="service-card service-card-wide reveal"><span class="service-number">05</span><div><h3>Technical Consultancy</h3><p>Solution architecture, integration strategy, technical design and complex enterprise technology consultancy.</p></div><div class="card-line"></div></article>
+        </div>
+      </div>
+    </section>
+    <section class="section section-dark work-section" id="work">
+      <div class="shell">
+        <div class="section-heading light reveal"><div><p class="kicker">Featured work</p><h2>One product. A complete connected system.</h2></div><p>MAP Energy demonstrates the breadth of what we build: thoughtful interfaces backed by resilient, real-time engineering.</p></div>
+        <article class="case-study reveal">
+          <div class="case-main"><div class="case-logo"><img src="/MAP Logo.png" alt="MAP Energy logo"></div><p class="status"><span></span> Live product</p><h3>MAP Energy</h3><p class="case-lead">A connected energy platform spanning mobile, cloud, automation and third-party systems.</p><a class="text-link" href="/map-energy/">Explore MAP Energy <span aria-hidden="true">→</span></a></div>
+          <div class="case-capabilities"><p class="cap-label">Platform capabilities</p><ul><li><span>01</span>Native iOS and Android</li><li><span>02</span>Tesla Powerwall integration</li><li><span>03</span>Live energy telemetry</li><li><span>04</span>EV charger integrations</li><li><span>05</span>Energy supplier integrations</li><li><span>06</span>Automation engine</li><li><span>07</span>Solar forecasting</li><li><span>08</span>Cloud APIs and notifications</li></ul></div>
+        </article>
+      </div>
+    </section>
+    <section class="section section-light process-section">
+      <div class="shell">
+        <div class="section-heading reveal"><div><p class="kicker">How we work</p><h2>From complexity to dependable software.</h2></div><p>A clear, collaborative delivery process that keeps technical decisions tied to business outcomes.</p></div>
+        <ol class="process-list"><li class="reveal"><span>01</span><div><h3>Understand</h3><p>We map the problem, users, systems, constraints and success criteria before proposing a solution.</p></div></li><li class="reveal"><span>02</span><div><h3>Design</h3><p>We shape the architecture, journeys and delivery plan, resolving risk while change is still inexpensive.</p></div></li><li class="reveal"><span>03</span><div><h3>Build</h3><p>We deliver in focused increments with maintainability, security and real-world operation built in.</p></div></li><li class="reveal"><span>04</span><div><h3>Connect</h3><p>We integrate platforms, data and devices, testing the complete system rather than isolated components.</p></div></li><li class="reveal"><span>05</span><div><h3>Launch &amp; evolve</h3><p>We support release, observe performance and keep improving the software as needs develop.</p></div></li></ol>
+      </div>
+    </section>
+    <section class="section products-section" id="products">
+      <div class="shell">
+        <div class="section-heading reveal"><div><p class="kicker">Our products</p><h2>We build our own, too.</h2></div><p>Operating real products keeps our engineering grounded in customer experience, reliability and continuous improvement.</p></div>
+        <div class="product-grid">
+          <article class="product-card product-live reveal"><div class="product-top"><img src="/MAP Logo.png" alt="MAP Energy"><span class="pill pill-live">Live</span></div><div><h3>MAP Energy</h3><p>Smart energy monitoring and automation across batteries, solar, EV charging and connected tariffs.</p></div><a href="/map-energy/" aria-label="Explore MAP Energy">Explore product <span aria-hidden="true">→</span></a></article>
+          <article class="product-card wine-card reveal"><div class="product-top"><div class="wine-mark" aria-hidden="true">W</div><span class="pill">In development</span></div><div><h3>Wine Club Hub</h3><p>A connected platform for wine clubs, bringing membership, discovery and community into one considered experience.</p></div><span class="quiet-link">Currently in development</span></article>
+        </div>
+      </div>
+    </section>
+    <section class="section section-dark about-section" id="about"><div class="shell about-grid"><div class="reveal"><p class="kicker">About Aptica</p><h2>Enterprise experience.<br><span>Hands-on delivery.</span></h2></div><div class="about-copy reveal"><p>Aptica is an independent UK software company combining enterprise technology experience with hands-on product development.</p><p>We work across mobile, cloud, APIs, automation and connected systems. That means we can operate at architecture and consultancy level, then stay close to the detail and deliver the software that makes the strategy real.</p><div class="about-tags"><span>UK based</span><span>Independent</span><span>End-to-end</span></div></div></div></section>
+    <section class="contact-section" id="contact"><div class="shell contact-inner reveal"><p class="kicker">Start a conversation</p><h2>Have a project or integration challenge?</h2><p>Whether you are developing a new application, connecting existing systems or trying to automate a complex workflow, we would be happy to discuss it.</p><a class="button button-light" href="mailto:support@aptica.uk?subject=Project%20enquiry">support@aptica.uk <span aria-hidden="true">↗</span></a></div></section>
+  </main>
+  <footer class="site-footer"><div class="shell footer-main"><a class="brand footer-brand" href="/" aria-label="Aptica home"><img src="/aptica-main-logo.png" alt="Aptica"></a><nav aria-label="Footer navigation"><a href="#services">Services</a><a href="#work">Work</a><a href="#products">Products</a><a href="#about">About</a><a href="#contact">Contact</a></nav></div><div class="shell footer-meta"><span>© <span id="year"></span> Aptica Ltd</span><span>Registered in England and Wales</span></div></footer>
 </body>
 </html>
