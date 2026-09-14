@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#050b14">
+  <meta name="description" content="Secure MAP Energy portal for Premium users.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src https://powerwake-backend-production.mapenergy.workers.dev https://powerwake-backend-staging.mapenergy.workers.dev; base-uri 'none'; form-action 'self'">
+  <title>MAP Energy Portal</title>
+  <link rel="stylesheet" href="portal.css">
+  <script src="portal.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#portal-main">Skip to portal content</a>
+  <div class="ambient ambient-blue" aria-hidden="true"></div>
+  <div class="ambient ambient-green" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <a class="brand" href="/map-energy/" aria-label="MAP Energy home">
+      <img src="/MAP%20Logo.png" alt="">
+      <span><strong>MAP Energy</strong><small>Premium Portal</small></span>
+    </a>
+    <button id="headerSignOut" class="button button-quiet hidden" type="button">Sign out</button>
+  </header>
+
+  <main id="portal-main" class="shell">
+    <section id="loginView" class="login-layout" aria-labelledby="loginTitle">
+      <div class="login-intro">
+        <span class="eyebrow">Your energy. Clearly connected.</span>
+        <h1 id="loginTitle">A better view of your connected home.</h1>
+        <p>Live Powerwall flow, supplier pricing, energy history and automation activity—available securely wherever you are.</p>
+        <div class="login-feature-grid" aria-hidden="true">
+          <div><span class="feature-icon solar">☀</span><strong>Live energy</strong><small>See power move</small></div>
+          <div><span class="feature-icon battery">▰</span><strong>Powerwall</strong><small>State and reserve</small></div>
+          <div><span class="feature-icon tariff">⌁</span><strong>Tariffs</strong><small>Import and export</small></div>
+        </div>
+      </div>
+      <form id="loginForm" class="glass login-card">
+        <div class="secure-pill"><span></span> Premium access</div>
+        <h2>Welcome back</h2>
+        <p>Use the web login created in the MAP Energy app.</p>
+        <div id="loginError" class="notice notice-error hidden" role="alert"></div>
+        <label>Username<input id="usernameInput" autocomplete="username" maxlength="32" required></label>
+        <label>Password<input id="passwordInput" type="password" autocomplete="current-password" maxlength="128" required></label>
+        <button id="loginButton" class="button button-primary" type="submit">Sign in securely</button>
+        <small class="login-help">Forgotten your details? Reset Web Portal Access from Settings in the mobile app.</small>
+      </form>
+    </section>
+
+    <section id="appView" class="app-layout hidden">
+      <aside class="glass sidebar" aria-label="Portal navigation">
+        <div class="account-card">
+          <img src="/MAP%20Logo.png" alt="">
+          <div><strong>MAP Energy</strong><small id="accountSiteName">Your energy site</small></div>
+        </div>
+        <nav class="portal-nav">
+          <button class="nav-button active" data-page="live" type="button"><span>⚡</span><b>Live</b></button>
+          <button class="nav-button" data-page="supplier" type="button"><span>▥</span><b>Supplier</b></button>
+          <button class="nav-button" data-page="history" type="button"><span>↺</span><b>History</b></button>
+          <button class="nav-button" data-page="automations" type="button"><span>⌘</span><b>Automations</b></button>
+          <button class="nav-button" data-page="settings" type="button"><span>☰</span><b>Settings</b></button>
+        </nav>
+        <div class="sidebar-foot"><span class="status-dot"></span> Secure read-only access</div>
+      </aside>
+
+      <div class="workspace">
+        <header class="workspace-header">
+          <div>
+            <span class="eyebrow">Your home energy</span>
+            <h1 id="pageTitle">Live energy</h1>
+            <p id="pageSubtitle">A real-time view of power moving through your home</p>
+            <div class="header-meta"><span id="premiumPill" class="premium-pill">Premium</span><span id="updatedAt">Connecting…</span></div>
+          </div>
+          <label class="site-picker">Energy site<select id="siteSelect" aria-label="Energy site"></select></label>
+        </header>
+
+        <div id="appError" class="notice notice-error hidden" role="alert"></div>
+
+        <section id="page-live" class="page active">
+          <article class="glass live-card">
+            <div class="live-card-head">
+              <span id="livePill" class="live-pill"><i></i><span>Live</span></span>
+              <div class="site-chips"><span>⌂ <b id="liveSiteName">Site</b></span><span id="siteTimezone">UTC</span></div>
+            </div>
+
+            <div class="flow-board" aria-label="Live home energy flow">
+              <div id="flowSolar" class="flow-line solar"></div>
+              <div id="flowHome" class="flow-line home"></div>
+              <div id="flowBattery" class="flow-line battery"></div>
+              <div id="flowGrid" class="flow-line grid"></div>
+              <button class="energy-node solar" data-node="solar" type="button"><span>☀</span><strong id="solarKw">--</strong><small>Solar · kW</small></button>
+              <button class="energy-node ev" data-node="ev" type="button"><span>◆</span><strong id="evNodeKw">--</strong><small>EV · kW</small></button>
+              <button class="energy-node home" data-node="home" type="button"><span>⌂</span><strong id="homeKw">--</strong><small>Home · kW</small></button>
+              <button class="energy-node battery" data-node="battery" type="button"><span>▰</span><strong id="batterySoc">--</strong><small>Battery · %</small></button>
+              <button class="energy-node grid" data-node="grid" type="button"><span>ϟ</span><strong id="gridKw">--</strong><small>Grid · kW</small></button>
+            </div>
+
+            <div class="live-details">
+              <div class="today-grid">
+                <div><span>Solar today</span><strong id="solarToday">--</strong></div>
+                <div><span>Battery SOC</span><strong><span id="batterySummarySoc">--</span>%</strong></div>
+                <div><span>Import today</span><strong id="importToday">--</strong></div>
+                <div><span>Export today</span><strong id="exportToday">--</strong></div>
+              </div>
+              <div id="liveState" class="energy-state">Monitoring live home energy flow</div>
+              <div class="control-grid">
+                <div><span>Backup reserve</span><strong id="backupReserve">--</strong></div>
+                <div><span>Operating mode</span><strong id="operationMode">--</strong></div>
+                <div><span>Energy exports</span><strong id="exportRule">--</strong></div>
+              </div>
+            </div>
+          </article>
+
+          <article id="nodeChart" class="glass panel hidden">
+            <div class="panel-heading"><div><span class="eyebrow">Today</span><h2 id="nodeChartTitle">Energy</h2><p id="nodeChartSub">30-minute intervals</p></div><button id="closeNodeChart" class="button button-quiet" type="button">Close</button></div>
+            <div id="nodeChartBars" class="chart-bars"></div>
+          </article>
+
+          <div class="support-grid">
+            <article class="glass panel"><span class="eyebrow">Connection</span><h2>Tesla Fleet</h2><dl><div><dt>Status</dt><dd id="teslaStatus">--</dd></div><div><dt>Health</dt><dd id="teslaHealth">--</dd></div><div><dt>Last telemetry</dt><dd id="telemetryAge">--</dd></div></dl></article>
+            <article class="glass panel"><span class="eyebrow">Automations</span><h2>Activity</h2><dl><div><dt>Active rules</dt><dd id="automationCount">--</dd></div><div><dt>Recent runs</dt><dd id="automationRuns">--</dd></div></dl></article>
+          </div>
+        </section>
+
+        <section id="page-supplier" class="page"><div id="supplierCards" class="content-grid"></div></section>
+        <section id="page-history" class="page"><div id="historyList" class="stack"></div></section>
+        <section id="page-automations" class="page"><div id="automationList" class="stack"></div></section>
+        <section id="page-settings" class="page"><div id="settingsCards" class="content-grid"></div></section>
+      </div>
+    </section>
+  </main>
+
+  <footer class="portal-footer"><span>© <span id="year"></span> Aptica Ltd</span><span>Protected MAP Energy Premium access</span></footer>
+</body>
+</html>
