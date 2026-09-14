@@ -68,6 +68,7 @@ function clearSession() {
 }
 
 function showLogin(message = "") {
+  document.body.classList.remove("portal-active");
   $("loginView").classList.remove("hidden");
   $("appView").classList.add("hidden");
   $("headerSignOut").classList.add("hidden");
@@ -75,6 +76,7 @@ function showLogin(message = "") {
 }
 
 function showApp() {
+  document.body.classList.add("portal-active");
   $("loginView").classList.add("hidden");
   $("appView").classList.remove("hidden");
   $("headerSignOut").classList.remove("hidden");
@@ -135,21 +137,25 @@ function liveStateText(live) {
   return "Monitoring live home energy flow";
 }
 
-function setFlow(id, active, reverse = false) {
-  const line = $(id);
-  line?.classList.toggle("active", Boolean(active));
-  line?.classList.toggle("reverse", Boolean(reverse));
-}
-
 function updateFlows(live, hasLive) {
   const solar = Number(live?.solar_kw) || 0;
   const home = Number(live?.home_kw) || 0;
   const grid = Number(live?.grid_kw) || 0;
   const battery = Number(live?.battery_kw) || 0;
-  setFlow("flowSolar", hasLive && solar > .05);
-  setFlow("flowHome", hasLive && home > .05);
-  setFlow("flowBattery", hasLive && Math.abs(battery) > .05, battery < 0);
-  setFlow("flowGrid", hasLive && Math.abs(grid) > .05, grid > 0);
+  const ev = Number(live?.ev_kw) || 0;
+  const sources = new Set();
+  const destinations = new Set();
+  if (solar > .05) sources.add("solar");
+  if (battery > .05) sources.add("battery");
+  if (grid > .05) sources.add("grid");
+  if (home > .05) destinations.add("home");
+  if (ev > .05) destinations.add("ev");
+  if (battery < -.05) destinations.add("battery");
+  if (grid < -.05) destinations.add("grid");
+  document.querySelectorAll("#flowNetwork line").forEach(line => {
+    const active = hasLive && sources.has(line.dataset.from) && destinations.has(line.dataset.to);
+    line.classList.toggle("active", active);
+  });
 }
 
 async function signIn(event) {
