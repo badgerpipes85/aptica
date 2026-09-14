@@ -130,23 +130,58 @@ function fmtDate(value, fallback = "--") {
 
 function prettyMode(value) {
   const mode = String(value || "").toLowerCase();
-  return { self_consumption: "Self-powered", autonomous: "Time-Based Control", backup: "Backup-only" }[mode] || value || "--";
+  return { self_consumption: "Self-Powered", autonomous: "Savings", backup: "Backup" }[mode] || value || "--";
 }
 
 function prettyExport(value) {
-  return { battery_ok: "Everything", pv_only: "Solar only", never: "Never" }[String(value || "").toLowerCase()] || value || "--";
+  return { battery_ok: "Everything", pv_only: "Solar", never: "Nothing", no_export: "Nothing" }[String(value || "").toLowerCase()] || value || "--";
 }
 
-function liveStateText(live) {
+function liveInsight(live) {
   const solar = Number(live?.solar_kw) || 0;
   const home = Number(live?.home_kw) || 0;
   const grid = Number(live?.grid_kw) || 0;
   const battery = Number(live?.battery_kw) || 0;
-  if (grid > .1) return "Grid is supplying the home";
-  if (grid < -.1 && solar > home) return "Solar is supplying the home and exporting surplus energy";
-  if (solar > home) return "Solar is supplying the home";
-  if (battery > .1) return "Powerwall is supplying the home";
-  return "Monitoring live home energy flow";
+  const ev = Number(live?.ev_kw) || 0;
+  const active = value => value > .05;
+  const gridHome = active(grid) && active(home);
+  const gridEv = active(grid) && active(ev);
+  const gridBattery = active(grid) && battery < -.05;
+  const solarHome = active(solar) && active(home);
+  const solarEv = active(solar) && active(ev);
+  const solarBattery = active(solar) && battery < -.05;
+  const solarExport = active(solar) && grid < -.05;
+  const batteryHome = battery > .05 && active(home);
+  const batteryEv = battery > .05 && active(ev);
+  const batteryExport = battery > .05 && grid < -.05;
+  if (gridBattery && gridEv && gridHome) return { text: "Grid is supplying the home, charging EV and charging the Powerwall", tone: "blue", icon: "battery" };
+  if (gridBattery && gridEv && solarHome) return { text: "Solar is supplying the home while grid charges EV and Powerwall", tone: "blue", icon: "battery" };
+  if (gridBattery && gridEv) return { text: "Grid is charging EV and the Powerwall", tone: "blue", icon: "battery" };
+  if (gridBattery && gridHome) return { text: "Grid is supplying the home and charging the Powerwall", tone: "blue", icon: "battery" };
+  if (gridEv && gridHome) return { text: "Grid is supplying the home and charging EV", tone: "blue", icon: "car" };
+  if (solarHome && solarEv && solarBattery) return { text: "Solar is supplying the home, charging EV and charging the Powerwall", tone: "yellow", icon: "solar" };
+  if (solarHome && solarEv) return { text: "Solar is supplying the home and charging EV", tone: "yellow", icon: "solar" };
+  if (solarHome && solarBattery) return { text: "Solar is powering home and charging the Powerwall", tone: "yellow", icon: "solar" };
+  if (batteryHome && batteryEv && batteryExport) return { text: "Powerwall is supplying home, charging EV and exporting to the grid", tone: "green", icon: "battery" };
+  if (batteryHome && batteryEv) return { text: "Powerwall is supplying home and charging EV", tone: "green", icon: "battery" };
+  if (solarHome && solarExport) return { text: "Solar is supplying the home and exporting surplus energy", tone: "yellow", icon: "solar" };
+  if (gridEv) return { text: "Grid is charging EV", tone: "blue", icon: "car" };
+  if (gridHome) return { text: "The grid is supplying the home", tone: "blue", icon: "bolt" };
+  if (gridBattery) return { text: "The grid is charging the Powerwall", tone: "blue", icon: "battery" };
+  if (solarEv) return { text: "Solar is charging EV", tone: "yellow", icon: "car" };
+  if (solarHome) return { text: "Solar is supplying the home", tone: "yellow", icon: "solar" };
+  if (batteryEv) return { text: "Powerwall is charging EV", tone: "green", icon: "car" };
+  if (batteryHome) return { text: "The Powerwall is supplying the home", tone: "green", icon: "battery" };
+  if (solarExport) return { text: "Solar is exporting surplus energy to the grid", tone: "yellow", icon: "solar" };
+  if (batteryExport) return { text: "The Powerwall is exporting energy to the grid", tone: "green", icon: "battery" };
+  return { text: "Monitoring live home energy flow", tone: "neutral", icon: "bolt" };
+}
+
+function setCardTone(id, tone) {
+  const card = $(id);
+  if (!card) return;
+  card.classList.remove("green", "blue", "yellow", "red", "grey");
+  card.classList.add(tone);
 }
 
 function updateFlows(live, hasLive) {
@@ -260,7 +295,14 @@ async function loadOverview(siteKey) {
   setText("backupReserve", data.tesla_settings?.backup_reserve_percent == null ? "--" : `${Math.round(Number(data.tesla_settings.backup_reserve_percent))}%`);
   setText("operationMode", prettyMode(data.tesla_settings?.operation_mode));
   setText("exportRule", prettyExport(data.tesla_settings?.export_rule));
-  setText("liveState", liveStateText(live));
+  const insight = liveInsight(live);
+  setText("liveStateText", insight.text);
+  $("liveState").classList.remove("blue", "yellow", "green", "neutral");
+  $("liveState").classList.add(insight.tone);
+  $("liveStateIcon").setAttribute("href", `assets/map-energy-icons.svg#${insight.icon}`);
+  setCardTone("backupCard", "green");
+  setCardTone("modeCard", ({ autonomous: "blue", self_consumption: "green", backup: "red" })[String(data.tesla_settings?.operation_mode || "").toLowerCase()] || "grey");
+  setCardTone("exportCard", ({ pv_only: "yellow", battery_ok: "green", never: "red", no_export: "red" })[String(data.tesla_settings?.export_rule || "").toLowerCase()] || "grey");
   setText("teslaStatus", data.connection?.tesla_status || "Not connected");
   setText("teslaHealth", data.connection?.tesla_health || "Unknown");
   setText("telemetryAge", data.connection?.last_telemetry_age_seconds == null ? "--" : `${Math.round(data.connection.last_telemetry_age_seconds / 60)} min`);

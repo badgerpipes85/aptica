@@ -105,16 +105,16 @@
 
             <div class="live-details">
               <div class="today-grid">
-                <div><span>Solar today</span><strong><b id="solarToday">--</b><small>kWh</small></strong></div>
-                <div><span>Battery SOC</span><strong><b id="batterySummarySoc">--</b><small>%</small></strong></div>
-                <div><span>Import today</span><strong><b id="importToday">--</b><small>kWh</small></strong></div>
-                <div><span>Export today</span><strong><b id="exportToday">--</b><small>kWh</small></strong></div>
+                <div class="summary-metric solar"><svg><use href="assets/map-energy-icons.svg#solar"></use></svg><div><span>Solar Today</span><strong><b id="solarToday">--</b><small>kWh</small></strong></div></div>
+                <div class="summary-metric battery"><svg><use href="assets/map-energy-icons.svg#battery"></use></svg><div><span>Battery SOC</span><strong><b id="batterySummarySoc">--</b><small>%</small></strong></div></div>
+                <div class="summary-metric import"><svg><use href="assets/map-energy-icons.svg#import"></use></svg><div><span>Import Today</span><strong><b id="importToday">--</b><small>kWh</small></strong></div></div>
+                <div class="summary-metric export"><svg><use href="assets/map-energy-icons.svg#export"></use></svg><div><span>Export Today</span><strong><b id="exportToday">--</b><small>kWh</small></strong></div></div>
               </div>
-              <div id="liveState" class="energy-state">Monitoring live home energy flow</div>
+              <div id="liveState" class="energy-state"><svg><use id="liveStateIcon" href="assets/map-energy-icons.svg#bolt"></use></svg><span id="liveStateText">Monitoring live home energy flow</span></div>
               <div class="control-grid">
-                <div><span>Backup reserve</span><strong id="backupReserve">--</strong></div>
-                <div><span>Operating mode</span><strong id="operationMode">--</strong></div>
-                <div><span>Energy exports</span><strong id="exportRule">--</strong></div>
+                <div id="backupCard" class="control-card green"><span><svg><use href="assets/map-energy-icons.svg#shield"></use></svg>Backup</span><strong id="backupReserve">--</strong></div>
+                <div id="modeCard" class="control-card blue"><span><svg><use href="assets/map-energy-icons.svg#mode"></use></svg>Mode</span><strong id="operationMode">--</strong></div>
+                <div id="exportCard" class="control-card yellow"><span><svg><use href="assets/map-energy-icons.svg#export"></use></svg>Export</span><strong id="exportRule">--</strong></div>
               </div>
             </div>
           </article>
