@@ -46,7 +46,7 @@ body.portal-active .sidebar{background:rgba(3,12,24,.66)}
 @keyframes app-flow{to{stroke-dashoffset:-100}}
 .energy-node{--node-glow:41,147,255;z-index:2;width:112px;height:112px;border-width:4px;transform:translate(-50%,-50%);background:radial-gradient(circle at 35% 24%,#243142 0,#07101c 55%,#01050b 100%);box-shadow:0 0 0 7px rgba(255,255,255,.04),0 0 22px rgba(var(--node-glow),.24);color:#fff}
 .energy-node:hover{transform:translate(-50%,calc(-50% - 3px))}
-.energy-node .node-icon{font-size:34px;line-height:1;color:#fff;text-shadow:0 2px 12px rgba(0,0,0,.45)}
+.energy-node .node-icon{width:35px;height:35px;display:block;margin:0 auto 2px;color:#fff;filter:drop-shadow(0 2px 6px rgba(0,0,0,.48))}
 .energy-node strong{font-size:17px;font-weight:650;color:rgba(255,255,255,.76)}
 .energy-node small{font-size:11px;color:rgba(255,255,255,.6)}
 .energy-node.solar{--node-glow:246,189,19;top:14%;left:50%;color:var(--yellow)}
@@ -77,4 +77,4 @@ body.portal-active .sidebar{background:rgba(3,12,24,.66)}
 
 @media(max-width:1180px){.live-card{grid-template-columns:minmax(460px,1fr) minmax(300px,.82fr)}}
 @media(max-width:820px){body.portal-active{background-position:center top}.sidebar{overflow:visible}.portal-nav{width:100%;min-width:0;grid-template-columns:repeat(5,minmax(0,1fr))}.nav-button{min-width:0}.live-card{display:block;min-height:0}.flow-board{width:min(100%,540px)}.energy-node{width:96px;height:96px}}
-@media(max-width:480px){.portal-nav{min-width:0}.nav-button{padding-inline:2px}.nav-button b{font-size:9px}.flow-board{width:100%}.energy-node{width:84px;height:84px}.energy-node .node-icon{font-size:26px}.energy-node strong{font-size:14px}.control-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.control-grid>div{min-height:96px;padding:10px 5px}.control-card span{font-size:10px}.control-card strong{font-size:14px}}
+@media(max-width:480px){.portal-nav{min-width:0}.nav-button{padding-inline:2px}.nav-button b{font-size:9px}.flow-board{width:100%}.energy-node{width:84px;height:84px}.energy-node .node-icon{width:28px;height:28px}.energy-node strong{font-size:14px}.control-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.control-grid>div{min-height:96px;padding:10px 5px}.control-card span{font-size:10px}.control-card strong{font-size:14px}}
