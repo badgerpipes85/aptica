@@ -13,6 +13,7 @@ let currentOverview = null;
 const $ = id => document.getElementById(id);
 const nf = new Intl.NumberFormat("en-GB", { maximumFractionDigits: 2 });
 const nf1 = new Intl.NumberFormat("en-GB", { maximumFractionDigits: 1 });
+const nodeNumber = new Intl.NumberFormat("en-GB", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
 
 function escapeHtml(value) {
   return String(value ?? "").replace(/[&<>"']/g, character => ({
@@ -92,6 +93,17 @@ function fmtKwh(value) {
   return Number.isFinite(number) ? `${nf1.format(number)} kWh` : "--";
 }
 
+function fmtNodeKw(value, absolute = false) {
+  const number = Number(value);
+  if (!Number.isFinite(number)) return "--";
+  return nodeNumber.format(absolute ? Math.abs(number) : number);
+}
+
+function fmtKwhNumber(value) {
+  const number = Number(value);
+  return Number.isFinite(number) ? nf1.format(number) : "--";
+}
+
 function fmtRate(value) {
   const number = Number(value);
   return Number.isFinite(number) ? `${nf1.format(number)}p/kWh` : "--";
@@ -152,9 +164,9 @@ function updateFlows(live, hasLive) {
   if (ev > .05) destinations.add("ev");
   if (battery < -.05) destinations.add("battery");
   if (grid < -.05) destinations.add("grid");
-  document.querySelectorAll("#flowNetwork line").forEach(line => {
-    const active = hasLive && sources.has(line.dataset.from) && destinations.has(line.dataset.to);
-    line.classList.toggle("active", active);
+  document.querySelectorAll("#flowNetwork g").forEach(path => {
+    const active = hasLive && sources.has(path.dataset.from) && destinations.has(path.dataset.to);
+    path.classList.toggle("active", active);
   });
 }
 
@@ -232,16 +244,16 @@ async function loadOverview(siteKey) {
   setText("accountSiteName", siteName);
   setText("liveSiteName", siteName);
   setText("siteTimezone", data.timezone || data.site?.timezone || "UTC");
-  setText("solarKw", hasLive ? fmtKw(live.solar_kw) : "--");
-  setText("homeKw", hasLive ? fmtKw(live.home_kw) : "--");
-  setText("gridKw", hasLive ? fmtKw(live.grid_kw) : "--");
-  setText("evNodeKw", hasLive && Number.isFinite(Number(live.ev_kw)) ? nf1.format(Number(live.ev_kw)) : "--");
+  setText("solarKw", hasLive ? fmtNodeKw(live.solar_kw) : "--");
+  setText("homeKw", hasLive ? fmtNodeKw(live.home_kw) : "--");
+  setText("gridKw", hasLive ? fmtNodeKw(live.grid_kw) : "--");
+  setText("evNodeKw", hasLive ? fmtNodeKw(live.ev_kw) : "--");
+  setText("batteryPowerKw", hasLive ? fmtNodeKw(live.battery_kw, true) : "--");
   const soc = hasLive && Number.isFinite(Number(live.battery_soc)) ? Math.round(Number(live.battery_soc)) : null;
-  setText("batterySoc", soc ?? "--");
   setText("batterySummarySoc", soc ?? "--");
-  setText("solarToday", fmtKwh(data.today?.solar_kwh));
-  setText("importToday", fmtKwh(data.today?.import_kwh));
-  setText("exportToday", fmtKwh(data.today?.export_kwh));
+  setText("solarToday", fmtKwhNumber(data.today?.solar_kwh));
+  setText("importToday", fmtKwhNumber(data.today?.import_kwh));
+  setText("exportToday", fmtKwhNumber(data.today?.export_kwh));
   setText("backupReserve", data.tesla_settings?.backup_reserve_percent == null ? "--" : `${Math.round(Number(data.tesla_settings.backup_reserve_percent))}%`);
   setText("operationMode", prettyMode(data.tesla_settings?.operation_mode));
   setText("exportRule", prettyExport(data.tesla_settings?.export_rule));

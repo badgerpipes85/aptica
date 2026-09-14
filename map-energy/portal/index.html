@@ -85,30 +85,30 @@
 
             <div class="flow-board" aria-label="Live home energy flow">
               <svg id="flowNetwork" class="flow-network" viewBox="0 0 100 100" aria-hidden="true">
-                <line data-from="solar" data-to="home" x1="50" y1="14" x2="83" y2="39"></line>
-                <line data-from="solar" data-to="ev" x1="50" y1="14" x2="17" y2="39"></line>
-                <line data-from="solar" data-to="battery" x1="50" y1="14" x2="30" y2="82"></line>
-                <line data-from="solar" data-to="grid" x1="50" y1="14" x2="70" y2="82"></line>
-                <line data-from="battery" data-to="home" x1="30" y1="82" x2="83" y2="39"></line>
-                <line data-from="battery" data-to="ev" x1="30" y1="82" x2="17" y2="39"></line>
-                <line data-from="battery" data-to="grid" x1="30" y1="82" x2="70" y2="82"></line>
-                <line data-from="grid" data-to="home" x1="70" y1="82" x2="83" y2="39"></line>
-                <line data-from="grid" data-to="ev" x1="70" y1="82" x2="17" y2="39"></line>
-                <line data-from="grid" data-to="battery" x1="70" y1="82" x2="30" y2="82"></line>
+                <g data-from="solar" data-to="home"><line class="flow-base" x1="50" y1="14" x2="83" y2="39"></line><line class="flow-pulse" pathLength="100" x1="50" y1="14" x2="83" y2="39"></line></g>
+                <g data-from="solar" data-to="ev"><line class="flow-base" x1="50" y1="14" x2="17" y2="39"></line><line class="flow-pulse" pathLength="100" x1="50" y1="14" x2="17" y2="39"></line></g>
+                <g data-from="solar" data-to="battery"><line class="flow-base" x1="50" y1="14" x2="30" y2="82"></line><line class="flow-pulse" pathLength="100" x1="50" y1="14" x2="30" y2="82"></line></g>
+                <g data-from="solar" data-to="grid"><line class="flow-base" x1="50" y1="14" x2="70" y2="82"></line><line class="flow-pulse" pathLength="100" x1="50" y1="14" x2="70" y2="82"></line></g>
+                <g data-from="battery" data-to="home"><line class="flow-base" x1="30" y1="82" x2="83" y2="39"></line><line class="flow-pulse" pathLength="100" x1="30" y1="82" x2="83" y2="39"></line></g>
+                <g data-from="battery" data-to="ev"><line class="flow-base" x1="30" y1="82" x2="17" y2="39"></line><line class="flow-pulse" pathLength="100" x1="30" y1="82" x2="17" y2="39"></line></g>
+                <g data-from="battery" data-to="grid"><line class="flow-base" x1="30" y1="82" x2="70" y2="82"></line><line class="flow-pulse" pathLength="100" x1="30" y1="82" x2="70" y2="82"></line></g>
+                <g data-from="grid" data-to="home"><line class="flow-base" x1="70" y1="82" x2="83" y2="39"></line><line class="flow-pulse" pathLength="100" x1="70" y1="82" x2="83" y2="39"></line></g>
+                <g data-from="grid" data-to="ev"><line class="flow-base" x1="70" y1="82" x2="17" y2="39"></line><line class="flow-pulse" pathLength="100" x1="70" y1="82" x2="17" y2="39"></line></g>
+                <g data-from="grid" data-to="battery"><line class="flow-base" x1="70" y1="82" x2="30" y2="82"></line><line class="flow-pulse" pathLength="100" x1="70" y1="82" x2="30" y2="82"></line></g>
               </svg>
               <button class="energy-node solar" data-node="solar" type="button"><span class="node-icon">☀</span><strong id="solarKw">--</strong><small>kW</small></button>
               <button class="energy-node ev" data-node="ev" type="button"><span class="node-icon">▰</span><strong id="evNodeKw">--</strong><small>kW</small></button>
               <button class="energy-node home" data-node="home" type="button"><span class="node-icon">⌂</span><strong id="homeKw">--</strong><small>kW</small></button>
-              <button class="energy-node battery" data-node="battery" type="button"><span class="node-icon">▣</span><strong id="batterySoc">--</strong><small>%</small></button>
+              <button class="energy-node battery" data-node="battery" type="button"><span class="node-icon">▣</span><strong id="batteryPowerKw">--</strong><small>kW</small></button>
               <button class="energy-node grid" data-node="grid" type="button"><span class="node-icon">ϟ</span><strong id="gridKw">--</strong><small>kW</small></button>
             </div>
 
             <div class="live-details">
               <div class="today-grid">
-                <div><span>Solar today</span><strong id="solarToday">--</strong></div>
-                <div><span>Battery SOC</span><strong><span id="batterySummarySoc">--</span>%</strong></div>
-                <div><span>Import today</span><strong id="importToday">--</strong></div>
-                <div><span>Export today</span><strong id="exportToday">--</strong></div>
+                <div><span>Solar today</span><strong><b id="solarToday">--</b><small>kWh</small></strong></div>
+                <div><span>Battery SOC</span><strong><b id="batterySummarySoc">--</b><small>%</small></strong></div>
+                <div><span>Import today</span><strong><b id="importToday">--</b><small>kWh</small></strong></div>
+                <div><span>Export today</span><strong><b id="exportToday">--</b><small>kWh</small></strong></div>
               </div>
               <div id="liveState" class="energy-state">Monitoring live home energy flow</div>
               <div class="control-grid">

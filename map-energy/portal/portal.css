@@ -32,13 +32,19 @@ body.portal-active .sidebar{background:rgba(3,12,24,.66)}
 .live-card{min-height:680px;grid-template-columns:minmax(530px,1.15fr) minmax(330px,.85fr);background:linear-gradient(180deg,rgba(2,10,24,.08),rgba(2,9,20,.38));border-color:rgba(255,255,255,.2)}
 .flow-board{width:min(100%,620px);min-height:0;aspect-ratio:1/1;margin:auto;isolation:isolate}
 .flow-network{position:absolute;inset:0;width:100%;height:100%;overflow:visible;z-index:0}
-.flow-network line{opacity:0;vector-effect:non-scaling-stroke;stroke:rgba(205,216,229,.58);stroke-width:3;stroke-linecap:round;stroke-dasharray:2 10;filter:drop-shadow(0 0 7px rgba(255,255,255,.38));transition:opacity .25s ease}
-.flow-network line.active{opacity:1;animation:app-flow .85s linear infinite}
-.flow-network line[data-from="solar"]{stroke:rgba(255,207,19,.68)}
-.flow-network line[data-from="battery"]{stroke:rgba(53,222,119,.67)}
-.flow-network line[data-from="grid"]{stroke:rgba(207,219,232,.58)}
-@keyframes app-flow{to{stroke-dashoffset:-14}}
-.energy-node{z-index:2;width:112px;height:112px;border-width:4px;transform:translate(-50%,-50%);background:radial-gradient(circle at 35% 24%,rgba(255,255,255,.16),rgba(0,7,17,.82) 62%);box-shadow:0 0 0 7px rgba(255,255,255,.04),0 0 34px currentColor;color:#fff}
+.flow-network g{opacity:0;transition:opacity .25s ease}
+.flow-network g.active{opacity:1}
+.flow-network line{vector-effect:non-scaling-stroke;stroke-linecap:round}
+.flow-network .flow-base{stroke:rgba(205,216,229,.32);stroke-width:2}
+.flow-network .flow-pulse{stroke:rgba(237,244,252,.94);stroke-width:6;stroke-dasharray:2 7 3 88;filter:drop-shadow(0 0 5px currentColor);animation:app-flow 1.15s linear infinite}
+.flow-network g[data-from="solar"] line{stroke:#f6bd13}
+.flow-network g[data-from="solar"] .flow-base{stroke-opacity:.35}
+.flow-network g[data-from="battery"] line{stroke:#25d06f}
+.flow-network g[data-from="battery"] .flow-base{stroke-opacity:.35}
+.flow-network g[data-from="grid"] line{stroke:#c7d0db}
+.flow-network g[data-from="grid"] .flow-base{stroke-opacity:.3}
+@keyframes app-flow{to{stroke-dashoffset:-100}}
+.energy-node{z-index:2;width:112px;height:112px;border-width:4px;transform:translate(-50%,-50%);background:radial-gradient(circle at 35% 24%,#243142 0,#07101c 55%,#01050b 100%);box-shadow:0 0 0 7px rgba(255,255,255,.04),0 0 34px currentColor;color:#fff}
 .energy-node:hover{transform:translate(-50%,calc(-50% - 3px))}
 .energy-node .node-icon{font-size:34px;line-height:1;color:#fff;text-shadow:0 2px 12px rgba(0,0,0,.45)}
 .energy-node strong{font-size:17px;font-weight:650;color:rgba(255,255,255,.76)}
@@ -50,7 +56,9 @@ body.portal-active .sidebar{background:rgba(3,12,24,.66)}
 .energy-node.ev{top:39%;left:17%;color:var(--purple)}
 .today-grid{background:rgba(3,11,23,.68);backdrop-filter:blur(22px);border-color:rgba(255,255,255,.2)}
 .today-grid span,.control-grid span{color:rgba(237,243,251,.72)}
-.today-grid strong{color:#fff}
+.today-grid strong{display:flex;align-items:baseline;gap:4px;color:#fff}
+.today-grid strong b{font:inherit;font-size:inherit;letter-spacing:inherit}
+.today-grid strong small{color:rgba(255,255,255,.72);font-size:12px;font-weight:750;letter-spacing:0;text-transform:none}
 .energy-state{color:#fff;text-align:center;background:rgba(4,15,29,.65);border-color:rgba(255,255,255,.18)}
 .control-grid>div{background:rgba(3,12,24,.62);border-color:rgba(255,255,255,.18)}
 
