@@ -235,7 +235,7 @@ async function loadOverview(siteKey) {
   setText("solarKw", hasLive ? fmtKw(live.solar_kw) : "--");
   setText("homeKw", hasLive ? fmtKw(live.home_kw) : "--");
   setText("gridKw", hasLive ? fmtKw(live.grid_kw) : "--");
-  setText("evNodeKw", hasLive ? fmtKw(live.ev_kw) : "--");
+  setText("evNodeKw", hasLive && Number.isFinite(Number(live.ev_kw)) ? nf1.format(Number(live.ev_kw)) : "--");
   const soc = hasLive && Number.isFinite(Number(live.battery_soc)) ? Math.round(Number(live.battery_soc)) : null;
   setText("batterySoc", soc ?? "--");
   setText("batterySummarySoc", soc ?? "--");
