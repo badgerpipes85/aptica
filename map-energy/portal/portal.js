@@ -168,6 +168,9 @@ function updateFlows(live, hasLive) {
     const active = hasLive && sources.has(path.dataset.from) && destinations.has(path.dataset.to);
     path.classList.toggle("active", active);
   });
+  document.querySelector(".energy-node.grid")?.classList.toggle("is-active", hasLive && grid < -.05);
+  document.querySelector(".energy-node.battery")?.classList.toggle("is-active", hasLive && battery < -.05);
+  document.querySelector(".energy-node.ev")?.classList.toggle("is-active", hasLive && ev > .05);
 }
 
 async function signIn(event) {
