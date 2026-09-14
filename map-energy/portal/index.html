@@ -84,17 +84,17 @@
             </div>
 
             <div class="flow-board" aria-label="Live home energy flow">
-              <svg id="flowNetwork" class="flow-network" viewBox="0 0 600 520" preserveAspectRatio="none" aria-hidden="true">
-                <line data-from="solar" data-to="home" x1="300" y1="72" x2="500" y2="205"></line>
-                <line data-from="solar" data-to="ev" x1="300" y1="72" x2="100" y2="205"></line>
-                <line data-from="solar" data-to="battery" x1="300" y1="72" x2="180" y2="425"></line>
-                <line data-from="solar" data-to="grid" x1="300" y1="72" x2="420" y2="425"></line>
-                <line data-from="battery" data-to="home" x1="180" y1="425" x2="500" y2="205"></line>
-                <line data-from="battery" data-to="ev" x1="180" y1="425" x2="100" y2="205"></line>
-                <line data-from="battery" data-to="grid" x1="180" y1="425" x2="420" y2="425"></line>
-                <line data-from="grid" data-to="home" x1="420" y1="425" x2="500" y2="205"></line>
-                <line data-from="grid" data-to="ev" x1="420" y1="425" x2="100" y2="205"></line>
-                <line data-from="grid" data-to="battery" x1="420" y1="425" x2="180" y2="425"></line>
+              <svg id="flowNetwork" class="flow-network" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+                <line data-from="solar" data-to="home" x1="50" y1="14" x2="83" y2="39"></line>
+                <line data-from="solar" data-to="ev" x1="50" y1="14" x2="17" y2="39"></line>
+                <line data-from="solar" data-to="battery" x1="50" y1="14" x2="30" y2="82"></line>
+                <line data-from="solar" data-to="grid" x1="50" y1="14" x2="70" y2="82"></line>
+                <line data-from="battery" data-to="home" x1="30" y1="82" x2="83" y2="39"></line>
+                <line data-from="battery" data-to="ev" x1="30" y1="82" x2="17" y2="39"></line>
+                <line data-from="battery" data-to="grid" x1="30" y1="82" x2="70" y2="82"></line>
+                <line data-from="grid" data-to="home" x1="70" y1="82" x2="83" y2="39"></line>
+                <line data-from="grid" data-to="ev" x1="70" y1="82" x2="17" y2="39"></line>
+                <line data-from="grid" data-to="battery" x1="70" y1="82" x2="30" y2="82"></line>
               </svg>
               <button class="energy-node solar" data-node="solar" type="button"><span class="node-icon">☀</span><strong id="solarKw">--</strong><small>kW</small></button>
               <button class="energy-node ev" data-node="ev" type="button"><span class="node-icon">▰</span><strong id="evNodeKw">--</strong><small>kW</small></button>
