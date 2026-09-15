@@ -46,7 +46,7 @@ body.portal-active .site-header{height:115px;padding-top:15px}
 body.portal-active .brand img{width:75px;height:75px;object-fit:contain;border-radius:0;box-shadow:0 8px 24px rgba(41,147,255,.16)}
 body.portal-active .brand strong{font-size:32px}
 body.portal-active .brand small{font-size:18px}
-body.portal-active .app-layout{grid-template-columns:258px minmax(0,1fr);grid-template-rows:115px auto;column-gap:28px;row-gap:0;margin-top:-115px}
+body.portal-active .app-layout{grid-template-columns:258px minmax(0,1fr);grid-template-rows:115px auto;column-gap:28px;row-gap:40px;margin-top:-115px}
 body.portal-active .workspace-header{grid-column:2;grid-row:1;padding:15px 140px 0 3px}
 body.portal-active .site-picker{align-self:center}
 body.portal-active .sidebar{grid-column:1;grid-row:2;top:18px;margin-top:0}
