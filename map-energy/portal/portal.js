@@ -472,30 +472,75 @@ async function loadHistoryDay(siteKey, dayStart) {
   $("closeDay").addEventListener("click", () => loadHistory(siteKey).catch(handlePageError));
 }
 
-function automationName(payload, fallback) {
-  return payload?.name || payload?.trigger?.event || fallback || "Automation";
-}
-
 function triggerText(payload) {
   const trigger = payload?.trigger;
-  if (!trigger) return "No trigger information";
-  if (trigger.type === "schedule") return `Scheduled at ${String(trigger.hour ?? "--").padStart(2, "0")}:${String(trigger.minute ?? "--").padStart(2, "0")}`;
-  if (trigger.type === "ev") return `EV ${String(trigger.event || "").replaceAll("_", " ")}`;
-  if (trigger.type === "battery") return `Battery ${String(trigger.condition || "").replaceAll("_", " ")} ${trigger.value ?? ""}`;
-  return String(trigger.type || "Trigger");
+  if (!trigger) return "Automation executed";
+  if (trigger.type === "schedule") return "Scheduled automation";
+  if (trigger.type === "ev") return trigger.event === "starts_charging" ? "EV started charging" : "EV stopped charging";
+  if (trigger.type === "battery") return `Battery SOC went ${trigger.condition === "soc_below" ? "below" : "above"} ${trigger.value ?? 0}%`;
+  if (trigger.type === "solar") return `Solar forecast ${trigger.condition === "below" ? "below" : "above"} ${trigger.value_kwh ?? 0} kWh`;
+  return "Automation executed";
 }
 
-function automationCard(automation, historical = false) {
-  const status = historical ? automation.status || "--" : automation.paused ? "Paused" : "Active";
-  const detail = historical ? `${automation.message || triggerText(automation.payload)} · ${fmtTime(automation.executed_at)}` : `${automation.message || triggerText(automation.payload)}${automation.next_fire_at ? ` · Next ${fmtTime(automation.next_fire_at)}` : ""}`;
-  return `<article class="glass list-card"><div><strong>${escapeHtml(automationName(automation.payload, automation.type))}</strong><small>${escapeHtml(detail)}</small></div><span class="badge ${escapeHtml(String(status).toLowerCase())}">${escapeHtml(status)}</span></article>`;
+function automationName(run) {
+  const payload = run.payload || {};
+  if (run.type === "grouped_actions") return payload.name?.trim() || "Grouped Automation";
+  if (run.status === "success" && run.error_message && run.type !== "notification_only") return run.error_message;
+  const names = { tesla_export: "Export Rule Adjusted", adjust_backup_reserve: "Backup Reserve Adjusted", freeze_battery_soc: "Backup Reserve Frozen", set_op_mode: "Operational Mode Changed", set_grid_charging: "Grid Charging Updated" };
+  return payload.name?.trim() || names[run.type] || String(run.type || "Automation").replaceAll("_", " ").replace(/\b\w/g, letter => letter.toUpperCase());
+}
+
+function actionText(action) {
+  if (action?.type === "adjust_backup_reserve") return `Battery reserve → ${action.backup_reserve_percent ?? 0}%`;
+  if (action?.type === "freeze_battery_soc") return "Freeze backup reserve at current SOC";
+  if (action?.type === "restore_backup_reserve") return "Restore previous backup reserve";
+  if (action?.type === "tesla_export") return `Export → ${{ pv_only: "Solar Only", battery_ok: "Everything", never: "Nothing", no_export: "Nothing" }[action.export_policy] || action.export_policy || "Unknown"}`;
+  if (action?.type === "set_op_mode") return `Mode → ${{ autonomous: "Savings", self_consumption: "Self-Powered", backup: "Backup" }[action.op_mode] || action.op_mode || "Unknown"}`;
+  if (action?.type === "set_grid_charging") return `Grid charging → ${action.enabled ? "ON" : "OFF"}`;
+  if (action?.type === "notification_only") return "Send notification";
+  return "Unknown action";
+}
+
+function runSummary(run) {
+  if (["blocked", "partial", "error", "failed", "skipped"].includes(run.status)) return run.error_message || `Automation ${run.status}`;
+  return triggerText(run.payload);
+}
+
+function ruleCard(rule) {
+  const status = rule.paused ? "Paused" : "Active";
+  const detail = `${rule.message || triggerText(rule.payload)}${rule.next_fire_at ? ` · Next ${fmtTime(rule.next_fire_at)}` : ""}`;
+  return `<article class="automation-rule-card"><span class="automation-rule-icon"><svg><use href="assets/map-energy-icons.svg#automation"></use></svg></span><div><strong>${escapeHtml(automationName(rule))}</strong><small>${escapeHtml(detail)}</small></div><span class="automation-status ${status.toLowerCase()}">${status}</span></article>`;
+}
+
+function runCard(run, timezone) {
+  const name = automationName(run);
+  const actions = run.type === "grouped_actions" && Array.isArray(run.payload?.actions) ? run.payload.actions.map(actionText) : [];
+  const summary = runSummary(run);
+  const status = run.status === "error" || run.status === "failed" ? "Failed" : `${run.status || "unknown"}`.replace(/^./, c => c.toUpperCase());
+  const time = new Date(Number(run.executed_at) * 1000).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit", timeZone: timezone });
+  return `<article class="automation-run-card ${escapeHtml(String(run.status || "failed"))}"><span class="run-status-icon">${run.status === "success" ? "✓" : run.status === "skipped" ? "›" : "!"}</span><div class="run-copy"><strong>${escapeHtml(name)}</strong>${actions.map(line => `<small>${escapeHtml(line)}</small>`).join("")}${summary !== name ? `<small class="run-summary">${escapeHtml(summary)}</small>` : ""}<span class="run-time">●&nbsp; ${escapeHtml(time)}</span></div><span class="automation-status ${escapeHtml(String(run.status || "failed"))}">${escapeHtml(status)}</span></article>`;
+}
+
+function dayKeyAndLabel(timestamp, timezone) {
+  const date = new Date(Number(timestamp) * 1000);
+  const key = date.toLocaleDateString("en-CA", { timeZone: timezone });
+  const today = new Date().toLocaleDateString("en-CA", { timeZone: timezone });
+  const yesterdayDate = new Date(); yesterdayDate.setDate(yesterdayDate.getDate() - 1);
+  const yesterday = yesterdayDate.toLocaleDateString("en-CA", { timeZone: timezone });
+  return { key, label: key === today ? "Today" : key === yesterday ? "Yesterday" : date.toLocaleDateString("en-GB", { day: "numeric", month: "short", timeZone: timezone }) };
 }
 
 async function loadAutomations(siteKey) {
   const data = await api(`/v1/web/automations?site_key=${encodeURIComponent(siteKey)}`);
   const rules = data.automations || [];
   const history = data.history || [];
-  $("automationList").innerHTML = `<article class="glass panel"><span class="eyebrow">Configured</span><h2>Automation rules</h2><div class="stack">${rules.length ? rules.map(rule => automationCard(rule)).join("") : `<div class="empty">No automations are configured.</div>`}</div></article><article class="glass panel"><span class="eyebrow">Latest activity</span><h2>Recent runs</h2><div class="stack">${history.length ? history.map(run => automationCard(run, true)).join("") : `<div class="empty">No recent automation runs.</div>`}</div></article>`;
+  const smart = data.smart_charging;
+  const smartCard = smart ? `<article class="smart-scheduling-card"><span class="smart-scheduling-icon"><svg><use href="assets/map-energy-icons.svg#car"></use></svg></span><div><h2>${escapeHtml(smart.title)}</h2><p>${escapeHtml(smart.summary)}</p></div><span class="readonly-toggle ${smart.enabled ? "on" : ""}" role="switch" aria-checked="${smart.enabled}" aria-disabled="true"><i></i></span></article>` : "";
+  const rulesContent = rules.length ? `<div class="automation-rules">${rules.map(ruleCard).join("")}</div>` : `<div class="automation-empty"><span><svg><use href="assets/map-energy-icons.svg#automation"></use></svg></span><h2>${smart ? "No other automations yet" : "No automations yet"}</h2><p>${smart ? "Create another automation in the MAP Energy app." : "Create your first automation in the MAP Energy app."}</p></div>`;
+  const groups = new Map();
+  history.forEach(run => { const day = dayKeyAndLabel(run.executed_at, data.timezone); const group = groups.get(day.key) || { label: day.label, runs: [] }; group.runs.push(run); groups.set(day.key, group); });
+  const historyContent = history.length ? Array.from(groups.values()).map(group => `<section class="run-day"><header><h3>${escapeHtml(group.label)}</h3><span>${group.runs.length}</span></header><div>${group.runs.map(run => runCard(run, data.timezone)).join("")}</div></section>`).join("") : `<div class="automation-empty compact"><h2>No automation history yet</h2><p>Executed automations will appear here.</p></div>`;
+  $("automationList").innerHTML = `<div class="automation-config">${smartCard}${rulesContent}</div><article class="run-log"><div class="run-log-heading"><span><svg><use href="assets/map-energy-icons.svg#history"></use></svg></span><div><h2>Run Log</h2><p>${history.length} automation run${history.length === 1 ? "" : "s"} recorded.</p></div></div>${historyContent}</article>`;
 }
 
 function settingsCard(title, eyebrow, rows) {
@@ -513,7 +558,7 @@ const pageCopy = {
   live: ["Live energy", "A real-time view of power moving through your home"],
   supplier: ["Supplier", "Your current import and export tariff information"],
   history: ["Energy history", "Recent daily usage, generation and grid totals"],
-  automations: ["Automations", "Your active rules and their latest activity"],
+  automations: ["Automation", "Smart actions for your Powerwall"],
   settings: ["Portal settings", "A read-only summary of your site configuration"]
 };
 
