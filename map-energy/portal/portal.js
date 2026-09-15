@@ -452,6 +452,11 @@ async function loadHistoryDay(siteKey, dayStart) {
     importKwh: result.importKwh + (Number(slot.import_kwh) || 0), exportKwh: result.exportKwh + (Number(slot.export_kwh) || 0), solarKwh: result.solarKwh + (Number(slot.solar_kwh) || 0),
     importCost: result.importCost + (Number(slot.import_cost) || 0), exportRevenue: result.exportRevenue + (Number(slot.export_revenue) || 0)
   }), { importKwh: 0, exportKwh: 0, solarKwh: 0, importCost: 0, exportRevenue: 0 });
+  const energyTotals = data.totals ? {
+    importKwh: Number(data.totals.import_kwh) || 0,
+    exportKwh: Number(data.totals.export_kwh) || 0,
+    solarKwh: Number(data.totals.solar_kwh) || 0
+  } : totals;
   const maxFlow = Math.max(.01, ...slots.flatMap(slot => [Number(slot.import_kwh) || 0, Number(slot.export_kwh) || 0]));
   const bars = slots.map(slot => {
     const imported = Math.max(Number(slot.import_kwh) || 0, 0);
@@ -461,9 +466,9 @@ async function loadHistoryDay(siteKey, dayStart) {
     return `<i><b class="history-import h${importHeight}"></b><b class="history-export h${exportHeight}"></b></i>`;
   }).join("");
   const net = totals.importCost - totals.exportRevenue;
-  $("historyList").innerHTML = `<article class="glass history-detail"><div class="history-detail-head"><div><span class="eyebrow">Daily detail</span><h2>${escapeHtml(fmtDate(data.day_start_utc))}</h2><p>${escapeHtml(fmtKwh(totals.importKwh))} imported · ${escapeHtml(fmtKwh(totals.solarKwh))} solar</p></div><button id="closeDay" class="button button-quiet" type="button">Close</button></div>
+  $("historyList").innerHTML = `<article class="glass history-detail"><div class="history-detail-head"><div><span class="eyebrow">Daily detail</span><h2>${escapeHtml(fmtDate(data.day_start_utc))}</h2><p>${escapeHtml(fmtKwh(energyTotals.importKwh))} imported · ${escapeHtml(fmtKwh(energyTotals.solarKwh))} solar</p></div><button id="closeDay" class="button button-quiet" type="button">Close</button></div>
     <section class="history-flow"><div class="history-section-title"><span class="history-chart-icon">▥</span><div><strong>30-minute grid flow</strong><small>Import and export by slot</small></div></div><div class="history-flow-chart">${bars}</div><div class="tariff-axis"><span>00</span><span>06</span><span>12</span><span>18</span><span>23</span></div></section>
-    <section class="history-summary"><div class="history-section-title"><span class="history-calendar"><svg><use href="assets/map-energy-icons.svg#bolt"></use></svg></span><div><strong>Energy Summary</strong><small>Costs and energy totals</small></div></div><div class="history-summary-grid"><div class="import"><span>Import kWh</span><strong>${escapeHtml(fmtKwh(totals.importKwh))}</strong></div><div class="export"><span>Export kWh</span><strong>${escapeHtml(fmtKwh(totals.exportKwh))}</strong></div><div class="import"><span>Import cost</span><strong>${escapeHtml(fmtMoney(totals.importCost))}</strong></div><div class="export"><span>Export value</span><strong>${escapeHtml(fmtMoney(totals.exportRevenue))}</strong></div><div><span>Solar</span><strong>${escapeHtml(fmtKwh(totals.solarKwh))}</strong></div><div><span>Net</span><strong>${escapeHtml(fmtMoney(net))}</strong></div></div></section></article>`;
+    <section class="history-summary"><div class="history-section-title"><span class="history-calendar"><svg><use href="assets/map-energy-icons.svg#bolt"></use></svg></span><div><strong>Energy Summary</strong><small>Costs and energy totals</small></div></div><div class="history-summary-grid"><div class="import"><span>Import kWh</span><strong>${escapeHtml(fmtKwh(energyTotals.importKwh))}</strong></div><div class="export"><span>Export kWh</span><strong>${escapeHtml(fmtKwh(energyTotals.exportKwh))}</strong></div><div class="import"><span>Import cost</span><strong>${escapeHtml(fmtMoney(totals.importCost))}</strong></div><div class="export"><span>Export value</span><strong>${escapeHtml(fmtMoney(totals.exportRevenue))}</strong></div><div><span>Solar</span><strong>${escapeHtml(fmtKwh(energyTotals.solarKwh))}</strong></div><div><span>Net</span><strong>${escapeHtml(fmtMoney(net))}</strong></div></div></section></article>`;
   $("closeDay").addEventListener("click", () => loadHistory(siteKey).catch(handlePageError));
 }
 
