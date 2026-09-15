@@ -137,34 +137,78 @@ function prettyExport(value) {
   return { battery_ok: "Everything", pv_only: "Solar", never: "Nothing", no_export: "Nothing" }[String(value || "").toLowerCase()] || value || "--";
 }
 
-function liveInsight(live) {
-  const solar = Number(live?.solar_kw) || 0;
-  const home = Number(live?.home_kw) || 0;
-  const grid = Number(live?.grid_kw) || 0;
-  const battery = Number(live?.battery_kw) || 0;
-  const ev = Number(live?.ev_kw) || 0;
-  const active = value => value > .05;
-  const gridHome = active(grid) && active(home);
-  const gridEv = active(grid) && active(ev);
-  const gridBattery = active(grid) && battery < -.05;
-  const solarHome = active(solar) && active(home);
-  const solarEv = active(solar) && active(ev);
-  const solarBattery = active(solar) && battery < -.05;
-  const solarExport = active(solar) && grid < -.05;
-  const batteryHome = battery > .05 && active(home);
-  const batteryEv = battery > .05 && active(ev);
-  const batteryExport = battery > .05 && grid < -.05;
+function allocateLiveFlows(live) {
+  let solar = Math.max(Number(live?.solar_kw) || 0, 0);
+  let home = Math.max(Number(live?.home_kw) || 0, 0);
+  let ev = Math.max(Number(live?.ev_kw) || 0, 0);
+  let grid = Math.max(Number(live?.grid_kw) || 0, 0);
+  let gridExport = Math.max(-(Number(live?.grid_kw) || 0), 0);
+  let batteryDischarge = Math.max(Number(live?.battery_kw) || 0, 0);
+  let batteryCharge = Math.max(-(Number(live?.battery_kw) || 0), 0);
+  const flows = new Map();
+  const add = (from, to, available) => {
+    const power = Math.max(available, 0);
+    if (power > .05) flows.set(`${from}:${to}`, power);
+    return power;
+  };
+
+  let used = add("solar", "grid", Math.min(solar, gridExport));
+  solar -= used; gridExport -= used;
+  used = add("battery", "grid", Math.min(batteryDischarge, gridExport));
+  batteryDischarge -= used; gridExport -= used;
+
+  used = add("solar", "home", Math.min(solar, home));
+  solar -= used; home -= used;
+  used = add("solar", "ev", Math.min(solar, ev));
+  solar -= used; ev -= used;
+  used = add("solar", "battery", Math.min(solar, batteryCharge));
+  solar -= used; batteryCharge -= used;
+
+  used = add("battery", "home", Math.min(batteryDischarge, home));
+  batteryDischarge -= used; home -= used;
+  used = add("battery", "ev", Math.min(batteryDischarge, ev));
+  batteryDischarge -= used; ev -= used;
+
+  used = add("grid", "home", Math.min(grid, home));
+  grid -= used; home -= used;
+  used = add("grid", "ev", Math.min(grid, ev));
+  grid -= used; ev -= used;
+  add("grid", "battery", Math.min(grid, batteryCharge));
+  return flows;
+}
+
+function liveInsight(live, flows = allocateLiveFlows(live)) {
+  const has = (from, to) => flows.has(`${from}:${to}`);
+  const gridHome = has("grid", "home");
+  const gridEv = has("grid", "ev");
+  const gridBattery = has("grid", "battery");
+  const solarHome = has("solar", "home");
+  const solarEv = has("solar", "ev");
+  const solarBattery = has("solar", "battery");
+  const solarExport = has("solar", "grid");
+  const batteryHome = has("battery", "home");
+  const batteryEv = has("battery", "ev");
+  const batteryExport = has("battery", "grid");
   if (gridBattery && gridEv && gridHome) return { text: "Grid is supplying the home, charging EV and charging the Powerwall", tone: "blue", icon: "battery" };
   if (gridBattery && gridEv && solarHome) return { text: "Solar is supplying the home while grid charges EV and Powerwall", tone: "blue", icon: "battery" };
   if (gridBattery && gridEv) return { text: "Grid is charging EV and the Powerwall", tone: "blue", icon: "battery" };
   if (gridBattery && gridHome) return { text: "Grid is supplying the home and charging the Powerwall", tone: "blue", icon: "battery" };
-  if (gridEv && gridHome) return { text: "Grid is supplying the home and charging EV", tone: "blue", icon: "car" };
+  if (gridBattery && solarHome) return { text: "Solar is supplying the home while the grid charges the Powerwall", tone: "blue", icon: "battery" };
+  if (gridEv && gridHome && !solarEv && !batteryEv) return { text: "Grid is supplying the home and charging EV", tone: "blue", icon: "car" };
+  if (gridEv && solarHome && !solarEv && !batteryEv) return { text: "Solar is supplying the home while grid charges EV", tone: "blue", icon: "car" };
   if (solarHome && solarEv && solarBattery) return { text: "Solar is supplying the home, charging EV and charging the Powerwall", tone: "yellow", icon: "solar" };
   if (solarHome && solarEv) return { text: "Solar is supplying the home and charging EV", tone: "yellow", icon: "solar" };
   if (solarHome && solarBattery) return { text: "Solar is powering home and charging the Powerwall", tone: "yellow", icon: "solar" };
+  if (solarHome && batteryHome) return { text: "Solar and the Powerwall are supplying the home", tone: "yellow", icon: "solar" };
+  if (solarEv && solarExport) return { text: "Solar is charging EV and exporting surplus energy", tone: "yellow", icon: "solar" };
   if (batteryHome && batteryEv && batteryExport) return { text: "Powerwall is supplying home, charging EV and exporting to the grid", tone: "green", icon: "battery" };
   if (batteryHome && batteryEv) return { text: "Powerwall is supplying home and charging EV", tone: "green", icon: "battery" };
+  if (batteryEv && batteryExport) return { text: "Powerwall is charging EV and exporting to the grid", tone: "green", icon: "battery" };
+  if (batteryHome && solarExport && !solarHome) return { text: "Powerwall is supplying home while Solar exports", tone: "green", icon: "battery" };
   if (solarHome && solarExport) return { text: "Solar is supplying the home and exporting surplus energy", tone: "yellow", icon: "solar" };
+  if (solarHome && gridHome) return { text: "Solar is supplying the home while the grid supports demand", tone: "yellow", icon: "solar" };
+  if (gridHome && solarBattery) return { text: "The grid is supplying the home while Solar charges the Powerwall", tone: "blue", icon: "battery" };
+  if (batteryHome && batteryExport) return { text: "Powerwall is supplying home and exporting to the grid", tone: "green", icon: "battery" };
   if (gridEv) return { text: "Grid is charging EV", tone: "blue", icon: "car" };
   if (gridHome) return { text: "The grid is supplying the home", tone: "blue", icon: "bolt" };
   if (gridBattery) return { text: "The grid is charging the Powerwall", tone: "blue", icon: "battery" };
@@ -185,27 +229,15 @@ function setCardTone(id, tone) {
 }
 
 function updateFlows(live, hasLive) {
-  const solar = Number(live?.solar_kw) || 0;
-  const home = Number(live?.home_kw) || 0;
-  const grid = Number(live?.grid_kw) || 0;
-  const battery = Number(live?.battery_kw) || 0;
-  const ev = Number(live?.ev_kw) || 0;
-  const sources = new Set();
-  const destinations = new Set();
-  if (solar > .05) sources.add("solar");
-  if (battery > .05) sources.add("battery");
-  if (grid > .05) sources.add("grid");
-  if (home > .05) destinations.add("home");
-  if (ev > .05) destinations.add("ev");
-  if (battery < -.05) destinations.add("battery");
-  if (grid < -.05) destinations.add("grid");
+  const flows = allocateLiveFlows(live);
   document.querySelectorAll("#flowNetwork g").forEach(path => {
-    const active = hasLive && sources.has(path.dataset.from) && destinations.has(path.dataset.to);
+    const active = hasLive && flows.has(`${path.dataset.from}:${path.dataset.to}`);
     path.classList.toggle("active", active);
   });
-  document.querySelector(".energy-node.grid")?.classList.toggle("is-active", hasLive && grid < -.05);
-  document.querySelector(".energy-node.battery")?.classList.toggle("is-active", hasLive && battery < -.05);
-  document.querySelector(".energy-node.ev")?.classList.toggle("is-active", hasLive && ev > .05);
+  document.querySelector(".energy-node.grid")?.classList.toggle("is-active", hasLive && [...flows.keys()].some(key => key.endsWith(":grid")));
+  document.querySelector(".energy-node.battery")?.classList.toggle("is-active", hasLive && [...flows.keys()].some(key => key.endsWith(":battery")));
+  document.querySelector(".energy-node.ev")?.classList.toggle("is-active", hasLive && [...flows.keys()].some(key => key.endsWith(":ev")));
+  return flows;
 }
 
 async function signIn(event) {
@@ -295,7 +327,8 @@ async function loadOverview(siteKey) {
   setText("backupReserve", data.tesla_settings?.backup_reserve_percent == null ? "--" : `${Math.round(Number(data.tesla_settings.backup_reserve_percent))}%`);
   setText("operationMode", prettyMode(data.tesla_settings?.operation_mode));
   setText("exportRule", prettyExport(data.tesla_settings?.export_rule));
-  const insight = liveInsight(live);
+  const flows = allocateLiveFlows(live);
+  const insight = liveInsight(live, flows);
   setText("liveStateText", insight.text);
   $("liveState").classList.remove("blue", "yellow", "green", "neutral");
   $("liveState").classList.add(insight.tone);
@@ -373,7 +406,8 @@ function tariffCard(tariff, timeZone) {
     if (!isExport && number <= min + .01) band = "offpeak";
     if (!isExport && number >= max - .01 && max > min + .01) band = "peak";
     if (number < 0) band = "negative";
-    return `<i class="tariff-bar ${band} ${index === currentIndex ? "current" : ""}" title="${escapeHtml(fmtRate(number))}" style="height:${height.toFixed(0)}px"></i>`;
+    const heightClass = `h${Math.max(0, Math.min(20, Math.round(height / 6)))}`;
+    return `<i class="tariff-bar ${band} ${heightClass} ${index === currentIndex ? "current" : ""}" title="${escapeHtml(fmtRate(number))}"></i>`;
   }).join("");
   const title = isExport ? "Export" : "Import";
   const accent = isExport ? "export" : "import";
