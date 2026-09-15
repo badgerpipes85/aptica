@@ -346,24 +346,50 @@ async function loadNodeChart(node) {
   $("nodeChart").scrollIntoView({ behavior: "smooth", block: "nearest" });
 }
 
-function tariffCard(tariff) {
+function siteHalfHourIndex(timeZone) {
+  try {
+    const parts = new Intl.DateTimeFormat("en-GB", { timeZone, hour: "2-digit", minute: "2-digit", hourCycle: "h23" })
+      .formatToParts(new Date());
+    const part = type => Number(parts.find(item => item.type === type)?.value || 0);
+    return Math.max(0, Math.min(47, part("hour") * 2 + Math.floor(part("minute") / 30)));
+  } catch {
+    const now = new Date();
+    return now.getHours() * 2 + Math.floor(now.getMinutes() / 30);
+  }
+}
+
+function tariffCard(tariff, timeZone) {
   const slots = Array.isArray(tariff.slots) ? tariff.slots : [];
   const values = slots.map(Number).filter(Number.isFinite);
   const min = values.length ? Math.min(...values) : 0;
   const max = values.length ? Math.max(...values) : 1;
-  const currentIndex = Math.max(0, Math.min(47, Math.floor((Date.now() / 1000 - Number(tariff.day_start_utc || 0)) / 1800)));
+  const range = Math.max(Math.abs(min), Math.abs(max), .01);
+  const currentIndex = siteHalfHourIndex(timeZone);
+  const isExport = tariff.kind === "export";
   const bars = slots.map((value, index) => {
     const number = Number(value);
-    const height = Number.isFinite(number) && max > min ? 18 + (number - min) / (max - min) * 78 : 42;
-    return `<i class="tariff-bar ${index === currentIndex ? "current" : ""}" title="${escapeHtml(fmtRate(number))}" style="height:${height.toFixed(0)}%"></i>`;
+    const height = Number.isFinite(number) ? Math.max(5, Math.abs(number) / range * 116) : 0;
+    let band = isExport ? "export" : "mid";
+    if (!isExport && number <= min + .01) band = "offpeak";
+    if (!isExport && number >= max - .01 && max > min + .01) band = "peak";
+    if (number < 0) band = "negative";
+    return `<i class="tariff-bar ${band} ${index === currentIndex ? "current" : ""}" title="${escapeHtml(fmtRate(number))}" style="height:${height.toFixed(0)}px"></i>`;
   }).join("");
-  const title = tariff.kind === "export" ? "Export tariff" : "Import tariff";
-  return `<article class="glass panel"><span class="eyebrow">${escapeHtml(tariff.kind || "Tariff")}</span><div class="panel-heading"><div><h2>${title}</h2><p>${escapeHtml(tariff.display_name || tariff.source || "Supplier tariff")}</p></div><strong>${escapeHtml(fmtRate(tariff.current_rate_pence))}</strong></div><div class="tariff-bars">${bars}</div><dl><div><dt>Lowest today</dt><dd>${escapeHtml(fmtRate(tariff.lowest_rate_pence))}</dd></div><div><dt>Highest today</dt><dd>${escapeHtml(fmtRate(tariff.highest_rate_pence))}</dd></div><div><dt>Updated</dt><dd>${escapeHtml(fmtTime(tariff.updated_at))}</dd></div></dl></article>`;
+  const title = isExport ? "Export" : "Import";
+  const accent = isExport ? "export" : "import";
+  const currentRate = Number.isFinite(Number(slots[currentIndex])) ? Number(slots[currentIndex]) : tariff.current_rate_pence;
+  const source = tariff.display_name || ({ edf: "EDF UK", octopus: "Octopus Energy", amber: "Amber Electric", comed: "ComEd", manual: "Custom tariff" })[String(tariff.source || "").toLowerCase()] || tariff.source || "Supplier tariff";
+  return `<article class="glass supplier-card ${accent}">
+    <div class="tariff-heading"><span class="tariff-icon"><svg><use href="assets/map-energy-icons.svg#${isExport ? "export" : "import"}"></use></svg></span><div><h2>${title}</h2><p>${escapeHtml(source)}</p></div></div>
+    <div class="tariff-chart"><div class="tariff-bars">${bars}</div><div class="tariff-axis"><span>00</span><span>06</span><span>12</span><span>18</span><span>23</span></div></div>
+    <div class="tariff-footer"><div><strong>${escapeHtml(fmtRate(tariff.lowest_rate_pence))}</strong><small>Lowest today</small></div><div class="current-rate"><strong>${escapeHtml(fmtRate(currentRate))}</strong><small>Current rate</small></div></div>
+    <div class="tariff-updated">Highest ${escapeHtml(fmtRate(tariff.highest_rate_pence))} · Updated ${escapeHtml(fmtTime(tariff.updated_at))}</div>
+  </article>`;
 }
 
 async function loadSupplier(siteKey) {
   const data = await api(`/v1/web/supplier?site_key=${encodeURIComponent(siteKey)}`);
-  $("supplierCards").innerHTML = data.tariffs?.length ? data.tariffs.map(tariffCard).join("") : `<div class="empty">No supplier tariffs are available for this site yet.</div>`;
+  $("supplierCards").innerHTML = data.tariffs?.length ? data.tariffs.map(tariff => tariffCard(tariff, data.timezone)).join("") : `<div class="empty">No supplier tariffs are available for this site yet.</div>`;
 }
 
 async function loadHistory(siteKey) {
