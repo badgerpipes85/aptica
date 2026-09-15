@@ -449,8 +449,7 @@ function handlePageError(error) {
 async function boot() {
   if (!accessToken) return showLogin();
   try {
-    const me = await api("/v1/web/me");
-    setText("premiumPill", me.premium?.source === "override" ? "Premium override" : "Premium");
+    await api("/v1/web/me");
     showApp();
     const siteKey = await loadSites();
     await loadOverview(siteKey);
