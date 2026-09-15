@@ -428,7 +428,10 @@ async function loadSupplier(siteKey) {
 
 async function loadHistory(siteKey) {
   const data = await api(`/v1/web/history?site_key=${encodeURIComponent(siteKey)}`);
-  $("historyList").innerHTML = data.days?.length ? data.days.map(day => `<article class="glass list-card clickable" data-day="${escapeHtml(day.day_start_utc)}"><div><strong>${escapeHtml(fmtDate(day.first_ts, day.date_utc))}</strong><small>Solar ${escapeHtml(fmtKwh(day.solar_kwh))} · Import ${escapeHtml(fmtKwh(day.import_kwh))} · Export ${escapeHtml(fmtKwh(day.export_kwh))}</small></div><span class="badge">View details</span></article>`).join("") : `<div class="empty">No recent energy history is available.</div>`;
+  $("historyList").innerHTML = data.days?.length ? data.days.slice(0, 7).map(day => `<article class="glass history-day clickable" data-day="${escapeHtml(day.day_start_utc)}">
+    <div class="history-day-head"><span class="history-calendar"><svg><use href="assets/map-energy-icons.svg#calendar"></use></svg></span><div><strong>${escapeHtml(fmtDate(day.first_ts, day.date_utc))}</strong><small>Daily energy summary</small></div><span class="history-chevron">›</span></div>
+    <div class="history-metrics"><div class="import"><span><svg><use href="assets/map-energy-icons.svg#import"></use></svg>Import</span><strong>${escapeHtml(fmtKwh(day.import_kwh))}</strong></div><div class="solar"><span><svg><use href="assets/map-energy-icons.svg#solar"></use></svg>PV</span><strong>${escapeHtml(fmtKwh(day.solar_kwh))}</strong></div><div class="export"><span><svg><use href="assets/map-energy-icons.svg#export"></use></svg>Export</span><strong>${escapeHtml(fmtKwh(day.export_kwh))}</strong></div></div>
+  </article>`).join("") : `<div class="empty">No recent energy history is available.</div>`;
   document.querySelectorAll("[data-day]").forEach(element => element.addEventListener("click", () => loadHistoryDay(siteKey, element.dataset.day).catch(handlePageError)));
 }
 
@@ -436,10 +439,21 @@ async function loadHistoryDay(siteKey, dayStart) {
   const data = await api(`/v1/web/history-day?site_key=${encodeURIComponent(siteKey)}&day_start_utc=${encodeURIComponent(dayStart)}`);
   const slots = data.slots || [];
   const totals = slots.reduce((result, slot) => ({
-    importKwh: result.importKwh + (Number(slot.import_kwh) || 0), exportKwh: result.exportKwh + (Number(slot.export_kwh) || 0),
+    importKwh: result.importKwh + (Number(slot.import_kwh) || 0), exportKwh: result.exportKwh + (Number(slot.export_kwh) || 0), solarKwh: result.solarKwh + (Number(slot.solar_kwh) || 0),
     importCost: result.importCost + (Number(slot.import_cost) || 0), exportRevenue: result.exportRevenue + (Number(slot.export_revenue) || 0)
-  }), { importKwh: 0, exportKwh: 0, importCost: 0, exportRevenue: 0 });
-  $("historyList").insertAdjacentHTML("afterbegin", `<article class="glass panel"><div class="panel-heading"><div><span class="eyebrow">Daily detail</span><h2>${escapeHtml(fmtDate(data.day_start_utc))}</h2><p>Energy totals from 30-minute intervals</p></div><button id="closeDay" class="button button-quiet" type="button">Close</button></div><div class="slot-grid"><div><span>Imported</span><strong>${escapeHtml(fmtKwh(totals.importKwh))}</strong></div><div><span>Import cost</span><strong>${escapeHtml(fmtMoney(totals.importCost))}</strong></div><div><span>Exported</span><strong>${escapeHtml(fmtKwh(totals.exportKwh))}</strong></div><div><span>Export value</span><strong>${escapeHtml(fmtMoney(totals.exportRevenue))}</strong></div></div></article>`);
+  }), { importKwh: 0, exportKwh: 0, solarKwh: 0, importCost: 0, exportRevenue: 0 });
+  const maxFlow = Math.max(.01, ...slots.flatMap(slot => [Number(slot.import_kwh) || 0, Number(slot.export_kwh) || 0]));
+  const bars = slots.map(slot => {
+    const imported = Math.max(Number(slot.import_kwh) || 0, 0);
+    const exported = Math.max(Number(slot.export_kwh) || 0, 0);
+    const importHeight = Math.max(0, Math.min(20, Math.round(imported / maxFlow * 20)));
+    const exportHeight = Math.max(0, Math.min(20, Math.round(exported / maxFlow * 20)));
+    return `<i><b class="history-import h${importHeight}"></b><b class="history-export h${exportHeight}"></b></i>`;
+  }).join("");
+  const net = totals.importCost - totals.exportRevenue;
+  $("historyList").innerHTML = `<article class="glass history-detail"><div class="history-detail-head"><div><span class="eyebrow">Daily detail</span><h2>${escapeHtml(fmtDate(data.day_start_utc))}</h2><p>${escapeHtml(fmtKwh(totals.importKwh))} imported · ${escapeHtml(fmtKwh(totals.solarKwh))} solar</p></div><button id="closeDay" class="button button-quiet" type="button">Close</button></div>
+    <section class="history-flow"><div class="history-section-title"><span class="history-chart-icon">▥</span><div><strong>30-minute grid flow</strong><small>Import and export by slot</small></div></div><div class="history-flow-chart">${bars}</div><div class="tariff-axis"><span>00</span><span>06</span><span>12</span><span>18</span><span>23</span></div></section>
+    <section class="history-summary"><div class="history-section-title"><span class="history-calendar"><svg><use href="assets/map-energy-icons.svg#bolt"></use></svg></span><div><strong>Energy Summary</strong><small>Costs and energy totals</small></div></div><div class="history-summary-grid"><div class="import"><span>Import kWh</span><strong>${escapeHtml(fmtKwh(totals.importKwh))}</strong></div><div class="export"><span>Export kWh</span><strong>${escapeHtml(fmtKwh(totals.exportKwh))}</strong></div><div class="import"><span>Import cost</span><strong>${escapeHtml(fmtMoney(totals.importCost))}</strong></div><div class="export"><span>Export value</span><strong>${escapeHtml(fmtMoney(totals.exportRevenue))}</strong></div><div><span>Solar</span><strong>${escapeHtml(fmtKwh(totals.solarKwh))}</strong></div><div><span>Net</span><strong>${escapeHtml(fmtMoney(net))}</strong></div></div></section></article>`;
   $("closeDay").addEventListener("click", () => loadHistory(siteKey).catch(handlePageError));
 }
 
