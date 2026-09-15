@@ -55,18 +55,17 @@
           <p id="pageSubtitle">A real-time view of power moving through your home</p>
           <div class="header-meta"><span id="premiumPill" class="premium-pill">Premium</span><span id="updatedAt">Connecting…</span></div>
         </div>
-        <label class="site-picker"><span>Energy site</span><select id="siteSelect" aria-label="Energy site"></select></label>
+        <label class="site-picker"><span>Energy Site</span><select id="siteSelect" aria-label="Energy Site"></select></label>
       </header>
 
       <aside class="glass sidebar" aria-label="Portal navigation">
         <nav class="portal-nav">
-          <button class="nav-button active" data-page="live" type="button"><span>⚡</span><b>Live</b></button>
-          <button class="nav-button" data-page="supplier" type="button"><span>▥</span><b>Supplier</b></button>
-          <button class="nav-button" data-page="history" type="button"><span>↺</span><b>History</b></button>
-          <button class="nav-button" data-page="automations" type="button"><span>⌘</span><b>Automations</b></button>
-          <button class="nav-button" data-page="settings" type="button"><span>☰</span><b>Settings</b></button>
+          <button class="nav-button active" data-page="live" type="button"><span><svg class="nav-icon"><use href="assets/map-energy-icons.svg#bolt"></use></svg></span><b>Live</b></button>
+          <button class="nav-button" data-page="supplier" type="button"><span><svg class="nav-icon"><use href="assets/map-energy-icons.svg#supplier"></use></svg></span><b>Supplier</b></button>
+          <button class="nav-button" data-page="history" type="button"><span><svg class="nav-icon"><use href="assets/map-energy-icons.svg#history"></use></svg></span><b>History</b></button>
+          <button class="nav-button" data-page="automations" type="button"><span><svg class="nav-icon"><use href="assets/map-energy-icons.svg#automation"></use></svg></span><b>Automations</b></button>
+          <button class="nav-button" data-page="settings" type="button"><span><svg class="nav-icon"><use href="assets/map-energy-icons.svg#settings"></use></svg></span><b>Settings</b></button>
         </nav>
-        <div class="sidebar-foot"><span class="status-dot"></span> Secure read-only access</div>
       </aside>
 
       <div class="workspace">
@@ -119,10 +118,6 @@
             <div id="nodeChartBars" class="chart-bars"></div>
           </article>
 
-          <div class="support-grid">
-            <article class="glass panel"><span class="eyebrow">Connection</span><h2>Tesla Fleet</h2><dl><div><dt>Status</dt><dd id="teslaStatus">--</dd></div><div><dt>Health</dt><dd id="teslaHealth">--</dd></div><div><dt>Last telemetry</dt><dd id="telemetryAge">--</dd></div></dl></article>
-            <article class="glass panel"><span class="eyebrow">Automations</span><h2>Activity</h2><dl><div><dt>Active rules</dt><dd id="automationCount">--</dd></div><div><dt>Recent runs</dt><dd id="automationRuns">--</dd></div></dl></article>
-          </div>
         </section>
 
         <section id="page-supplier" class="page"><div id="supplierCards" class="content-grid"></div></section>
