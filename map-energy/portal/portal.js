@@ -428,10 +428,20 @@ async function loadSupplier(siteKey) {
 
 async function loadHistory(siteKey) {
   const data = await api(`/v1/web/history?site_key=${encodeURIComponent(siteKey)}`);
-  $("historyList").innerHTML = data.days?.length ? data.days.slice(0, 7).map(day => `<article class="glass history-day clickable" data-day="${escapeHtml(day.day_start_utc)}">
+  const days = Array.isArray(data.days) ? data.days.slice(0, 7) : [];
+  const details = await Promise.all(days.map(day => api(`/v1/web/history-day?site_key=${encodeURIComponent(siteKey)}&day_start_utc=${encodeURIComponent(day.day_start_utc)}`).catch(() => null)));
+  $("historyList").innerHTML = days.length ? days.map((day, index) => {
+    const detailSlots = details[index]?.slots || [];
+    const costs = detailSlots.reduce((result, slot) => ({
+      imported: result.imported + (Number(slot.import_cost) || 0),
+      exported: result.exported + (Number(slot.export_revenue) || 0)
+    }), { imported: 0, exported: 0 });
+    const hasCosts = detailSlots.some(slot => slot.import_cost != null || slot.export_revenue != null);
+    return `<article class="glass history-day clickable" data-day="${escapeHtml(day.day_start_utc)}">
     <div class="history-day-head"><span class="history-calendar"><svg><use href="assets/map-energy-icons.svg#calendar"></use></svg></span><div><strong>${escapeHtml(fmtDate(day.first_ts, day.date_utc))}</strong><small>Daily energy summary</small></div><span class="history-chevron">›</span></div>
-    <div class="history-metrics"><div class="import"><span><svg><use href="assets/map-energy-icons.svg#import"></use></svg>Import</span><strong>${escapeHtml(fmtKwh(day.import_kwh))}</strong></div><div class="solar"><span><svg><use href="assets/map-energy-icons.svg#solar"></use></svg>PV</span><strong>${escapeHtml(fmtKwh(day.solar_kwh))}</strong></div><div class="export"><span><svg><use href="assets/map-energy-icons.svg#export"></use></svg>Export</span><strong>${escapeHtml(fmtKwh(day.export_kwh))}</strong></div></div>
-  </article>`).join("") : `<div class="empty">No recent energy history is available.</div>`;
+    <div class="history-metrics"><div class="import"><span><svg><use href="assets/map-energy-icons.svg#import"></use></svg>Import</span><strong>${escapeHtml(fmtKwh(day.import_kwh))}</strong></div><div class="solar"><span><svg><use href="assets/map-energy-icons.svg#solar"></use></svg>PV</span><strong>${escapeHtml(fmtKwh(day.solar_kwh))}</strong></div><div class="export"><span><svg><use href="assets/map-energy-icons.svg#export"></use></svg>Export</span><strong>${escapeHtml(fmtKwh(day.export_kwh))}</strong></div><div class="net"><span>Net cost</span><strong>${hasCosts ? escapeHtml(fmtMoney(costs.imported - costs.exported)) : "--"}</strong></div></div>
+  </article>`;
+  }).join("") : `<div class="empty">No completed energy history is available yet.</div>`;
   document.querySelectorAll("[data-day]").forEach(element => element.addEventListener("click", () => loadHistoryDay(siteKey, element.dataset.day).catch(handlePageError)));
 }
 
