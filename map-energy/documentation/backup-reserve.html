@@ -8,7 +8,7 @@
 
   <meta
     name="description"
-    content="Information about Tesla Powerwall backup reserve limits and how they affect MAP Energy automations."
+    content="Information about Tesla Powerwall backup reserve limits and how MAP Energy safely handles these limits within automations."
   >
 
   <style>
@@ -88,7 +88,13 @@
     <p>
       Tesla places restrictions on the backup reserve percentages that can
       be configured for a Powerwall. These restrictions also apply when
-      MAP Energy changes the backup reserve through an automation.
+      the backup reserve is changed through MAP Energy.
+    </p>
+
+    <p>
+      MAP Energy has been designed with these restrictions in mind and
+      automatically prevents unsupported backup reserve values from being
+      submitted to Tesla.
     </p>
 
     <h2>What backup reserve values can be used?</h2>
@@ -108,13 +114,12 @@
     </p>
 
     <div class="notice">
-      <strong>Important:</strong>
-      If a backup reserve between 81% and 99% is requested, Tesla may
-      limit or adjust the requested value rather than maintaining that
-      reserve percentage.
+      <strong>MAP Energy handles this automatically:</strong>
+      MAP Energy will not submit a backup reserve value between 81% and
+      99% to Tesla.
     </div>
 
-    <h2>Why does MAP Energy have this restriction?</h2>
+    <h2>Why does this restriction exist?</h2>
 
     <p>
       This is a Tesla Powerwall restriction rather than a limitation
@@ -123,27 +128,71 @@
 
     <p>
       MAP Energy communicates with your Powerwall through Tesla's services,
-      so changes made by an automation must use values that Tesla currently
+      so any backup reserve change must use a value that Tesla currently
       accepts.
     </p>
 
     <h2>How does this affect MAP Energy automations?</h2>
 
     <p>
-      Automations that use the <strong>Adjust Backup Reserve</strong>
-      action should use a reserve of 80% or below, or 100%.
+      MAP Energy has been built to account for Tesla's backup reserve
+      restrictions when creating and running automations.
     </p>
 
     <p>
-      For example:
+      When an automation directly sets the Powerwall backup reserve,
+      MAP Energy only allows supported values to be used:
     </p>
 
     <ul>
-      <li>Setting the backup reserve to 20% is supported.</li>
-      <li>Setting the backup reserve to 80% is supported.</li>
-      <li>Setting the backup reserve to 90% is not supported.</li>
-      <li>Setting the backup reserve to 100% is supported.</li>
+      <li>0% to 80%</li>
+      <li>100%</li>
     </ul>
+
+    <p>
+      This means an automation will never intentionally submit a backup
+      reserve value between 81% and 99% to Tesla.
+    </p>
+
+    <h2>What happens when an automation captures my current reserve?</h2>
+
+    <p>
+      Some MAP Energy automations temporarily change your Powerwall settings
+      and then restore your previous backup reserve when the automation
+      finishes.
+    </p>
+
+    <p>
+      In these cases, MAP Energy may capture the backup reserve that was
+      active before the automation started.
+    </p>
+
+    <p>
+      If the captured reserve is between <strong>81% and 99%</strong>,
+      MAP Energy cannot send that value back to Tesla when restoring your
+      settings.
+    </p>
+
+    <p>
+      When configuring an automation that uses this behaviour, MAP Energy
+      allows you to choose what should happen if the captured reserve falls
+      within this unsupported range.
+    </p>
+
+    <ul>
+      <li>
+        <strong>Default to 80%</strong> – restore the backup reserve to 80%.
+      </li>
+      <li>
+        <strong>Default to 100%</strong> – restore the backup reserve to 100%.
+      </li>
+    </ul>
+
+    <div class="notice">
+      <strong>You stay in control:</strong>
+      You choose whether MAP Energy should use 80% or 100% when a captured
+      backup reserve falls within Tesla's unsupported 81–99% range.
+    </div>
 
     <h2>Using 100% backup reserve</h2>
 
@@ -153,33 +202,23 @@
     </p>
 
     <p>
-      MAP Energy automations can therefore temporarily set the reserve to
-      100% and later return it to another supported value.
+      This can be particularly useful within MAP Energy automations that
+      temporarily need to preserve the energy stored in your Powerwall.
     </p>
 
-    <h2>Existing automations</h2>
-
     <p>
-      If you created an automation using a backup reserve between 81% and
-      99%, we recommend editing it and selecting either:
-    </p>
-
-    <ul>
-      <li>80% or lower; or</li>
-      <li>100%.</li>
-    </ul>
-
-    <p>
-      This helps ensure the automation behaves consistently with Tesla's
-      current Powerwall controls.
+      When the automation finishes, MAP Energy can restore the previously
+      captured backup reserve. If that captured value was between 81% and
+      99%, your selected 80% or 100% fallback preference will be used
+      instead.
     </p>
 
     <h2>Need help?</h2>
 
     <p>
       If an automation is not changing your Powerwall backup reserve as
-      expected, check the automation history in MAP Energy first. This can
-      help confirm whether the action was successfully sent to Tesla.
+      expected, check the automation history in MAP Energy. This can help
+      confirm whether the action was successfully sent to Tesla.
     </p>
 
     <p>
