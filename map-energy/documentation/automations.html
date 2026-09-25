@@ -1,72 +1,1853 @@
-<!doctype html>
-<html lang="en-GB">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Automations – MAP Energy</title>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, viewport-fit=cover"
+  >
+
+  <title>Automations | MAP Energy</title>
+
+  <meta
+    name="description"
+    content="Learn how MAP Energy automations can control your Powerwall, respond to battery and EV events, monitor energy conditions and automate your home energy system."
+  >
 
   <style>
-    body{
-      margin:0;
-      padding:40px 20px;
-      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
-      background:#0d1117;
-      color:#f3f6fb;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      min-height:100vh;
-      text-align:center;
+
+    /* =========================================================
+       MAP ENERGY DOCUMENTATION
+       ========================================================= */
+
+    * {
+      box-sizing: border-box;
     }
 
-    .card{
-      max-width:700px;
-      padding:40px;
-      border-radius:24px;
-      background:rgba(255,255,255,0.04);
-      border:1px solid rgba(255,255,255,0.08);
+    html {
+      min-height: 100%;
+      background: #06101f;
     }
 
-    h1{
-      margin-top:0;
-      font-size:2.4rem;
+    body {
+      margin: 0;
+      min-height: 100vh;
+
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "SF Pro Display",
+        "SF Pro Text",
+        "Segoe UI",
+        Roboto,
+        Helvetica,
+        Arial,
+        sans-serif;
+
+      color: #ffffff;
+
+      background:
+        linear-gradient(
+          180deg,
+          rgba(4, 11, 25, 0.18) 0%,
+          rgba(4, 11, 25, 0.42) 40%,
+          rgba(3, 8, 20, 0.72) 100%
+        ),
+        url("map-energy-docs-bg.PNG")
+        center top / cover fixed no-repeat;
     }
 
-    p{
-      color:#a9b4c2;
-      line-height:1.6;
+
+    /* =========================================================
+       PAGE
+       ========================================================= */
+
+    .page {
+      width: 100%;
+      max-width: 940px;
+
+      margin: 0 auto;
+
+      padding:
+        max(32px, env(safe-area-inset-top))
+        24px
+        max(70px, env(safe-area-inset-bottom));
     }
 
-    a{
-      color:#2f80ed;
-      text-decoration:none;
+
+    /* =========================================================
+       HEADER
+       ========================================================= */
+
+    .brand-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      margin-bottom: 38px;
     }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+    }
+
+    .brand-logo {
+      width: 48px;
+      height: 48px;
+
+      object-fit: contain;
+
+      filter:
+        drop-shadow(
+          0 5px 14px rgba(0, 0, 0, 0.25)
+        );
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-name {
+      color: #ffffff;
+
+      font-size: 18px;
+      line-height: 1.1;
+
+      font-weight: 800;
+      letter-spacing: -0.01em;
+    }
+
+    .brand-subtitle {
+      margin-top: 4px;
+
+      color: rgba(204, 215, 231, 0.62);
+
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .support-pill {
+      padding: 9px 15px;
+
+      border-radius: 999px;
+
+      color: rgba(224, 235, 249, 0.85);
+
+      font-size: 12px;
+      font-weight: 700;
+
+      background: rgba(6, 18, 39, 0.58);
+
+      border:
+        1px solid rgba(116, 158, 218, 0.20);
+
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+
+
+    /* =========================================================
+       HERO
+       ========================================================= */
+
+    .hero {
+      position: relative;
+
+      display: flex;
+      align-items: center;
+
+      min-height: 320px;
+
+      padding: 38px 310px 38px 38px;
+
+      overflow: hidden;
+
+      border-radius: 30px;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(14, 36, 72, 0.90),
+          rgba(5, 16, 38, 0.88)
+        );
+
+      border:
+        1px solid rgba(81, 144, 232, 0.25);
+
+      box-shadow:
+        0 30px 90px rgba(0, 0, 0, 0.35),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+    }
+
+    .hero::before {
+      content: "";
+
+      position: absolute;
+
+      width: 350px;
+      height: 350px;
+
+      right: -80px;
+      top: -100px;
+
+      border-radius: 50%;
+
+      background:
+        radial-gradient(
+          circle,
+          rgba(29, 122, 255, 0.24),
+          transparent 68%
+        );
+
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      margin-bottom: 14px;
+
+      color: #59a8ff;
+
+      font-size: 12px;
+      font-weight: 800;
+
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow-dot {
+      width: 7px;
+      height: 7px;
+
+      border-radius: 50%;
+
+      background: #4294ff;
+
+      box-shadow:
+        0 0 12px rgba(66, 148, 255, 0.9);
+    }
+
+    h1 {
+      max-width: 540px;
+
+      margin: 0 0 17px;
+
+      color: #ffffff;
+
+      font-size: clamp(37px, 5.5vw, 53px);
+      line-height: 1.03;
+
+      letter-spacing: -0.04em;
+
+      font-weight: 850;
+    }
+
+    .hero-description {
+      max-width: 530px;
+
+      margin: 0;
+
+      color: rgba(221, 229, 241, 0.78);
+
+      font-size: 16px;
+      line-height: 1.65;
+    }
+
+    .mappy {
+      position: absolute;
+
+      z-index: 1;
+
+      right: 8px;
+      bottom: -28px;
+
+      width: 310px;
+      max-height: 330px;
+
+      object-fit: contain;
+      object-position: bottom center;
+
+      filter:
+        drop-shadow(
+          0 20px 25px rgba(0, 0, 0, 0.30)
+        );
+    }
+
+
+    /* =========================================================
+       CONTENT
+       ========================================================= */
+
+    .content-card {
+      margin-top: 22px;
+
+      padding: 38px;
+
+      border-radius: 30px;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(12, 29, 55, 0.88),
+          rgba(5, 13, 29, 0.90)
+        );
+
+      border:
+        1px solid rgba(93, 145, 220, 0.19);
+
+      box-shadow:
+        0 28px 80px rgba(0, 0, 0, 0.38),
+        inset 0 1px 0 rgba(255, 255, 255, 0.04);
+
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+    }
+
+    section + section {
+      margin-top: 46px;
+      padding-top: 42px;
+
+      border-top:
+        1px solid rgba(255, 255, 255, 0.075);
+    }
+
+    h2 {
+      margin: 0 0 17px;
+
+      color: #ffffff;
+
+      font-size: 25px;
+      line-height: 1.25;
+
+      letter-spacing: -0.018em;
+
+      font-weight: 780;
+    }
+
+    h3 {
+      margin: 0 0 8px;
+
+      color: #ffffff;
+
+      font-size: 17px;
+      font-weight: 750;
+    }
+
+    p {
+      margin: 0 0 17px;
+
+      color: rgba(226, 232, 242, 0.82);
+
+      font-size: 16px;
+      line-height: 1.72;
+    }
+
+    p:last-child {
+      margin-bottom: 0;
+    }
+
+    strong {
+      color: #ffffff;
+      font-weight: 720;
+    }
+
+
+    /* =========================================================
+       FEATURE GRID
+       ========================================================= */
+
+    .feature-grid {
+      display: grid;
+
+      grid-template-columns: repeat(2, 1fr);
+
+      gap: 14px;
+
+      margin-top: 24px;
+    }
+
+    .feature-card {
+      position: relative;
+
+      padding: 21px;
+
+      border-radius: 19px;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(7, 23, 49, 0.82),
+          rgba(4, 13, 29, 0.76)
+        );
+
+      border:
+        1px solid rgba(68, 137, 235, 0.20);
+    }
+
+    .feature-icon {
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      width: 36px;
+      height: 36px;
+
+      margin-bottom: 14px;
+
+      border-radius: 11px;
+
+      color: #ffffff;
+
+      background:
+        rgba(47, 126, 242, 0.22);
+
+      border:
+        1px solid rgba(68, 145, 255, 0.30);
+
+      font-size: 18px;
+    }
+
+    .feature-card p {
+      margin: 0;
+
+      color: rgba(208, 219, 235, 0.73);
+
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+
+    /* =========================================================
+       INFO BOX
+       ========================================================= */
+
+    .info-box {
+      position: relative;
+
+      margin: 25px 0 0;
+
+      padding: 22px 23px 22px 62px;
+
+      border-radius: 20px;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(20, 76, 162, 0.34),
+          rgba(7, 32, 76, 0.42)
+        );
+
+      border:
+        1px solid rgba(66, 145, 255, 0.35);
+    }
+
+    .info-icon {
+      position: absolute;
+
+      left: 21px;
+      top: 22px;
+
+      width: 27px;
+      height: 27px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 50%;
+
+      color: #ffffff;
+
+      background: #347ff0;
+
+      font-size: 15px;
+      font-weight: 850;
+    }
+
+    .info-title {
+      display: block;
+
+      margin-bottom: 5px;
+
+      color: #ffffff;
+
+      font-weight: 750;
+    }
+
+    .info-box p {
+      margin: 0;
+    }
+
+
+    /* =========================================================
+       AUTOMATION FLOW
+       ========================================================= */
+
+    .flow {
+      display: grid;
+
+      grid-template-columns: 1fr auto 1fr auto 1fr;
+
+      align-items: stretch;
+
+      gap: 10px;
+
+      margin-top: 25px;
+    }
+
+    .flow-card {
+      padding: 20px 16px;
+
+      text-align: center;
+
+      border-radius: 18px;
+
+      background:
+        rgba(5, 17, 37, 0.70);
+
+      border:
+        1px solid rgba(80, 139, 224, 0.18);
+    }
+
+    .flow-number {
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      width: 30px;
+      height: 30px;
+
+      margin: 0 auto 10px;
+
+      border-radius: 50%;
+
+      color: #ffffff;
+
+      background: #347ff0;
+
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .flow-title {
+      display: block;
+
+      color: #ffffff;
+
+      font-size: 14px;
+      font-weight: 750;
+    }
+
+    .flow-arrow {
+      display: flex;
+
+      align-items: center;
+
+      color: rgba(81, 154, 255, 0.75);
+
+      font-size: 20px;
+    }
+
+
+    /* =========================================================
+       EXAMPLES
+       ========================================================= */
+
+    .example {
+      margin-top: 18px;
+
+      padding: 20px;
+
+      border-radius: 19px;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(7, 22, 47, 0.80),
+          rgba(4, 12, 27, 0.76)
+        );
+
+      border:
+        1px solid rgba(91, 147, 230, 0.19);
+    }
+
+    .example-label {
+      display: block;
+
+      margin-bottom: 12px;
+
+      color: #52a0ff;
+
+      font-size: 11px;
+      font-weight: 800;
+
+      letter-spacing: 0.11em;
+      text-transform: uppercase;
+    }
+
+    .example-row {
+      display: flex;
+
+      gap: 10px;
+
+      margin-top: 9px;
+
+      color: rgba(226, 232, 242, 0.82);
+
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .example-type {
+      flex: 0 0 58px;
+
+      color: rgba(160, 184, 219, 0.65);
+
+      font-size: 11px;
+      font-weight: 800;
+
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+
+    /* =========================================================
+       SUCCESS / CONTROL BOX
+       ========================================================= */
+
+    .control-box {
+      margin-top: 22px;
+
+      padding: 21px 22px;
+
+      border-radius: 19px;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(15, 104, 75, 0.28),
+          rgba(5, 42, 47, 0.34)
+        );
+
+      border:
+        1px solid rgba(58, 215, 155, 0.27);
+    }
+
+    .control-title {
+      display: block;
+
+      margin-bottom: 6px;
+
+      color: #44dda0;
+
+      font-size: 15px;
+      font-weight: 780;
+    }
+
+    .control-box p {
+      margin: 0;
+    }
+
+
+    /* =========================================================
+       MAPPY TIP
+       ========================================================= */
+
+    .mappy-tip {
+      display: flex;
+      align-items: center;
+
+      gap: 18px;
+
+      margin-top: 26px;
+
+      padding: 18px 20px;
+
+      border-radius: 20px;
+
+      background:
+        rgba(4, 13, 29, 0.58);
+
+      border:
+        1px solid rgba(255, 255, 255, 0.075);
+    }
+
+    .mappy-tip-image {
+      width: 70px;
+      height: 70px;
+
+      flex: 0 0 auto;
+
+      object-fit: contain;
+    }
+
+    .mappy-tip-title {
+      display: block;
+
+      margin-bottom: 4px;
+
+      color: #ffffff;
+
+      font-size: 14px;
+      font-weight: 750;
+    }
+
+    .mappy-tip p {
+      margin: 0;
+
+      color: rgba(215, 224, 238, 0.74);
+
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+
+    /* =========================================================
+       FOOTER
+       ========================================================= */
+
+    .footer {
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      gap: 9px;
+
+      padding: 30px 5px 0;
+
+      color: rgba(179, 192, 211, 0.48);
+
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .footer-logo {
+      width: 23px;
+      height: 23px;
+
+      object-fit: contain;
+
+      opacity: 0.72;
+    }
+
+
+    /* =========================================================
+       MOBILE
+       ========================================================= */
+
+    @media (max-width: 700px) {
+
+      body {
+        background-attachment: scroll;
+      }
+
+      .page {
+        padding-left: 15px;
+        padding-right: 15px;
+      }
+
+      .brand-header {
+        margin-bottom: 25px;
+      }
+
+      .brand-logo {
+        width: 42px;
+        height: 42px;
+      }
+
+      .brand-name {
+        font-size: 16px;
+      }
+
+      .support-pill {
+        padding: 8px 12px;
+        font-size: 11px;
+      }
+
+      .hero {
+        display: block;
+
+        min-height: 0;
+
+        padding: 27px 23px 0;
+
+        border-radius: 25px;
+      }
+
+      h1 {
+        font-size: 37px;
+      }
+
+      .hero-description {
+        font-size: 15px;
+      }
+
+      .mappy {
+        position: relative;
+
+        display: block;
+
+        right: auto;
+        bottom: auto;
+
+        width: 230px;
+
+        margin: 12px auto -18px;
+      }
+
+      .content-card {
+        margin-top: 16px;
+
+        padding: 27px 20px;
+
+        border-radius: 25px;
+      }
+
+      section + section {
+        margin-top: 36px;
+        padding-top: 34px;
+      }
+
+      h2 {
+        font-size: 22px;
+      }
+
+      p {
+        font-size: 15px;
+      }
+
+      .feature-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .flow {
+        grid-template-columns: 1fr;
+      }
+
+      .flow-arrow {
+        justify-content: center;
+
+        transform: rotate(90deg);
+      }
+
+      .info-box {
+        padding:
+          20px
+          18px
+          20px
+          55px;
+      }
+
+      .info-icon {
+        left: 17px;
+        top: 20px;
+      }
+
+      .mappy-tip {
+        align-items: flex-start;
+
+        padding: 16px;
+      }
+
+      .mappy-tip-image {
+        width: 55px;
+        height: 55px;
+      }
+
+    }
+
+
+    @media (max-width: 390px) {
+
+      .support-pill {
+        display: none;
+      }
+
+      h1 {
+        font-size: 33px;
+      }
+
+    }
+
   </style>
 </head>
 
+
 <body>
-  <div class="card">
-    <h1>Automations</h1>
 
-    <p>
-      MAP Energy automations documentation is currently being written.
-    </p>
+  <main class="page">
 
-    <p>
-      This section will cover:
-    </p>
 
-    <p>
-      • Automation triggers<br>
-      • Conditions<br>
-      • Battery rules<br>
-      • EV charging controls<br>
-      • Scheduled actions
-    </p>
+    <!-- HEADER -->
 
-    <p>
-      <a href="/map-energy/documentation/">← Back to Documentation</a>
-    </p>
-  </div>
+    <header class="brand-header">
+
+      <div class="brand">
+
+        <img
+          src="map-energy-logo.PNG"
+          alt="MAP Energy"
+          class="brand-logo"
+        >
+
+        <div class="brand-text">
+
+          <span class="brand-name">
+            MAP Energy
+          </span>
+
+          <span class="brand-subtitle">
+            Help &amp; Documentation
+          </span>
+
+        </div>
+
+      </div>
+
+      <div class="support-pill">
+        Automation Guide
+      </div>
+
+    </header>
+
+
+
+    <!-- HERO -->
+
+    <section class="hero">
+
+      <div class="hero-content">
+
+        <div class="eyebrow">
+
+          <span class="eyebrow-dot"></span>
+
+          MAP Energy
+
+        </div>
+
+        <h1>
+          Automations
+        </h1>
+
+        <p class="hero-description">
+          Automations let MAP Energy respond to schedules, battery
+          levels, EV charging, electricity prices and energy conditions
+          automatically — giving you greater control over how and when
+          your energy system operates.
+        </p>
+
+      </div>
+
+
+      <img
+        src="mappy-docs.PNG"
+        alt="Mappy, the MAP Energy assistant"
+        class="mappy"
+      >
+
+    </section>
+
+
+
+    <!-- DOCUMENTATION -->
+
+    <article class="content-card">
+
+
+      <!-- INTRODUCTION -->
+
+      <section>
+
+        <h2>
+          What are MAP Energy automations?
+        </h2>
+
+        <p>
+          MAP Energy automations allow you to create rules that monitor
+          your energy system and perform an action when a particular
+          event or condition occurs.
+        </p>
+
+        <p>
+          An automation is built around a simple idea:
+          <strong>when something happens, MAP Energy performs the
+          action you have configured.</strong>
+        </p>
+
+
+        <div class="flow">
+
+          <div class="flow-card">
+
+            <span class="flow-number">1</span>
+
+            <span class="flow-title">
+              Trigger
+            </span>
+
+          </div>
+
+          <div class="flow-arrow">
+            →
+          </div>
+
+          <div class="flow-card">
+
+            <span class="flow-number">2</span>
+
+            <span class="flow-title">
+              Check conditions
+            </span>
+
+          </div>
+
+          <div class="flow-arrow">
+            →
+          </div>
+
+          <div class="flow-card">
+
+            <span class="flow-number">3</span>
+
+            <span class="flow-title">
+              Run action
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <div class="info-box">
+
+          <div class="info-icon">
+            i
+          </div>
+
+          <span class="info-title">
+            Automations run in the background
+          </span>
+
+          <p>
+            Once an automation has been created and enabled, MAP Energy
+            monitors it through the MAP Energy service. You do not need
+            to keep the mobile app open for an automation to run.
+          </p>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- TRIGGERS -->
+
+      <section>
+
+        <h2>
+          Automation triggers
+        </h2>
+
+        <p>
+          The trigger determines when MAP Energy should evaluate and
+          run your automation.
+        </p>
+
+        <div class="feature-grid">
+
+
+          <div class="feature-card">
+
+            <div class="feature-icon">
+              ◷
+            </div>
+
+            <h3>
+              Schedule
+            </h3>
+
+            <p>
+              Run an automation at a selected time and on the days
+              you choose.
+            </p>
+
+          </div>
+
+
+          <div class="feature-card">
+
+            <div class="feature-icon">
+              ⚡
+            </div>
+
+            <h3>
+              EV charging
+            </h3>
+
+            <p>
+              Respond when charging starts or stops on a supported
+              EV or charger integration.
+            </p>
+
+          </div>
+
+
+          <div class="feature-card">
+
+            <div class="feature-icon">
+              ◉
+            </div>
+
+            <h3>
+              Battery
+            </h3>
+
+            <p>
+              Trigger when your Powerwall state of charge rises above
+              or falls below a selected level.
+            </p>
+
+          </div>
+
+
+          <div class="feature-card">
+
+            <div class="feature-icon">
+              £
+            </div>
+
+            <h3>
+              Electricity price
+            </h3>
+
+            <p>
+              Respond when an available import or export price moves
+              above or below your selected threshold.
+            </p>
+
+          </div>
+
+
+          <div class="feature-card">
+
+            <div class="feature-icon">
+              ↕
+            </div>
+
+            <h3>
+              Power &amp; energy
+            </h3>
+
+            <p>
+              Respond to monitored power conditions such as grid,
+              home or energy-flow thresholds where supported.
+            </p>
+
+          </div>
+
+
+          <div class="feature-card">
+
+            <div class="feature-icon">
+              ☀
+            </div>
+
+            <h3>
+              Solar
+            </h3>
+
+            <p>
+              Use solar conditions and forecast information to make
+              decisions based on expected generation.
+            </p>
+
+          </div>
+
+
+        </div>
+
+      </section>
+
+
+
+      <!-- CONDITIONS -->
+
+      <section>
+
+        <h2>
+          Conditions and time windows
+        </h2>
+
+        <p>
+          A trigger tells MAP Energy when something has happened.
+          Conditions can then provide an additional check before the
+          configured action is allowed to run.
+        </p>
+
+        <p>
+          Depending on the automation type, you can restrict when an
+          automation is allowed to operate or prevent an action when
+          another energy condition is not suitable.
+        </p>
+
+        <div class="example">
+
+          <span class="example-label">
+            Example
+          </span>
+
+          <div class="example-row">
+
+            <span class="example-type">
+              When
+            </span>
+
+            <span>
+              EV charging starts
+            </span>
+
+          </div>
+
+          <div class="example-row">
+
+            <span class="example-type">
+              Check
+            </span>
+
+            <span>
+              Battery and configured blocking conditions
+            </span>
+
+          </div>
+
+          <div class="example-row">
+
+            <span class="example-type">
+              Then
+            </span>
+
+            <span>
+              Adjust the Powerwall backup reserve
+            </span>
+
+          </div>
+
+        </div>
+
+        <p style="margin-top:20px;">
+          Time windows can also be used where available so that an
+          event-triggered automation only acts during the period that
+          is relevant to you.
+        </p>
+
+      </section>
+
+
+
+      <!-- ACTIONS -->
+
+      <section>
+
+        <h2>
+          Automation actions
+        </h2>
+
+        <p>
+          The action determines what MAP Energy should do after the
+          automation has triggered and any required conditions have
+          been satisfied.
+        </p>
+
+
+        <div class="feature-grid">
+
+
+          <div class="feature-card">
+
+            <div class="feature-icon">
+              %
+            </div>
+
+            <h3>
+              Adjust Backup Reserve
+            </h3>
+
+            <p>
+              Change the Powerwall backup reserve to a selected
+              percentage.
+            </p>
+
+          </div>
+
+
+          <div class="feature-card">
+
+            <div class="feature-icon">
+              ❄
+            </div>
+
+            <h3>
+              Freeze Battery SOC
+            </h3>
+
+            <p>
+              Preserve the battery state of charge by temporarily
+              controlling the Powerwall reserve.
+            </p>
+
+          </div>
+
+
+          <div class="feature-card">
+
+            <div class="feature-icon">
+              ⇧
+            </div>
+
+            <h3>
+              Export Control
+            </h3>
+
+            <p>
+              Change the supported Powerwall energy export setting
+              when your system permits it.
+            </p>
+
+          </div>
+
+
+          <div class="feature-card">
+
+            <div class="feature-icon">
+              ◈
+            </div>
+
+            <h3>
+              Operational Mode
+            </h3>
+
+            <p>
+              Change the Powerwall operating mode using the modes
+              supported by your system.
+            </p>
+
+          </div>
+
+
+          <div class="feature-card">
+
+            <div class="feature-icon">
+              ↯
+            </div>
+
+            <h3>
+              Grid Charging
+            </h3>
+
+            <p>
+              Enable or disable Powerwall grid charging when the
+              setting is available for your system.
+            </p>
+
+          </div>
+
+
+          <div class="feature-card">
+
+            <div class="feature-icon">
+              !
+            </div>
+
+            <h3>
+              Notification Only
+            </h3>
+
+            <p>
+              Receive an alert when a trigger occurs without changing
+              any Powerwall settings.
+            </p>
+
+          </div>
+
+
+        </div>
+
+
+        <div class="info-box">
+
+          <div class="info-icon">
+            i
+          </div>
+
+          <span class="info-title">
+            Available options depend on your system
+          </span>
+
+          <p>
+            Some triggers and actions require a compatible Powerwall,
+            tariff, EV charger or other connected service. MAP Energy
+            only presents options that are applicable to the
+            integrations available to your account.
+          </p>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- COMMON AUTOMATIONS -->
+
+      <section>
+
+        <h2>
+          Common automation ideas
+        </h2>
+
+        <p>
+          Automations can be combined in different ways depending on
+          how you use your Powerwall, EV and electricity tariff.
+        </p>
+
+
+        <div class="example">
+
+          <span class="example-label">
+            Protect the Powerwall while charging an EV
+          </span>
+
+          <div class="example-row">
+
+            <span class="example-type">
+              When
+            </span>
+
+            <span>
+              EV charging starts
+            </span>
+
+          </div>
+
+          <div class="example-row">
+
+            <span class="example-type">
+              Then
+            </span>
+
+            <span>
+              Preserve the Powerwall battery state of charge
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <div class="example">
+
+          <span class="example-label">
+            Restore the battery after EV charging
+          </span>
+
+          <div class="example-row">
+
+            <span class="example-type">
+              When
+            </span>
+
+            <span>
+              EV charging stops
+            </span>
+
+          </div>
+
+          <div class="example-row">
+
+            <span class="example-type">
+              Then
+            </span>
+
+            <span>
+              Restore your preferred backup reserve
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <div class="example">
+
+          <span class="example-label">
+            Charge the Powerwall overnight
+          </span>
+
+          <div class="example-row">
+
+            <span class="example-type">
+              When
+            </span>
+
+            <span>
+              Your selected overnight time begins
+            </span>
+
+          </div>
+
+          <div class="example-row">
+
+            <span class="example-type">
+              Then
+            </span>
+
+            <span>
+              Adjust the backup reserve to encourage charging
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <div class="example">
+
+          <span class="example-label">
+            React to battery level
+          </span>
+
+          <div class="example-row">
+
+            <span class="example-type">
+              When
+            </span>
+
+            <span>
+              Powerwall state of charge crosses your selected threshold
+            </span>
+
+          </div>
+
+          <div class="example-row">
+
+            <span class="example-type">
+              Then
+            </span>
+
+            <span>
+              Change a Powerwall setting or send a notification
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <div class="example">
+
+          <span class="example-label">
+            React to electricity prices
+          </span>
+
+          <div class="example-row">
+
+            <span class="example-type">
+              When
+            </span>
+
+            <span>
+              Your electricity price moves above or below your
+              selected threshold
+            </span>
+
+          </div>
+
+          <div class="example-row">
+
+            <span class="example-type">
+              Then
+            </span>
+
+            <span>
+              Change the configured Powerwall setting
+            </span>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- BACKUP RESERVE -->
+
+      <section>
+
+        <h2>
+          Backup reserve automations
+        </h2>
+
+        <p>
+          Backup reserve is one of the most useful Powerwall controls
+          available to MAP Energy automations.
+        </p>
+
+        <p>
+          It can be used to preserve stored energy, encourage charging
+          or return your Powerwall to your normal reserve after another
+          automation has completed.
+        </p>
+
+        <p>
+          Tesla does not support backup reserve values between
+          <strong>81% and 99%</strong>. MAP Energy has been designed
+          with this restriction in mind and will not intentionally
+          submit an unsupported reserve value to Tesla.
+        </p>
+
+
+        <div class="control-box">
+
+          <span class="control-title">
+            MAP Energy handles unsupported reserve values
+          </span>
+
+          <p>
+            Where an automation captures your current reserve for later
+            restoration, MAP Energy allows you to choose whether 80%
+            or 100% should be used if the captured value falls within
+            Tesla's unsupported 81–99% range.
+          </p>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- GROUPED ACTIONS -->
+
+      <section>
+
+        <h2>
+          Using multiple actions
+        </h2>
+
+        <p>
+          Some energy strategies require more than one Powerwall
+          setting to change together.
+        </p>
+
+        <p>
+          MAP Energy supports automations that can coordinate
+          compatible actions so that the required settings are applied
+          as part of the same automation run.
+        </p>
+
+        <div class="example">
+
+          <span class="example-label">
+            Example
+          </span>
+
+          <div class="example-row">
+
+            <span class="example-type">
+              When
+            </span>
+
+            <span>
+              Your scheduled cheap-rate period begins
+            </span>
+
+          </div>
+
+          <div class="example-row">
+
+            <span class="example-type">
+              Then
+            </span>
+
+            <span>
+              Enable grid charging and adjust the backup reserve
+            </span>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- HISTORY -->
+
+      <section>
+
+        <h2>
+          Automation history
+        </h2>
+
+        <p>
+          MAP Energy records automation activity so that you can see
+          what happened after an automation was due to run.
+        </p>
+
+        <p>
+          Automation history can show successful actions as well as
+          blocked or failed runs, helping you understand why a
+          particular action did or did not take place.
+        </p>
+
+
+        <div class="mappy-tip">
+
+          <img
+            src="mappy-docs.PNG"
+            alt="Mappy"
+            class="mappy-tip-image"
+          >
+
+          <div>
+
+            <span class="mappy-tip-title">
+              Mappy tip
+            </span>
+
+            <p>
+              If an automation does not appear to have worked, check
+              its history first. MAP Energy records the result of the
+              run and, where available, the reason an action was
+              blocked or failed.
+            </p>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- RELIABILITY -->
+
+      <section>
+
+        <h2>
+          What happens if a command fails?
+        </h2>
+
+        <p>
+          MAP Energy relies on connected services such as Tesla and
+          supported EV or energy providers to carry out some
+          automation actions.
+        </p>
+
+        <p>
+          Temporary service availability, API errors or communication
+          problems can occasionally prevent a command from completing.
+          MAP Energy's automation service includes retry and execution
+          handling for supported actions, and the final result is
+          recorded in your automation history.
+        </p>
+
+        <p>
+          A successful history entry is intended to represent a
+          successfully completed action rather than simply the
+          automation having reached its scheduled time.
+        </p>
+
+      </section>
+
+
+
+      <!-- FAQ -->
+
+      <section>
+
+        <h2>
+          Does the MAP Energy app need to stay open?
+        </h2>
+
+        <p>
+          No. MAP Energy automations are processed by the MAP Energy
+          service, so closing the app or locking your phone does not
+          stop your enabled automations from running.
+        </p>
+
+      </section>
+
+
+
+      <!-- HELP -->
+
+      <section>
+
+        <h2>
+          Need help?
+        </h2>
+
+        <p>
+          If an automation is not behaving as expected, start by
+          checking its configuration and automation history in
+          MAP Energy.
+        </p>
+
+        <p>
+          The history can help identify whether the automation
+          triggered, whether a condition prevented it from running,
+          or whether a connected service returned an error.
+        </p>
+
+        <p>
+          You can also contact MAP Energy support if you need help
+          diagnosing an automation or connected device.
+        </p>
+
+      </section>
+
+
+    </article>
+
+
+
+    <!-- FOOTER -->
+
+    <footer class="footer">
+
+      <img
+        src="map-energy-logo.PNG"
+        alt="MAP Energy"
+        class="footer-logo"
+      >
+
+      <span>
+        MAP Energy • Powerwall control, insights &amp; automation
+      </span>
+
+    </footer>
+
+
+  </main>
+
 </body>
 </html>
