@@ -2,229 +2,1259 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, viewport-fit=cover"
+  >
 
   <title>Powerwall Backup Reserve Limits | MAP Energy</title>
 
   <meta
     name="description"
-    content="Information about Tesla Powerwall backup reserve limits and how MAP Energy safely handles these limits within automations."
+    content="Learn about Tesla Powerwall backup reserve limits and how MAP Energy safely handles unsupported reserve values within automations."
   >
 
   <style>
+
+    /* =========================================================
+       MAP ENERGY DOCUMENTATION
+       Shared visual style
+       ========================================================= */
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-height: 100%;
+      background: #06101f;
+    }
+
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      line-height: 1.6;
-      color: #1f2937;
-      background: #ffffff;
       margin: 0;
+      min-height: 100vh;
+
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "SF Pro Display",
+        "SF Pro Text",
+        "Segoe UI",
+        Roboto,
+        Helvetica,
+        Arial,
+        sans-serif;
+
+      color: #ffffff;
+
+      background:
+        linear-gradient(
+          180deg,
+          rgba(4, 11, 25, 0.18) 0%,
+          rgba(4, 11, 25, 0.42) 40%,
+          rgba(3, 8, 20, 0.72) 100%
+        ),
+        url("map-energy-docs-bg.jpg")
+        center top / cover fixed no-repeat;
     }
 
-    .container {
-      max-width: 850px;
+
+    /* =========================================================
+       PAGE WRAPPER
+       ========================================================= */
+
+    .page {
+      width: 100%;
+      max-width: 940px;
+
       margin: 0 auto;
-      padding: 40px 24px 80px;
+
+      padding:
+        max(32px, env(safe-area-inset-top))
+        24px
+        max(70px, env(safe-area-inset-bottom));
     }
 
-    h1 {
-      font-size: 2.2rem;
-      line-height: 1.2;
-      margin-bottom: 12px;
-      color: #111827;
+
+    /* =========================================================
+       MAP ENERGY BRAND HEADER
+       ========================================================= */
+
+    .brand-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      margin-bottom: 38px;
     }
 
-    h2 {
-      font-size: 1.45rem;
-      margin-top: 40px;
-      margin-bottom: 12px;
-      color: #111827;
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 13px;
     }
 
-    p {
-      margin: 0 0 16px;
+    .brand-logo {
+      width: 48px;
+      height: 48px;
+
+      object-fit: contain;
+
+      filter:
+        drop-shadow(
+          0 5px 14px rgba(0, 0, 0, 0.25)
+        );
     }
 
-    ul {
-      margin: 12px 0 20px;
-      padding-left: 24px;
+    .brand-text {
+      display: flex;
+      flex-direction: column;
     }
 
-    li {
-      margin-bottom: 8px;
+    .brand-name {
+      color: #ffffff;
+
+      font-size: 18px;
+      line-height: 1.1;
+
+      font-weight: 800;
+      letter-spacing: -0.01em;
     }
 
-    .notice {
-      background: #f3f4f6;
-      border-left: 4px solid #111827;
-      padding: 18px 20px;
-      margin: 24px 0;
-      border-radius: 6px;
-    }
+    .brand-subtitle {
+      margin-top: 4px;
 
-    .allowed {
+      color: rgba(204, 215, 231, 0.62);
+
+      font-size: 12px;
       font-weight: 600;
     }
 
-    .updated {
-      color: #6b7280;
-      font-size: 0.9rem;
-      margin-bottom: 30px;
+    .support-pill {
+      padding: 9px 15px;
+
+      border-radius: 999px;
+
+      color: rgba(224, 235, 249, 0.85);
+
+      font-size: 12px;
+      font-weight: 700;
+
+      background: rgba(6, 18, 39, 0.58);
+
+      border:
+        1px solid rgba(116, 158, 218, 0.20);
+
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+
+
+    /* =========================================================
+       HERO
+       ========================================================= */
+
+    .hero {
+      position: relative;
+
+      display: flex;
+      align-items: center;
+
+      min-height: 300px;
+
+      padding: 38px 310px 38px 38px;
+
+      overflow: hidden;
+
+      border-radius: 30px;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(14, 36, 72, 0.90),
+          rgba(5, 16, 38, 0.88)
+        );
+
+      border:
+        1px solid rgba(81, 144, 232, 0.25);
+
+      box-shadow:
+        0 30px 90px rgba(0, 0, 0, 0.35),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+    }
+
+    .hero::before {
+      content: "";
+
+      position: absolute;
+
+      width: 350px;
+      height: 350px;
+
+      right: -80px;
+      top: -100px;
+
+      border-radius: 50%;
+
+      background:
+        radial-gradient(
+          circle,
+          rgba(29, 122, 255, 0.24),
+          transparent 68%
+        );
+
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      margin-bottom: 14px;
+
+      color: #59a8ff;
+
+      font-size: 12px;
+      font-weight: 800;
+
+      letter-spacing: 0.13em;
+
+      text-transform: uppercase;
+    }
+
+    .eyebrow-dot {
+      width: 7px;
+      height: 7px;
+
+      border-radius: 50%;
+
+      background: #4294ff;
+
+      box-shadow:
+        0 0 12px rgba(66, 148, 255, 0.9);
+    }
+
+    h1 {
+      max-width: 540px;
+
+      margin: 0 0 17px;
+
+      color: #ffffff;
+
+      font-size: clamp(37px, 5.5vw, 53px);
+
+      line-height: 1.03;
+
+      letter-spacing: -0.04em;
+
+      font-weight: 850;
+    }
+
+    .hero-description {
+      max-width: 530px;
+
+      margin: 0;
+
+      color: rgba(221, 229, 241, 0.78);
+
+      font-size: 16px;
+      line-height: 1.65;
+    }
+
+
+    /* =========================================================
+       MAPPY
+       ========================================================= */
+
+    .mappy {
+      position: absolute;
+
+      z-index: 1;
+
+      right: 8px;
+      bottom: -28px;
+
+      width: 310px;
+      max-height: 330px;
+
+      object-fit: contain;
+      object-position: bottom center;
+
+      filter:
+        drop-shadow(
+          0 20px 25px rgba(0, 0, 0, 0.30)
+        );
+    }
+
+
+    /* =========================================================
+       MAIN CONTENT CARD
+       ========================================================= */
+
+    .content-card {
+      margin-top: 22px;
+
+      padding: 38px;
+
+      border-radius: 30px;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(12, 29, 55, 0.88),
+          rgba(5, 13, 29, 0.90)
+        );
+
+      border:
+        1px solid rgba(93, 145, 220, 0.19);
+
+      box-shadow:
+        0 28px 80px rgba(0, 0, 0, 0.38),
+        inset 0 1px 0 rgba(255, 255, 255, 0.04);
+
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+    }
+
+    section + section {
+      margin-top: 46px;
+
+      padding-top: 42px;
+
+      border-top:
+        1px solid rgba(255, 255, 255, 0.075);
+    }
+
+    h2 {
+      margin: 0 0 17px;
+
+      color: #ffffff;
+
+      font-size: 25px;
+      line-height: 1.25;
+
+      letter-spacing: -0.018em;
+
+      font-weight: 780;
+    }
+
+    p {
+      margin: 0 0 17px;
+
+      color: rgba(226, 232, 242, 0.82);
+
+      font-size: 16px;
+      line-height: 1.72;
+    }
+
+    p:last-child {
+      margin-bottom: 0;
     }
 
     strong {
-      color: #111827;
+      color: #ffffff;
+      font-weight: 720;
     }
+
+
+    /* =========================================================
+       RESERVE VALUE CARDS
+       ========================================================= */
+
+    .reserve-options {
+      display: grid;
+
+      grid-template-columns: 1fr 1fr;
+
+      gap: 14px;
+
+      margin: 24px 0;
+    }
+
+    .reserve-option {
+      position: relative;
+
+      padding: 21px;
+
+      overflow: hidden;
+
+      border-radius: 19px;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(7, 23, 49, 0.82),
+          rgba(4, 13, 29, 0.76)
+        );
+
+      border:
+        1px solid rgba(68, 137, 235, 0.24);
+    }
+
+    .reserve-option::after {
+      content: "";
+
+      position: absolute;
+
+      right: -35px;
+      bottom: -50px;
+
+      width: 120px;
+      height: 120px;
+
+      border-radius: 50%;
+
+      background:
+        radial-gradient(
+          circle,
+          rgba(36, 127, 255, 0.16),
+          transparent 70%
+        );
+    }
+
+    .reserve-label {
+      display: block;
+
+      margin-bottom: 5px;
+
+      color: #52a0ff;
+
+      font-size: 11px;
+
+      font-weight: 800;
+
+      letter-spacing: 0.12em;
+
+      text-transform: uppercase;
+    }
+
+    .reserve-value {
+      position: relative;
+      z-index: 2;
+
+      color: #ffffff;
+
+      font-size: 28px;
+
+      font-weight: 850;
+
+      letter-spacing: -0.025em;
+    }
+
+
+    /* =========================================================
+       MAP ENERGY INFORMATION BOX
+       ========================================================= */
+
+    .info-box {
+      position: relative;
+
+      margin: 27px 0 0;
+
+      padding: 22px 23px 22px 62px;
+
+      border-radius: 20px;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(20, 76, 162, 0.34),
+          rgba(7, 32, 76, 0.42)
+        );
+
+      border:
+        1px solid rgba(66, 145, 255, 0.35);
+
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    }
+
+    .info-icon {
+      position: absolute;
+
+      left: 21px;
+      top: 22px;
+
+      width: 27px;
+      height: 27px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 50%;
+
+      color: #ffffff;
+
+      background: #347ff0;
+
+      font-size: 15px;
+      font-weight: 850;
+
+      box-shadow:
+        0 0 20px rgba(52, 127, 240, 0.4);
+    }
+
+    .info-title {
+      display: block;
+
+      margin-bottom: 5px;
+
+      color: #ffffff;
+
+      font-weight: 750;
+    }
+
+    .info-box p {
+      margin: 0;
+    }
+
+
+    /* =========================================================
+       FALLBACK OPTIONS
+       ========================================================= */
+
+    .fallback-grid {
+      display: grid;
+
+      grid-template-columns: 1fr 1fr;
+
+      gap: 14px;
+
+      margin-top: 24px;
+    }
+
+    .fallback-card {
+      padding: 22px;
+
+      border-radius: 19px;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(7, 22, 47, 0.80),
+          rgba(4, 12, 27, 0.76)
+        );
+
+      border:
+        1px solid rgba(91, 147, 230, 0.19);
+    }
+
+    .fallback-value {
+      display: block;
+
+      margin-bottom: 7px;
+
+      color: #4c9cff;
+
+      font-size: 28px;
+
+      font-weight: 850;
+
+      letter-spacing: -0.025em;
+    }
+
+    .fallback-card p {
+      margin: 0;
+
+      font-size: 14px;
+
+      line-height: 1.6;
+    }
+
+
+    /* =========================================================
+       USER CONTROL CALLOUT
+       ========================================================= */
+
+    .control-box {
+      position: relative;
+
+      margin-top: 20px;
+
+      padding: 21px 22px;
+
+      border-radius: 19px;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(15, 104, 75, 0.28),
+          rgba(5, 42, 47, 0.34)
+        );
+
+      border:
+        1px solid rgba(58, 215, 155, 0.27);
+    }
+
+    .control-title {
+      display: block;
+
+      margin-bottom: 6px;
+
+      color: #44dda0;
+
+      font-size: 15px;
+
+      font-weight: 780;
+    }
+
+    .control-box p {
+      margin: 0;
+    }
+
+
+    /* =========================================================
+       SMALL MAPPY TIP
+       ========================================================= */
+
+    .mappy-tip {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+
+      margin-top: 28px;
+
+      padding: 18px 20px;
+
+      border-radius: 20px;
+
+      background:
+        rgba(4, 13, 29, 0.58);
+
+      border:
+        1px solid rgba(255, 255, 255, 0.075);
+    }
+
+    .mappy-tip-image {
+      width: 70px;
+      height: 70px;
+
+      flex: 0 0 auto;
+
+      object-fit: contain;
+
+      border-radius: 14px;
+    }
+
+    .mappy-tip-content {
+      min-width: 0;
+    }
+
+    .mappy-tip-title {
+      display: block;
+
+      margin-bottom: 4px;
+
+      color: #ffffff;
+
+      font-size: 14px;
+
+      font-weight: 750;
+    }
+
+    .mappy-tip p {
+      margin: 0;
+
+      color: rgba(215, 224, 238, 0.74);
+
+      font-size: 14px;
+
+      line-height: 1.55;
+    }
+
+
+    /* =========================================================
+       FOOTER
+       ========================================================= */
+
+    .footer {
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      gap: 9px;
+
+      padding: 30px 5px 0;
+
+      color: rgba(179, 192, 211, 0.48);
+
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .footer-logo {
+      width: 23px;
+      height: 23px;
+
+      object-fit: contain;
+
+      opacity: 0.72;
+    }
+
+
+    /* =========================================================
+       MOBILE
+       ========================================================= */
+
+    @media (max-width: 700px) {
+
+      body {
+        background-attachment: scroll;
+      }
+
+      .page {
+        padding-left: 15px;
+        padding-right: 15px;
+      }
+
+      .brand-header {
+        margin-bottom: 25px;
+      }
+
+      .brand-logo {
+        width: 42px;
+        height: 42px;
+      }
+
+      .brand-name {
+        font-size: 16px;
+      }
+
+      .support-pill {
+        padding: 8px 12px;
+
+        font-size: 11px;
+      }
+
+
+      /* Mobile hero puts Mappy underneath the heading */
+
+      .hero {
+        display: block;
+
+        min-height: 0;
+
+        padding: 27px 23px 0;
+
+        border-radius: 25px;
+      }
+
+      h1 {
+        font-size: 37px;
+      }
+
+      .hero-description {
+        font-size: 15px;
+      }
+
+      .mappy {
+        position: relative;
+
+        display: block;
+
+        right: auto;
+        bottom: auto;
+
+        width: 230px;
+        height: auto;
+
+        margin: 12px auto -18px;
+      }
+
+      .content-card {
+        margin-top: 16px;
+
+        padding: 27px 20px;
+
+        border-radius: 25px;
+      }
+
+      section + section {
+        margin-top: 36px;
+
+        padding-top: 34px;
+      }
+
+      h2 {
+        font-size: 22px;
+      }
+
+      p {
+        font-size: 15px;
+      }
+
+      .reserve-options,
+      .fallback-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .info-box {
+        padding:
+          20px
+          18px
+          20px
+          55px;
+      }
+
+      .info-icon {
+        left: 17px;
+        top: 20px;
+      }
+
+      .mappy-tip {
+        align-items: flex-start;
+
+        padding: 16px;
+      }
+
+      .mappy-tip-image {
+        width: 55px;
+        height: 55px;
+      }
+    }
+
+
+    /* =========================================================
+       VERY SMALL DEVICES
+       ========================================================= */
+
+    @media (max-width: 390px) {
+
+      .support-pill {
+        display: none;
+      }
+
+      h1 {
+        font-size: 33px;
+      }
+
+    }
+
   </style>
 </head>
 
+
 <body>
 
-  <main class="container">
+  <main class="page">
 
-    <h1>Tesla Powerwall Backup Reserve Limits</h1>
 
-    <p class="updated">MAP Energy Support</p>
+    <!-- =====================================================
+         MAP ENERGY HEADER
+         ===================================================== -->
 
-    <p>
-      Tesla places restrictions on the backup reserve percentages that can
-      be configured for a Powerwall. These restrictions also apply when
-      the backup reserve is changed through MAP Energy.
-    </p>
+    <header class="brand-header">
 
-    <p>
-      MAP Energy has been designed with these restrictions in mind and
-      automatically prevents unsupported backup reserve values from being
-      submitted to Tesla.
-    </p>
+      <div class="brand">
 
-    <h2>What backup reserve values can be used?</h2>
+        <img
+          src="map-energy-logo.png"
+          alt="MAP Energy"
+          class="brand-logo"
+        >
 
-    <p>
-      Tesla currently allows the Powerwall backup reserve to be set to:
-    </p>
+        <div class="brand-text">
 
-    <ul>
-      <li class="allowed">Any value from 0% to 80%</li>
-      <li class="allowed">100%</li>
-    </ul>
+          <span class="brand-name">
+            MAP Energy
+          </span>
 
-    <p>
-      Backup reserve values between <strong>81% and 99%</strong> are not
-      supported by Tesla.
-    </p>
+          <span class="brand-subtitle">
+            Help &amp; Documentation
+          </span>
 
-    <div class="notice">
-      <strong>MAP Energy handles this automatically:</strong>
-      MAP Energy will not submit a backup reserve value between 81% and
-      99% to Tesla.
-    </div>
+        </div>
 
-    <h2>Why does this restriction exist?</h2>
+      </div>
 
-    <p>
-      This is a Tesla Powerwall restriction rather than a limitation
-      introduced by MAP Energy.
-    </p>
+      <div class="support-pill">
+        Powerwall Guide
+      </div>
 
-    <p>
-      MAP Energy communicates with your Powerwall through Tesla's services,
-      so any backup reserve change must use a value that Tesla currently
-      accepts.
-    </p>
+    </header>
 
-    <h2>How does this affect MAP Energy automations?</h2>
 
-    <p>
-      MAP Energy has been built to account for Tesla's backup reserve
-      restrictions when creating and running automations.
-    </p>
 
-    <p>
-      When an automation directly sets the Powerwall backup reserve,
-      MAP Energy only allows supported values to be used:
-    </p>
+    <!-- =====================================================
+         HERO
+         ===================================================== -->
 
-    <ul>
-      <li>0% to 80%</li>
-      <li>100%</li>
-    </ul>
+    <section class="hero">
 
-    <p>
-      This means an automation will never intentionally submit a backup
-      reserve value between 81% and 99% to Tesla.
-    </p>
+      <div class="hero-content">
 
-    <h2>What happens when an automation captures my current reserve?</h2>
+        <div class="eyebrow">
 
-    <p>
-      Some MAP Energy automations temporarily change your Powerwall settings
-      and then restore your previous backup reserve when the automation
-      finishes.
-    </p>
+          <span class="eyebrow-dot"></span>
 
-    <p>
-      In these cases, MAP Energy may capture the backup reserve that was
-      active before the automation started.
-    </p>
+          Tesla Powerwall
 
-    <p>
-      If the captured reserve is between <strong>81% and 99%</strong>,
-      MAP Energy cannot send that value back to Tesla when restoring your
-      settings.
-    </p>
+        </div>
 
-    <p>
-      When configuring an automation that uses this behaviour, MAP Energy
-      allows you to choose what should happen if the captured reserve falls
-      within this unsupported range.
-    </p>
+        <h1>
+          Backup Reserve Limits
+        </h1>
 
-    <ul>
-      <li>
-        <strong>Default to 80%</strong> – restore the backup reserve to 80%.
-      </li>
-      <li>
-        <strong>Default to 100%</strong> – restore the backup reserve to 100%.
-      </li>
-    </ul>
+        <p class="hero-description">
+          Tesla places restrictions on the backup reserve percentages
+          that can be configured for a Powerwall. MAP Energy has been
+          designed with these restrictions in mind and handles them
+          automatically.
+        </p>
 
-    <div class="notice">
-      <strong>You stay in control:</strong>
-      You choose whether MAP Energy should use 80% or 100% when a captured
-      backup reserve falls within Tesla's unsupported 81–99% range.
-    </div>
+      </div>
 
-    <h2>Using 100% backup reserve</h2>
 
-    <p>
-      Setting the backup reserve to 100% can be useful when you want to
-      prevent the Powerwall from supplying normal household demand.
-    </p>
+      <img
+        src="mappy-docs.png"
+        alt="Mappy, the MAP Energy assistant"
+        class="mappy"
+      >
 
-    <p>
-      This can be particularly useful within MAP Energy automations that
-      temporarily need to preserve the energy stored in your Powerwall.
-    </p>
+    </section>
 
-    <p>
-      When the automation finishes, MAP Energy can restore the previously
-      captured backup reserve. If that captured value was between 81% and
-      99%, your selected 80% or 100% fallback preference will be used
-      instead.
-    </p>
 
-    <h2>Need help?</h2>
 
-    <p>
-      If an automation is not changing your Powerwall backup reserve as
-      expected, check the automation history in MAP Energy. This can help
-      confirm whether the action was successfully sent to Tesla.
-    </p>
+    <!-- =====================================================
+         DOCUMENTATION
+         ===================================================== -->
 
-    <p>
-      You can also contact MAP Energy support if you need help diagnosing
-      an automation or Powerwall control issue.
-    </p>
+    <article class="content-card">
+
+
+      <!-- ===================================================
+           SUPPORTED VALUES
+           =================================================== -->
+
+      <section>
+
+        <h2>
+          What backup reserve values can be used?
+        </h2>
+
+        <p>
+          Tesla currently allows the Powerwall backup reserve to be
+          set to the following values:
+        </p>
+
+
+        <div class="reserve-options">
+
+          <div class="reserve-option">
+
+            <span class="reserve-label">
+              Supported
+            </span>
+
+            <span class="reserve-value">
+              0–80%
+            </span>
+
+          </div>
+
+
+          <div class="reserve-option">
+
+            <span class="reserve-label">
+              Supported
+            </span>
+
+            <span class="reserve-value">
+              100%
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <p>
+          Backup reserve values between
+          <strong>81% and 99%</strong>
+          are not supported by Tesla.
+        </p>
+
+
+        <div class="info-box">
+
+          <div class="info-icon">
+            i
+          </div>
+
+          <span class="info-title">
+            MAP Energy handles this automatically
+          </span>
+
+          <p>
+            MAP Energy will not submit a backup reserve value between
+            81% and 99% to Tesla.
+          </p>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- ===================================================
+           WHY
+           =================================================== -->
+
+      <section>
+
+        <h2>
+          Why does this restriction exist?
+        </h2>
+
+        <p>
+          This is a Tesla Powerwall restriction rather than a
+          limitation introduced by MAP Energy.
+        </p>
+
+        <p>
+          MAP Energy communicates with your Powerwall through
+          Tesla's services, so any backup reserve change must use
+          a value that Tesla currently accepts.
+        </p>
+
+      </section>
+
+
+
+      <!-- ===================================================
+           AUTOMATIONS
+           =================================================== -->
+
+      <section>
+
+        <h2>
+          How does this affect MAP Energy automations?
+        </h2>
+
+        <p>
+          MAP Energy has been built to account for Tesla's backup
+          reserve restrictions when creating and running automations.
+        </p>
+
+        <p>
+          When an automation directly sets the Powerwall backup
+          reserve, MAP Energy only allows supported values to be
+          selected.
+        </p>
+
+        <p>
+          This means MAP Energy will not intentionally submit a
+          backup reserve between
+          <strong>81% and 99%</strong>
+          to Tesla.
+        </p>
+
+      </section>
+
+
+
+      <!-- ===================================================
+           CAPTURE CURRENT RESERVE
+           =================================================== -->
+
+      <section>
+
+        <h2>
+          What happens when an automation captures my current reserve?
+        </h2>
+
+        <p>
+          Some MAP Energy automations temporarily change your
+          Powerwall settings and then restore your previous backup
+          reserve when the automation finishes.
+        </p>
+
+        <p>
+          In these cases, MAP Energy can capture the backup reserve
+          that was active before the automation started.
+        </p>
+
+        <p>
+          If the captured reserve is between
+          <strong>81% and 99%</strong>,
+          MAP Energy cannot send that value back to Tesla when
+          restoring your settings.
+        </p>
+
+        <p>
+          When configuring an automation that uses this behaviour,
+          you choose what MAP Energy should do if the captured value
+          falls within Tesla's unsupported range.
+        </p>
+
+
+        <div class="fallback-grid">
+
+          <div class="fallback-card">
+
+            <span class="fallback-value">
+              80%
+            </span>
+
+            <p>
+              Use an 80% backup reserve when the captured value
+              is between 81% and 99%.
+            </p>
+
+          </div>
+
+
+          <div class="fallback-card">
+
+            <span class="fallback-value">
+              100%
+            </span>
+
+            <p>
+              Use a 100% backup reserve when the captured value
+              is between 81% and 99%.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="control-box">
+
+          <span class="control-title">
+            You're in control
+          </span>
+
+          <p>
+            You choose whether MAP Energy should use 80% or 100%
+            when a captured backup reserve falls within Tesla's
+            unsupported 81–99% range.
+          </p>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- ===================================================
+           USING 100%
+           =================================================== -->
+
+      <section>
+
+        <h2>
+          Using 100% backup reserve
+        </h2>
+
+        <p>
+          Setting the backup reserve to 100% can be useful when
+          you want to prevent the Powerwall from supplying normal
+          household demand.
+        </p>
+
+        <p>
+          This can be particularly useful within MAP Energy
+          automations that temporarily need to preserve the energy
+          stored in your Powerwall.
+        </p>
+
+        <p>
+          When the automation finishes, MAP Energy can restore the
+          previously captured backup reserve. If that captured value
+          was between 81% and 99%, your selected 80% or 100%
+          fallback preference will be used instead.
+        </p>
+
+
+        <div class="mappy-tip">
+
+          <img
+            src="mappy-docs.png"
+            alt=""
+            class="mappy-tip-image"
+          >
+
+          <div class="mappy-tip-content">
+
+            <span class="mappy-tip-title">
+              Mappy tip
+            </span>
+
+            <p>
+              The fallback only applies when the reserve MAP Energy
+              captured cannot be restored because it falls within
+              Tesla's unsupported 81–99% range.
+            </p>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- ===================================================
+           HELP
+           =================================================== -->
+
+      <section>
+
+        <h2>
+          Need help?
+        </h2>
+
+        <p>
+          If an automation is not changing your Powerwall backup
+          reserve as expected, check the automation history in
+          MAP Energy. This can help confirm whether the action was
+          successfully sent to Tesla.
+        </p>
+
+        <p>
+          You can also contact MAP Energy support if you need help
+          diagnosing an automation or Powerwall control issue.
+        </p>
+
+      </section>
+
+
+    </article>
+
+
+
+    <!-- =====================================================
+         FOOTER
+         ===================================================== -->
+
+    <footer class="footer">
+
+      <img
+        src="map-energy-logo.png"
+        alt=""
+        class="footer-logo"
+      >
+
+      <span>
+        MAP Energy • Powerwall control, insights &amp; automation
+      </span>
+
+    </footer>
+
 
   </main>
 
