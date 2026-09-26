@@ -30,7 +30,9 @@ function historyTotals(data) {
   const slots=(data.slots||[]).filter(s=>s.data_available!==false), t=data.totals;
   const sum=(key)=>slots.reduce((n,s)=>n+(detailNumber(s[key])||0),0);
   const cost=(energy,key,total)=> !t || !slots.length || Math.abs(sum(energy)-(detailNumber(total)||0))>.01 || slots.some(s=>detailNumber(s[key])===null) ? null : sum(key);
-  const imported=cost('import_kwh','import_cost',t?.import_kwh), exported=cost('export_kwh','export_revenue',t?.export_kwh);
+  // Daily costs include Tesla's midnight boundary sample; chart slots do not.
+  const imported=data.costs ? detailNumber(data.costs.import_cost) : cost('import_kwh','import_cost',t?.import_kwh);
+  const exported=data.costs ? detailNumber(data.costs.export_revenue) : cost('export_kwh','export_revenue',t?.export_kwh);
   const standing=detailNumber(data.import_standing_charge),exportStanding=detailNumber(data.export_standing_charge);
   const balance=imported===null||exported===null?null:imported-exported;
   return {imported,exported,standing,exportStanding,importTotal:imported===null||standing===null?null:imported+standing,exportTotal:exported===null||exportStanding===null?null:exported-exportStanding,balance,net:balance===null||standing===null||exportStanding===null?null:balance+standing+exportStanding,average:imported===null||!t?.import_kwh?null:imported/t.import_kwh*100};
