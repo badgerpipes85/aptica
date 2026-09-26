@@ -1,0 +1,1852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, viewport-fit=cover"
+  >
+
+  <title>Premium Subscription | MAP Energy</title>
+
+  <meta
+    name="description"
+    content="Learn about MAP Energy Premium, the 14-day free trial, subscription options and Premium features including automations, Powerwall diagnostics, the web portal and Energy Manager."
+  >
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-height: 100%;
+      background: #06101f;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "SF Pro Display",
+        "SF Pro Text",
+        "Segoe UI",
+        Roboto,
+        Helvetica,
+        Arial,
+        sans-serif;
+
+      color: #ffffff;
+
+      background:
+        linear-gradient(
+          180deg,
+          rgba(4, 11, 25, 0.18) 0%,
+          rgba(4, 11, 25, 0.42) 40%,
+          rgba(3, 8, 20, 0.72) 100%
+        ),
+        url("map-energy-docs-bg.PNG")
+        center top / cover fixed no-repeat;
+    }
+
+
+    /* =========================================================
+       PAGE
+       ========================================================= */
+
+    .page {
+      width: 100%;
+      max-width: 940px;
+
+      margin: 0 auto;
+
+      padding:
+        max(32px, env(safe-area-inset-top))
+        24px
+        max(70px, env(safe-area-inset-bottom));
+    }
+
+
+    /* =========================================================
+       HEADER
+       ========================================================= */
+
+    .brand-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      margin-bottom: 38px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+    }
+
+    .brand-logo {
+      width: 48px;
+      height: 48px;
+
+      object-fit: contain;
+
+      filter:
+        drop-shadow(
+          0 5px 14px rgba(0, 0, 0, 0.25)
+        );
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-name {
+      color: #ffffff;
+
+      font-size: 18px;
+      line-height: 1.1;
+
+      font-weight: 800;
+      letter-spacing: -0.01em;
+    }
+
+    .brand-subtitle {
+      margin-top: 4px;
+
+      color: rgba(204, 215, 231, 0.62);
+
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .support-pill {
+      padding: 9px 15px;
+
+      border-radius: 999px;
+
+      color: rgba(224, 235, 249, 0.85);
+
+      font-size: 12px;
+      font-weight: 700;
+
+      background: rgba(6, 18, 39, 0.58);
+
+      border:
+        1px solid rgba(116, 158, 218, 0.20);
+
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+
+
+    /* =========================================================
+       HERO
+       ========================================================= */
+
+    .hero {
+      position: relative;
+
+      display: flex;
+      align-items: center;
+
+      min-height: 320px;
+
+      padding: 38px 310px 38px 38px;
+
+      overflow: hidden;
+
+      border-radius: 30px;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(14, 36, 72, 0.90),
+          rgba(5, 16, 38, 0.88)
+        );
+
+      border:
+        1px solid rgba(81, 144, 232, 0.25);
+
+      box-shadow:
+        0 30px 90px rgba(0, 0, 0, 0.35),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+    }
+
+    .hero::before {
+      content: "";
+
+      position: absolute;
+
+      width: 350px;
+      height: 350px;
+
+      right: -80px;
+      top: -100px;
+
+      border-radius: 50%;
+
+      background:
+        radial-gradient(
+          circle,
+          rgba(29, 122, 255, 0.24),
+          transparent 68%
+        );
+
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      margin-bottom: 14px;
+
+      color: #59a8ff;
+
+      font-size: 12px;
+      font-weight: 800;
+
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow-dot {
+      width: 7px;
+      height: 7px;
+
+      border-radius: 50%;
+
+      background: #4294ff;
+
+      box-shadow:
+        0 0 12px rgba(66, 148, 255, 0.9);
+    }
+
+    h1 {
+      max-width: 540px;
+
+      margin: 0 0 17px;
+
+      color: #ffffff;
+
+      font-size: clamp(37px, 5.5vw, 53px);
+      line-height: 1.03;
+
+      letter-spacing: -0.04em;
+
+      font-weight: 850;
+    }
+
+    .hero-description {
+      max-width: 530px;
+
+      margin: 0;
+
+      color: rgba(221, 229, 241, 0.78);
+
+      font-size: 16px;
+      line-height: 1.65;
+    }
+
+    .mappy {
+      position: absolute;
+
+      z-index: 1;
+
+      right: 8px;
+      bottom: -28px;
+
+      width: 310px;
+      max-height: 330px;
+
+      object-fit: contain;
+      object-position: bottom center;
+
+      filter:
+        drop-shadow(
+          0 20px 25px rgba(0, 0, 0, 0.30)
+        );
+    }
+
+
+    /* =========================================================
+       CONTENT
+       ========================================================= */
+
+    .content-card {
+      margin-top: 22px;
+
+      padding: 38px;
+
+      border-radius: 30px;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(12, 29, 55, 0.88),
+          rgba(5, 13, 29, 0.90)
+        );
+
+      border:
+        1px solid rgba(93, 145, 220, 0.19);
+
+      box-shadow:
+        0 28px 80px rgba(0, 0, 0, 0.38),
+        inset 0 1px 0 rgba(255, 255, 255, 0.04);
+
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+    }
+
+    section + section {
+      margin-top: 46px;
+      padding-top: 42px;
+
+      border-top:
+        1px solid rgba(255, 255, 255, 0.075);
+    }
+
+    h2 {
+      margin: 0 0 17px;
+
+      color: #ffffff;
+
+      font-size: 25px;
+      line-height: 1.25;
+
+      letter-spacing: -0.018em;
+
+      font-weight: 780;
+    }
+
+    h3 {
+      margin: 0 0 8px;
+
+      color: #ffffff;
+
+      font-size: 17px;
+      font-weight: 750;
+    }
+
+    p {
+      margin: 0 0 17px;
+
+      color: rgba(226, 232, 242, 0.82);
+
+      font-size: 16px;
+      line-height: 1.72;
+    }
+
+    p:last-child {
+      margin-bottom: 0;
+    }
+
+    strong {
+      color: #ffffff;
+      font-weight: 720;
+    }
+
+
+    /* =========================================================
+       TRIAL BANNER
+       ========================================================= */
+
+    .trial-banner {
+      position: relative;
+
+      margin-top: 24px;
+
+      padding: 24px;
+
+      overflow: hidden;
+
+      border-radius: 21px;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(24, 105, 81, 0.34),
+          rgba(7, 48, 55, 0.46)
+        );
+
+      border:
+        1px solid rgba(65, 219, 161, 0.28);
+    }
+
+    .trial-banner::after {
+      content: "";
+
+      position: absolute;
+
+      width: 180px;
+      height: 180px;
+
+      right: -60px;
+      top: -80px;
+
+      border-radius: 50%;
+
+      background:
+        radial-gradient(
+          circle,
+          rgba(70, 225, 170, 0.15),
+          transparent 70%
+        );
+    }
+
+    .trial-label {
+      display: inline-block;
+
+      margin-bottom: 8px;
+
+      padding: 5px 9px;
+
+      border-radius: 999px;
+
+      color: #51e1a7;
+
+      background:
+        rgba(40, 184, 130, 0.13);
+
+      font-size: 10px;
+      font-weight: 850;
+
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+    }
+
+    .trial-title {
+      display: block;
+
+      margin-bottom: 7px;
+
+      color: #ffffff;
+
+      font-size: 22px;
+      font-weight: 800;
+    }
+
+    .trial-banner p {
+      position: relative;
+      z-index: 2;
+
+      margin: 0;
+    }
+
+
+    /* =========================================================
+       PRICING
+       ========================================================= */
+
+    .pricing-grid {
+      display: grid;
+
+      grid-template-columns: 1fr 1fr;
+
+      gap: 15px;
+
+      margin-top: 25px;
+    }
+
+    .price-card {
+      position: relative;
+
+      padding: 26px;
+
+      border-radius: 21px;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(7, 23, 49, 0.86),
+          rgba(4, 13, 29, 0.80)
+        );
+
+      border:
+        1px solid rgba(68, 137, 235, 0.22);
+    }
+
+    .price-card.recommended {
+      border:
+        1px solid rgba(70, 154, 255, 0.50);
+
+      box-shadow:
+        inset 0 0 35px rgba(43, 125, 238, 0.08);
+    }
+
+    .recommended-label {
+      position: absolute;
+
+      top: 15px;
+      right: 15px;
+
+      padding: 5px 9px;
+
+      border-radius: 999px;
+
+      color: #ffffff;
+
+      background: #347ff0;
+
+      font-size: 9px;
+      font-weight: 850;
+
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .price-type {
+      display: block;
+
+      margin-bottom: 12px;
+
+      color: #5ca8ff;
+
+      font-size: 12px;
+      font-weight: 800;
+
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+    }
+
+    .price {
+      color: #ffffff;
+
+      font-size: 37px;
+      line-height: 1;
+
+      font-weight: 850;
+
+      letter-spacing: -0.04em;
+    }
+
+    .price-period {
+      margin-left: 4px;
+
+      color: rgba(184, 199, 220, 0.65);
+
+      font-size: 13px;
+      font-weight: 650;
+    }
+
+    .price-description {
+      margin-top: 13px;
+
+      color: rgba(207, 219, 235, 0.72);
+
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .saving {
+      display: inline-block;
+
+      margin-top: 15px;
+
+      padding: 6px 10px;
+
+      border-radius: 999px;
+
+      color: #45dba0;
+
+      background:
+        rgba(40, 184, 130, 0.11);
+
+      border:
+        1px solid rgba(58, 215, 155, 0.18);
+
+      font-size: 11px;
+      font-weight: 750;
+    }
+
+    .local-price {
+      margin-top: 18px;
+
+      padding: 16px 18px;
+
+      border-radius: 16px;
+
+      background:
+        rgba(4, 13, 29, 0.52);
+
+      border:
+        1px solid rgba(255, 255, 255, 0.07);
+
+      color: rgba(200, 213, 231, 0.72);
+
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+
+    /* =========================================================
+       FEATURES
+       ========================================================= */
+
+    .feature-grid {
+      display: grid;
+
+      grid-template-columns: repeat(2, 1fr);
+
+      gap: 14px;
+
+      margin-top: 24px;
+    }
+
+    .feature-card {
+      padding: 22px;
+
+      border-radius: 19px;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(7, 23, 49, 0.82),
+          rgba(4, 13, 29, 0.76)
+        );
+
+      border:
+        1px solid rgba(68, 137, 235, 0.20);
+    }
+
+    .feature-icon {
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      width: 38px;
+      height: 38px;
+
+      margin-bottom: 14px;
+
+      border-radius: 11px;
+
+      color: #ffffff;
+
+      background:
+        rgba(47, 126, 242, 0.22);
+
+      border:
+        1px solid rgba(68, 145, 255, 0.30);
+
+      font-size: 18px;
+    }
+
+    .feature-card p {
+      margin: 0;
+
+      color: rgba(208, 219, 235, 0.73);
+
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .coming-soon {
+      display: inline-block;
+
+      margin-bottom: 10px;
+
+      padding: 4px 8px;
+
+      border-radius: 999px;
+
+      color: #f1b755;
+
+      background:
+        rgba(234, 160, 46, 0.11);
+
+      border:
+        1px solid rgba(234, 160, 46, 0.18);
+
+      font-size: 9px;
+      font-weight: 850;
+
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+
+    /* =========================================================
+       STEPS
+       ========================================================= */
+
+    .steps {
+      margin-top: 24px;
+    }
+
+    .step {
+      display: flex;
+
+      gap: 17px;
+
+      padding: 17px 0;
+
+      border-bottom:
+        1px solid rgba(255, 255, 255, 0.065);
+    }
+
+    .step:last-child {
+      border-bottom: 0;
+    }
+
+    .step-number {
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      width: 34px;
+      height: 34px;
+
+      flex: 0 0 auto;
+
+      border-radius: 11px;
+
+      color: #ffffff;
+
+      background: #347ff0;
+
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .step-content {
+      padding-top: 4px;
+    }
+
+    .step-title {
+      display: block;
+
+      margin-bottom: 5px;
+
+      color: #ffffff;
+
+      font-size: 15px;
+      font-weight: 750;
+    }
+
+    .step-content p {
+      margin: 0;
+
+      font-size: 14px;
+    }
+
+
+    /* =========================================================
+       INFO BOX
+       ========================================================= */
+
+    .info-box {
+      position: relative;
+
+      margin: 24px 0 0;
+
+      padding: 22px 23px 22px 62px;
+
+      border-radius: 20px;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(20, 76, 162, 0.34),
+          rgba(7, 32, 76, 0.42)
+        );
+
+      border:
+        1px solid rgba(66, 145, 255, 0.35);
+    }
+
+    .info-icon {
+      position: absolute;
+
+      left: 21px;
+      top: 22px;
+
+      width: 27px;
+      height: 27px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 50%;
+
+      color: #ffffff;
+
+      background: #347ff0;
+
+      font-size: 15px;
+      font-weight: 850;
+    }
+
+    .info-title {
+      display: block;
+
+      margin-bottom: 5px;
+
+      color: #ffffff;
+
+      font-weight: 750;
+    }
+
+    .info-box p {
+      margin: 0;
+
+      font-size: 14px;
+    }
+
+
+    /* =========================================================
+       FAQ
+       ========================================================= */
+
+    .faq-item {
+      padding: 22px 0;
+
+      border-bottom:
+        1px solid rgba(255, 255, 255, 0.07);
+    }
+
+    .faq-item:first-of-type {
+      padding-top: 8px;
+    }
+
+    .faq-item:last-child {
+      border-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .faq-question {
+      display: block;
+
+      margin-bottom: 8px;
+
+      color: #ffffff;
+
+      font-size: 16px;
+      font-weight: 760;
+    }
+
+    .faq-item p {
+      margin: 0;
+
+      font-size: 14px;
+    }
+
+
+    /* =========================================================
+       MAPPY TIP
+       ========================================================= */
+
+    .mappy-tip {
+      display: flex;
+      align-items: center;
+
+      gap: 18px;
+
+      margin-top: 26px;
+
+      padding: 18px 20px;
+
+      border-radius: 20px;
+
+      background:
+        rgba(4, 13, 29, 0.58);
+
+      border:
+        1px solid rgba(255, 255, 255, 0.075);
+    }
+
+    .mappy-tip-image {
+      width: 70px;
+      height: 70px;
+
+      flex: 0 0 auto;
+
+      object-fit: contain;
+    }
+
+    .mappy-tip-title {
+      display: block;
+
+      margin-bottom: 4px;
+
+      color: #ffffff;
+
+      font-size: 14px;
+      font-weight: 750;
+    }
+
+    .mappy-tip p {
+      margin: 0;
+
+      color: rgba(215, 224, 238, 0.74);
+
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+
+    /* =========================================================
+       FOOTER
+       ========================================================= */
+
+    .footer {
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      gap: 9px;
+
+      padding: 30px 5px 0;
+
+      color: rgba(179, 192, 211, 0.48);
+
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .footer-logo {
+      width: 23px;
+      height: 23px;
+
+      object-fit: contain;
+
+      opacity: 0.72;
+    }
+
+
+    /* =========================================================
+       MOBILE
+       ========================================================= */
+
+    @media (max-width: 700px) {
+
+      body {
+        background-attachment: scroll;
+      }
+
+      .page {
+        padding-left: 15px;
+        padding-right: 15px;
+      }
+
+      .brand-header {
+        margin-bottom: 25px;
+      }
+
+      .brand-logo {
+        width: 42px;
+        height: 42px;
+      }
+
+      .brand-name {
+        font-size: 16px;
+      }
+
+      .support-pill {
+        padding: 8px 12px;
+        font-size: 11px;
+      }
+
+      .hero {
+        display: block;
+
+        min-height: 0;
+
+        padding: 27px 23px 0;
+
+        border-radius: 25px;
+      }
+
+      h1 {
+        font-size: 37px;
+      }
+
+      .hero-description {
+        font-size: 15px;
+      }
+
+      .mappy {
+        position: relative;
+
+        display: block;
+
+        right: auto;
+        bottom: auto;
+
+        width: 230px;
+
+        margin: 12px auto -18px;
+      }
+
+      .content-card {
+        margin-top: 16px;
+
+        padding: 27px 20px;
+
+        border-radius: 25px;
+      }
+
+      section + section {
+        margin-top: 36px;
+        padding-top: 34px;
+      }
+
+      h2 {
+        font-size: 22px;
+      }
+
+      p {
+        font-size: 15px;
+      }
+
+      .pricing-grid,
+      .feature-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .mappy-tip {
+        align-items: flex-start;
+
+        padding: 16px;
+      }
+
+      .mappy-tip-image {
+        width: 55px;
+        height: 55px;
+      }
+
+    }
+
+
+    @media (max-width: 390px) {
+
+      .support-pill {
+        display: none;
+      }
+
+      h1 {
+        font-size: 33px;
+      }
+
+    }
+
+  </style>
+</head>
+
+
+<body>
+
+  <main class="page">
+
+
+    <!-- HEADER -->
+
+    <header class="brand-header">
+
+      <div class="brand">
+
+        <img
+          src="map-energy-logo.PNG"
+          alt="MAP Energy"
+          class="brand-logo"
+        >
+
+        <div class="brand-text">
+
+          <span class="brand-name">
+            MAP Energy
+          </span>
+
+          <span class="brand-subtitle">
+            Help &amp; Documentation
+          </span>
+
+        </div>
+
+      </div>
+
+      <div class="support-pill">
+        Premium
+      </div>
+
+    </header>
+
+
+
+    <!-- HERO -->
+
+    <section class="hero">
+
+      <div class="hero-content">
+
+        <div class="eyebrow">
+
+          <span class="eyebrow-dot"></span>
+
+          MAP Energy Premium
+
+        </div>
+
+        <h1>
+          Get more from your energy
+        </h1>
+
+        <p class="hero-description">
+          MAP Energy Premium unlocks advanced control and automation
+          for your energy system, Powerwall diagnostic data, access
+          to the MAP Energy web portal and upcoming intelligent
+          energy management features.
+        </p>
+
+      </div>
+
+
+      <img
+        src="mappy-docs.PNG"
+        alt="Mappy, the MAP Energy assistant"
+        class="mappy"
+      >
+
+    </section>
+
+
+
+    <!-- CONTENT -->
+
+    <article class="content-card">
+
+
+      <!-- TRIAL -->
+
+      <section>
+
+        <h2>
+          Try Premium free for 14 days
+        </h2>
+
+        <p>
+          New users can explore MAP Energy Premium with a
+          <strong>14-day free trial</strong>, giving you time to try
+          the advanced features with your own energy system before
+          deciding whether Premium is right for you.
+        </p>
+
+
+        <div class="trial-banner">
+
+          <span class="trial-label">
+            Free Trial
+          </span>
+
+          <span class="trial-title">
+            14 days of MAP Energy Premium
+          </span>
+
+          <p>
+            Explore Premium features including automations and
+            advanced Powerwall capabilities during your trial.
+          </p>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- PRICING -->
+
+      <section>
+
+        <h2>
+          Premium subscription options
+        </h2>
+
+        <p>
+          MAP Energy Premium is available as either a monthly or
+          annual subscription.
+        </p>
+
+
+        <div class="pricing-grid">
+
+
+          <div class="price-card">
+
+            <span class="price-type">
+              Monthly
+            </span>
+
+            <span class="price">
+              £3.99
+            </span>
+
+            <span class="price-period">
+              / month
+            </span>
+
+            <div class="price-description">
+              Flexible monthly access to MAP Energy Premium.
+            </div>
+
+          </div>
+
+
+          <div class="price-card recommended">
+
+            <span class="recommended-label">
+              Best Value
+            </span>
+
+            <span class="price-type">
+              Annual
+            </span>
+
+            <span class="price">
+              £39.99
+            </span>
+
+            <span class="price-period">
+              / year
+            </span>
+
+            <div class="price-description">
+              A full year of MAP Energy Premium.
+            </div>
+
+            <span class="saving">
+              Save £7.89 vs 12 monthly payments
+            </span>
+
+          </div>
+
+
+        </div>
+
+
+        <div class="local-price">
+
+          <strong>Prices shown are UK pricing.</strong>
+          MAP Energy is available in multiple countries. Your local
+          subscription price, currency and any applicable taxes are
+          displayed by the App Store or Google Play before you
+          subscribe and may differ from the UK prices shown here.
+
+        </div>
+
+      </section>
+
+
+
+      <!-- PREMIUM FEATURES -->
+
+      <section>
+
+        <h2>
+          What's included with Premium?
+        </h2>
+
+        <p>
+          Premium is designed for users who want to go beyond
+          monitoring their energy system and take greater control
+          of how it operates.
+        </p>
+
+
+        <div class="feature-grid">
+
+
+          <div class="feature-card">
+
+            <div class="feature-icon">
+              ⚡
+            </div>
+
+            <h3>
+              Automations
+            </h3>
+
+            <p>
+              Create powerful rules that respond to schedules,
+              battery levels, EV charging, smart tariff events,
+              electricity prices, solar conditions and more.
+            </p>
+
+          </div>
+
+
+          <div class="feature-card">
+
+            <div class="feature-icon">
+              ◉
+            </div>
+
+            <h3>
+              Powerwall Diagnostic Data
+            </h3>
+
+            <p>
+              Unlock additional diagnostic information from
+              compatible Tesla Powerwall systems after completing
+              the required diagnostic connection.
+            </p>
+
+          </div>
+
+
+          <div class="feature-card">
+
+            <div class="feature-icon">
+              ⌘
+            </div>
+
+            <h3>
+              MAP Energy Web Portal
+            </h3>
+
+            <p>
+              Access your MAP Energy system through the web portal,
+              giving you another way to view and manage your energy
+              information beyond the mobile app.
+            </p>
+
+          </div>
+
+
+          <div class="feature-card">
+
+            <span class="coming-soon">
+              Coming Soon
+            </span>
+
+            <div class="feature-icon">
+              ✦
+            </div>
+
+            <h3>
+              Energy Manager
+            </h3>
+
+            <p>
+              Premium will include access to the upcoming MAP Energy
+              Energy Manager, designed to intelligently plan and
+              optimise how your connected energy system operates.
+            </p>
+
+          </div>
+
+
+        </div>
+
+
+        <div class="mappy-tip">
+
+          <img
+            src="mappy-docs.PNG"
+            alt="Mappy"
+            class="mappy-tip-image"
+          >
+
+          <div>
+
+            <span class="mappy-tip-title">
+              More Premium features are coming
+            </span>
+
+            <p>
+              MAP Energy continues to evolve. Premium gives access
+              to the advanced features available today as well as
+              eligible Premium functionality introduced in future
+              releases.
+            </p>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- AUTOMATIONS -->
+
+      <section>
+
+        <h2>
+          Premium Automations
+        </h2>
+
+        <p>
+          Automations are one of the core benefits of MAP Energy
+          Premium.
+        </p>
+
+        <p>
+          Instead of manually changing your Powerwall settings as
+          your energy situation changes, MAP Energy can monitor
+          supported events and perform your configured actions
+          automatically.
+        </p>
+
+        <p>
+          Depending on your connected services, automations can
+          respond to events such as EV charging, battery state of
+          charge, schedules, electricity prices, solar conditions
+          and supported smart tariff events.
+        </p>
+
+        <p>
+          Actions can include Powerwall controls, notifications and
+          sending structured events to a connected Home Assistant
+          instance.
+        </p>
+
+      </section>
+
+
+
+      <!-- DIAGNOSTICS -->
+
+      <section>
+
+        <h2>
+          Powerwall Diagnostic Data
+        </h2>
+
+        <p>
+          Premium users can access MAP Energy's supported Powerwall
+          diagnostic features.
+        </p>
+
+        <p>
+          Diagnostic data provides additional information beyond the
+          standard Tesla cloud data available to MAP Energy.
+        </p>
+
+        <p>
+          Because this information comes from the Powerwall's
+          diagnostic interface, an additional pairing process may be
+          required before the feature can be used.
+        </p>
+
+        <div class="info-box">
+
+          <div class="info-icon">
+            i
+          </div>
+
+          <span class="info-title">
+            Initial pairing may require local access
+          </span>
+
+          <p>
+            Depending on your Powerwall, you may need to be at home
+            and connected to the same local network as the Powerwall
+            when completing the initial diagnostic connection.
+          </p>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- WEB PORTAL -->
+
+      <section>
+
+        <h2>
+          MAP Energy Web Portal
+        </h2>
+
+        <p>
+          Premium also includes access to the MAP Energy web portal.
+        </p>
+
+        <p>
+          The web portal complements the iOS and Android apps and
+          provides access to supported MAP Energy information from
+          a web browser.
+        </p>
+
+        <p>
+          As MAP Energy develops, additional web-based functionality
+          can be introduced alongside the mobile experience.
+        </p>
+
+      </section>
+
+
+
+      <!-- ENERGY MANAGER -->
+
+      <section>
+
+        <h2>
+          Energy Manager
+        </h2>
+
+        <span class="coming-soon">
+          Coming Soon
+        </span>
+
+        <p>
+          Energy Manager is an upcoming MAP Energy Premium feature
+          being developed to take energy optimisation beyond
+          individual rules and automations.
+        </p>
+
+        <p>
+          The aim is to allow MAP Energy to consider information
+          about your connected energy system and build an intelligent
+          plan for how energy should be used, stored and managed.
+        </p>
+
+        <p>
+          Energy Manager is still in development, so its final
+          functionality may evolve before release.
+        </p>
+
+        <div class="info-box">
+
+          <div class="info-icon">
+            i
+          </div>
+
+          <span class="info-title">
+            Future feature
+          </span>
+
+          <p>
+            Energy Manager is not yet generally available. Features,
+            compatibility and functionality may change during
+            development before its public release.
+          </p>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- HOW TO SUBSCRIBE -->
+
+      <section>
+
+        <h2>
+          How do I subscribe?
+        </h2>
+
+        <p>
+          Premium subscriptions are purchased from within the
+          MAP Energy app using the store associated with your device.
+        </p>
+
+
+        <div class="steps">
+
+
+          <div class="step">
+
+            <span class="step-number">
+              1
+            </span>
+
+            <div class="step-content">
+
+              <span class="step-title">
+                Open MAP Energy
+              </span>
+
+              <p>
+                Open MAP Energy on your iPhone, iPad or Android
+                device.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="step">
+
+            <span class="step-number">
+              2
+            </span>
+
+            <div class="step-content">
+
+              <span class="step-title">
+                Choose Premium
+              </span>
+
+              <p>
+                Open the Premium subscription option and review the
+                plans available in your country.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="step">
+
+            <span class="step-number">
+              3
+            </span>
+
+            <div class="step-content">
+
+              <span class="step-title">
+                Select monthly or annual
+              </span>
+
+              <p>
+                Choose the subscription option that suits you and
+                confirm the purchase through the App Store or
+                Google Play.
+              </p>
+
+            </div>
+
+          </div>
+
+
+        </div>
+
+
+        <div class="info-box">
+
+          <div class="info-icon">
+            i
+          </div>
+
+          <span class="info-title">
+            Check the store price before subscribing
+          </span>
+
+          <p>
+            The price displayed by the App Store or Google Play
+            during purchase is the price applicable to your account
+            and region.
+          </p>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- MANAGING -->
+
+      <section>
+
+        <h2>
+          Managing your subscription
+        </h2>
+
+        <p>
+          MAP Energy Premium is an in-app subscription managed through
+          the store where you purchased it.
+        </p>
+
+        <p>
+          Your subscription management, renewal and cancellation
+          options are therefore available through your Apple App Store
+          or Google Play account.
+        </p>
+
+        <p>
+          Cancelling a subscription prevents future renewal. Premium
+          access normally remains available until the end of the
+          subscription period you have already paid for.
+        </p>
+
+      </section>
+
+
+
+      <!-- FAQ -->
+
+      <section>
+
+        <h2>
+          Subscription questions
+        </h2>
+
+
+        <div class="faq-item">
+
+          <span class="faq-question">
+            Is there a free trial?
+          </span>
+
+          <p>
+            Yes. MAP Energy Premium includes a 14-day free trial for
+            eligible new subscriptions.
+          </p>
+
+        </div>
+
+
+        <div class="faq-item">
+
+          <span class="faq-question">
+            Why is the price in my app different from £3.99 or £39.99?
+          </span>
+
+          <p>
+            These are the UK prices. Apple and Google display the
+            appropriate local price and currency for your store
+            account, and pricing can vary between countries.
+          </p>
+
+        </div>
+
+
+        <div class="faq-item">
+
+          <span class="faq-question">
+            Do I have to subscribe annually?
+          </span>
+
+          <p>
+            No. You can choose between monthly and annual Premium
+            subscription options.
+          </p>
+
+        </div>
+
+
+        <div class="faq-item">
+
+          <span class="faq-question">
+            Is the annual subscription cheaper?
+          </span>
+
+          <p>
+            At UK pricing, twelve monthly payments would cost £47.88.
+            The £39.99 annual subscription therefore saves £7.89
+            compared with paying monthly for twelve months.
+          </p>
+
+        </div>
+
+
+        <div class="faq-item">
+
+          <span class="faq-question">
+            What happens if I cancel?
+          </span>
+
+          <p>
+            Your subscription will not renew for another billing
+            period. Premium access normally remains active until the
+            end of your current paid subscription period.
+          </p>
+
+        </div>
+
+
+        <div class="faq-item">
+
+          <span class="faq-question">
+            I subscribed but Premium isn't showing. What should I do?
+          </span>
+
+          <p>
+            Make sure the purchase completed successfully and that
+            you are using the correct App Store or Google Play
+            account. You can also use any available restore purchase
+            option in MAP Energy. If Premium still does not appear,
+            contact MAP Energy support.
+          </p>
+
+        </div>
+
+
+        <div class="faq-item">
+
+          <span class="faq-question">
+            Is Energy Manager available now?
+          </span>
+
+          <p>
+            Not yet. Energy Manager is an upcoming Premium feature
+            and is currently in development.
+          </p>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- SUPPORT -->
+
+      <section>
+
+        <h2>
+          Need help with Premium?
+        </h2>
+
+        <p>
+          If you have purchased Premium and your subscription is not
+          being recognised, or you have another subscription question,
+          contact MAP Energy support.
+        </p>
+
+        <p>
+          When contacting support, it is helpful to include the
+          platform you are using — iOS or Android — and a brief
+          description of the problem.
+        </p>
+
+      </section>
+
+
+    </article>
+
+
+
+    <!-- FOOTER -->
+
+    <footer class="footer">
+
+      <img
+        src="map-energy-logo.PNG"
+        alt="MAP Energy"
+        class="footer-logo"
+      >
+
+      <span>
+        MAP Energy • Powerwall control, insights &amp; automation
+      </span>
+
+    </footer>
+
+
+  </main>
+
+</body>
+</html>
