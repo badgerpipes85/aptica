@@ -1,502 +1,1810 @@
-<!doctype html>
-<html lang="en-GB">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Documentation – MAP Energy</title>
-  <meta name="description" content="Documentation for MAP Energy, operated by Aptica Ltd." />
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, viewport-fit=cover"
+  >
+
+  <title>MAP Energy Documentation</title>
+
+  <meta
+    name="description"
+    content="MAP Energy help and documentation. Learn how to connect your Tesla Powerwall, create automations, integrate EV chargers, access diagnostic data and get the most from MAP Energy."
+  >
+
   <style>
-    :root {
-      color-scheme: light dark;
-
-      --brand-blue: #2f80ed;
-      --brand-grey: #8c98a8;
-      --energy-yellow: #f2c94c;
-
-      --bg-primary: #f7f9fc;
-      --bg-card: rgba(255,255,255,0.82);
-      --border: rgba(47, 128, 237, 0.14);
-      --text-primary: #17212f;
-      --text-secondary: #5f6b7a;
-      --success: #27ae60;
-      --warning: #f2994a;
-      --error: #eb5757;
-
-      --shadow: 0 12px 30px rgba(24, 39, 75, 0.08);
-      --radius-xl: 22px;
-      --radius-lg: 16px;
-      --radius-md: 14px;
-    }
-
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --bg-primary: #0d1117;
-        --bg-card: rgba(22, 27, 34, 0.88);
-        --border: rgba(255,255,255,0.08);
-        --text-primary: #f3f6fb;
-        --text-secondary: #a9b4c2;
-        --shadow: 0 16px 36px rgba(0, 0, 0, 0.34);
-      }
-    }
 
     * {
       box-sizing: border-box;
     }
 
     html {
+      min-height: 100%;
+      background: #06101f;
       scroll-behavior: smooth;
     }
 
     body {
       margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      color: var(--text-primary);
+      min-height: 100vh;
+
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "SF Pro Display",
+        "SF Pro Text",
+        "Segoe UI",
+        Roboto,
+        Helvetica,
+        Arial,
+        sans-serif;
+
+      color: #ffffff;
+
       background:
         linear-gradient(
-          to bottom,
-          rgba(47, 128, 237, 0.18) 0%,
-          rgba(242, 201, 76, 0.10) 30%,
-          var(--bg-primary) 70%
-        );
-      min-height: 100vh;
+          180deg,
+          rgba(4, 11, 25, 0.14) 0%,
+          rgba(4, 11, 25, 0.38) 38%,
+          rgba(3, 8, 20, 0.78) 100%
+        ),
+        url("map-energy-docs-bg.PNG")
+        center top / cover fixed no-repeat;
     }
 
-    .shell {
-      max-width: 980px;
+
+    /* =========================================================
+       PAGE
+       ========================================================= */
+
+    .page {
+      width: 100%;
+      max-width: 1040px;
+
       margin: 0 auto;
-      padding: 28px 18px 64px;
+
+      padding:
+        max(32px, env(safe-area-inset-top))
+        24px
+        max(70px, env(safe-area-inset-bottom));
     }
 
-    .hero {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-xl);
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      padding: 24px 22px;
-      margin-bottom: 18px;
-    }
 
-    h1 {
-      margin: 0 0 10px;
-      font-size: clamp(2rem,5vw,2.7rem);
-      line-height: 1.06;
-      letter-spacing: -0.02em;
-    }
+    /* =========================================================
+       HEADER
+       ========================================================= */
 
-    .hero p {
-      margin: 0;
-      color: var(--text-secondary);
-      font-size: 1rem;
-    }
-
-    .hero-meta {
-      margin-top: 16px;
-      display: grid;
-      gap: 10px;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    }
-
-    .mini-card {
-      background: rgba(255,255,255,0.36);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      padding: 12px 14px;
-    }
-
-    @media (prefers-color-scheme: dark) {
-      .mini-card {
-        background: rgba(255,255,255,0.03);
-      }
-    }
-
-    .mini-label {
-      display: block;
-      color: var(--text-secondary);
-      font-size: 0.82rem;
-      margin-bottom: 4px;
-    }
-
-    .mini-value {
-      font-size: 0.95rem;
-      font-weight: 600;
-      color: var(--text-primary);
-    }
-
-    .notice {
-      margin: 18px 0 24px;
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 16px 18px;
-      box-shadow: var(--shadow);
-    }
-
-    .notice strong {
-      color: var(--brand-blue);
-    }
-
-    .layout {
-      display: grid;
-      gap: 18px;
-      grid-template-columns: 260px 1fr;
-      align-items: start;
-    }
-
-    @media (max-width: 860px) {
-      .layout {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .toc,
-    .content-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-xl);
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-    }
-
-    .toc {
-      position: sticky;
-      top: 18px;
-      padding: 18px 16px;
-    }
-
-    @media (max-width: 860px) {
-      .toc {
-        position: static;
-      }
-    }
-
-    .toc h2 {
-      margin: 0 0 12px;
-      font-size: 1rem;
-    }
-
-    .toc ul {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      display: grid;
-      gap: 8px;
-    }
-
-    .toc a {
-      display: block;
-      color: var(--text-secondary);
-      text-decoration: none;
-      font-size: 0.95rem;
-      border-radius: 10px;
-      padding: 8px 10px;
-      transition: 0.15s ease;
-    }
-
-    .toc a:hover {
-      background: rgba(47, 128, 237, 0.10);
-      color: var(--brand-blue);
-    }
-
-    .content-card {
-      padding: 24px 22px 30px;
-    }
-
-    section + section {
-      margin-top: 28px;
-      padding-top: 24px;
-      border-top: 1px solid var(--border);
-    }
-
-    h2.section-title {
-      margin: 0 0 12px;
-      font-size: 1.28rem;
-      letter-spacing: -0.01em;
-    }
-
-    h3 {
-      margin: 18px 0 8px;
-      font-size: 1rem;
-      color: var(--brand-blue);
-    }
-
-    p {
-      margin: 10px 0;
-      font-size: 1rem;
-      color: var(--text-primary);
-    }
-
-    ul {
-      margin: 10px 0 10px 1.1rem;
-      padding: 0;
-    }
-
-    li {
-      margin: 7px 0;
-      color: var(--text-primary);
-    }
-
-    .muted {
-      color: var(--text-secondary);
-    }
-
-    .badge-row {
+    .brand-header {
       display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin: 12px 0 4px;
-    }
-
-    .badge {
-      display: inline-flex;
       align-items: center;
-      padding: 8px 12px;
-      border-radius: 999px;
-      font-size: 0.88rem;
-      font-weight: 600;
-      border: 1px solid transparent;
-    }
+      justify-content: space-between;
 
-    .badge-blue {
-      color: var(--brand-blue);
-      background: rgba(47, 128, 237, 0.12);
-      border-color: rgba(47, 128, 237, 0.22);
-    }
-
-    .badge-yellow {
-      color: #8a6400;
-      background: rgba(242, 201, 76, 0.18);
-      border-color: rgba(242, 201, 76, 0.26);
-    }
-
-    .badge-green {
-      color: var(--success);
-      background: rgba(39, 174, 96, 0.12);
-      border-color: rgba(39, 174, 96, 0.22);
-    }
-
-    .callout {
-      border-left: 4px solid var(--brand-blue);
-      background: rgba(47, 128, 237, 0.08);
-      border-radius: 12px;
-      padding: 14px 14px 14px 16px;
-      margin: 14px 0;
-    }
-
-    .callout p {
-      margin: 0;
+      margin-bottom: 38px;
     }
 
     .brand {
       display: flex;
       align-items: center;
-      gap: 10px;
-      margin-bottom: 18px;
+      gap: 13px;
     }
 
-    .logo {
-      height: 40px;
-      width: auto;
+    .brand-logo {
+      width: 50px;
+      height: 50px;
+
+      object-fit: contain;
+
+      filter:
+        drop-shadow(
+          0 5px 14px rgba(0, 0, 0, 0.25)
+        );
     }
 
     .brand-text {
-      font-size: 20px;
-      font-weight: 700;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-name {
+      color: #ffffff;
+
+      font-size: 18px;
+      line-height: 1.1;
+
+      font-weight: 800;
       letter-spacing: -0.01em;
     }
 
-    .brand-divider {
-      height: 1px;
-      background: var(--border);
-      margin: 18px 0 22px;
+    .brand-subtitle {
+      margin-top: 4px;
+
+      color: rgba(204, 215, 231, 0.62);
+
+      font-size: 12px;
+      font-weight: 600;
     }
 
-    a {
-      color: var(--brand-blue);
+    .header-pill {
+      padding: 9px 15px;
+
+      border-radius: 999px;
+
+      color: rgba(224, 235, 249, 0.85);
+
+      font-size: 12px;
+      font-weight: 700;
+
+      background: rgba(6, 18, 39, 0.58);
+
+      border:
+        1px solid rgba(116, 158, 218, 0.20);
+
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+
+
+    /* =========================================================
+       HERO
+       ========================================================= */
+
+    .hero {
+      position: relative;
+
+      display: flex;
+      align-items: center;
+
+      min-height: 400px;
+
+      padding: 50px 370px 50px 46px;
+
+      overflow: hidden;
+
+      border-radius: 32px;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(14, 39, 79, 0.94),
+          rgba(5, 17, 40, 0.91)
+        );
+
+      border:
+        1px solid rgba(81, 144, 232, 0.27);
+
+      box-shadow:
+        0 32px 95px rgba(0, 0, 0, 0.38),
+        inset 0 1px 0 rgba(255, 255, 255, 0.055);
+
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+    }
+
+    .hero::before {
+      content: "";
+
+      position: absolute;
+
+      width: 440px;
+      height: 440px;
+
+      right: -100px;
+      top: -150px;
+
+      border-radius: 50%;
+
+      background:
+        radial-gradient(
+          circle,
+          rgba(31, 129, 255, 0.28),
+          transparent 67%
+        );
+
+      pointer-events: none;
+    }
+
+    .hero::after {
+      content: "";
+
+      position: absolute;
+
+      width: 300px;
+      height: 300px;
+
+      left: -130px;
+      bottom: -180px;
+
+      border-radius: 50%;
+
+      background:
+        radial-gradient(
+          circle,
+          rgba(241, 168, 60, 0.09),
+          transparent 68%
+        );
+
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      margin-bottom: 15px;
+
+      color: #59a8ff;
+
+      font-size: 12px;
+      font-weight: 800;
+
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow-dot {
+      width: 7px;
+      height: 7px;
+
+      border-radius: 50%;
+
+      background: #4294ff;
+
+      box-shadow:
+        0 0 12px rgba(66, 148, 255, 0.9);
+    }
+
+    h1 {
+      max-width: 570px;
+
+      margin: 0 0 19px;
+
+      color: #ffffff;
+
+      font-size: clamp(42px, 6vw, 60px);
+      line-height: 1;
+
+      letter-spacing: -0.045em;
+
+      font-weight: 850;
+    }
+
+    .hero-description {
+      max-width: 555px;
+
+      margin: 0;
+
+      color: rgba(221, 229, 241, 0.80);
+
+      font-size: 17px;
+      line-height: 1.68;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+
+      gap: 10px;
+
+      margin-top: 25px;
+    }
+
+    .hero-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+
+      padding: 12px 17px;
+
+      border-radius: 14px;
+
+      color: #ffffff;
+
       text-decoration: none;
+
+      background: #347ff0;
+
+      border:
+        1px solid rgba(110, 173, 255, 0.48);
+
+      box-shadow:
+        0 8px 24px rgba(22, 96, 211, 0.23);
+
+      font-size: 13px;
+      font-weight: 750;
+
+      transition:
+        transform 0.15s ease,
+        background 0.15s ease;
     }
 
-    a:hover {
-      text-decoration: underline;
+    .hero-button:hover {
+      transform: translateY(-1px);
+      background: #3d89fa;
     }
 
-    footer {
-      margin-top: 24px;
-      text-align: center;
-      color: var(--text-secondary);
-      font-size: 0.94rem;
+    .hero-button.secondary {
+      background:
+        rgba(7, 22, 48, 0.70);
+
+      border:
+        1px solid rgba(102, 158, 236, 0.25);
+
+      box-shadow: none;
     }
+
+    .mappy {
+      position: absolute;
+
+      z-index: 1;
+
+      right: 18px;
+      bottom: -23px;
+
+      width: 350px;
+      max-height: 390px;
+
+      object-fit: contain;
+      object-position: bottom center;
+
+      filter:
+        drop-shadow(
+          0 22px 30px rgba(0, 0, 0, 0.34)
+        );
+    }
+
+
+    /* =========================================================
+       WELCOME
+       ========================================================= */
+
+    .welcome {
+      margin-top: 22px;
+
+      padding: 31px 34px;
+
+      border-radius: 25px;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(12, 29, 55, 0.86),
+          rgba(5, 13, 29, 0.88)
+        );
+
+      border:
+        1px solid rgba(93, 145, 220, 0.18);
+
+      box-shadow:
+        0 24px 65px rgba(0, 0, 0, 0.30);
+
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+    }
+
+    .welcome h2 {
+      margin: 0 0 9px;
+
+      color: #ffffff;
+
+      font-size: 23px;
+      font-weight: 780;
+
+      letter-spacing: -0.02em;
+    }
+
+    .welcome p {
+      max-width: 800px;
+
+      margin: 0;
+
+      color: rgba(215, 225, 239, 0.75);
+
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+
+    /* =========================================================
+       DOC SECTIONS
+       ========================================================= */
+
+    .docs-section {
+      margin-top: 47px;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+
+      gap: 20px;
+
+      margin-bottom: 18px;
+    }
+
+    .section-eyebrow {
+      display: block;
+
+      margin-bottom: 6px;
+
+      color: #559fff;
+
+      font-size: 10px;
+      font-weight: 850;
+
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .section-heading h2 {
+      margin: 0;
+
+      color: #ffffff;
+
+      font-size: 25px;
+      line-height: 1.2;
+
+      font-weight: 800;
+
+      letter-spacing: -0.025em;
+    }
+
+    .section-description {
+      max-width: 400px;
+
+      margin: 0;
+
+      color: rgba(187, 203, 224, 0.58);
+
+      font-size: 12px;
+      line-height: 1.5;
+
+      text-align: right;
+    }
+
+
+    /* =========================================================
+       DOC CARDS
+       ========================================================= */
+
+    .docs-grid {
+      display: grid;
+
+      grid-template-columns: repeat(2, 1fr);
+
+      gap: 15px;
+    }
+
+    .doc-card {
+      position: relative;
+
+      display: block;
+
+      min-height: 190px;
+
+      padding: 25px;
+
+      overflow: hidden;
+
+      color: inherit;
+      text-decoration: none;
+
+      border-radius: 22px;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(11, 31, 62, 0.88),
+          rgba(5, 15, 33, 0.86)
+        );
+
+      border:
+        1px solid rgba(77, 139, 226, 0.20);
+
+      box-shadow:
+        0 18px 50px rgba(0, 0, 0, 0.24);
+
+      transition:
+        transform 0.18s ease,
+        border-color 0.18s ease,
+        box-shadow 0.18s ease;
+    }
+
+    .doc-card:hover {
+      transform: translateY(-3px);
+
+      border-color:
+        rgba(82, 155, 255, 0.45);
+
+      box-shadow:
+        0 23px 60px rgba(0, 0, 0, 0.32);
+    }
+
+    .doc-card::after {
+      content: "";
+
+      position: absolute;
+
+      width: 160px;
+      height: 160px;
+
+      right: -70px;
+      bottom: -85px;
+
+      border-radius: 50%;
+
+      background:
+        radial-gradient(
+          circle,
+          rgba(43, 130, 255, 0.13),
+          transparent 70%
+        );
+
+      pointer-events: none;
+    }
+
+    .card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+
+      gap: 15px;
+
+      margin-bottom: 18px;
+    }
+
+    .doc-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      width: 43px;
+      height: 43px;
+
+      flex: 0 0 auto;
+
+      border-radius: 13px;
+
+      color: #ffffff;
+
+      background:
+        rgba(47, 126, 242, 0.20);
+
+      border:
+        1px solid rgba(68, 145, 255, 0.28);
+
+      font-size: 19px;
+      font-weight: 700;
+    }
+
+    .arrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      width: 31px;
+      height: 31px;
+
+      flex: 0 0 auto;
+
+      border-radius: 50%;
+
+      color: rgba(130, 181, 255, 0.86);
+
+      background:
+        rgba(47, 126, 242, 0.10);
+
+      border:
+        1px solid rgba(68, 145, 255, 0.15);
+
+      font-size: 16px;
+
+      transition:
+        transform 0.18s ease;
+    }
+
+    .doc-card:hover .arrow {
+      transform: translateX(3px);
+    }
+
+    .doc-card h3 {
+      position: relative;
+      z-index: 2;
+
+      margin: 0 0 8px;
+
+      color: #ffffff;
+
+      font-size: 18px;
+      font-weight: 780;
+
+      letter-spacing: -0.015em;
+    }
+
+    .doc-card p {
+      position: relative;
+      z-index: 2;
+
+      margin: 0;
+
+      color: rgba(204, 217, 235, 0.70);
+
+      font-size: 14px;
+      line-height: 1.58;
+    }
+
+    .card-label {
+      display: inline-block;
+
+      position: relative;
+      z-index: 2;
+
+      margin-top: 17px;
+
+      color: #59a8ff;
+
+      font-size: 10px;
+      font-weight: 800;
+
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+
+    /* =========================================================
+       FEATURED CARD
+       ========================================================= */
+
+    .doc-card.featured {
+      grid-column: span 2;
+
+      min-height: 210px;
+
+      padding-right: 260px;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(16, 56, 111, 0.88),
+          rgba(6, 23, 51, 0.91)
+        );
+
+      border:
+        1px solid rgba(76, 153, 255, 0.31);
+    }
+
+    .doc-card.featured::before {
+      content: "";
+
+      position: absolute;
+
+      width: 300px;
+      height: 300px;
+
+      right: -80px;
+      top: -120px;
+
+      border-radius: 50%;
+
+      background:
+        radial-gradient(
+          circle,
+          rgba(48, 139, 255, 0.22),
+          transparent 68%
+        );
+    }
+
+    .featured-badge {
+      display: inline-block;
+
+      position: relative;
+      z-index: 2;
+
+      margin-bottom: 14px;
+
+      padding: 5px 9px;
+
+      border-radius: 999px;
+
+      color: #ffffff;
+
+      background:
+        rgba(52, 127, 240, 0.38);
+
+      border:
+        1px solid rgba(91, 161, 255, 0.32);
+
+      font-size: 9px;
+      font-weight: 850;
+
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+
+    /* =========================================================
+       RELEASES
+       ========================================================= */
+
+    .updates-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 30px;
+
+      margin-top: 15px;
+
+      padding: 27px 29px;
+
+      color: inherit;
+      text-decoration: none;
+
+      border-radius: 22px;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(94, 59, 17, 0.32),
+          rgba(26, 27, 31, 0.70)
+        );
+
+      border:
+        1px solid rgba(234, 166, 65, 0.22);
+
+      transition:
+        transform 0.18s ease,
+        border-color 0.18s ease;
+    }
+
+    .updates-card:hover {
+      transform: translateY(-2px);
+
+      border-color:
+        rgba(234, 166, 65, 0.42);
+    }
+
+    .updates-content {
+      display: flex;
+      align-items: center;
+
+      gap: 17px;
+    }
+
+    .updates-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      width: 44px;
+      height: 44px;
+
+      flex: 0 0 auto;
+
+      border-radius: 13px;
+
+      color: #f2b75b;
+
+      background:
+        rgba(229, 155, 45, 0.12);
+
+      border:
+        1px solid rgba(229, 155, 45, 0.20);
+
+      font-size: 20px;
+    }
+
+    .updates-title {
+      display: block;
+
+      margin-bottom: 4px;
+
+      color: #ffffff;
+
+      font-size: 17px;
+      font-weight: 780;
+    }
+
+    .updates-description {
+      color: rgba(211, 218, 228, 0.68);
+
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .updates-arrow {
+      color: #f2b75b;
+
+      font-size: 20px;
+    }
+
+
+    /* =========================================================
+       HELP
+       ========================================================= */
+
+    .help-card {
+      position: relative;
+
+      display: flex;
+      align-items: center;
+
+      min-height: 210px;
+
+      margin-top: 47px;
+
+      padding: 30px 250px 30px 32px;
+
+      overflow: hidden;
+
+      border-radius: 25px;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(12, 42, 82, 0.88),
+          rgba(5, 18, 40, 0.89)
+        );
+
+      border:
+        1px solid rgba(81, 144, 232, 0.22);
+    }
+
+    .help-card h2 {
+      margin: 0 0 9px;
+
+      color: #ffffff;
+
+      font-size: 23px;
+      font-weight: 790;
+    }
+
+    .help-card p {
+      max-width: 600px;
+
+      margin: 0 0 17px;
+
+      color: rgba(211, 222, 237, 0.74);
+
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    .help-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+
+      padding: 10px 15px;
+
+      border-radius: 13px;
+
+      color: #ffffff;
+
+      text-decoration: none;
+
+      background:
+        rgba(47, 126, 242, 0.23);
+
+      border:
+        1px solid rgba(76, 153, 255, 0.29);
+
+      font-size: 13px;
+      font-weight: 730;
+    }
+
+    .help-mappy {
+      position: absolute;
+
+      right: 22px;
+      bottom: -45px;
+
+      width: 210px;
+      max-height: 235px;
+
+      object-fit: contain;
+
+      filter:
+        drop-shadow(
+          0 16px 23px rgba(0, 0, 0, 0.28)
+        );
+    }
+
+
+    /* =========================================================
+       FOOTER
+       ========================================================= */
+
+    .footer {
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      gap: 9px;
+
+      padding: 32px 5px 0;
+
+      color: rgba(179, 192, 211, 0.48);
+
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .footer-logo {
+      width: 23px;
+      height: 23px;
+
+      object-fit: contain;
+
+      opacity: 0.72;
+    }
+
+
+    /* =========================================================
+       MOBILE
+       ========================================================= */
+
+    @media (max-width: 760px) {
+
+      body {
+        background-attachment: scroll;
+      }
+
+      .page {
+        padding-left: 15px;
+        padding-right: 15px;
+      }
+
+      .brand-header {
+        margin-bottom: 25px;
+      }
+
+      .brand-logo {
+        width: 42px;
+        height: 42px;
+      }
+
+      .brand-name {
+        font-size: 16px;
+      }
+
+      .hero {
+        display: block;
+
+        min-height: 0;
+
+        padding: 29px 23px 0;
+
+        border-radius: 26px;
+      }
+
+      h1 {
+        font-size: 39px;
+      }
+
+      .hero-description {
+        font-size: 15px;
+      }
+
+      .hero-actions {
+        margin-top: 21px;
+      }
+
+      .mappy {
+        position: relative;
+
+        display: block;
+
+        right: auto;
+        bottom: auto;
+
+        width: 245px;
+
+        margin: 15px auto -20px;
+      }
+
+      .welcome {
+        padding: 25px 22px;
+
+        border-radius: 22px;
+      }
+
+      .docs-section {
+        margin-top: 38px;
+      }
+
+      .section-heading {
+        display: block;
+      }
+
+      .section-description {
+        margin-top: 7px;
+
+        text-align: left;
+      }
+
+      .docs-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .doc-card {
+        min-height: 0;
+
+        padding: 22px;
+      }
+
+      .doc-card.featured {
+        grid-column: auto;
+
+        min-height: 0;
+
+        padding-right: 22px;
+      }
+
+      .updates-card {
+        align-items: flex-start;
+
+        padding: 22px;
+      }
+
+      .updates-arrow {
+        margin-top: 8px;
+      }
+
+      .help-card {
+        display: block;
+
+        min-height: 0;
+
+        padding: 25px 22px 0;
+      }
+
+      .help-mappy {
+        position: relative;
+
+        display: block;
+
+        right: auto;
+        bottom: auto;
+
+        width: 175px;
+
+        margin: 4px auto -30px;
+      }
+
+    }
+
+
+    @media (max-width: 390px) {
+
+      .header-pill {
+        display: none;
+      }
+
+      h1 {
+        font-size: 35px;
+      }
+
+      .hero-button {
+        width: 100%;
+
+        justify-content: center;
+      }
+
+    }
+
   </style>
 </head>
 
+
 <body>
-  <div class="shell">
-    <header class="hero">
+
+  <main class="page">
+
+
+    <!-- =====================================================
+         HEADER
+         ===================================================== -->
+
+    <header class="brand-header">
+
       <div class="brand">
-        <img src="/MAP Logo.png" alt="MAP Energy Logo" class="logo">
-        <span class="brand-text">MAP Energy</span>
+
+        <img
+          src="map-energy-logo.PNG"
+          alt="MAP Energy"
+          class="brand-logo"
+        >
+
+        <div class="brand-text">
+
+          <span class="brand-name">
+            MAP Energy
+          </span>
+
+          <span class="brand-subtitle">
+            Help &amp; Documentation
+          </span>
+
+        </div>
+
       </div>
 
-      <div class="brand-divider"></div>
-
-      <h1>Documentation</h1>
-      <p>
-        Quick start documentation for MAP Energy, including setup, Tesla connection,
-        Powerwall diagnostics, subscriptions and troubleshooting.
-      </p>
-
-      <div class="hero-meta">
-        <div class="mini-card">
-          <span class="mini-label">Product</span>
-          <span class="mini-value">MAP Energy</span>
-        </div>
-        <div class="mini-card">
-          <span class="mini-label">Operator</span>
-          <span class="mini-value">Aptica Ltd</span>
-        </div>
-        <div class="mini-card">
-          <span class="mini-label">Contact</span>
-          <span class="mini-value"><a href="mailto:support@aptica.uk">support@aptica.uk</a></span>
-        </div>
+      <div class="header-pill">
+        Documentation
       </div>
+
     </header>
 
-    <div class="notice">
+
+
+    <!-- =====================================================
+         HERO
+         ===================================================== -->
+
+    <section class="hero">
+
+      <div class="hero-content">
+
+        <div class="eyebrow">
+
+          <span class="eyebrow-dot"></span>
+
+          MAP Energy Help Centre
+
+        </div>
+
+        <h1>
+          How can we help?
+        </h1>
+
+        <p class="hero-description">
+          Everything you need to get started with MAP Energy,
+          understand your Powerwall, create powerful automations
+          and connect your wider home energy system.
+        </p>
+
+
+        <div class="hero-actions">
+
+          <a
+            href="getting-started.html"
+            class="hero-button"
+          >
+            Get Started
+            <span>→</span>
+          </a>
+
+          <a
+            href="faq.html"
+            class="hero-button secondary"
+          >
+            View FAQs
+          </a>
+
+        </div>
+
+      </div>
+
+
+      <img
+        src="mappy-docs.PNG"
+        alt="Mappy, the MAP Energy assistant"
+        class="mappy"
+      >
+
+    </section>
+
+
+
+    <!-- =====================================================
+         WELCOME
+         ===================================================== -->
+
+    <section class="welcome">
+
+      <h2>
+        Welcome to MAP Energy
+      </h2>
+
       <p>
-        This documentation is an early first draft and will be expanded as more MAP Energy
-        features and integrations are released.
+        Whether you've just connected your first Powerwall or you're
+        building advanced automations around your battery, EV and
+        electricity tariff, these guides will help you understand
+        what's available and get everything configured.
       </p>
-    </div>
 
-    <div class="layout">
-      <aside class="toc">
-        <h2>Contents</h2>
-        <ul>
-          <li><a href="#updates">1. MAP Energy Updates</a></li>
-          <li><a href="#getting-started">2. Getting started</a></li>
-          <li><a href="#tesla">3. Tesla connection</a></li>
-          <li><a href="#automations">4. Automations</a></li>
-          <li><a href="#diagnostics">5. Powerwall Diagnostic Data</a></li>
-          <li><a href="#how">6. How do...</a></li>
-          <li><a href="#troubleshooting">6. Troubleshooting</a></li>
-        </ul>
-      </aside>
+    </section>
 
-      <article class="content-card">
-        <section id="updates">
-          <h2 class="section-title">1. MAP Energy Updates</h2>
-          <p>
-            MAP Energy helps you monitor and understand connected energy systems, including
-            Tesla Powerwall, solar generation, EV charging and future smart energy integrations.
-          </p>
-        </section>
 
-        <section id="getting-started">
-          <h2 class="section-title">2. Getting started</h2>
-          <p>
-            After installing the app, create or sign into your MAP Energy account. Your account is
-            used to securely link supported energy services and manage premium access.
-          </p>
-          <ul>
-            <li>Install MAP Energy</li>
-            <li>Open the app</li>
-            <li>Sign in or create an account</li>
-            <li>Connect supported energy services</li>
-          </ul>
-        </section>
 
-        <section id="tesla">
-          <h2 class="section-title">3. Tesla connection</h2>
-          <p>
-            MAP Energy can connect to Tesla Energy services to retrieve supported Powerwall and
-            energy site data.
-          </p>
-          <p>
-            Tesla connection is used for supported cloud-based data. Some advanced diagnostic
-            features may also require local Powerwall pairing.
-          </p>
-        </section>
+    <!-- =====================================================
+         GETTING STARTED
+         ===================================================== -->
 
-        <section id="automations">
-          <h2 class="section-title">
-            <a href="automations.html">4. Automations</a>
+    <section class="docs-section">
+
+      <div class="section-heading">
+
+        <div>
+
+          <span class="section-eyebrow">
+            Start Here
+          </span>
+
+          <h2>
+            Getting Started
           </h2>
+
+        </div>
+
+        <p class="section-description">
+          New to MAP Energy? Start here to get connected and
+          understand the basics.
+        </p>
+
+      </div>
+
+
+      <div class="docs-grid">
+
+
+        <a
+          href="getting-started.html"
+          class="doc-card featured"
+        >
+
+          <span class="featured-badge">
+            Recommended First Step
+          </span>
+
+          <div class="card-top">
+
+            <div class="doc-icon">
+              ✦
+            </div>
+
+            <div class="arrow">
+              →
+            </div>
+
+          </div>
+
+          <h3>
+            Getting Started with MAP Energy
+          </h3>
+
           <p>
-            Some MAP Energy features may require an active premium subscription or valid promotional access.
+            Set up MAP Energy, connect your Tesla Powerwall and learn
+            your way around the app before exploring its more advanced
+            features.
           </p>
-          <ul>
-            <li>Premium status is checked inside the app</li>
-            <li>Promo codes are redeemed through Google Play</li>
-            <li>Premium access may need the app to be restarted after purchase or redemption</li>
-          </ul>
-        </section>
-        
-        <section id="diagnostics">
-          <h2 class="section-title">
-            <a href="powerwall-diagnostic-data.html">5. Powerwall Diagnostic Data</a>
+
+          <span class="card-label">
+            Setup Guide
+          </span>
+
+        </a>
+
+
+      </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         POWERWALL
+         ===================================================== -->
+
+    <section class="docs-section">
+
+      <div class="section-heading">
+
+        <div>
+
+          <span class="section-eyebrow">
+            Tesla Energy
+          </span>
+
+          <h2>
+            Powerwall
           </h2>
+
+        </div>
+
+        <p class="section-description">
+          Understand Powerwall controls and advanced information
+          available through MAP Energy.
+        </p>
+
+      </div>
+
+
+      <div class="docs-grid">
+
+
+        <!-- BACKUP RESERVE -->
+
+        <a
+          href="backup-reserve.html"
+          class="doc-card"
+        >
+
+          <div class="card-top">
+
+            <div class="doc-icon">
+              %
+            </div>
+
+            <div class="arrow">
+              →
+            </div>
+
+          </div>
+
+          <h3>
+            Backup Reserve
+          </h3>
+
           <p>
-            Some MAP Energy features may require an active premium subscription or valid promotional access.
+            Learn how MAP Energy handles Powerwall backup reserve,
+            including Tesla's supported reserve values and restoring
+            captured settings through automations.
           </p>
-          <ul>
-            <li>Premium status is checked inside the app</li>
-            <li>Promo codes are redeemed through Google Play</li>
-            <li>Premium access may need the app to be restarted after purchase or redemption</li>
-          </ul>
-        </section>
 
-        <section id="how">
-          <h2 class="section-title">6. How do...</h2>
+          <span class="card-label">
+            Powerwall Control
+          </span>
+
+        </a>
+
+
+
+        <!-- DIAGNOSTICS -->
+
+        <a
+          href="powerwall-diagnostic-data.html"
+          class="doc-card"
+        >
+
+          <div class="card-top">
+
+            <div class="doc-icon">
+              ◉
+            </div>
+
+            <div class="arrow">
+              →
+            </div>
+
+          </div>
+
+          <h3>
+            Powerwall Diagnostic Data
+          </h3>
+
           <p>
-            Some MAP Energy features may require an active premium subscription or valid promotional access.
+            Connect MAP Energy to supported Powerwall diagnostic
+            information for additional system, battery and solar
+            insights beyond standard cloud data.
           </p>
-        </section>
 
-        <section id="troubleshooting">
-          <h2 class="section-title">7. Troubleshooting</h2>
+          <span class="card-label">
+            Advanced Data
+          </span>
 
-          <h3>Powerwall cannot be found</h3>
+        </a>
+
+
+      </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         AUTOMATION & INTEGRATIONS
+         ===================================================== -->
+
+    <section class="docs-section">
+
+      <div class="section-heading">
+
+        <div>
+
+          <span class="section-eyebrow">
+            Smarter Energy
+          </span>
+
+          <h2>
+            Automations &amp; Integrations
+          </h2>
+
+        </div>
+
+        <p class="section-description">
+          Bring your Powerwall, EV, tariff and connected energy
+          services together.
+        </p>
+
+      </div>
+
+
+      <div class="docs-grid">
+
+
+        <!-- AUTOMATIONS -->
+
+        <a
+          href="automations.html"
+          class="doc-card"
+        >
+
+          <div class="card-top">
+
+            <div class="doc-icon">
+              ⚡
+            </div>
+
+            <div class="arrow">
+              →
+            </div>
+
+          </div>
+
+          <h3>
+            Automations
+          </h3>
+
           <p>
-            Make sure your phone is connected to the same local network as your Powerwall.
+            Create rules that respond to schedules, EV charging,
+            battery levels, electricity prices, solar conditions
+            and supported smart tariff events.
           </p>
 
-          <h3>Pairing does not complete</h3>
+          <span class="card-label">
+            Automation Guide
+          </span>
+
+        </a>
+
+
+
+        <!-- EV CHARGERS -->
+
+        <a
+          href="ev-charger-integrations.html"
+          class="doc-card"
+        >
+
+          <div class="card-top">
+
+            <div class="doc-icon">
+              ↯
+            </div>
+
+            <div class="arrow">
+              →
+            </div>
+
+          </div>
+
+          <h3>
+            EV Charger Integrations
+          </h3>
+
           <p>
-            Follow the in-app pairing instructions carefully. Some systems may require a Powerwall
-            toggle before pairing is confirmed.
+            Connect supported EV charging integrations including
+            Tesla Wall Connector, Zappi, Hypervolt and Ohme, and use
+            charging events with MAP Energy automations.
           </p>
 
-          <h3>Internal tester warning on Google Play</h3>
+          <span class="card-label">
+            EV Charging
+          </span>
+
+        </a>
+
+
+      </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         PREMIUM
+         ===================================================== -->
+
+    <section class="docs-section">
+
+      <div class="section-heading">
+
+        <div>
+
+          <span class="section-eyebrow">
+            MAP Energy Premium
+          </span>
+
+          <h2>
+            Premium
+          </h2>
+
+        </div>
+
+        <p class="section-description">
+          Learn about the free trial, subscription options and
+          advanced MAP Energy features.
+        </p>
+
+      </div>
+
+
+      <div class="docs-grid">
+
+
+        <a
+          href="subscription.html"
+          class="doc-card featured"
+        >
+
+          <span class="featured-badge">
+            14-Day Free Trial
+          </span>
+
+          <div class="card-top">
+
+            <div class="doc-icon">
+              ★
+            </div>
+
+            <div class="arrow">
+              →
+            </div>
+
+          </div>
+
+          <h3>
+            MAP Energy Premium
+          </h3>
+
           <p>
-            If Google Play says you are an internal tester, leave the testing programme and reinstall
-            the production version from Google Play.
+            Learn about Premium subscription options and the advanced
+            features included, such as automations, Powerwall
+            diagnostic data, the web portal and the upcoming
+            Energy Manager.
           </p>
 
-          <h3>Premium does not show immediately</h3>
+          <span class="card-label">
+            Subscription
+          </span>
+
+        </a>
+
+
+      </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         HELP & SUPPORT
+         ===================================================== -->
+
+    <section class="docs-section">
+
+      <div class="section-heading">
+
+        <div>
+
+          <span class="section-eyebrow">
+            Help &amp; Support
+          </span>
+
+          <h2>
+            Questions &amp; Releases
+          </h2>
+
+        </div>
+
+        <p class="section-description">
+          Find answers to common questions and discover what's new
+          in MAP Energy.
+        </p>
+
+      </div>
+
+
+      <div class="docs-grid">
+
+
+        <!-- FAQ -->
+
+        <a
+          href="faq.html"
+          class="doc-card"
+        >
+
+          <div class="card-top">
+
+            <div class="doc-icon">
+              ?
+            </div>
+
+            <div class="arrow">
+              →
+            </div>
+
+          </div>
+
+          <h3>
+            Frequently Asked Questions
+          </h3>
+
           <p>
-            Close and reopen MAP Energy after redeeming a code or purchasing premium access.
+            Quick answers to common questions about MAP Energy,
+            Powerwall connections, automations, subscriptions,
+            integrations and troubleshooting.
           </p>
-        </section>
 
-        <section id="contact">
-          <h2 class="section-title">10. Contact</h2>
+          <span class="card-label">
+            FAQ
+          </span>
+
+        </a>
+
+
+
+        <!-- RELEASES -->
+
+        <a
+          href="releases.html"
+          class="doc-card"
+        >
+
+          <div class="card-top">
+
+            <div class="doc-icon">
+              ↻
+            </div>
+
+            <div class="arrow">
+              →
+            </div>
+
+          </div>
+
+          <h3>
+            MAP Energy Releases
+          </h3>
+
           <p>
-            For support, questions or feedback:
+            Explore MAP Energy release notes, including new features,
+            integrations, improvements and fixes added to the latest
+            versions of the app.
           </p>
-          <p>📧 <a href="mailto:support@aptica.uk">support@aptica.uk</a></p>
-        </section>
 
-        <footer>
-          © <span id="year"></span> Aptica Ltd. All rights reserved.
-        </footer>
-      </article>
-    </div>
-  </div>
+          <span class="card-label">
+            Release Notes
+          </span>
 
-  <script>
-    document.getElementById("year").textContent = new Date().getFullYear();
-  </script>
+        </a>
+
+
+      </div>
+
+
+
+      <a
+        href="releases.html"
+        class="updates-card"
+      >
+
+        <div class="updates-content">
+
+          <div class="updates-icon">
+            ✦
+          </div>
+
+          <div>
+
+            <span class="updates-title">
+              MAP Energy keeps getting better
+            </span>
+
+            <div class="updates-description">
+              New features, integrations and improvements are released
+              regularly. View the release notes to see what's new in
+              MAP Energy.
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="updates-arrow">
+          →
+        </div>
+
+      </a>
+
+
+    </section>
+
+
+
+    <!-- =====================================================
+         NEED MORE HELP
+         ===================================================== -->
+
+    <section class="help-card">
+
+      <div>
+
+        <h2>
+          Still looking for an answer?
+        </h2>
+
+        <p>
+          Start with the frequently asked questions for common
+          setup and troubleshooting advice. If you're still having
+          trouble, you can contact MAP Energy support for help with
+          your specific setup.
+        </p>
+
+        <a
+          href="faq.html"
+          class="help-link"
+        >
+          Browse FAQs
+          <span>→</span>
+        </a>
+
+      </div>
+
+
+      <img
+        src="mappy-docs.PNG"
+        alt="Mappy"
+        class="help-mappy"
+      >
+
+    </section>
+
+
+
+    <!-- =====================================================
+         FOOTER
+         ===================================================== -->
+
+    <footer class="footer">
+
+      <img
+        src="map-energy-logo.PNG"
+        alt="MAP Energy"
+        class="footer-logo"
+      >
+
+      <span>
+        MAP Energy • Powerwall control, insights &amp; automation
+      </span>
+
+    </footer>
+
+
+  </main>
+
 </body>
 </html>
