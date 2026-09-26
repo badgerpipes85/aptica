@@ -147,6 +147,67 @@
 
 
     /* =========================================================
+       DOCUMENTATION NAVIGATION
+       ========================================================= */
+
+    .docs-navigation {
+      margin:
+        -18px
+        0
+        18px;
+    }
+
+    .docs-home-link {
+      display: inline-flex;
+      align-items: center;
+
+      gap: 8px;
+
+      padding: 8px 12px;
+
+      border-radius: 12px;
+
+      color: rgba(196, 214, 239, 0.72);
+
+      text-decoration: none;
+
+      background:
+        rgba(6, 18, 39, 0.42);
+
+      border:
+        1px solid rgba(116, 158, 218, 0.13);
+
+      font-size: 12px;
+      font-weight: 700;
+
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+
+      transition:
+        color 0.15s ease,
+        background 0.15s ease,
+        border-color 0.15s ease;
+    }
+
+    .docs-home-link:hover {
+      color: #ffffff;
+
+      background:
+        rgba(16, 45, 86, 0.66);
+
+      border-color:
+        rgba(90, 156, 248, 0.30);
+    }
+
+    .docs-home-arrow {
+      color: #59a8ff;
+
+      font-size: 15px;
+      line-height: 1;
+    }
+
+
+    /* =========================================================
        HERO
        ========================================================= */
 
@@ -953,6 +1014,13 @@
         margin-bottom: 25px;
       }
 
+      .docs-navigation {
+        margin:
+          -8px
+          0
+          16px;
+      }
+
       .brand-logo {
         width: 42px;
         height: 42px;
@@ -1090,6 +1158,32 @@
       </div>
 
     </header>
+
+
+
+    <!-- DOCUMENTATION NAVIGATION -->
+
+    <nav
+      class="docs-navigation"
+      aria-label="Documentation navigation"
+    >
+
+      <a
+        href="docs.html"
+        class="docs-home-link"
+      >
+
+        <span class="docs-home-arrow">
+          ←
+        </span>
+
+        <span>
+          Documentation Home
+        </span>
+
+      </a>
+
+    </nav>
 
 
 
