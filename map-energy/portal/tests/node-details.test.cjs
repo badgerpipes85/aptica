@@ -31,3 +31,14 @@ test('battery reconstruction is bounded and ends at the live/derived SOC anchor'
 test('EV integration caps gaps at ten minutes and does not fabricate final interval energy',()=>{
  const p=load();assert.equal(p.detailEVEnergy([{t:0,value:6},{t:3600,value:7}]),1);assert.equal(p.detailEVEnergy([{t:0,value:6}]),0);assert.equal(vm.runInContext("detailNumber(null)",p),null);
 });
+test('reading selector follows actual samples instead of interleaving forecast points',()=>{
+ const p=load(),model={points:[{t:200,value:2},{t:100,value:1}],forecast:[{t:150,value:9}]};
+ const points=p.detailSelectablePoints(model);assert.equal(points.length,2);assert.equal(points[0].value,1);assert.equal(points[1].value,2);assert.equal(points[0].forecast,false);
+ assert.equal(p.detailSelectablePoints({points:[],forecast:model.forecast})[0].forecast,true);
+});
+test('selected point data has native labels, units and precision',()=>{
+ const p=load(),model={node:'ev',period:'day',zone:'UTC',graph:{unit:'kW'}};
+ let data=p.detailReadingData(model,{t:0,value:7});assert.equal(data.metrics[0].label,'Charging Power');assert.equal(data.metrics[0].value,'7.00 kW');
+ data=p.detailReadingData({...model,node:'grid'},{t:0,value:-.36});assert.equal(data.metrics[0].label,'Export');assert.equal(data.metrics[0].value,'0.36 kW');
+ data=p.detailReadingData({...model,node:'grid',period:'month',graph:{unit:'kWh'}},{t:0,a:1.25,b:2.5});assert.equal(data.metrics[0].value,'1.3 kWh');assert.equal(data.metrics[1].value,'2.5 kWh');
+});

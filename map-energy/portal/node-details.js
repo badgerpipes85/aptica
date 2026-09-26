@@ -195,38 +195,61 @@ function detailGraph(m) {
   const values=all.flatMap(p=>bars&&signed?[p.a,-p.b]:[p.value]);
   const max=soc?100:Math.max(.1,...values)*1.1,min=soc?0:Math.min(0,...values)*1.1;
   const x=t=>48+(t-m.start)/(m.end-m.start)*600,y=v=>230-(v-min)/(max-min)*200;
-  m.graph={x,y,unit};
+  m.graph={x,y,unit,pointX:t=>x(t)+(bars?3+Math.max(2,600/(m.period==='year'?12:31)*.65)/2:0)};
   const line=points=>points.map((p,i)=>`${i?'L':'M'}${x(p.t).toFixed(2)},${y(p.value).toFixed(2)}`).join(' ');
   let marks='';
   if(bars) {
     const width=Math.max(2,600/(m.period==='year'?12:31)*.65);
-    marks=m.points.map(p=>(signed?[{v:p.a,c:'detail-positive'},{v:-p.b,c:'detail-negative'}]:[{v:p.value,c:`detail-${m.node}`}]).map(({v,c})=>`<rect class="${c}" x="${x(p.t)+3}" y="${Math.min(y(v),y(0))}" width="${width}" height="${Math.max(0,Math.abs(y(v)-y(0)))}"><title>${escapeHtml(detailTime(p.t,m.period,m.zone))}: ${detailFormat(v,unit)}</title></rect>`).join('')).join('');
+    marks=m.points.map(p=>(signed?[{v:p.a,c:m.node==='grid'?'detail-grid-import':'detail-positive'},{v:-p.b,c:m.node==='grid'?'detail-grid-export':'detail-negative'}]:[{v:p.value,c:`detail-${m.node}`}]).map(({v,c})=>`<rect class="${c}" x="${x(p.t)+3}" y="${Math.min(y(v),y(0))}" width="${width}" height="${Math.max(0,Math.abs(y(v)-y(0)))}"><title>${escapeHtml(detailTime(p.t,m.period,m.zone))}: ${detailFormat(v,unit)}</title></rect>`).join('')).join('');
   } else marks=`<path class="detail-line detail-${m.node}" d="${line(m.points)}"/>${m.points.map(p=>`<circle class="detail-dot detail-${m.node}" cx="${x(p.t)}" cy="${y(p.value)}" r="1.6"/>`).join('')}`;
+  if(m.node==='grid'&&!bars&&m.points.length) {
+    const area=`${line(m.points)} L${x(m.points.at(-1).t)},${y(0)} L${x(m.points[0].t)},${y(0)} Z`;
+    marks=`<defs><clipPath id="gridImportClip"><rect x="48" y="30" width="600" height="${Math.max(0,y(0)-30)}"/></clipPath><clipPath id="gridExportClip"><rect x="48" y="${y(0)}" width="600" height="${Math.max(0,230-y(0))}"/></clipPath></defs><path class="detail-grid-import detail-area" d="${area}" clip-path="url(#gridImportClip)"/><path class="detail-grid-export detail-area" d="${area}" clip-path="url(#gridExportClip)"/>${marks}`;
+  }
   const ticks=Array.from({length:5},(_,i)=>{const value=min+(max-min)*i/4;return `<line class="detail-gridline" x1="48" x2="648" y1="${y(value)}" y2="${y(value)}"/><text x="42" y="${y(value)+4}" text-anchor="end">${Math.abs(value)<.01?'0':value.toFixed(soc?0:1)}</text>`;}).join('');
   const times=Array.from({length:5},(_,i)=>{const t=m.start+(m.end-m.start)*i/4;return `<text x="${x(t)}" y="255" text-anchor="${i===0?'start':i===4?'end':'middle'}">${escapeHtml(detailTime(i===4?t-1:t,m.period,m.zone))}</text>`;}).join('');
   const reserve=soc&&m.reserve!==null?`<line class="detail-reserve" x1="48" x2="648" y1="${y(m.reserve)}" y2="${y(m.reserve)}"/>`:'';
-  return `<div class="detail-legend"><span>${soc?'State of charge':signed?(m.node==='battery'?'Charge above zero · Discharge below':'Import above zero · Export below'):unit==='kW'?'Power':'Energy'} (${unit})</span>${m.forecast.length?'<span class="detail-forecast-key">Dashed: solar forecast</span>':''}${reserve?`<span>Dashed: Backup Reserve ${detailFormat(m.reserve,'%',0)}</span>`:''}</div><svg id="detailGraph" class="timeline-svg detail-svg" viewBox="0 0 680 270" role="img" aria-label="${escapeHtml(nodeLabel(m.node))} chart. Use the reading selector below to explore values.">${ticks}<line class="chart-baseline" x1="48" x2="648" y1="${y(0)}" y2="${y(0)}"/>${marks}${m.forecast.length?`<path class="detail-line detail-forecast" d="${line(m.forecast)}"/>`:''}${reserve}<line id="detailCursor" class="detail-cursor" x1="48" x2="48" y1="30" y2="230" visibility="hidden"/>${times}</svg><label class="detail-selector" for="detailReading">Explore readings <input id="detailReading" type="range" min="0" max="${Math.max(0,all.length-1)}" value="0" step="1"></label><div id="detailSelection" class="detail-selection" aria-live="polite">Touch or point at the graph, or use the reading selector.</div>${soc?'<p class="detail-note">SOC history is estimated from Tesla energy history and the current battery charge, as in the app.</p>':''}`;
+  return `<div class="detail-legend"><span>${soc?'State of charge':signed?(m.node==='battery'?'Charge above zero · Discharge below':'Import above zero · Export below'):unit==='kW'?'Power':'Energy'} (${unit})</span>${m.forecast.length?'<span class="detail-forecast-key">Dashed: solar forecast</span>':''}${reserve?`<span>Dashed: Backup Reserve ${detailFormat(m.reserve,'%',0)}</span>`:''}</div><svg id="detailGraph" class="timeline-svg detail-svg" viewBox="0 0 680 270" role="img" aria-label="${escapeHtml(nodeLabel(m.node))} chart. Use the reading selector below to explore values.">${ticks}<line class="chart-baseline" x1="48" x2="648" y1="${y(0)}" y2="${y(0)}"/>${marks}${m.forecast.length?`<path class="detail-line detail-forecast" d="${line(m.forecast)}"/>`:''}${reserve}<line id="detailCursor" class="detail-cursor" x1="48" x2="48" y1="30" y2="230" visibility="hidden"/>${times}<g id="detailPointMarkers"></g><text id="detailPointValue" class="detail-point-value" x="340" y="18" text-anchor="middle"></text></svg><label class="detail-selector" for="detailReading">Explore readings <input id="detailReading" type="range" min="0" max="${Math.max(0,(m.points.length?m.points:m.forecast).length-1)}" value="0" step="1"></label><div id="detailSelection" class="detail-selection" aria-live="polite">Touch or point at the graph, or use the reading selector.</div>${soc?'<p class="detail-note">SOC history is estimated from Tesla energy history and the current battery charge, as in the app.</p>':''}`;
+}
+function detailReadingData(m,p) {
+  const unit=m.graph.unit,format=value=>detailFormat(value,unit,unit==='kW'?2:unit==='%'?0:1);
+  let metrics;
+  if(m.period!=='day'&&(m.node==='grid'||m.node==='battery')) metrics=[{label:m.node==='grid'?'Imported':'Charged',value:detailFormat(p.a,'kWh')},{label:m.node==='grid'?'Exported':'Discharged',value:detailFormat(p.b,'kWh')}];
+  else if(m.node==='grid') metrics=[{label:p.value>=0?'Import':'Export',value:format(Math.abs(p.value))}];
+  else metrics=[{label:p.forecast?'Forecast':({solar:'Generated',home:'Used',battery:'State of charge',ev:'Charging Power'})[m.node],value:format(p.value)}];
+  return {time:detailTime(p.t,m.period,m.zone),metrics};
+}
+function detailSelectablePoints(m) {
+  // iOS selects recorded readings; forecast points are selectable when there is no actual history.
+  return (m.points.length?m.points:m.forecast).map(p=>({...p,forecast:!m.points.length})).sort((a,b)=>a.t-b.t);
 }
 function bindDetailGraph(m) {
   const graph=$('detailGraph');if(!graph) return;
-  const entries=[...m.points.map(p=>({...p,forecast:false})),...m.forecast.map(p=>({...p,forecast:true}))].sort((a,b)=>a.t-b.t);
+  const entries=detailSelectablePoints(m),slider=$('detailReading');
+  slider.max=Math.max(0,entries.length-1);
   const select=index=>{
     const p=entries[index];if(!p) return;
-    $('detailReading').value=index;
-    let value=detailFormat(p.value,m.graph.unit,m.graph.unit==='kW'?2:1);
-    if(m.node==='grid'&&m.period==='day') value=`${p.value>=0?'Import':'Export'} ${detailFormat(Math.abs(p.value),'kW',2)}`;
-    if(m.period!=='day'&&(m.node==='grid'||m.node==='battery')) value=`${m.node==='grid'?'Imported':'Charged'} ${detailFormat(p.a,'kWh')} · ${m.node==='grid'?'Exported':'Discharged'} ${detailFormat(p.b,'kWh')}`;
-    setText('detailSelection',`${detailTime(p.t,m.period,m.zone)} · ${p.forecast?'Forecast · ':''}${value}`);
-    $('detailReading').setAttribute('aria-valuetext',$('detailSelection').textContent);
-    const cursor=$('detailCursor');cursor.setAttribute('x1',m.graph.x(p.t));cursor.setAttribute('x2',m.graph.x(p.t));cursor.setAttribute('visibility','visible');
+    slider.value=index;
+    const reading=detailReadingData(m,p),values=reading.metrics.map(item=>`${item.label}: ${item.value}`).join(' · ');
+    $('detailSelection').innerHTML=`<span class="detail-selected-time">${escapeHtml(reading.time)}</span><div class="detail-selected-metrics">${reading.metrics.map(item=>`<div><span>${escapeHtml(item.label)}</span><strong>${escapeHtml(item.value)}</strong></div>`).join('')}</div>`;
+    slider.setAttribute('aria-valuetext',`${reading.time} · ${values}`);
+    const x=m.graph.pointX(p.t),cursor=$('detailCursor');cursor.setAttribute('x1',x);cursor.setAttribute('x2',x);cursor.setAttribute('visibility','visible');
+    const markers=m.period!=='day'&&(m.node==='grid'||m.node==='battery')?[p.a,-p.b]:[p.value];
+    $('detailPointMarkers').innerHTML=markers.map(value=>`<circle class="detail-selected-point" cx="${x}" cy="${m.graph.y(value)}" r="5"/>`).join('');
+    setText('detailPointValue',`${reading.time} · ${reading.metrics.map(item=>item.value).join(' / ')}`);
   };
-  $('detailReading').addEventListener('input',event=>select(Number(event.target.value)));
-  graph.addEventListener('pointermove',event=>{
-    const rect=graph.getBoundingClientRect(), t=m.start+((event.clientX-rect.left)/rect.width*680-48)/600*(m.end-m.start);
-    let nearest=0;for(let i=1;i<entries.length;i++) if(Math.abs(entries[i].t-t)<Math.abs(entries[nearest].t-t)) nearest=i;
+  const selectAtPointer=event=>{
+    const matrix=graph.getScreenCTM();if(!matrix) return;
+    const point=graph.createSVGPoint();point.x=event.clientX;point.y=event.clientY;
+    const local=point.matrixTransform(matrix.inverse());
+    let nearest=0;for(let i=1;i<entries.length;i++) if(Math.abs(m.graph.pointX(entries[i].t)-local.x)<Math.abs(m.graph.pointX(entries[nearest].t)-local.x)) nearest=i;
     select(nearest);
-  });
-  graph.addEventListener('pointerdown',event=>{graph.setPointerCapture(event.pointerId);graph.dispatchEvent(new PointerEvent('pointermove',{clientX:event.clientX}));});
+  };
+  slider.addEventListener('input',event=>select(Number(event.target.value)));
+  slider.addEventListener('change',event=>select(Number(event.target.value)));
+  graph.addEventListener('pointermove',selectAtPointer);
+  graph.addEventListener('pointerdown',event=>{graph.setPointerCapture(event.pointerId);selectAtPointer(event);});
+  select(entries.length-1);
 }
 document.addEventListener('DOMContentLoaded',()=>{
   $('nodeChartBars').addEventListener('click',event=>{

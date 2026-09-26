@@ -210,20 +210,28 @@ function openSettingEditor(kind) {
   setText("settingDescription", config.description);
   showError("settingError", "");
   $("settingFields").innerHTML = kind === "backup"
-    ? `<div class="reserve-editor"><label for="reserveInput"><output id="reserveOutput" for="reserveInput">${value}%</output>Backup Reserve</label><input id="reserveInput" name="setting" type="range" min="0" max="100" step="1" value="${value}"><div class="reserve-scale"><span>0%</span><span>100%</span></div></div>`
+    ? `<div class="reserve-editor"><label for="reserveInput"><output id="reserveOutput" for="reserveInput">${value}%</output>Backup Reserve</label><input id="reserveInput" name="setting" type="range" min="0" max="100" step="1" value="${value}"><div class="reserve-scale"><span>0%</span><span>0–80%, then 100%</span><span>100%</span></div></div>`
     : `<fieldset class="setting-options" aria-label="${config.title}">${config.options.map(([key, label, description, tone]) => `<label class="setting-option ${tone}"><input type="radio" name="setting" value="${key}" ${key === value ? "checked" : ""}><span><strong>${label}</strong><small>${description}</small></span></label>`).join("")}</fieldset>`;
   $("confirmSetting").disabled = true;
   $("settingEditor").showModal();
 }
 
+function backupReserveValue(value) {
+  return Number(value) > 80 ? 100 : Number(value);
+}
+
 function selectedSettingValue() {
   if (!settingEdit) return null;
-  return settingEdit.kind === "backup" ? Number($("reserveInput").value) : $("settingFields").querySelector("input:checked")?.value;
+  return settingEdit.kind === "backup" ? backupReserveValue($("reserveInput").value) : $("settingFields").querySelector("input:checked")?.value;
 }
 
 function settingInputChanged() {
   const value = selectedSettingValue();
-  if (settingEdit?.kind === "backup") setText("reserveOutput", `${value}%`);
+  if (settingEdit?.kind === "backup") {
+    $("reserveInput").value = value;
+    $("reserveInput").setAttribute("aria-valuetext", `${value}%`);
+    setText("reserveOutput", `${value}%`);
+  }
   $("confirmSetting").disabled = settingSaving || value == null || value === settingEdit?.value;
 }
 
@@ -233,7 +241,7 @@ async function savePowerwallSetting(event) {
   const value = selectedSettingValue();
   if (!edit || settingSaving || value == null || value === edit.value || edit.version !== contextVersion || edit.siteKey !== $("siteSelect").value) return;
   const config = powerwallSettings[edit.kind];
-  if (edit.kind === "backup" ? !Number.isInteger(value) || value < 0 || value > 100 : !config.options.some(option => option[0] === value)) return;
+  if (edit.kind === "backup" ? !Number.isInteger(value) || value < 0 || (value > 80 && value !== 100) : !config.options.some(option => option[0] === value)) return;
   settingSaving = true;
   overviewRequest++; // Discard a poll started before this command.
   showError("settingError", "");
@@ -786,6 +794,13 @@ document.addEventListener("DOMContentLoaded", async () => {
   document.querySelectorAll("[data-setting]").forEach(button => button.addEventListener("click", () => openSettingEditor(button.dataset.setting)));
   $("settingForm").addEventListener("submit", savePowerwallSetting);
   $("settingFields").addEventListener("input", settingInputChanged);
+  $("settingFields").addEventListener("keydown", event => {
+    if (event.target.id === "reserveInput" && Number(event.target.value) > 80 && ["ArrowLeft", "ArrowDown", "PageDown"].includes(event.key)) {
+      event.preventDefault();
+      event.target.value = 80;
+      settingInputChanged();
+    }
+  });
   $("cancelSetting").addEventListener("click", () => { if (!settingSaving) $("settingEditor").close(); });
   $("settingEditor").addEventListener("cancel", event => { if (settingSaving) event.preventDefault(); });
   $("settingEditor").addEventListener("close", () => { settingEdit = null; });

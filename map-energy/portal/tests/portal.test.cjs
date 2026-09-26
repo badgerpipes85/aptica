@@ -93,3 +93,6 @@ test('Power Perks day boundaries follow London DST rather than fixed 24-hour day
   assert.equal(days.length,2);assert.equal(days[1],next);
  }
 });
+test('backup reserve excludes 81–99 percent and retains 0–80 and 100',()=>{
+ const p=portal();for(let value=0;value<=100;value++) assert.equal(p.backupReserveValue(value),value>80?100:value);
+});
