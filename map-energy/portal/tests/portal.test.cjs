@@ -11,6 +11,7 @@ function portal(){
     document:{addEventListener:()=>{},getElementById:()=>null}
   });
   vm.runInContext(fs.readFileSync(path.join(__dirname,'../portal.js'),'utf8'),context);
+  vm.runInContext(fs.readFileSync(path.join(__dirname,'../power-perks.js'),'utf8'),context);
   return context;
 }
 test('missing readings remain unavailable, while genuine zero remains zero',()=>{
@@ -56,4 +57,39 @@ test('Powerwall editors accept known settings and preserve export aliases',()=>{
  assert.equal(p.settingValue('export',{export_rule:'no_export'}),'never');
  assert.equal(p.settingValue('mode',{operation_mode:'autonomous'}),'autonomous');
  assert.equal(p.settingValue('mode',{operation_mode:'unknown'}),null);
+});
+test('site choices deduplicate keys, keep real names and preserve distinct sites',()=>{
+ const p=portal();
+ const sites=p.uniquePortalSites([{site_key:'a',display_name:'Site a'},{site_key:'a',display_name:'Home'},{site_key:'b',display_name:'Home'}]);
+ assert.equal(sites.length,2);assert.equal(sites[0].display_name,'Home');assert.equal(sites[1].site_key,'b');
+});
+test('Power Perks uses the apps partial-slot energy and savings calculation',()=>{
+ const p=portal(),start=Date.parse('2026-09-25T13:30:00Z')/1000;
+ const event={start_at:start+300,end_at:start+600};
+ const days=new Map([[p.perksDayStart(start,'UTC'),{slots:[{start_ts:start,import_kwh:3,import_rate_pence:20,data_available:true}]}]]);
+ const metric=p.powerPerksMetric(event,days,'UTC',start+7200);
+ assert.equal(metric.energy,.5);assert.equal(metric.saving,.1);
+ assert.equal(p.powerPerksMetric(event,new Map(),'UTC',start+7200).energy,null);
+});
+test('Power Perks matches event badges and irreversible participation eligibility',()=>{
+ const p=portal(),event={start_at:100,end_at:200,participating:false};
+ assert.equal(p.powerPerksBadge(event,{energy:0},50),null);
+ assert.equal(p.powerPerksBadge({...event,participating:true},{energy:0},50).label,'Ready');
+ assert.equal(p.powerPerksBadge(event,{energy:0},150).tone,'red');
+ assert.equal(p.powerPerksBadge(event,{energy:0},250).label,'Missed');
+ assert.equal(p.canConfirmPowerPerks(event,{energy:.05},250),true);
+ assert.equal(p.canConfirmPowerPerks(event,{energy:.051},250),false);
+ assert.equal(p.canConfirmPowerPerks(event,{energy:null},250),false);
+ assert.equal(p.canConfirmPowerPerks({...event,participating:true},{energy:0},250),false);
+ assert.equal(p.canConfirmPowerPerks(event,{energy:0},150),false);
+});
+test('Power Perks day boundaries follow London DST rather than fixed 24-hour days',()=>{
+ const p=portal();
+ for(const [date,hours] of [['2026-03-29T12:00:00Z',23],['2026-10-25T12:00:00Z',25]]){
+  const start=p.perksDayStart(Date.parse(date)/1000,'Europe/London');
+  const next=p.perksDayStart(start+36*3600,'Europe/London');
+  assert.equal(next-start,hours*3600);
+  const days=p.perksEventDays({start_at:start,end_at:next+1800},'Europe/London',next+3600);
+  assert.equal(days.length,2);assert.equal(days[1],next);
+ }
 });

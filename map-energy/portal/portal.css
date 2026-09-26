@@ -350,3 +350,24 @@ html { scroll-padding-bottom: 110px; }
 .reserve-editor input { width: 100%; accent-color: var(--green); min-height: 36px; }
 .reserve-scale { display: flex; justify-content: space-between; color: var(--muted); font-size: 12px; }
 @media(max-width:480px) { .setting-dialog { width: 100%; } }
+
+.live-header-actions { display: flex; gap: 10px; align-items: center; }
+.power-perks-button { padding: 0; border: 1px solid #ffffff4d; width: 38px; height: 38px; border-radius: 9px; overflow: hidden; background: #081322; flex-shrink: 0; }
+.power-perks-button img { width: 100%; height: 100%; object-fit: cover; }
+.power-perks-button:focus-visible,.perks-event:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; }
+.perks-dialog { background: linear-gradient(140deg,#06132b,#17051f); }
+.perks-banner { width: 100%; display: block; border: 1px solid #ff980059; border-radius: 22px; margin: 18px 0; }
+.perks-totals { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; margin: 16px 0; }
+.perks-totals>div { padding: 14px; border-radius: 18px; text-align: center; background: #0004; border: 1px solid var(--line); }
+.perks-totals span { display: block; color: #ff9800; font-size: 10px; font-weight: 800; letter-spacing: 1px; }
+.perks-totals strong { display: block; font-size: 20px; margin-top: 6px; }
+.perks-section h3 { color: #48ddf2; font-size: 12px; letter-spacing: 1px; margin: 22px 0 10px; }
+.perks-event { width: 100%; display: flex; gap: 12px; align-items: center; text-align: left; padding: 14px; margin: 10px 0; border: 1px solid var(--line); background: #0004; border-radius: 18px; color: var(--text); }
+.perks-event img { width: 32px; height: 32px; object-fit: contain; }
+.perks-event-label { flex: 1; font-size: 15px; font-weight: 650; }
+.perks-badge { border-radius: 99px; font-size: 11px; font-weight: 800; padding: 6px 9px; color: var(--muted); background: #ffffff0b; }
+.perks-badge.green { color: #38d996; background: #38d99620; }.perks-badge.red { color: #ff453a; background: #ff453a20; }
+.perks-dialog #refreshPowerPerks { margin-top: 18px; }
+.perks-confirm { border: 1px solid #ff980066; padding: 20px; border-radius: 18px; margin-top: 16px; background: #1d1724; }
+.perks-confirm p { color: var(--muted); line-height: 1.5; margin-bottom: 16px; }
+.perks-confirm-actions { display: flex; gap: 10px; flex-wrap: wrap; }

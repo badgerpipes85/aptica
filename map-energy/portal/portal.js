@@ -414,11 +414,21 @@ async function signOut() {
   showLogin();
 }
 
+function uniquePortalSites(sites = []) {
+  const unique = new Map();
+  for (const site of sites || []) {
+    if (!site.site_key) continue;
+    const existing = unique.get(site.site_key);
+    if (!existing || ((!existing.display_name || existing.display_name.startsWith("Site ")) && site.display_name && !site.display_name.startsWith("Site "))) unique.set(site.site_key, site);
+  }
+  return [...unique.values()];
+}
+
 async function loadSites() {
   const data = await api("/v1/web/sites");
   const select = $("siteSelect");
   select.replaceChildren();
-  for (const site of data.sites || []) {
+  for (const site of uniquePortalSites(data.sites)) {
     const option = document.createElement("option");
     option.value = site.site_key;
     option.textContent = site.display_name || `Site ${String(site.site_key || "").slice(0, 6)}`;
@@ -438,6 +448,7 @@ async function loadOverview(siteKey) {
   const data = await api(`/v1/web/overview?site_key=${encodeURIComponent(siteKey)}`);
   if (request !== overviewRequest) return;
   currentOverview = data;
+  updatePowerPerksAccess(data);
   const live = data.live || {};
   const hasLive = live.source === "tesla_live_status";
   const siteName = data.site?.display_name || $("siteSelect").selectedOptions[0]?.textContent || "Energy site";
@@ -746,6 +757,7 @@ function updateTimestamp() {
 }
 
 function resetSiteView() {
+  resetPowerPerksView();
   currentOverview = null;
   pendingSetting = null;
   settingEdit = null;

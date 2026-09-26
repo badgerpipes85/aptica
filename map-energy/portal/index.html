@@ -7,8 +7,9 @@
   <meta name="description" content="Secure MAP Energy portal for Premium users.">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src https://powerwake-backend-production.mapenergy.workers.dev https://powerwake-backend-staging.mapenergy.workers.dev; base-uri 'none'; form-action 'self'">
   <title>MAP Energy Portal</title>
-  <link rel="stylesheet" href="portal.css?v=3">
-  <script src="portal.js?v=3" defer></script>
+  <link rel="stylesheet" href="portal.css?v=4">
+  <script src="portal.js?v=4" defer></script>
+  <script src="power-perks.js?v=4" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#portal-main">Skip to portal content</a>
@@ -81,7 +82,8 @@
           <article class="glass live-card">
             <div class="live-card-head">
               <div><span class="eyebrow">Right now</span><h2 class="live-title">Your energy flow</h2></div>
-              <span id="livePill" class="live-pill"><i></i><span>Live</span></span>
+              <div class="live-header-actions"><button id="powerPerksButton" class="power-perks-button hidden" type="button" aria-label="Power Perks events" aria-haspopup="dialog" title="Current, upcoming and recent Power Perks events"><img src="/map-energy/assets/power-perks.jpg" alt=""></button>
+              <span id="livePill" class="live-pill"><i></i><span>Live</span></span></div>
             </div>
 
             <div class="flow-board" aria-label="Live home energy flow">
@@ -124,6 +126,20 @@
           </article>
 
           <p class="flow-hint">Select an energy node to explore today's readings.</p>
+          <dialog id="powerPerksDialog" class="glass chart-dialog perks-dialog" aria-labelledby="powerPerksTitle">
+            <div class="panel-heading"><div><h2 id="powerPerksTitle">Power Perks</h2><p>Free electricity events</p></div><button id="closePowerPerks" class="button button-quiet" type="button">Close</button></div>
+            <img class="perks-banner" src="/map-energy/assets/power-perks-banner.jpg" alt="EDF Power Perks">
+            <div id="powerPerksTotals" class="perks-totals hidden"></div>
+            <p id="powerPerksError" class="notice notice-error hidden" role="alert"></p>
+            <div id="powerPerksContent" aria-live="polite"></div>
+            <section id="powerPerksConfirm" class="perks-confirm hidden" aria-labelledby="powerPerksConfirmTitle" tabindex="-1">
+              <h3 id="powerPerksConfirmTitle">Confirm Power Perks participation?</h3>
+              <p id="powerPerksConfirmEvent"></p>
+              <p>Confirm that you used this Power Perks session. This cannot be changed afterwards. MAP Energy will calculate the imported energy used during the event.</p>
+              <div class="perks-confirm-actions"><button id="cancelPowerPerksConfirm" class="button button-quiet" type="button">Cancel</button><button id="savePowerPerksConfirm" class="button" type="button">Confirm participation</button></div>
+            </section>
+            <button id="refreshPowerPerks" class="button" type="button">Refresh events</button>
+          </dialog>
           <dialog id="settingEditor" class="glass chart-dialog setting-dialog" aria-labelledby="settingTitle" aria-describedby="settingDescription">
             <form id="settingForm">
               <div class="panel-heading"><div><span class="eyebrow">Powerwall setting</span><h2 id="settingTitle"></h2><p id="settingSite"></p></div><button id="cancelSetting" class="button button-quiet" type="button">Cancel</button></div>
