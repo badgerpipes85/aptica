@@ -359,8 +359,9 @@
     .hero-actions {
       display: flex;
       flex-wrap: wrap;
+      align-items: center;
 
-      gap: 10px;
+      gap: 12px;
 
       margin-top: 29px;
     }
@@ -425,6 +426,48 @@
 
       border-color:
         rgba(108, 161, 234, 0.40);
+    }
+
+
+    /* =========================================================
+       STORE BADGES
+       ========================================================= */
+
+    .store-badge-link {
+      display: inline-flex;
+      align-items: center;
+
+      text-decoration: none;
+
+      border-radius: 10px;
+
+      transition:
+        transform 0.16s ease,
+        opacity 0.16s ease,
+        filter 0.16s ease;
+    }
+
+    .store-badge-link:hover {
+      transform: translateY(-2px);
+
+      filter:
+        drop-shadow(
+          0 10px 20px rgba(0, 0, 0, 0.22)
+        );
+    }
+
+    .store-badge-link:focus-visible {
+      outline: 2px solid #69afff;
+      outline-offset: 4px;
+    }
+
+    .store-badge {
+      display: block;
+
+      width: auto;
+      height: 48px;
+
+      object-fit: contain;
     }
 
 
@@ -1486,8 +1529,9 @@
 
       display: flex;
       flex-wrap: wrap;
+      align-items: center;
 
-      gap: 9px;
+      gap: 12px;
     }
 
 
@@ -1724,13 +1768,17 @@
       }
 
       .hero-actions {
-        display: grid;
-
-        grid-template-columns: 1fr;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
       }
 
-      .button {
+      .hero-actions .button-secondary {
         width: 100%;
+      }
+
+      .store-badge {
+        height: 44px;
       }
 
       .hero-visual {
@@ -1787,9 +1835,9 @@
       }
 
       .download-actions {
-        display: grid;
-
-        grid-template-columns: 1fr;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
 
         width: 100%;
       }
@@ -1816,6 +1864,10 @@
         transform: scale(0.70);
       }
 
+      .store-badge {
+        height: 41px;
+      }
+
     }
 
   </style>
@@ -1840,7 +1892,7 @@
       >
 
         <img
-          src="/MAP%20Logo.png"
+          src="/map-energy/assets/map-energy-logo.PNG"
           alt="MAP Energy"
           class="brand-logo"
         >
@@ -1930,23 +1982,31 @@
         <div class="hero-actions">
 
           <a
-            class="button button-primary"
+            class="store-badge-link"
             href="https://apps.apple.com/gb/app/map-energy/id6756628340"
             target="_blank"
             rel="noopener"
+            aria-label="Download MAP Energy on the App Store"
           >
-            Download for iPhone
-            <span>→</span>
+            <img
+              src="/map-energy/assets/ios-download.PNG"
+              alt="Download on the App Store"
+              class="store-badge"
+            >
           </a>
 
           <a
-            class="button button-primary"
+            class="store-badge-link"
             href="https://play.google.com/store/apps/details?id=com.mapenergy.app&pcampaignid=web_share"
             target="_blank"
             rel="noopener"
+            aria-label="Get MAP Energy on Google Play"
           >
-            Download for Android
-            <span>→</span>
+            <img
+              src="/map-energy/assets/android-download.PNG"
+              alt="Get it on Google Play"
+              class="store-badge"
+            >
           </a>
 
           <a
@@ -2027,7 +2087,7 @@
           <div class="energy-centre">
 
             <img
-              src="/MAP%20Logo.png"
+              src="/map-energy/assets/map-energy-logo.PNG"
               alt=""
               class="energy-centre-logo"
             >
@@ -2850,23 +2910,31 @@
       <div class="download-actions">
 
         <a
-          class="button button-primary"
+          class="store-badge-link"
           href="https://apps.apple.com/gb/app/map-energy/id6756628340"
           target="_blank"
           rel="noopener"
+          aria-label="Download MAP Energy on the App Store"
         >
-          App Store
-          <span>→</span>
+          <img
+            src="/map-energy/assets/ios-download.PNG"
+            alt="Download on the App Store"
+            class="store-badge"
+          >
         </a>
 
         <a
-          class="button button-primary"
+          class="store-badge-link"
           href="https://play.google.com/store/apps/details?id=com.mapenergy.app&pcampaignid=web_share"
           target="_blank"
           rel="noopener"
+          aria-label="Get MAP Energy on Google Play"
         >
-          Google Play
-          <span>→</span>
+          <img
+            src="/map-energy/assets/android-download.PNG"
+            alt="Get it on Google Play"
+            class="store-badge"
+          >
         </a>
 
       </div>
@@ -2887,7 +2955,7 @@
         <div class="footer-brand">
 
           <img
-            src="/MAP%20Logo.png"
+            src="/map-energy/assets/map-energy-logo.PNG"
             alt="MAP Energy"
             class="footer-logo"
           >
