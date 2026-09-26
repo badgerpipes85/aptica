@@ -1,0 +1,1641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, viewport-fit=cover"
+  >
+
+  <title>Releases | MAP Energy</title>
+
+  <meta
+    name="description"
+    content="MAP Energy release notes. See the latest features, improvements, integrations and fixes added to MAP Energy for iOS and Android."
+  >
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-height: 100%;
+      background: #06101f;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "SF Pro Display",
+        "SF Pro Text",
+        "Segoe UI",
+        Roboto,
+        Helvetica,
+        Arial,
+        sans-serif;
+
+      color: #ffffff;
+
+      background:
+        linear-gradient(
+          180deg,
+          rgba(4, 11, 25, 0.18) 0%,
+          rgba(4, 11, 25, 0.42) 40%,
+          rgba(3, 8, 20, 0.72) 100%
+        ),
+        url("map-energy-docs-bg.PNG")
+        center top / cover fixed no-repeat;
+    }
+
+
+    /* =========================================================
+       PAGE
+       ========================================================= */
+
+    .page {
+      width: 100%;
+      max-width: 940px;
+
+      margin: 0 auto;
+
+      padding:
+        max(32px, env(safe-area-inset-top))
+        24px
+        max(70px, env(safe-area-inset-bottom));
+    }
+
+
+    /* =========================================================
+       HEADER
+       ========================================================= */
+
+    .brand-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      margin-bottom: 38px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+    }
+
+    .brand-logo {
+      width: 48px;
+      height: 48px;
+
+      object-fit: contain;
+
+      filter:
+        drop-shadow(
+          0 5px 14px rgba(0, 0, 0, 0.25)
+        );
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-name {
+      color: #ffffff;
+
+      font-size: 18px;
+      line-height: 1.1;
+
+      font-weight: 800;
+      letter-spacing: -0.01em;
+    }
+
+    .brand-subtitle {
+      margin-top: 4px;
+
+      color: rgba(204, 215, 231, 0.62);
+
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .support-pill {
+      padding: 9px 15px;
+
+      border-radius: 999px;
+
+      color: rgba(224, 235, 249, 0.85);
+
+      font-size: 12px;
+      font-weight: 700;
+
+      background: rgba(6, 18, 39, 0.58);
+
+      border:
+        1px solid rgba(116, 158, 218, 0.20);
+
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+
+
+    /* =========================================================
+       DOCUMENTATION NAVIGATION
+       ========================================================= */
+
+    .docs-navigation {
+      margin:
+        -18px
+        0
+        18px;
+    }
+
+    .docs-home-link {
+      display: inline-flex;
+      align-items: center;
+
+      gap: 8px;
+
+      padding: 8px 12px;
+
+      border-radius: 12px;
+
+      color: rgba(196, 214, 239, 0.72);
+
+      text-decoration: none;
+
+      background:
+        rgba(6, 18, 39, 0.42);
+
+      border:
+        1px solid rgba(116, 158, 218, 0.13);
+
+      font-size: 12px;
+      font-weight: 700;
+
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+
+      transition:
+        color 0.15s ease,
+        background 0.15s ease,
+        border-color 0.15s ease;
+    }
+
+    .docs-home-link:hover {
+      color: #ffffff;
+
+      background:
+        rgba(16, 45, 86, 0.66);
+
+      border-color:
+        rgba(90, 156, 248, 0.30);
+    }
+
+    .docs-home-arrow {
+      color: #59a8ff;
+
+      font-size: 15px;
+      line-height: 1;
+    }
+
+
+    /* =========================================================
+       HERO
+       ========================================================= */
+
+    .hero {
+      position: relative;
+
+      display: flex;
+      align-items: center;
+
+      min-height: 310px;
+
+      padding: 38px 310px 38px 38px;
+
+      overflow: hidden;
+
+      border-radius: 30px;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(14, 36, 72, 0.90),
+          rgba(5, 16, 38, 0.88)
+        );
+
+      border:
+        1px solid rgba(81, 144, 232, 0.25);
+
+      box-shadow:
+        0 30px 90px rgba(0, 0, 0, 0.35),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+    }
+
+    .hero::before {
+      content: "";
+
+      position: absolute;
+
+      width: 350px;
+      height: 350px;
+
+      right: -80px;
+      top: -100px;
+
+      border-radius: 50%;
+
+      background:
+        radial-gradient(
+          circle,
+          rgba(29, 122, 255, 0.24),
+          transparent 68%
+        );
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      margin-bottom: 14px;
+
+      color: #59a8ff;
+
+      font-size: 12px;
+      font-weight: 800;
+
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow-dot {
+      width: 7px;
+      height: 7px;
+
+      border-radius: 50%;
+
+      background: #4294ff;
+
+      box-shadow:
+        0 0 12px rgba(66, 148, 255, 0.9);
+    }
+
+    h1 {
+      margin: 0 0 17px;
+
+      color: #ffffff;
+
+      font-size: clamp(37px, 5.5vw, 53px);
+      line-height: 1.03;
+
+      letter-spacing: -0.04em;
+
+      font-weight: 850;
+    }
+
+    .hero-description {
+      max-width: 520px;
+
+      margin: 0;
+
+      color: rgba(221, 229, 241, 0.78);
+
+      font-size: 16px;
+      line-height: 1.65;
+    }
+
+    .mappy {
+      position: absolute;
+
+      z-index: 1;
+
+      right: 8px;
+      bottom: -28px;
+
+      width: 310px;
+      max-height: 330px;
+
+      object-fit: contain;
+      object-position: bottom center;
+
+      filter:
+        drop-shadow(
+          0 20px 25px rgba(0, 0, 0, 0.30)
+        );
+    }
+
+
+    /* =========================================================
+       LATEST RELEASE
+       ========================================================= */
+
+    .latest-release {
+      position: relative;
+
+      margin-top: 22px;
+
+      padding: 34px;
+
+      overflow: hidden;
+
+      border-radius: 30px;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(17, 64, 126, 0.90),
+          rgba(7, 26, 59, 0.92)
+        );
+
+      border:
+        1px solid rgba(76, 153, 255, 0.36);
+
+      box-shadow:
+        0 28px 80px rgba(0, 0, 0, 0.35),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+    }
+
+    .latest-release::after {
+      content: "";
+
+      position: absolute;
+
+      width: 260px;
+      height: 260px;
+
+      right: -90px;
+      top: -110px;
+
+      border-radius: 50%;
+
+      background:
+        radial-gradient(
+          circle,
+          rgba(61, 153, 255, 0.20),
+          transparent 70%
+        );
+
+      pointer-events: none;
+    }
+
+    .release-top {
+      position: relative;
+      z-index: 2;
+
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+
+      gap: 20px;
+    }
+
+    .release-version {
+      color: #ffffff;
+
+      font-size: 31px;
+      line-height: 1;
+
+      font-weight: 850;
+      letter-spacing: -0.035em;
+    }
+
+    .release-name {
+      margin-top: 8px;
+
+      color: rgba(217, 228, 243, 0.74);
+
+      font-size: 14px;
+      font-weight: 650;
+    }
+
+    .latest-badge {
+      display: inline-flex;
+      align-items: center;
+
+      gap: 7px;
+
+      padding: 7px 11px;
+
+      border-radius: 999px;
+
+      color: #5ee1aa;
+
+      background:
+        rgba(30, 169, 115, 0.13);
+
+      border:
+        1px solid rgba(70, 221, 162, 0.22);
+
+      font-size: 10px;
+      font-weight: 850;
+
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .latest-dot {
+      width: 6px;
+      height: 6px;
+
+      border-radius: 50%;
+
+      background: #51dfa5;
+
+      box-shadow:
+        0 0 9px rgba(81, 223, 165, 0.8);
+    }
+
+    .latest-description {
+      position: relative;
+      z-index: 2;
+
+      max-width: 700px;
+
+      margin: 24px 0 0;
+
+      color: rgba(226, 234, 245, 0.84);
+
+      font-size: 15px;
+      line-height: 1.65;
+    }
+
+    .release-meta {
+      position: relative;
+      z-index: 2;
+
+      display: flex;
+      flex-wrap: wrap;
+
+      gap: 8px;
+
+      margin-top: 20px;
+    }
+
+    .meta-pill {
+      padding: 6px 10px;
+
+      border-radius: 999px;
+
+      color: rgba(216, 229, 247, 0.80);
+
+      background:
+        rgba(4, 16, 37, 0.35);
+
+      border:
+        1px solid rgba(133, 175, 230, 0.15);
+
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+
+    /* =========================================================
+       RELEASE CONTENT
+       ========================================================= */
+
+    .release-highlights {
+      position: relative;
+      z-index: 2;
+
+      margin-top: 27px;
+      padding-top: 25px;
+
+      border-top:
+        1px solid rgba(255, 255, 255, 0.10);
+    }
+
+    .release-highlights-title {
+      display: block;
+
+      margin-bottom: 15px;
+
+      color: #ffffff;
+
+      font-size: 13px;
+      font-weight: 800;
+
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .release-highlights ul,
+    .release-body ul {
+      margin: 0;
+
+      padding-left: 20px;
+
+      color: rgba(218, 228, 242, 0.78);
+    }
+
+    .release-highlights li,
+    .release-body li {
+      margin: 10px 0;
+
+      padding-left: 3px;
+
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+
+    /* =========================================================
+       RELEASE HISTORY
+       ========================================================= */
+
+    .history-card {
+      margin-top: 22px;
+
+      padding: 38px;
+
+      border-radius: 30px;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(12, 29, 55, 0.88),
+          rgba(5, 13, 29, 0.90)
+        );
+
+      border:
+        1px solid rgba(93, 145, 220, 0.19);
+
+      box-shadow:
+        0 28px 80px rgba(0, 0, 0, 0.38),
+        inset 0 1px 0 rgba(255, 255, 255, 0.04);
+
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+    }
+
+    .history-heading {
+      margin: 0 0 8px;
+
+      color: #ffffff;
+
+      font-size: 25px;
+      line-height: 1.25;
+
+      font-weight: 780;
+    }
+
+    .history-description {
+      margin: 0 0 27px;
+
+      color: rgba(210, 220, 235, 0.72);
+
+      font-size: 15px;
+      line-height: 1.65;
+    }
+
+
+    /* =========================================================
+       EXPANDABLE RELEASES
+       ========================================================= */
+
+    .release-item {
+      overflow: hidden;
+
+      margin-top: 12px;
+
+      border-radius: 19px;
+
+      background:
+        rgba(4, 14, 31, 0.54);
+
+      border:
+        1px solid rgba(87, 140, 214, 0.15);
+    }
+
+    .release-item:first-of-type {
+      margin-top: 0;
+    }
+
+    .release-item summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 15px;
+
+      padding: 20px 21px;
+
+      cursor: pointer;
+
+      list-style: none;
+
+      user-select: none;
+    }
+
+    .release-item summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .release-summary-left {
+      display: flex;
+      align-items: center;
+
+      gap: 13px;
+    }
+
+    .history-version {
+      color: #ffffff;
+
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .release-type {
+      display: inline-block;
+
+      padding: 5px 8px;
+
+      border-radius: 999px;
+
+      font-size: 9px;
+      font-weight: 850;
+
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+    }
+
+    .type-feature {
+      color: #65adff;
+
+      background:
+        rgba(47, 126, 242, 0.13);
+
+      border:
+        1px solid rgba(74, 150, 255, 0.18);
+    }
+
+    .type-maintenance {
+      color: #f1bd61;
+
+      background:
+        rgba(224, 157, 50, 0.11);
+
+      border:
+        1px solid rgba(224, 157, 50, 0.17);
+    }
+
+    .type-major {
+      color: #55dda6;
+
+      background:
+        rgba(40, 184, 130, 0.11);
+
+      border:
+        1px solid rgba(58, 215, 155, 0.18);
+    }
+
+    .release-chevron {
+      color: rgba(157, 182, 215, 0.58);
+
+      font-size: 17px;
+
+      transition:
+        transform 0.18s ease;
+    }
+
+    .release-item[open] .release-chevron {
+      transform: rotate(180deg);
+    }
+
+    .release-body {
+      padding:
+        0
+        21px
+        22px;
+
+      border-top:
+        1px solid rgba(255, 255, 255, 0.055);
+    }
+
+    .release-date {
+      display: block;
+
+      margin:
+        18px
+        0
+        14px;
+
+      color: rgba(172, 192, 218, 0.60);
+
+      font-size: 11px;
+      font-weight: 700;
+
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .release-body p {
+      margin:
+        0
+        0
+        15px;
+
+      color: rgba(211, 222, 237, 0.76);
+
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+
+    /* =========================================================
+       PLATFORM NOTE
+       ========================================================= */
+
+    .platform-note {
+      margin-top: 22px;
+
+      padding: 20px 22px;
+
+      border-radius: 19px;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(20, 76, 162, 0.28),
+          rgba(7, 32, 76, 0.34)
+        );
+
+      border:
+        1px solid rgba(66, 145, 255, 0.27);
+    }
+
+    .platform-note-title {
+      display: block;
+
+      margin-bottom: 6px;
+
+      color: #ffffff;
+
+      font-size: 14px;
+      font-weight: 760;
+    }
+
+    .platform-note p {
+      margin: 0;
+
+      color: rgba(210, 222, 239, 0.76);
+
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+
+    /* =========================================================
+       HELP
+       ========================================================= */
+
+    .help-card {
+      margin-top: 22px;
+
+      padding: 27px;
+
+      text-align: center;
+
+      border-radius: 23px;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(17, 57, 113, 0.43),
+          rgba(6, 25, 57, 0.50)
+        );
+
+      border:
+        1px solid rgba(70, 144, 241, 0.25);
+    }
+
+    .help-card h2 {
+      margin: 0 0 9px;
+
+      color: #ffffff;
+
+      font-size: 22px;
+      font-weight: 780;
+    }
+
+    .help-card p {
+      max-width: 610px;
+
+      margin:
+        0
+        auto
+        17px;
+
+      color: rgba(210, 222, 239, 0.76);
+
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .email {
+      display: inline-block;
+
+      padding: 10px 17px;
+
+      border-radius: 999px;
+
+      color: #ffffff;
+
+      text-decoration: none;
+
+      background:
+        rgba(47, 126, 242, 0.25);
+
+      border:
+        1px solid rgba(76, 153, 255, 0.33);
+
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+
+    /* =========================================================
+       FOOTER
+       ========================================================= */
+
+    .footer {
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      gap: 9px;
+
+      padding: 30px 5px 0;
+
+      color: rgba(179, 192, 211, 0.48);
+
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .footer-logo {
+      width: 23px;
+      height: 23px;
+
+      object-fit: contain;
+
+      opacity: 0.72;
+    }
+
+
+    /* =========================================================
+       MOBILE
+       ========================================================= */
+
+    @media (max-width: 700px) {
+
+      body {
+        background-attachment: scroll;
+      }
+
+      .page {
+        padding-left: 15px;
+        padding-right: 15px;
+      }
+
+      .brand-header {
+        margin-bottom: 25px;
+      }
+
+      .docs-navigation {
+        margin:
+          -8px
+          0
+          16px;
+      }
+
+      .brand-logo {
+        width: 42px;
+        height: 42px;
+      }
+
+      .brand-name {
+        font-size: 16px;
+      }
+
+      .support-pill {
+        padding: 8px 12px;
+        font-size: 11px;
+      }
+
+      .hero {
+        display: block;
+
+        min-height: 0;
+
+        padding: 27px 23px 0;
+
+        border-radius: 25px;
+      }
+
+      h1 {
+        font-size: 37px;
+      }
+
+      .hero-description {
+        font-size: 15px;
+      }
+
+      .mappy {
+        position: relative;
+
+        display: block;
+
+        right: auto;
+        bottom: auto;
+
+        width: 230px;
+
+        margin: 12px auto -18px;
+      }
+
+      .latest-release {
+        margin-top: 16px;
+
+        padding: 26px 21px;
+
+        border-radius: 25px;
+      }
+
+      .release-top {
+        display: block;
+      }
+
+      .latest-badge {
+        margin-top: 15px;
+      }
+
+      .release-version {
+        font-size: 28px;
+      }
+
+      .history-card {
+        margin-top: 16px;
+
+        padding: 27px 20px;
+
+        border-radius: 25px;
+      }
+
+      .history-heading {
+        font-size: 22px;
+      }
+
+      .release-item summary {
+        padding: 18px 16px;
+      }
+
+      .release-summary-left {
+        gap: 9px;
+      }
+
+      .history-version {
+        font-size: 16px;
+      }
+
+      .release-body {
+        padding:
+          0
+          16px
+          20px;
+      }
+
+      .help-card {
+        padding: 24px 18px;
+      }
+
+    }
+
+
+    @media (max-width: 390px) {
+
+      .support-pill {
+        display: none;
+      }
+
+      h1 {
+        font-size: 33px;
+      }
+
+      .release-summary-left {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+    }
+
+  </style>
+</head>
+
+
+<body>
+
+  <main class="page">
+
+
+    <!-- HEADER -->
+
+    <header class="brand-header">
+
+      <div class="brand">
+
+        <img
+          src="map-energy-logo.PNG"
+          alt="MAP Energy"
+          class="brand-logo"
+        >
+
+        <div class="brand-text">
+
+          <span class="brand-name">
+            MAP Energy
+          </span>
+
+          <span class="brand-subtitle">
+            Help &amp; Documentation
+          </span>
+
+        </div>
+
+      </div>
+
+      <div class="support-pill">
+        Releases
+      </div>
+
+    </header>
+
+
+
+    <!-- DOCUMENTATION NAVIGATION -->
+
+    <nav
+      class="docs-navigation"
+      aria-label="Documentation navigation"
+    >
+
+      <a
+        href="docs.html"
+        class="docs-home-link"
+      >
+
+        <span class="docs-home-arrow">
+          ←
+        </span>
+
+        <span>
+          Documentation Home
+        </span>
+
+      </a>
+
+    </nav>
+
+
+
+    <!-- HERO -->
+
+    <section class="hero">
+
+      <div class="hero-content">
+
+        <div class="eyebrow">
+
+          <span class="eyebrow-dot"></span>
+
+          What's New
+
+        </div>
+
+        <h1>
+          MAP Energy Releases
+        </h1>
+
+        <p class="hero-description">
+          Follow the development of MAP Energy and discover the
+          latest features, integrations, improvements and fixes
+          added to the app.
+        </p>
+
+      </div>
+
+
+      <img
+        src="mappy-docs.PNG"
+        alt="Mappy, the MAP Energy assistant"
+        class="mappy"
+      >
+
+    </section>
+
+
+
+    <!-- LATEST RELEASE -->
+
+    <section class="latest-release">
+
+      <div class="release-top">
+
+        <div>
+
+          <div class="release-version">
+            Version 1.7.0
+          </div>
+
+          <div class="release-name">
+            The next MAP Energy feature release
+          </div>
+
+        </div>
+
+
+        <span class="latest-badge">
+
+          <span class="latest-dot"></span>
+
+          Coming Soon
+
+        </span>
+
+      </div>
+
+
+      <p class="latest-description">
+        MAP Energy 1.7.0 is currently being prepared. This release
+        continues the expansion of MAP Energy with new features,
+        integrations and improvements across the app.
+      </p>
+
+
+      <div class="release-meta">
+
+        <span class="meta-pill">
+          iOS
+        </span>
+
+        <span class="meta-pill">
+          Android
+        </span>
+
+        <span class="meta-pill">
+          Feature Release
+        </span>
+
+      </div>
+
+
+      <div class="release-highlights">
+
+        <span class="release-highlights-title">
+          Release notes
+        </span>
+
+        <ul>
+          <li>
+            Full release notes will be published here when
+            MAP Energy 1.7.0 is released.
+          </li>
+        </ul>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- RELEASE HISTORY -->
+
+    <section class="history-card">
+
+      <h2 class="history-heading">
+        Release history
+      </h2>
+
+      <p class="history-description">
+        Expand a release below to see the features, improvements
+        and fixes included in that version of MAP Energy.
+      </p>
+
+
+
+      <!-- 1.6.6 -->
+
+      <details class="release-item">
+
+        <summary>
+
+          <div class="release-summary-left">
+
+            <span class="history-version">
+              Version 1.6.6
+            </span>
+
+            <span class="release-type type-maintenance">
+              Maintenance
+            </span>
+
+          </div>
+
+          <span class="release-chevron">
+           ⌄
+          </span>
+
+        </summary>
+
+
+        <div class="release-body">
+
+          <span class="release-date">
+            MAP Energy 1.6
+          </span>
+
+          <p>
+            A maintenance release focused on fixes and improvements
+            following the MAP Energy 1.6 feature release.
+          </p>
+
+          <ul>
+            <li>
+              Fixed an issue affecting tariff plan changes for
+              some users.
+            </li>
+
+            <li>
+              Additional stability and reliability improvements.
+            </li>
+          </ul>
+
+        </div>
+
+      </details>
+
+
+
+      <!-- 1.6.0 -->
+
+      <details class="release-item">
+
+        <summary>
+
+          <div class="release-summary-left">
+
+            <span class="history-version">
+              Version 1.6.0
+            </span>
+
+            <span class="release-type type-major">
+              Feature Release
+            </span>
+
+          </div>
+
+          <span class="release-chevron">
+           ⌄
+          </span>
+
+        </summary>
+
+
+        <div class="release-body">
+
+          <span class="release-date">
+            MAP Energy 1.6
+          </span>
+
+          <p>
+            A major MAP Energy update introducing new functionality
+            and improvements requested by the MAP Energy community.
+          </p>
+
+          <ul>
+            <li>
+              Expanded automation functionality.
+            </li>
+
+            <li>
+              Improvements for iPad users.
+            </li>
+
+            <li>
+              Day-of-week support added to manual tariff
+              configuration.
+            </li>
+
+            <li>
+              Continued improvements to energy monitoring,
+              Powerwall control and smart tariff integration.
+            </li>
+
+            <li>
+              Interface, reliability and performance improvements
+              across the app.
+            </li>
+          </ul>
+
+        </div>
+
+      </details>
+
+
+
+      <!-- 1.5.0 -->
+
+      <details class="release-item">
+
+        <summary>
+
+          <div class="release-summary-left">
+
+            <span class="history-version">
+              Version 1.5.0
+            </span>
+
+            <span class="release-type type-feature">
+              Feature Release
+            </span>
+
+          </div>
+
+          <span class="release-chevron">
+           ⌄
+          </span>
+
+        </summary>
+
+
+        <div class="release-body">
+
+          <span class="release-date">
+            MAP Energy 1.5
+          </span>
+
+          <p>
+            MAP Energy continued to expand its Powerwall monitoring,
+            energy insights and automation capabilities.
+          </p>
+
+          <ul>
+            <li>
+              Additional MAP Energy features and improvements.
+            </li>
+
+            <li>
+              Powerwall monitoring and control improvements.
+            </li>
+
+            <li>
+              General reliability and user interface improvements.
+            </li>
+          </ul>
+
+        </div>
+
+      </details>
+
+
+
+      <!-- 1.4.1 -->
+
+      <details class="release-item">
+
+        <summary>
+
+          <div class="release-summary-left">
+
+            <span class="history-version">
+              Version 1.4.1
+            </span>
+
+            <span class="release-type type-maintenance">
+              Maintenance
+            </span>
+
+          </div>
+
+          <span class="release-chevron">
+           ⌄
+          </span>
+
+        </summary>
+
+
+        <div class="release-body">
+
+          <span class="release-date">
+            MAP Energy 1.4
+          </span>
+
+          <p>
+            A maintenance update for the MAP Energy 1.4 release.
+          </p>
+
+          <ul>
+            <li>
+              Bug fixes and reliability improvements.
+            </li>
+
+            <li>
+              General app performance improvements.
+            </li>
+          </ul>
+
+        </div>
+
+      </details>
+
+
+
+      <!-- 1.4.0 -->
+
+      <details class="release-item">
+
+        <summary>
+
+          <div class="release-summary-left">
+
+            <span class="history-version">
+              Version 1.4.0
+            </span>
+
+            <span class="release-type type-feature">
+              Feature Release
+            </span>
+
+          </div>
+
+          <span class="release-chevron">
+           ⌄
+          </span>
+
+        </summary>
+
+
+        <div class="release-body">
+
+          <span class="release-date">
+            MAP Energy 1.4
+          </span>
+
+          <p>
+            A feature update continuing the development of
+            MAP Energy's monitoring, control and energy
+            management capabilities.
+          </p>
+
+          <ul>
+            <li>
+              New MAP Energy functionality.
+            </li>
+
+            <li>
+              Improvements to existing energy monitoring features.
+            </li>
+
+            <li>
+              User interface and reliability improvements.
+            </li>
+          </ul>
+
+        </div>
+
+      </details>
+
+
+
+      <!-- 1.3.0 -->
+
+      <details class="release-item">
+
+        <summary>
+
+          <div class="release-summary-left">
+
+            <span class="history-version">
+              Version 1.3.0
+            </span>
+
+            <span class="release-type type-major">
+              Early Release
+            </span>
+
+          </div>
+
+          <span class="release-chevron">
+           ⌄
+          </span>
+
+        </summary>
+
+
+        <div class="release-body">
+
+          <span class="release-date">
+            MAP Energy 1.3
+          </span>
+
+          <p>
+            One of the early public releases of MAP Energy,
+            establishing the foundations for the app's Powerwall
+            monitoring, energy insights and control features.
+          </p>
+
+        </div>
+
+      </details>
+
+
+
+      <!-- PLATFORM NOTE -->
+
+      <div class="platform-note">
+
+        <span class="platform-note-title">
+          iOS and Android releases
+        </span>
+
+        <p>
+          MAP Energy is developed for both iOS and Android.
+          Occasionally a release may reach one store before the
+          other because Apple and Google review and publish updates
+          independently.
+        </p>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- HELP -->
+
+    <section class="help-card">
+
+      <h2>
+        Found a problem after an update?
+      </h2>
+
+      <p>
+        If something isn't working as expected after installing a
+        MAP Energy release, contact support and include your device
+        platform, app version and a brief description of the issue.
+      </p>
+
+      <a
+        class="email"
+        href="mailto:support@aptica.uk"
+      >
+        support@aptica.uk
+      </a>
+
+    </section>
+
+
+
+    <!-- FOOTER -->
+
+    <footer class="footer">
+
+      <img
+        src="map-energy-logo.PNG"
+        alt="MAP Energy"
+        class="footer-logo"
+      >
+
+      <span>
+        MAP Energy • Powerwall control, insights &amp; automation
+      </span>
+
+    </footer>
+
+
+  </main>
+
+</body>
+</html>
