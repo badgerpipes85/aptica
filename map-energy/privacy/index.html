@@ -1,629 +1,2690 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en-GB">
+
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Privacy Policy – MAP Energy</title>
-  <meta name="description" content="Privacy Policy for the MAP Energy iOS app operated by Aptica Ltd." />
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, viewport-fit=cover"
+  >
+
+  <title>Privacy Policy | MAP Energy</title>
+
+  <meta
+    name="description"
+    content="Privacy Policy for MAP Energy, operated by Aptica Ltd. Learn how MAP Energy collects, uses, stores and protects information when you use the app, web portal, automations and connected energy services."
+  >
+
   <style>
-    :root {
-      color-scheme: light dark;
-
-      --brand-blue: #2f80ed;
-      --brand-grey: #8c98a8;
-      --energy-yellow: #f2c94c;
-
-      --bg-primary: #f7f9fc;
-      --bg-card: rgba(255,255,255,0.82);
-      --border: rgba(47, 128, 237, 0.14);
-      --text-primary: #17212f;
-      --text-secondary: #5f6b7a;
-      --success: #27ae60;
-      --warning: #f2994a;
-      --error: #eb5757;
-
-      --shadow: 0 12px 30px rgba(24, 39, 75, 0.08);
-      --radius-xl: 22px;
-      --radius-lg: 16px;
-      --radius-md: 14px;
-    }
-
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --bg-primary: #0d1117;
-        --bg-card: rgba(22, 27, 34, 0.88);
-        --border: rgba(255,255,255,0.08);
-        --text-primary: #f3f6fb;
-        --text-secondary: #a9b4c2;
-        --shadow: 0 16px 36px rgba(0, 0, 0, 0.34);
-      }
-    }
 
     * {
       box-sizing: border-box;
     }
 
     html {
+      min-height: 100%;
       scroll-behavior: smooth;
+      background: #06101f;
     }
 
     body {
       margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      color: var(--text-primary);
-      background:
-        linear-gradient(
-          to bottom,
-          rgba(47, 128, 237, 0.18) 0%,
-          rgba(242, 201, 76, 0.10) 30%,
-          var(--bg-primary) 70%
-        );
       min-height: 100vh;
+
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "SF Pro Display",
+        "SF Pro Text",
+        "Segoe UI",
+        Roboto,
+        Helvetica,
+        Arial,
+        sans-serif;
+
+      color: #ffffff;
+
+      background:
+        radial-gradient(
+          circle at 78% 4%,
+          rgba(36, 117, 238, 0.18),
+          transparent 27%
+        ),
+        radial-gradient(
+          circle at 15% 27%,
+          rgba(18, 89, 190, 0.10),
+          transparent 25%
+        ),
+        linear-gradient(
+          180deg,
+          #071326 0%,
+          #06101f 45%,
+          #040b16 100%
+        );
     }
 
-    .shell {
-      max-width: 980px;
-      margin: 0 auto;
-      padding: 28px 18px 64px;
+    a {
+      color: inherit;
     }
+
+
+    /* =========================================================
+       PAGE
+       ========================================================= */
+
+    .page {
+      width: 100%;
+      max-width: 1180px;
+
+      margin: 0 auto;
+
+      padding:
+        max(24px, env(safe-area-inset-top))
+        24px
+        max(60px, env(safe-area-inset-bottom));
+    }
+
+
+    /* =========================================================
+       HEADER
+       ========================================================= */
+
+    .site-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 25px;
+
+      margin-bottom: 28px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+
+      gap: 12px;
+
+      color: #ffffff;
+      text-decoration: none;
+    }
+
+    .brand-logo {
+      width: 48px;
+      height: 48px;
+
+      object-fit: contain;
+
+      filter:
+        drop-shadow(
+          0 6px 16px rgba(0, 0, 0, 0.28)
+        );
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-name {
+      font-size: 18px;
+      line-height: 1.1;
+
+      font-weight: 850;
+
+      letter-spacing: -0.02em;
+    }
+
+    .brand-subtitle {
+      margin-top: 4px;
+
+      color: rgba(198, 213, 234, 0.58);
+
+      font-size: 11px;
+      font-weight: 650;
+    }
+
+    .desktop-nav {
+      display: flex;
+      align-items: center;
+
+      gap: 7px;
+    }
+
+    .desktop-nav a {
+      padding: 9px 12px;
+
+      border-radius: 11px;
+
+      color: rgba(213, 225, 241, 0.72);
+
+      text-decoration: none;
+
+      font-size: 12px;
+      font-weight: 700;
+
+      transition:
+        color 0.15s ease,
+        background 0.15s ease;
+    }
+
+    .desktop-nav a:hover {
+      color: #ffffff;
+
+      background:
+        rgba(255, 255, 255, 0.055);
+    }
+
+    .desktop-nav .active {
+      color: #ffffff;
+
+      background:
+        rgba(52, 127, 240, 0.15);
+
+      border:
+        1px solid rgba(87, 153, 246, 0.18);
+    }
+
+
+    /* =========================================================
+       HERO
+       ========================================================= */
 
     .hero {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-xl);
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      padding: 24px 22px;
-      margin-bottom: 18px;
+      position: relative;
+
+      padding: 45px;
+
+      overflow: hidden;
+
+      border-radius: 32px;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(17, 51, 101, 0.94),
+          rgba(5, 18, 42, 0.96) 63%,
+          rgba(5, 14, 31, 0.97)
+        );
+
+      border:
+        1px solid rgba(82, 148, 239, 0.27);
+
+      box-shadow:
+        0 32px 90px rgba(0, 0, 0, 0.34),
+        inset 0 1px 0 rgba(255, 255, 255, 0.055);
     }
 
-    .eyebrow {
+    .hero::before {
+      content: "";
+
+      position: absolute;
+
+      width: 500px;
+      height: 500px;
+
+      right: -170px;
+      top: -260px;
+
+      border-radius: 50%;
+
+      background:
+        radial-gradient(
+          circle,
+          rgba(48, 139, 255, 0.30),
+          transparent 67%
+        );
+
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+
+      max-width: 850px;
+    }
+
+    .hero-eyebrow {
       display: inline-flex;
       align-items: center;
+
       gap: 8px;
-      background: rgba(47, 128, 237, 0.12);
-      color: var(--brand-blue);
-      border: 1px solid rgba(47, 128, 237, 0.18);
+
+      margin-bottom: 18px;
+
+      padding: 7px 11px;
+
       border-radius: 999px;
-      padding: 7px 12px;
-      font-size: 0.84rem;
-      font-weight: 700;
-      margin-bottom: 14px;
+
+      color: #83bcff;
+
+      background:
+        rgba(44, 125, 240, 0.13);
+
+      border:
+        1px solid rgba(81, 153, 255, 0.22);
+
+      font-size: 10px;
+      font-weight: 850;
+
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
     }
 
-    .eyebrow::before {
-      content: "";
-      width: 8px;
-      height: 8px;
-      border-radius: 999px;
-      background: var(--success);
-      box-shadow: 0 0 0 4px rgba(39, 174, 96, 0.14);
+    .hero-eyebrow-dot {
+      width: 7px;
+      height: 7px;
+
+      border-radius: 50%;
+
+      background: #3fd394;
+
+      box-shadow:
+        0 0 11px rgba(63, 211, 148, 0.7);
     }
 
-    h1{
-      margin:0 0 10px;
-      font-size:clamp(2rem,5vw,2.7rem);
-      line-height:1.06;
-      letter-spacing:-0.02em;
+    h1 {
+      margin: 0 0 17px;
+
+      color: #ffffff;
+
+      font-size: clamp(40px, 6vw, 62px);
+      line-height: 1;
+
+      font-weight: 880;
+
+      letter-spacing: -0.05em;
     }
 
-    .hero p {
+    .hero-description {
+      max-width: 760px;
+
       margin: 0;
-      color: var(--text-secondary);
-      font-size: 1rem;
+
+      color: rgba(220, 230, 243, 0.76);
+
+      font-size: 16px;
+      line-height: 1.68;
     }
 
     .hero-meta {
-      margin-top: 16px;
       display: grid;
+
+      grid-template-columns: repeat(3, 1fr);
+
       gap: 10px;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+
+      margin-top: 28px;
     }
 
-    .mini-card {
-      background: rgba(255,255,255,0.36);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      padding: 12px 14px;
+    .meta-card {
+      padding: 15px 16px;
+
+      border-radius: 15px;
+
+      background:
+        rgba(5, 18, 40, 0.52);
+
+      border:
+        1px solid rgba(91, 151, 232, 0.16);
     }
 
-    @media (prefers-color-scheme: dark) {
-      .mini-card {
-        background: rgba(255,255,255,0.03);
-      }
-    }
-
-    .mini-label {
+    .meta-label {
       display: block;
-      color: var(--text-secondary);
-      font-size: 0.82rem;
-      margin-bottom: 4px;
+
+      margin-bottom: 5px;
+
+      color: rgba(183, 202, 226, 0.52);
+
+      font-size: 10px;
+      font-weight: 700;
+
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
     }
 
-    .mini-value {
-      font-size: 0.95rem;
-      font-weight: 600;
-      color: var(--text-primary);
+    .meta-value {
+      color: #ffffff;
+
+      font-size: 13px;
+      font-weight: 750;
     }
 
-    .notice {
-      margin: 18px 0 24px;
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 16px 18px;
-      box-shadow: var(--shadow);
+    .meta-value a {
+      color: #83bcff;
+      text-decoration: none;
     }
 
-    .notice strong {
-      color: var(--brand-blue);
+    .meta-value a:hover {
+      color: #ffffff;
     }
 
-    .layout {
+
+    /* =========================================================
+       NOTICE
+       ========================================================= */
+
+    .privacy-notice {
+      margin-top: 18px;
+
+      padding: 18px 20px;
+
+      border-radius: 19px;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(10, 31, 62, 0.90),
+          rgba(5, 16, 34, 0.92)
+        );
+
+      border:
+        1px solid rgba(78, 139, 224, 0.18);
+
+      color: rgba(205, 219, 237, 0.72);
+
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .privacy-notice strong {
+      color: #ffffff;
+    }
+
+    .privacy-notice a {
+      color: #69afff;
+      text-decoration: none;
+    }
+
+    .privacy-notice a:hover {
+      color: #ffffff;
+    }
+
+
+    /* =========================================================
+       LAYOUT
+       ========================================================= */
+
+    .privacy-layout {
       display: grid;
+
+      grid-template-columns: 250px minmax(0, 1fr);
+
       gap: 18px;
-      grid-template-columns: 260px 1fr;
+
       align-items: start;
+
+      margin-top: 18px;
     }
 
-    @media (max-width: 860px) {
-      .layout {
-        grid-template-columns: 1fr;
-      }
-    }
 
-    .toc,
-    .content-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-xl);
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-    }
+    /* =========================================================
+       CONTENTS
+       ========================================================= */
 
     .toc {
       position: sticky;
       top: 18px;
-      padding: 18px 16px;
+
+      padding: 20px 17px;
+
+      border-radius: 22px;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(10, 29, 57, 0.90),
+          rgba(5, 15, 32, 0.92)
+        );
+
+      border:
+        1px solid rgba(78, 137, 219, 0.18);
+
+      box-shadow:
+        0 20px 55px rgba(0, 0, 0, 0.20);
     }
 
-    @media (max-width: 860px) {
-      .toc {
-        position: static;
-      }
-    }
+    .toc-title {
+      margin: 0 0 13px;
 
-    .toc h2 {
-      margin: 0 0 12px;
-      font-size: 1rem;
+      color: #ffffff;
+
+      font-size: 13px;
+      font-weight: 800;
     }
 
     .toc ul {
       list-style: none;
+
       margin: 0;
       padding: 0;
+
       display: grid;
-      gap: 8px;
+
+      gap: 3px;
     }
 
     .toc a {
       display: block;
-      color: var(--text-secondary);
+
+      padding: 7px 9px;
+
+      border-radius: 9px;
+
+      color: rgba(188, 205, 227, 0.62);
+
       text-decoration: none;
-      font-size: 0.95rem;
-      border-radius: 10px;
-      padding: 8px 10px;
-      transition: 0.15s ease;
+
+      font-size: 11px;
+      line-height: 1.35;
+
+      transition:
+        color 0.15s ease,
+        background 0.15s ease;
     }
 
     .toc a:hover {
-      background: rgba(47, 128, 237, 0.10);
-      color: var(--brand-blue);
+      color: #ffffff;
+
+      background:
+        rgba(52, 127, 240, 0.12);
     }
 
-    .content-card {
-      padding: 24px 22px 30px;
+
+    /* =========================================================
+       POLICY CONTENT
+       ========================================================= */
+
+    .policy-card {
+      padding: 31px;
+
+      border-radius: 25px;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(10, 29, 57, 0.91),
+          rgba(5, 15, 32, 0.93)
+        );
+
+      border:
+        1px solid rgba(78, 137, 219, 0.18);
+
+      box-shadow:
+        0 22px 60px rgba(0, 0, 0, 0.22);
     }
 
-    section + section {
-      margin-top: 28px;
-      padding-top: 24px;
-      border-top: 1px solid var(--border);
+    .policy-section + .policy-section {
+      margin-top: 32px;
+      padding-top: 29px;
+
+      border-top:
+        1px solid rgba(116, 158, 218, 0.12);
     }
 
-    h2.section-title {
-      margin: 0 0 12px;
-      font-size: 1.28rem;
-      letter-spacing: -0.01em;
+    .section-number {
+      display: inline-flex;
+
+      align-items: center;
+      justify-content: center;
+
+      min-width: 29px;
+      height: 29px;
+
+      margin-bottom: 11px;
+
+      padding: 0 8px;
+
+      border-radius: 9px;
+
+      color: #ffffff;
+
+      background:
+        rgba(52, 127, 240, 0.18);
+
+      border:
+        1px solid rgba(88, 155, 247, 0.22);
+
+      font-size: 10px;
+      font-weight: 850;
     }
 
-    h3 {
-      margin: 18px 0 8px;
-      font-size: 1rem;
-      color: var(--brand-blue);
+    .policy-section h2 {
+      margin: 0 0 13px;
+
+      color: #ffffff;
+
+      font-size: 23px;
+      line-height: 1.2;
+
+      font-weight: 800;
+
+      letter-spacing: -0.025em;
     }
 
-    p {
+    .policy-section h3 {
+      margin: 22px 0 9px;
+
+      color: #75b5ff;
+
+      font-size: 15px;
+      font-weight: 770;
+    }
+
+    .policy-section p {
       margin: 10px 0;
-      font-size: 1rem;
-      color: var(--text-primary);
+
+      color: rgba(207, 220, 237, 0.72);
+
+      font-size: 14px;
+      line-height: 1.72;
     }
 
-    ul {
-      margin: 10px 0 10px 1.1rem;
+    .policy-section strong {
+      color: rgba(240, 245, 252, 0.94);
+    }
+
+    .policy-section ul {
+      margin: 12px 0 12px 19px;
       padding: 0;
     }
 
-    li {
-      margin: 7px 0;
-      color: var(--text-primary);
+    .policy-section li {
+      margin: 8px 0;
+
+      padding-left: 3px;
+
+      color: rgba(207, 220, 237, 0.72);
+
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .policy-section a {
+      color: #69afff;
+      text-decoration: none;
+    }
+
+    .policy-section a:hover {
+      color: #ffffff;
     }
 
     .muted {
-      color: var(--text-secondary);
+      color: rgba(180, 198, 220, 0.55) !important;
     }
 
-    .badge-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin: 12px 0 4px;
-    }
 
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      padding: 8px 12px;
-      border-radius: 999px;
-      font-size: 0.88rem;
-      font-weight: 600;
-      border: 1px solid transparent;
-    }
-
-    .badge-blue {
-      color: var(--brand-blue);
-      background: rgba(47, 128, 237, 0.12);
-      border-color: rgba(47, 128, 237, 0.22);
-    }
-
-    .badge-yellow {
-      color: #8a6400;
-      background: rgba(242, 201, 76, 0.18);
-      border-color: rgba(242, 201, 76, 0.26);
-    }
-
-    .badge-green {
-      color: var(--success);
-      background: rgba(39, 174, 96, 0.12);
-      border-color: rgba(39, 174, 96, 0.22);
-    }
+    /* =========================================================
+       CALLOUT
+       ========================================================= */
 
     .callout {
-      border-left: 4px solid var(--brand-blue);
-      background: rgba(47, 128, 237, 0.08);
-      border-radius: 12px;
-      padding: 14px 14px 14px 16px;
-      margin: 14px 0;
+      margin: 17px 0;
+
+      padding: 16px 17px;
+
+      border-radius: 15px;
+
+      background:
+        rgba(44, 125, 240, 0.09);
+
+      border:
+        1px solid rgba(74, 147, 250, 0.18);
+
+      border-left:
+        3px solid #4b94f6;
     }
 
     .callout p {
       margin: 0;
-    }
-    
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      margin-bottom:18px;
-    }
-    
-    .logo{
-      height:40px;
-      width:auto;
-    }
-    
-    .brand-text{
-      font-size:20px;
-      font-weight:700;
-      letter-spacing:-0.01em;
+
+      color: rgba(220, 231, 245, 0.79);
     }
 
-    .brand-divider{
-      height:1px;
-      background:var(--border);
-      margin:18px 0 22px;
+
+    /* =========================================================
+       DATA TAGS
+       ========================================================= */
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+
+      gap: 8px;
+
+      margin-top: 16px;
     }
 
-    a {
-      color: var(--brand-blue);
+    .tag {
+      padding: 7px 10px;
+
+      border-radius: 999px;
+
+      color: rgba(224, 235, 248, 0.82);
+
+      background:
+        rgba(5, 19, 42, 0.55);
+
+      border:
+        1px solid rgba(92, 151, 231, 0.18);
+
+      font-size: 10px;
+      font-weight: 750;
+    }
+
+
+    /* =========================================================
+       CONTACT CARD
+       ========================================================= */
+
+    .contact-card {
+      margin-top: 18px;
+
+      padding: 25px;
+
+      border-radius: 22px;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(15, 51, 99, 0.92),
+          rgba(5, 18, 40, 0.94)
+        );
+
+      border:
+        1px solid rgba(80, 146, 236, 0.24);
+    }
+
+    .contact-card h2 {
+      margin: 0 0 8px;
+
+      color: #ffffff;
+
+      font-size: 20px;
+    }
+
+    .contact-card p {
+      margin: 0;
+
+      color: rgba(202, 217, 236, 0.70);
+
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .contact-button {
+      display: inline-flex;
+
+      margin-top: 16px;
+
+      padding: 10px 14px;
+
+      border-radius: 12px;
+
+      color: #ffffff;
+
+      background: #347ff0;
+
+      border:
+        1px solid rgba(106, 173, 255, 0.42);
+
       text-decoration: none;
+
+      font-size: 12px;
+      font-weight: 780;
     }
 
-    a:hover {
-      text-decoration: underline;
+    .contact-button:hover {
+      background: #428bf8;
     }
 
-    footer {
-      margin-top: 24px;
-      text-align: center;
-      color: var(--text-secondary);
-      font-size: 0.94rem;
+
+    /* =========================================================
+       FOOTER
+       ========================================================= */
+
+    .footer {
+      margin-top: 58px;
+
+      padding-top: 27px;
+
+      border-top:
+        1px solid rgba(116, 158, 218, 0.12);
     }
+
+    .footer-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 25px;
+    }
+
+    .footer-brand {
+      display: flex;
+      align-items: center;
+
+      gap: 10px;
+    }
+
+    .footer-logo {
+      width: 32px;
+      height: 32px;
+
+      object-fit: contain;
+
+      opacity: 0.85;
+    }
+
+    .footer-brand-name {
+      color: rgba(226, 235, 247, 0.83);
+
+      font-size: 13px;
+      font-weight: 750;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+
+      gap: 17px;
+    }
+
+    .footer-links a {
+      color: rgba(185, 202, 223, 0.56);
+
+      text-decoration: none;
+
+      font-size: 11px;
+      font-weight: 650;
+    }
+
+    .footer-links a:hover {
+      color: #ffffff;
+    }
+
+    .footer-bottom {
+      margin-top: 22px;
+
+      color: rgba(173, 189, 210, 0.43);
+
+      font-size: 10px;
+      line-height: 1.65;
+    }
+
+
+    /* =========================================================
+       MOBILE
+       ========================================================= */
+
+    @media (max-width: 900px) {
+
+      .desktop-nav {
+        display: none;
+      }
+
+      .privacy-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .toc {
+        position: static;
+      }
+
+      .toc ul {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+    }
+
+
+    @media (max-width: 700px) {
+
+      .page {
+        padding-left: 15px;
+        padding-right: 15px;
+      }
+
+      .site-header {
+        margin-bottom: 20px;
+      }
+
+      .brand-logo {
+        width: 42px;
+        height: 42px;
+      }
+
+      .brand-name {
+        font-size: 16px;
+      }
+
+      .hero {
+        padding: 30px 22px;
+
+        border-radius: 26px;
+      }
+
+      h1 {
+        font-size: 40px;
+      }
+
+      .hero-description {
+        font-size: 14px;
+      }
+
+      .hero-meta {
+        grid-template-columns: 1fr;
+      }
+
+      .privacy-layout {
+        margin-top: 14px;
+      }
+
+      .toc {
+        padding: 18px 15px;
+      }
+
+      .toc ul {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .policy-card {
+        padding: 24px 20px;
+
+        border-radius: 22px;
+      }
+
+      .policy-section h2 {
+        font-size: 21px;
+      }
+
+      .footer-top {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+    }
+
+
+    @media (max-width: 430px) {
+
+      .toc ul {
+        grid-template-columns: 1fr;
+      }
+
+    }
+
   </style>
+
 </head>
+
+
 <body>
-  <div class="shell">
-    <header class="hero">
 
-    <div class="brand">
-      <img src="/MAP Logo.png" alt="MAP Energy Logo" class="logo">
-      <span class="brand-text">MAP Energy</span>
-    </div>
-    
-    <div class="brand-divider"></div>
-    
-    <h1>Privacy Policy</h1>
-      <p>
-        This policy explains how MAP Energy, operated by Aptica Ltd, collects,
-        uses, stores, and protects data when you use the app and its related backend services.
-      </p>
+  <main class="page">
 
-      <div class="hero-meta">
-        <div class="mini-card">
-          <span class="mini-label">Operator</span>
-          <span class="mini-value">Aptica Ltd</span>
+
+    <!-- =====================================================
+         HEADER
+         ===================================================== -->
+
+    <header class="site-header">
+
+      <a
+        href="/map-energy/"
+        class="brand"
+      >
+
+        <img
+          src="/map-energy/assets/map-energy-logo.PNG"
+          alt="MAP Energy"
+          class="brand-logo"
+        >
+
+        <div class="brand-text">
+
+          <span class="brand-name">
+            MAP Energy
+          </span>
+
+          <span class="brand-subtitle">
+            Smarter home energy
+          </span>
+
         </div>
-        <div class="mini-card">
-          <span class="mini-label">Last updated</span>
-          <span class="mini-value">March 2026</span>
-        </div>
-        <div class="mini-card">
-          <span class="mini-label">Contact</span>
-          <span class="mini-value"><a href="mailto:support@aptica.uk">support@aptica.uk</a></span>
-        </div>
-      </div>
+
+      </a>
+
+
+      <nav
+        class="desktop-nav"
+        aria-label="Main navigation"
+      >
+
+        <a href="/map-energy/">
+          Home
+        </a>
+
+        <a href="/map-energy/documentation/">
+          Documentation
+        </a>
+
+        <a href="/map-energy/portal/">
+          Web Portal
+        </a>
+
+        <a
+          href="/map-energy/privacy/"
+          class="active"
+        >
+          Privacy
+        </a>
+
+        <a href="/map-energy/terms/">
+          Terms
+        </a>
+
+        <a href="mailto:support@aptica.uk">
+          Support
+        </a>
+
+      </nav>
+
     </header>
 
-    <div class="notice">
-      <p>
-        If you have questions about this policy or want to exercise your data rights,
-        contact <strong><a href="mailto:support@aptica.uk">support@aptica.uk</a></strong>.
-      </p>
+
+
+    <!-- =====================================================
+         HERO
+         ===================================================== -->
+
+    <section class="hero">
+
+      <div class="hero-content">
+
+        <div class="hero-eyebrow">
+
+          <span class="hero-eyebrow-dot"></span>
+
+          Your Data &amp; Privacy
+
+        </div>
+
+
+        <h1>
+          Privacy Policy
+        </h1>
+
+
+        <p class="hero-description">
+          This policy explains how MAP Energy, operated by Aptica Ltd,
+          collects, uses, stores and protects information when you use
+          MAP Energy, including our mobile apps, web services,
+          automations and connected energy integrations.
+        </p>
+
+
+        <div class="hero-meta">
+
+          <div class="meta-card">
+
+            <span class="meta-label">
+              Operator
+            </span>
+
+            <span class="meta-value">
+              Aptica Ltd
+            </span>
+
+          </div>
+
+
+          <div class="meta-card">
+
+            <span class="meta-label">
+              Last Updated
+            </span>
+
+            <span class="meta-value">
+              September 2026
+            </span>
+
+          </div>
+
+
+          <div class="meta-card">
+
+            <span class="meta-label">
+              Privacy Contact
+            </span>
+
+            <span class="meta-value">
+              <a href="mailto:support@aptica.uk">
+                support@aptica.uk
+              </a>
+            </span>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         NOTICE
+         ===================================================== -->
+
+    <div class="privacy-notice">
+
+      <strong>Questions about your data?</strong>
+
+      If you have a question about this policy, want to request access
+      to your information or want to exercise one of your data
+      protection rights, contact
+
+      <a href="mailto:support@aptica.uk">
+        support@aptica.uk
+      </a>.
+
     </div>
 
-    <div class="layout">
+
+
+    <!-- =====================================================
+         PRIVACY CONTENT
+         ===================================================== -->
+
+    <div class="privacy-layout">
+
+
+      <!-- CONTENTS -->
+
       <aside class="toc">
-        <h2>Contents</h2>
+
+        <h2 class="toc-title">
+          Contents
+        </h2>
+
         <ul>
-          <li><a href="#who-we-are">1. Who we are</a></li>
-          <li><a href="#what-this-covers">2. What this policy covers</a></li>
-          <li><a href="#data-we-collect">3. Data we collect</a></li>
-          <li><a href="#what-we-do-not-collect">4. What we do not collect</a></li>
-          <li><a href="#how-we-use-data">5. How we use data</a></li>
-          <li><a href="#legal-basis">6. Legal basis</a></li>
-          <li><a href="#security">7. Data security</a></li>
-          <li><a href="#third-parties">8. Third-party services</a></li>
-          <li><a href="#transfers">9. International transfers</a></li>
-          <li><a href="#rights">10. Your rights</a></li>
-          <li><a href="#retention">11. Data retention</a></li>
-          <li><a href="#children">12. Children’s privacy</a></li>
-          <li><a href="#changes">13. Changes</a></li>
-          <li><a href="#contact">14. Contact</a></li>
+
+          <li>
+            <a href="#who-we-are">
+              1. Who we are
+            </a>
+          </li>
+
+          <li>
+            <a href="#what-this-covers">
+              2. What this covers
+            </a>
+          </li>
+
+          <li>
+            <a href="#data-we-collect">
+              3. Data we collect
+            </a>
+          </li>
+
+          <li>
+            <a href="#what-we-do-not-collect">
+              4. What we do not collect
+            </a>
+          </li>
+
+          <li>
+            <a href="#how-we-use-data">
+              5. How we use data
+            </a>
+          </li>
+
+          <li>
+            <a href="#legal-basis">
+              6. Legal basis
+            </a>
+          </li>
+
+          <li>
+            <a href="#security">
+              7. Storage &amp; security
+            </a>
+          </li>
+
+          <li>
+            <a href="#third-parties">
+              8. Third-party services
+            </a>
+          </li>
+
+          <li>
+            <a href="#transfers">
+              9. International transfers
+            </a>
+          </li>
+
+          <li>
+            <a href="#rights">
+              10. Your rights
+            </a>
+          </li>
+
+          <li>
+            <a href="#retention">
+              11. Data retention
+            </a>
+          </li>
+
+          <li>
+            <a href="#children">
+              12. Children's privacy
+            </a>
+          </li>
+
+          <li>
+            <a href="#changes">
+              13. Changes
+            </a>
+          </li>
+
+          <li>
+            <a href="#contact">
+              14. Contact
+            </a>
+          </li>
+
         </ul>
+
       </aside>
 
-      <article class="content-card">
-        <section id="who-we-are">
-          <h2 class="section-title">1. Who we are</h2>
-          <p>MAP Energy is operated by <strong>Aptica Ltd</strong>, a company registered in England and Wales.</p>
+
+
+      <!-- POLICY -->
+
+      <article class="policy-card">
+
+
+        <!-- 1 -->
+
+        <section
+          class="policy-section"
+          id="who-we-are"
+        >
+
+          <span class="section-number">
+            01
+          </span>
+
+          <h2>
+            Who we are
+          </h2>
+
+          <p>
+            MAP Energy is operated by
+            <strong>Aptica Ltd</strong>, a company registered in
+            England and Wales.
+          </p>
+
           <ul>
-            <li><strong>Company name:</strong> Aptica Ltd</li>
-            <li><strong>Company number:</strong> 16938524</li>
-            <li><strong>Registered office:</strong> United Kingdom</li>
-            <li><strong>Contact email:</strong> <a href="mailto:support@aptica.uk">support@aptica.uk</a></li>
-          </ul>
-          <p class="muted">Aptica Ltd is registered with the UK Information Commissioner’s Office (ICO) as a data controller.</p>
-        </section>
 
-        <section id="what-this-covers">
-          <h2 class="section-title">2. What this policy covers</h2>
-          <p>This Privacy Policy explains how MAP Energy collects, uses, stores, and protects personal data when you use:</p>
-          <ul>
-            <li>the MAP Energy iOS app</li>
-            <li>related backend services</li>
-          </ul>
-        </section>
+            <li>
+              <strong>Company name:</strong>
+              Aptica Ltd
+            </li>
 
-        <section id="data-we-collect">
-          <h2 class="section-title">3. Data we collect</h2>
+            <li>
+              <strong>Company number:</strong>
+              16938524
+            </li>
 
-          <h3>a) Account &amp; authentication data</h3>
-          <p>When you sign in, we may collect:</p>
-          <ul>
-            <li>Apple Sign-In identifier</li>
-            <li>Session tokens required to keep you signed in</li>
-          </ul>
-          <p class="muted">We do not receive your Apple ID email address unless you explicitly allow it.</p>
+            <li>
+              <strong>Registered office:</strong>
+              United Kingdom
+            </li>
 
-          <h3>b) Energy service connections (optional)</h3>
-          <p>If you connect external energy services, we may store identifiers and authentication credentials required to access those services on your behalf.</p>
+            <li>
+              <strong>Contact email:</strong>
+              <a href="mailto:support@aptica.uk">
+                support@aptica.uk
+              </a>
+            </li>
 
-          <p><strong>Tesla Energy</strong></p>
-          <ul>
-            <li>Tesla energy site ID</li>
-            <li>Energy configuration data such as battery, inverter, and export settings</li>
-            <li>Encrypted OAuth tokens required to access Tesla Energy APIs</li>
-          </ul>
-          <p class="muted">We cannot access your Tesla account password.</p>
-
-          <p><strong>Octopus Energy</strong></p>
-          <ul>
-            <li>API key (stored securely)</li>
-            <li>Account number</li>
-            <li>Tariff and meter identifiers</li>
-          </ul>
-
-          <p><strong>myenergi / Zappi</strong></p>
-          <ul>
-            <li>Zappi hub serial number</li>
-            <li>Zappi API key</li>
-          </ul>
-          <p class="muted">These credentials are encrypted at rest on our servers and used only to retrieve EV charging telemetry.</p>
-
-          <h3>c) Device &amp; app data</h3>
-          <p>We may collect:</p>
-          <ul>
-            <li>App-generated device identifier</li>
-            <li>Push notification tokens</li>
-            <li>App usage required to deliver features</li>
           </ul>
 
-          <h3>d) Automation &amp; configuration data</h3>
-          <p>If you enable automations, we may store:</p>
-          <ul>
-            <li>Automation rules you create</li>
-            <li>Execution history, including success, failure, or blocked status</li>
-            <li>Timing and configuration metadata</li>
-          </ul>
-
-          <h3>e) Energy telemetry data</h3>
-          <p>To provide live energy views and automations, MAP Energy may retrieve and store limited operational telemetry from connected services, such as:</p>
-          <ul>
-            <li>Grid import and export power</li>
-            <li>Solar generation</li>
-            <li>Battery state of charge</li>
-            <li>Home energy consumption</li>
-            <li>EV charging power</li>
-            <li>EV charger connection or charging state</li>
-          </ul>
-
-          <div class="badge-row">
-            <span class="badge badge-blue">Live energy views</span>
-            <span class="badge badge-yellow">EV telemetry</span>
-            <span class="badge badge-green">Automations</span>
-          </div>
-
-          <p class="muted">This data is associated with your energy system but does not contain personally identifiable information such as names, home addresses, or billing details.</p>
-        </section>
-
-        <section id="what-we-do-not-collect">
-          <h2 class="section-title">4. What we do not collect</h2>
-          <p>We do not collect:</p>
-          <ul>
-            <li>Names, home addresses, or phone numbers</li>
-            <li>Payment or billing information</li>
-            <li>Precise location data</li>
-            <li>Marketing profiles or advertising identifiers</li>
-          </ul>
-          <p>We do not sell your data.</p>
-        </section>
-
-        <section id="how-we-use-data">
-          <h2 class="section-title">5. How we use your data</h2>
-          <p>We use your data only to:</p>
-          <ul>
-            <li>Provide live energy views</li>
-            <li>Run user-configured automations</li>
-            <li>Sync energy data from connected services</li>
-            <li>Retrieve EV charging telemetry</li>
-            <li>Determine charger connection and charging status</li>
-            <li>Detect EV charging sessions and support related automations</li>
-            <li>Send notifications you enable</li>
-            <li>Maintain security and prevent abuse</li>
-          </ul>
           <div class="callout">
-            <p>All processing is limited to functionality required for MAP Energy to operate.</p>
+
+            <p>
+              Aptica Ltd is registered with the UK Information
+              Commissioner's Office (ICO) as a data controller.
+            </p>
+
           </div>
+
         </section>
 
-        <section id="legal-basis">
-          <h2 class="section-title">6. Legal basis for processing (UK GDPR)</h2>
-          <p>We process data under:</p>
+
+
+        <!-- 2 -->
+
+        <section
+          class="policy-section"
+          id="what-this-covers"
+        >
+
+          <span class="section-number">
+            02
+          </span>
+
+          <h2>
+            What this policy covers
+          </h2>
+
+          <p>
+            This Privacy Policy explains how information is processed
+            when you use MAP Energy and its related services.
+          </p>
+
+          <p>
+            This includes, where applicable:
+          </p>
+
           <ul>
-            <li><strong>Contractual necessity</strong> – to provide app functionality</li>
-            <li><strong>User consent</strong> – when you connect third-party services</li>
-            <li><strong>Legitimate interests</strong> – security, reliability, and support</li>
+
+            <li>
+              The MAP Energy iOS app
+            </li>
+
+            <li>
+              The MAP Energy Android app
+            </li>
+
+            <li>
+              The MAP Energy web portal
+            </li>
+
+            <li>
+              MAP Energy backend services
+            </li>
+
+            <li>
+              MAP Energy automations
+            </li>
+
+            <li>
+              Connected Tesla Energy services
+            </li>
+
+            <li>
+              Connected EV charger services
+            </li>
+
+            <li>
+              Connected electricity supplier services
+            </li>
+
+            <li>
+              Solar forecasting and related energy features
+            </li>
+
+            <li>
+              Home Assistant webhook integrations
+            </li>
+
+            <li>
+              Notifications and service messages
+            </li>
+
           </ul>
+
         </section>
 
-        <section id="security">
-          <h2 class="section-title">7. Data storage &amp; security</h2>
+
+
+        <!-- 3 -->
+
+        <section
+          class="policy-section"
+          id="data-we-collect"
+        >
+
+          <span class="section-number">
+            03
+          </span>
+
+          <h2>
+            Data we collect
+          </h2>
+
+
+          <h3>
+            Account and authentication data
+          </h3>
+
+          <p>
+            When you create or access a MAP Energy account, we may
+            process information required to identify your account and
+            maintain your authenticated session.
+          </p>
+
+          <p>
+            This may include:
+          </p>
+
           <ul>
-            <li>Sensitive credentials such as API keys and authentication tokens are encrypted at rest</li>
-            <li>Backend infrastructure is hosted on Cloudflare</li>
-            <li>Access is restricted and logged</li>
-            <li>Data is retained only as long as required for app functionality</li>
-          </ul>
-          <p>You can disconnect services at any time to revoke access.</p>
-        </section>
 
-        <section id="third-parties">
-          <h2 class="section-title">8. Third-party services</h2>
-          <p>MAP Energy integrates with:</p>
+            <li>
+              Sign in with Apple identifiers
+            </li>
+
+            <li>
+              Other account identifiers generated by MAP Energy
+            </li>
+
+            <li>
+              Authentication and session tokens
+            </li>
+
+            <li>
+              Information required to associate your devices with
+              your MAP Energy account
+            </li>
+
+          </ul>
+
+          <p class="muted">
+            Where Sign in with Apple is used, Apple controls what
+            information is shared with MAP Energy. We do not receive
+            your Apple account password.
+          </p>
+
+
+
+          <h3>
+            Tesla Energy connection
+          </h3>
+
+          <p>
+            If you choose to connect Tesla Energy, MAP Energy may
+            process information made available through Tesla's
+            authorised services and APIs.
+          </p>
+
+          <p>
+            Depending on your system and the features you use, this
+            may include:
+          </p>
+
           <ul>
-            <li>Tesla Energy APIs</li>
-            <li>Octopus Energy APIs</li>
-            <li>myenergi / Zappi APIs</li>
-            <li>Apple Sign-In</li>
-            <li>Apple Push Notification Service</li>
+
+            <li>
+              Tesla Energy site identifiers
+            </li>
+
+            <li>
+              Powerwall and energy system information
+            </li>
+
+            <li>
+              Battery state of charge
+            </li>
+
+            <li>
+              Solar generation
+            </li>
+
+            <li>
+              Grid import and export
+            </li>
+
+            <li>
+              Home energy consumption
+            </li>
+
+            <li>
+              Supported Powerwall configuration and operating settings
+            </li>
+
+            <li>
+              Historical energy information
+            </li>
+
+            <li>
+              Encrypted authentication tokens required to access
+              authorised Tesla services
+            </li>
+
           </ul>
-          <p>Each service processes data under its own privacy policy.</p>
-        </section>
 
-        <section id="transfers">
-          <h2 class="section-title">9. International data transfers</h2>
-          <p>Some data may be processed outside the UK/EU where required by third-party services. Appropriate safeguards are applied where required.</p>
-        </section>
+          <p class="muted">
+            MAP Energy does not receive or store your Tesla account
+            password.
+          </p>
 
-        <section id="rights">
-          <h2 class="section-title">10. Your rights</h2>
-          <p>Under UK GDPR, you have the right to:</p>
+
+
+          <h3>
+            Powerwall diagnostic data
+          </h3>
+
+          <p>
+            Where supported and where you choose to enable relevant
+            features, MAP Energy may access additional diagnostic or
+            operational information from your Powerwall system.
+          </p>
+
+          <p>
+            This may include battery, inverter, solar, system and
+            operational diagnostic information used to display
+            additional Powerwall insights or support troubleshooting.
+          </p>
+
+          <p>
+            Initial access to certain diagnostic features may require
+            local interaction or pairing with your Powerwall system.
+            MAP Energy may store information required to maintain an
+            authorised connection where the relevant system supports
+            this.
+          </p>
+
+
+
+          <h3>
+            Electricity supplier connections
+          </h3>
+
+          <p>
+            If you connect a supported electricity supplier, MAP
+            Energy may process information required to provide tariff,
+            rate, consumption, smart charging or supplier-event
+            features.
+          </p>
+
+          <p>
+            Depending on the supplier, this may include:
+          </p>
+
           <ul>
-            <li>Access your data</li>
-            <li>Correct inaccurate data</li>
-            <li>Request deletion</li>
-            <li>Withdraw consent</li>
-            <li>Object to processing</li>
-          </ul>
-          <p>To exercise your rights, contact <a href="mailto:support@aptica.uk">support@aptica.uk</a>.</p>
-        </section>
 
-        <section id="retention">
-          <h2 class="section-title">11. Data retention</h2>
+            <li>
+              Account identifiers
+            </li>
+
+            <li>
+              Meter identifiers
+            </li>
+
+            <li>
+              Import and export tariff information
+            </li>
+
+            <li>
+              Electricity rates
+            </li>
+
+            <li>
+              Consumption information
+            </li>
+
+            <li>
+              Smart charging schedules or events
+            </li>
+
+            <li>
+              Supplier energy events where supported
+            </li>
+
+            <li>
+              API credentials or authentication tokens required to
+              access the service
+            </li>
+
+          </ul>
+
+
+
+          <h3>
+            EV charger connections
+          </h3>
+
+          <p>
+            If you connect a supported EV charger or charging service,
+            MAP Energy may process information required to identify
+            charging activity and support EV-related features and
+            automations.
+          </p>
+
+          <p>
+            Depending on the integration, this may include:
+          </p>
+
           <ul>
-            <li>Account and configuration data is retained while you use the app</li>
-            <li>Automation history is retained for a limited time</li>
-            <li>Data is deleted when you disconnect services or request deletion, subject to any legal retention requirements</li>
+
+            <li>
+              Charger or device identifiers
+            </li>
+
+            <li>
+              Authentication credentials or tokens
+            </li>
+
+            <li>
+              Charger connection state
+            </li>
+
+            <li>
+              Charging state
+            </li>
+
+            <li>
+              Charging power
+            </li>
+
+            <li>
+              Charging telemetry and session information
+            </li>
+
           </ul>
+
+          <p>
+            Supported integrations may include services associated
+            with Tesla Wall Connector, myenergi Zappi, Hypervolt,
+            Ohme and other charging configurations supported by MAP
+            Energy.
+          </p>
+
+
+
+          <h3>
+            Solar and forecasting information
+          </h3>
+
+          <p>
+            If you configure solar forecasting, MAP Energy may process
+            information about your PV installation and approximate
+            installation location where required to generate a solar
+            forecast.
+          </p>
+
+          <p>
+            This may include:
+          </p>
+
+          <ul>
+
+            <li>
+              PV system capacity
+            </li>
+
+            <li>
+              Array orientation
+            </li>
+
+            <li>
+              Array tilt
+            </li>
+
+            <li>
+              Approximate latitude and longitude entered or supplied
+              for solar forecasting
+            </li>
+
+            <li>
+              Forecast generation information
+            </li>
+
+          </ul>
+
+          <p class="muted">
+            Solar location information is used for energy forecasting
+            and is not used to track the real-time location of your
+            mobile device.
+          </p>
+
+
+
+          <h3>
+            Device and app information
+          </h3>
+
+          <p>
+            MAP Energy may process limited technical information
+            required to operate the service.
+          </p>
+
+          <p>
+            This may include:
+          </p>
+
+          <ul>
+
+            <li>
+              App-generated device identifiers
+            </li>
+
+            <li>
+              Push notification tokens
+            </li>
+
+            <li>
+              App platform and version information
+            </li>
+
+            <li>
+              Technical information needed to maintain sessions,
+              diagnose errors and provide features
+            </li>
+
+          </ul>
+
+
+
+          <h3>
+            Automations and configuration
+          </h3>
+
+          <p>
+            If you use MAP Energy automations, we may store
+            information required to configure, evaluate and execute
+            those automations.
+          </p>
+
+          <p>
+            This may include:
+          </p>
+
+          <ul>
+
+            <li>
+              Automation names
+            </li>
+
+            <li>
+              Triggers and actions
+            </li>
+
+            <li>
+              Time windows and schedules
+            </li>
+
+            <li>
+              Blocking conditions
+            </li>
+
+            <li>
+              Relevant energy thresholds
+            </li>
+
+            <li>
+              Automation execution history
+            </li>
+
+            <li>
+              Success, failure or blocked status
+            </li>
+
+            <li>
+              Technical information required to diagnose automation
+              failures
+            </li>
+
+          </ul>
+
+
+
+          <h3>
+            Home Assistant webhooks
+          </h3>
+
+          <p>
+            If you configure a Home Assistant webhook action, MAP
+            Energy processes the webhook configuration you provide
+            so that the requested event can be delivered when your
+            automation runs.
+          </p>
+
+          <p>
+            Automation events may include information about the
+            automation, trigger, event type, execution time and
+            related MAP Energy event data.
+          </p>
+
+
+
+          <h3>
+            Energy telemetry
+          </h3>
+
+          <p>
+            To provide live energy information, history, notifications
+            and automations, MAP Energy may retrieve and process
+            operational telemetry from connected services.
+          </p>
+
+          <p>
+            This may include:
+          </p>
+
+          <ul>
+
+            <li>
+              Grid import and export power
+            </li>
+
+            <li>
+              Solar generation
+            </li>
+
+            <li>
+              Battery state of charge
+            </li>
+
+            <li>
+              Battery charging and discharging
+            </li>
+
+            <li>
+              Home energy consumption
+            </li>
+
+            <li>
+              EV charging power and state
+            </li>
+
+            <li>
+              Historical energy totals
+            </li>
+
+            <li>
+              Tariff and electricity-rate information
+            </li>
+
+          </ul>
+
+
+          <div class="tag-row">
+
+            <span class="tag">
+              Live Energy
+            </span>
+
+            <span class="tag">
+              Powerwall
+            </span>
+
+            <span class="tag">
+              EV Charging
+            </span>
+
+            <span class="tag">
+              Solar
+            </span>
+
+            <span class="tag">
+              Tariffs
+            </span>
+
+            <span class="tag">
+              Automations
+            </span>
+
+          </div>
+
+
+
+          <h3>
+            Subscription information
+          </h3>
+
+          <p>
+            MAP Energy may receive information from Apple or Google
+            about the status of your subscription or purchase so that
+            Premium features can be enabled for your account.
+          </p>
+
+          <p class="muted">
+            Payments are processed by the relevant app store. MAP
+            Energy does not receive or store your full payment card
+            details.
+          </p>
+
         </section>
 
-        <section id="children">
-          <h2 class="section-title">12. Children’s privacy</h2>
-          <p>MAP Energy is not intended for children under 13. We do not knowingly collect data from children.</p>
+
+
+        <!-- 4 -->
+
+        <section
+          class="policy-section"
+          id="what-we-do-not-collect"
+        >
+
+          <span class="section-number">
+            04
+          </span>
+
+          <h2>
+            What we do not collect
+          </h2>
+
+          <p>
+            MAP Energy is designed to collect only the information
+            reasonably required to provide its features.
+          </p>
+
+          <p>
+            We do not intentionally collect:
+          </p>
+
+          <ul>
+
+            <li>
+              Your Tesla account password
+            </li>
+
+            <li>
+              Full payment card details
+            </li>
+
+            <li>
+              Advertising identifiers for behavioural advertising
+            </li>
+
+            <li>
+              Marketing profiles based on your energy usage
+            </li>
+
+            <li>
+              Real-time mobile-device location for tracking purposes
+            </li>
+
+          </ul>
+
+          <div class="callout">
+
+            <p>
+              <strong>MAP Energy does not sell your personal data.</strong>
+              Your energy information is not sold to advertisers or
+              data brokers.
+            </p>
+
+          </div>
+
         </section>
 
-        <section id="changes">
-          <h2 class="section-title">13. Changes to this policy</h2>
-          <p>We may update this policy from time to time. Changes will be reflected in the app and on our website.</p>
+
+
+        <!-- 5 -->
+
+        <section
+          class="policy-section"
+          id="how-we-use-data"
+        >
+
+          <span class="section-number">
+            05
+          </span>
+
+          <h2>
+            How we use your data
+          </h2>
+
+          <p>
+            Information processed by MAP Energy is used to provide,
+            operate and improve the service you have chosen to use.
+          </p>
+
+          <p>
+            This includes using information to:
+          </p>
+
+          <ul>
+
+            <li>
+              Authenticate you and maintain your MAP Energy account
+            </li>
+
+            <li>
+              Connect to services you have authorised
+            </li>
+
+            <li>
+              Display live energy information
+            </li>
+
+            <li>
+              Display historical energy information
+            </li>
+
+            <li>
+              Provide Powerwall controls and supported diagnostic
+              information
+            </li>
+
+            <li>
+              Retrieve electricity tariff and rate information
+            </li>
+
+            <li>
+              Retrieve EV charger telemetry
+            </li>
+
+            <li>
+              Detect supported EV charging activity
+            </li>
+
+            <li>
+              Provide solar forecasts
+            </li>
+
+            <li>
+              Evaluate and execute automations you configure
+            </li>
+
+            <li>
+              Send notifications you enable
+            </li>
+
+            <li>
+              Send Home Assistant webhook events you configure
+            </li>
+
+            <li>
+              Determine whether Premium features are available to your
+              account
+            </li>
+
+            <li>
+              Maintain service reliability and security
+            </li>
+
+            <li>
+              Investigate errors and provide customer support
+            </li>
+
+            <li>
+              Prevent misuse or abuse of MAP Energy services
+            </li>
+
+          </ul>
+
+          <div class="callout">
+
+            <p>
+              Connected-service credentials and energy information are
+              used to provide MAP Energy functionality. They are not
+              used to build advertising profiles or sold for
+              advertising purposes.
+            </p>
+
+          </div>
+
         </section>
 
-        <section id="contact">
-          <h2 class="section-title">14. Contact us</h2>
-          <p>If you have questions about this policy or your data:</p>
-          <p>📧 <a href="mailto:support@aptica.uk">support@aptica.uk</a></p>
+
+
+        <!-- 6 -->
+
+        <section
+          class="policy-section"
+          id="legal-basis"
+        >
+
+          <span class="section-number">
+            06
+          </span>
+
+          <h2>
+            Legal basis for processing
+          </h2>
+
+          <p>
+            Where UK data protection law applies, the legal basis used
+            will depend on the information and the reason it is being
+            processed.
+          </p>
+
+          <p>
+            These bases may include:
+          </p>
+
+          <ul>
+
+            <li>
+              <strong>Performance of a contract</strong> — where
+              processing is necessary to provide MAP Energy features
+              and services you request.
+            </li>
+
+            <li>
+              <strong>Consent</strong> — where you choose to connect
+              optional third-party services or enable optional
+              functionality that relies on your permission.
+            </li>
+
+            <li>
+              <strong>Legitimate interests</strong> — where necessary
+              to maintain service security, reliability, prevent
+              abuse, diagnose technical problems and provide support,
+              provided those interests are not overridden by your
+              rights.
+            </li>
+
+            <li>
+              <strong>Legal obligations</strong> — where we are
+              required to retain or process information to comply
+              with applicable law.
+            </li>
+
+          </ul>
+
         </section>
 
-        <footer>
-          © <span id="year"></span> Aptica Ltd. All rights reserved.
-        </footer>
+
+
+        <!-- 7 -->
+
+        <section
+          class="policy-section"
+          id="security"
+        >
+
+          <span class="section-number">
+            07
+          </span>
+
+          <h2>
+            Data storage and security
+          </h2>
+
+          <p>
+            We take reasonable technical and organisational measures
+            to protect information processed by MAP Energy.
+          </p>
+
+          <p>
+            Measures include, where applicable:
+          </p>
+
+          <ul>
+
+            <li>
+              Encryption of sensitive authentication credentials and
+              API tokens at rest
+            </li>
+
+            <li>
+              Secure network communication
+            </li>
+
+            <li>
+              Restricted access to backend systems
+            </li>
+
+            <li>
+              Authentication and authorisation controls
+            </li>
+
+            <li>
+              Logging and monitoring used to maintain service
+              reliability and security
+            </li>
+
+            <li>
+              Limiting stored information to what is required to
+              operate MAP Energy
+            </li>
+
+          </ul>
+
+          <p>
+            MAP Energy backend infrastructure uses Cloudflare
+            services.
+          </p>
+
+          <p>
+            No internet-connected service can guarantee absolute
+            security. We therefore continually review the controls
+            used to protect MAP Energy and the information it
+            processes.
+          </p>
+
+          <p>
+            You can disconnect supported third-party services from
+            MAP Energy where that functionality is available.
+          </p>
+
+        </section>
+
+
+
+        <!-- 8 -->
+
+        <section
+          class="policy-section"
+          id="third-parties"
+        >
+
+          <span class="section-number">
+            08
+          </span>
+
+          <h2>
+            Third-party services
+          </h2>
+
+          <p>
+            MAP Energy connects with external services when required
+            to provide features you choose to use.
+          </p>
+
+          <p>
+            Depending on your configuration, these may include:
+          </p>
+
+          <ul>
+
+            <li>
+              Tesla Energy services and APIs
+            </li>
+
+            <li>
+              Supported electricity supplier services and APIs
+            </li>
+
+            <li>
+              Octopus Energy services
+            </li>
+
+            <li>
+              EDF Energy-related services where supported
+            </li>
+
+            <li>
+              Amber Electric services where supported
+            </li>
+
+            <li>
+              Tesla Wall Connector services
+            </li>
+
+            <li>
+              myenergi / Zappi services
+            </li>
+
+            <li>
+              Hypervolt services
+            </li>
+
+            <li>
+              Ohme services
+            </li>
+
+            <li>
+              Solar forecasting providers
+            </li>
+
+            <li>
+              Apple Sign in
+            </li>
+
+            <li>
+              Apple Push Notification Service
+            </li>
+
+            <li>
+              Google / Android services required for Android app
+              functionality and notifications
+            </li>
+
+            <li>
+              Apple App Store and Google Play for subscriptions and
+              purchases
+            </li>
+
+            <li>
+              Cloudflare infrastructure services
+            </li>
+
+          </ul>
+
+          <p>
+            External services operate under their own terms and
+            privacy policies. The information available to MAP Energy
+            depends on the service, the permissions you grant and the
+            features supported by that provider.
+          </p>
+
+          <p>
+            Where you configure MAP Energy to send information to a
+            service you control, such as a Home Assistant webhook,
+            information is sent to the destination you provide.
+          </p>
+
+        </section>
+
+
+
+        <!-- 9 -->
+
+        <section
+          class="policy-section"
+          id="transfers"
+        >
+
+          <span class="section-number">
+            09
+          </span>
+
+          <h2>
+            International data transfers
+          </h2>
+
+          <p>
+            MAP Energy is operated by a UK company, but some of the
+            infrastructure and third-party services used to provide
+            MAP Energy may process information in countries outside
+            the United Kingdom.
+          </p>
+
+          <p>
+            Where personal data is transferred internationally, we
+            take appropriate steps to ensure that the transfer is
+            handled in accordance with applicable data protection
+            requirements.
+          </p>
+
+          <p>
+            Third-party providers may also process information
+            internationally under their own privacy policies and
+            applicable safeguards.
+          </p>
+
+        </section>
+
+
+
+        <!-- 10 -->
+
+        <section
+          class="policy-section"
+          id="rights"
+        >
+
+          <span class="section-number">
+            10
+          </span>
+
+          <h2>
+            Your rights
+          </h2>
+
+          <p>
+            Depending on the circumstances, UK data protection law
+            may give you rights relating to your personal data,
+            including the right to:
+          </p>
+
+          <ul>
+
+            <li>
+              Request access to personal data we hold about you
+            </li>
+
+            <li>
+              Ask us to correct inaccurate or incomplete information
+            </li>
+
+            <li>
+              Ask us to delete personal data in certain circumstances
+            </li>
+
+            <li>
+              Ask us to restrict processing in certain circumstances
+            </li>
+
+            <li>
+              Object to certain processing
+            </li>
+
+            <li>
+              Withdraw consent where processing is based on consent
+            </li>
+
+            <li>
+              Request portability of certain information where
+              applicable
+            </li>
+
+            <li>
+              Make a complaint to the Information Commissioner's
+              Office
+            </li>
+
+          </ul>
+
+          <p>
+            To exercise your rights, contact
+            <a href="mailto:support@aptica.uk">
+              support@aptica.uk
+            </a>.
+          </p>
+
+          <p>
+            We may need to verify your identity before fulfilling
+            certain requests.
+          </p>
+
+        </section>
+
+
+
+        <!-- 11 -->
+
+        <section
+          class="policy-section"
+          id="retention"
+        >
+
+          <span class="section-number">
+            11
+          </span>
+
+          <h2>
+            Data retention
+          </h2>
+
+          <p>
+            We retain information only for as long as reasonably
+            necessary for the purpose for which it was collected,
+            including providing MAP Energy, maintaining security and
+            meeting applicable legal requirements.
+          </p>
+
+          <p>
+            Retention periods vary depending on the type of
+            information.
+          </p>
+
+          <ul>
+
+            <li>
+              Account and configuration information may be retained
+              while your MAP Energy account remains active.
+            </li>
+
+            <li>
+              Connected-service credentials may be retained while the
+              relevant service remains connected.
+            </li>
+
+            <li>
+              Energy history and operational telemetry may be retained
+              where required to provide historical views, analysis or
+              automation functionality.
+            </li>
+
+            <li>
+              Automation configuration is retained while the
+              automation remains associated with your account.
+            </li>
+
+            <li>
+              Automation execution history and technical logs may be
+              retained for a limited period for functionality,
+              troubleshooting, security and support.
+            </li>
+
+            <li>
+              Certain information may be retained where required by
+              law or where necessary to establish, exercise or defend
+              legal claims.
+            </li>
+
+          </ul>
+
+          <p>
+            Disconnecting a third-party service prevents MAP Energy
+            from continuing to use that connection, but it does not
+            necessarily result in the immediate deletion of all
+            historical information already associated with your MAP
+            Energy account.
+          </p>
+
+          <p>
+            You may request deletion of personal information by
+            contacting
+            <a href="mailto:support@aptica.uk">
+              support@aptica.uk
+            </a>,
+            subject to any information we are required or permitted
+            to retain.
+          </p>
+
+        </section>
+
+
+
+        <!-- 12 -->
+
+        <section
+          class="policy-section"
+          id="children"
+        >
+
+          <span class="section-number">
+            12
+          </span>
+
+          <h2>
+            Children's privacy
+          </h2>
+
+          <p>
+            MAP Energy is intended for people managing home energy
+            systems and is not designed or directed specifically at
+            children.
+          </p>
+
+          <p>
+            We do not knowingly collect personal data from children
+            under the age of 13.
+          </p>
+
+          <p>
+            If you believe a child has provided personal information
+            to MAP Energy, please contact us so that we can
+            investigate and take appropriate action.
+          </p>
+
+        </section>
+
+
+
+        <!-- 13 -->
+
+        <section
+          class="policy-section"
+          id="changes"
+        >
+
+          <span class="section-number">
+            13
+          </span>
+
+          <h2>
+            Changes to this policy
+          </h2>
+
+          <p>
+            MAP Energy continues to develop and new integrations and
+            features may be introduced over time.
+          </p>
+
+          <p>
+            We may update this Privacy Policy when the way MAP Energy
+            processes information changes, when new functionality is
+            introduced or when legal requirements change.
+          </p>
+
+          <p>
+            When the policy is updated, the latest version will be
+            published on the MAP Energy website and the
+            <strong>Last Updated</strong> date shown at the top of
+            this page will be changed.
+          </p>
+
+        </section>
+
+
+
+        <!-- 14 -->
+
+        <section
+          class="policy-section"
+          id="contact"
+        >
+
+          <span class="section-number">
+            14
+          </span>
+
+          <h2>
+            Contact us
+          </h2>
+
+          <p>
+            If you have questions about this Privacy Policy, how MAP
+            Energy handles information or would like to exercise a
+            data protection right, contact Aptica Ltd.
+          </p>
+
+
+          <div class="contact-card">
+
+            <h2>
+              Privacy &amp; Data Support
+            </h2>
+
+            <p>
+              Contact the MAP Energy team at Aptica Ltd and we'll
+              respond to your request as soon as reasonably possible.
+            </p>
+
+            <a
+              href="mailto:support@aptica.uk"
+              class="contact-button"
+            >
+              support@aptica.uk
+            </a>
+
+          </div>
+
+        </section>
+
+
       </article>
+
     </div>
-  </div>
+
+
+
+    <!-- =====================================================
+         FOOTER
+         ===================================================== -->
+
+    <footer class="footer">
+
+      <div class="footer-top">
+
+
+        <div class="footer-brand">
+
+          <img
+            src="/map-energy/assets/map-energy-logo.PNG"
+            alt="MAP Energy"
+            class="footer-logo"
+          >
+
+          <span class="footer-brand-name">
+            MAP Energy by Aptica Ltd
+          </span>
+
+        </div>
+
+
+        <nav
+          class="footer-links"
+          aria-label="Footer navigation"
+        >
+
+          <a href="/">
+            Aptica
+          </a>
+
+          <a href="/map-energy/">
+            MAP Energy
+          </a>
+
+          <a href="/map-energy/documentation/">
+            Documentation
+          </a>
+
+          <a href="/map-energy/portal/">
+            Web Portal
+          </a>
+
+          <a href="/map-energy/privacy/">
+            Privacy
+          </a>
+
+          <a href="/map-energy/terms/">
+            Terms
+          </a>
+
+          <a href="mailto:support@aptica.uk">
+            Support
+          </a>
+
+        </nav>
+
+
+      </div>
+
+
+      <div class="footer-bottom">
+
+        <div>
+          MAP Energy is an independent app and is not affiliated with
+          Tesla, Inc. Availability of features depends on supported
+          services, account permissions, hardware compatibility and
+          region.
+        </div>
+
+        <div style="margin-top: 7px;">
+          © <span id="year"></span> Aptica Ltd. All rights reserved.
+        </div>
+
+      </div>
+
+    </footer>
+
+
+  </main>
+
+
 
   <script>
-    document.getElementById("year").textContent = new Date().getFullYear();
+
+    document.getElementById("year").textContent =
+      new Date().getFullYear();
+
   </script>
+
 </body>
+
 </html>
