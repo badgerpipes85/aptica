@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Powerwall Backup Reserve Limits | MAP Energy</title>
+
+  <meta
+    name="description"
+    content="Information about Tesla Powerwall backup reserve limits and how they affect MAP Energy automations."
+  >
+
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.6;
+      color: #1f2937;
+      background: #ffffff;
+      margin: 0;
+    }
+
+    .container {
+      max-width: 850px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      line-height: 1.2;
+      margin-bottom: 12px;
+      color: #111827;
+    }
+
+    h2 {
+      font-size: 1.45rem;
+      margin-top: 40px;
+      margin-bottom: 12px;
+      color: #111827;
+    }
+
+    p {
+      margin: 0 0 16px;
+    }
+
+    ul {
+      margin: 12px 0 20px;
+      padding-left: 24px;
+    }
+
+    li {
+      margin-bottom: 8px;
+    }
+
+    .notice {
+      background: #f3f4f6;
+      border-left: 4px solid #111827;
+      padding: 18px 20px;
+      margin: 24px 0;
+      border-radius: 6px;
+    }
+
+    .allowed {
+      font-weight: 600;
+    }
+
+    .updated {
+      color: #6b7280;
+      font-size: 0.9rem;
+      margin-bottom: 30px;
+    }
+
+    strong {
+      color: #111827;
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="container">
+
+    <h1>Tesla Powerwall Backup Reserve Limits</h1>
+
+    <p class="updated">MAP Energy Support</p>
+
+    <p>
+      Tesla places restrictions on the backup reserve percentages that can
+      be configured for a Powerwall. These restrictions also apply when
+      MAP Energy changes the backup reserve through an automation.
+    </p>
+
+    <h2>What backup reserve values can be used?</h2>
+
+    <p>
+      Tesla currently allows the Powerwall backup reserve to be set to:
+    </p>
+
+    <ul>
+      <li class="allowed">Any value from 0% to 80%</li>
+      <li class="allowed">100%</li>
+    </ul>
+
+    <p>
+      Backup reserve values between <strong>81% and 99%</strong> are not
+      supported by Tesla.
+    </p>
+
+    <div class="notice">
+      <strong>Important:</strong>
+      If a backup reserve between 81% and 99% is requested, Tesla may
+      limit or adjust the requested value rather than maintaining that
+      reserve percentage.
+    </div>
+
+    <h2>Why does MAP Energy have this restriction?</h2>
+
+    <p>
+      This is a Tesla Powerwall restriction rather than a limitation
+      introduced by MAP Energy.
+    </p>
+
+    <p>
+      MAP Energy communicates with your Powerwall through Tesla's services,
+      so changes made by an automation must use values that Tesla currently
+      accepts.
+    </p>
+
+    <h2>How does this affect MAP Energy automations?</h2>
+
+    <p>
+      Automations that use the <strong>Adjust Backup Reserve</strong>
+      action should use a reserve of 80% or below, or 100%.
+    </p>
+
+    <p>
+      For example:
+    </p>
+
+    <ul>
+      <li>Setting the backup reserve to 20% is supported.</li>
+      <li>Setting the backup reserve to 80% is supported.</li>
+      <li>Setting the backup reserve to 90% is not supported.</li>
+      <li>Setting the backup reserve to 100% is supported.</li>
+    </ul>
+
+    <h2>Using 100% backup reserve</h2>
+
+    <p>
+      Setting the backup reserve to 100% can be useful when you want to
+      prevent the Powerwall from supplying normal household demand.
+    </p>
+
+    <p>
+      MAP Energy automations can therefore temporarily set the reserve to
+      100% and later return it to another supported value.
+    </p>
+
+    <h2>Existing automations</h2>
+
+    <p>
+      If you created an automation using a backup reserve between 81% and
+      99%, we recommend editing it and selecting either:
+    </p>
+
+    <ul>
+      <li>80% or lower; or</li>
+      <li>100%.</li>
+    </ul>
+
+    <p>
+      This helps ensure the automation behaves consistently with Tesla's
+      current Powerwall controls.
+    </p>
+
+    <h2>Need help?</h2>
+
+    <p>
+      If an automation is not changing your Powerwall backup reserve as
+      expected, check the automation history in MAP Energy first. This can
+      help confirm whether the action was successfully sent to Tesla.
+    </p>
+
+    <p>
+      You can also contact MAP Energy support if you need help diagnosing
+      an automation or Powerwall control issue.
+    </p>
+
+  </main>
+
+</body>
+</html>
