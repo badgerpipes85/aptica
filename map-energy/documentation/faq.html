@@ -2,190 +2,1750 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Powerwall Backup Reserve Limits | MAP Energy</title>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, viewport-fit=cover"
+  >
+
+  <title>Frequently Asked Questions | MAP Energy</title>
 
   <meta
     name="description"
-    content="Information about Tesla Powerwall backup reserve limits and how they affect MAP Energy automations."
+    content="Frequently asked questions about MAP Energy, Tesla Powerwall, automations, EV charging, smart tariffs, Home Assistant and connected energy services."
   >
 
   <style>
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-height: 100%;
+      background: #06101f;
+    }
+
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      line-height: 1.6;
-      color: #1f2937;
-      background: #ffffff;
       margin: 0;
+      min-height: 100vh;
+
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "SF Pro Display",
+        "SF Pro Text",
+        "Segoe UI",
+        Roboto,
+        Helvetica,
+        Arial,
+        sans-serif;
+
+      color: #ffffff;
+
+      background:
+        linear-gradient(
+          180deg,
+          rgba(4, 11, 25, 0.18) 0%,
+          rgba(4, 11, 25, 0.42) 40%,
+          rgba(3, 8, 20, 0.72) 100%
+        ),
+        url("map-energy-docs-bg.PNG")
+        center top / cover fixed no-repeat;
     }
 
-    .container {
-      max-width: 850px;
+
+    /* =========================================================
+       PAGE
+       ========================================================= */
+
+    .page {
+      width: 100%;
+      max-width: 940px;
+
       margin: 0 auto;
-      padding: 40px 24px 80px;
+
+      padding:
+        max(32px, env(safe-area-inset-top))
+        24px
+        max(70px, env(safe-area-inset-bottom));
     }
 
-    h1 {
-      font-size: 2.2rem;
-      line-height: 1.2;
-      margin-bottom: 12px;
-      color: #111827;
+
+    /* =========================================================
+       HEADER
+       ========================================================= */
+
+    .brand-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      margin-bottom: 38px;
     }
 
-    h2 {
-      font-size: 1.45rem;
-      margin-top: 40px;
-      margin-bottom: 12px;
-      color: #111827;
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 13px;
     }
 
-    p {
-      margin: 0 0 16px;
+    .brand-logo {
+      width: 48px;
+      height: 48px;
+
+      object-fit: contain;
+
+      filter:
+        drop-shadow(
+          0 5px 14px rgba(0, 0, 0, 0.25)
+        );
     }
 
-    ul {
-      margin: 12px 0 20px;
-      padding-left: 24px;
+    .brand-text {
+      display: flex;
+      flex-direction: column;
     }
 
-    li {
-      margin-bottom: 8px;
+    .brand-name {
+      color: #ffffff;
+
+      font-size: 18px;
+      line-height: 1.1;
+
+      font-weight: 800;
+      letter-spacing: -0.01em;
     }
 
-    .notice {
-      background: #f3f4f6;
-      border-left: 4px solid #111827;
-      padding: 18px 20px;
-      margin: 24px 0;
-      border-radius: 6px;
-    }
+    .brand-subtitle {
+      margin-top: 4px;
 
-    .allowed {
+      color: rgba(204, 215, 231, 0.62);
+
+      font-size: 12px;
       font-weight: 600;
     }
 
-    .updated {
-      color: #6b7280;
-      font-size: 0.9rem;
-      margin-bottom: 30px;
+    .support-pill {
+      padding: 9px 15px;
+
+      border-radius: 999px;
+
+      color: rgba(224, 235, 249, 0.85);
+
+      font-size: 12px;
+      font-weight: 700;
+
+      background: rgba(6, 18, 39, 0.58);
+
+      border:
+        1px solid rgba(116, 158, 218, 0.20);
+
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+
+
+    /* =========================================================
+       HERO
+       ========================================================= */
+
+    .hero {
+      position: relative;
+
+      display: flex;
+      align-items: center;
+
+      min-height: 310px;
+
+      padding: 38px 310px 38px 38px;
+
+      overflow: hidden;
+
+      border-radius: 30px;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(14, 36, 72, 0.90),
+          rgba(5, 16, 38, 0.88)
+        );
+
+      border:
+        1px solid rgba(81, 144, 232, 0.25);
+
+      box-shadow:
+        0 30px 90px rgba(0, 0, 0, 0.35),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+    }
+
+    .hero::before {
+      content: "";
+
+      position: absolute;
+
+      width: 350px;
+      height: 350px;
+
+      right: -80px;
+      top: -100px;
+
+      border-radius: 50%;
+
+      background:
+        radial-gradient(
+          circle,
+          rgba(29, 122, 255, 0.24),
+          transparent 68%
+        );
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      margin-bottom: 14px;
+
+      color: #59a8ff;
+
+      font-size: 12px;
+      font-weight: 800;
+
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow-dot {
+      width: 7px;
+      height: 7px;
+
+      border-radius: 50%;
+
+      background: #4294ff;
+
+      box-shadow:
+        0 0 12px rgba(66, 148, 255, 0.9);
+    }
+
+    h1 {
+      margin: 0 0 17px;
+
+      color: #ffffff;
+
+      font-size: clamp(37px, 5.5vw, 53px);
+      line-height: 1.03;
+
+      letter-spacing: -0.04em;
+
+      font-weight: 850;
+    }
+
+    .hero-description {
+      max-width: 530px;
+
+      margin: 0;
+
+      color: rgba(221, 229, 241, 0.78);
+
+      font-size: 16px;
+      line-height: 1.65;
+    }
+
+    .mappy {
+      position: absolute;
+
+      z-index: 1;
+
+      right: 8px;
+      bottom: -28px;
+
+      width: 310px;
+      max-height: 330px;
+
+      object-fit: contain;
+      object-position: bottom center;
+
+      filter:
+        drop-shadow(
+          0 20px 25px rgba(0, 0, 0, 0.30)
+        );
+    }
+
+
+    /* =========================================================
+       CONTENT
+       ========================================================= */
+
+    .content-card {
+      margin-top: 22px;
+
+      padding: 38px;
+
+      border-radius: 30px;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(12, 29, 55, 0.88),
+          rgba(5, 13, 29, 0.90)
+        );
+
+      border:
+        1px solid rgba(93, 145, 220, 0.19);
+
+      box-shadow:
+        0 28px 80px rgba(0, 0, 0, 0.38),
+        inset 0 1px 0 rgba(255, 255, 255, 0.04);
+
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+    }
+
+    h2 {
+      margin: 0 0 17px;
+
+      color: #ffffff;
+
+      font-size: 25px;
+      line-height: 1.25;
+
+      font-weight: 780;
+    }
+
+    p {
+      margin: 0 0 17px;
+
+      color: rgba(226, 232, 242, 0.82);
+
+      font-size: 16px;
+      line-height: 1.72;
+    }
+
+    p:last-child {
+      margin-bottom: 0;
     }
 
     strong {
-      color: #111827;
+      color: #ffffff;
+      font-weight: 720;
     }
+
+
+    /* =========================================================
+       FAQ NAVIGATION
+       ========================================================= */
+
+    .faq-index {
+      display: grid;
+
+      grid-template-columns: 1fr 1fr;
+
+      gap: 11px;
+
+      margin-top: 25px;
+    }
+
+    .faq-link {
+      display: flex;
+      align-items: center;
+
+      gap: 12px;
+
+      padding: 15px 17px;
+
+      color: rgba(228, 235, 246, 0.88);
+
+      text-decoration: none;
+
+      border-radius: 16px;
+
+      background:
+        rgba(5, 17, 37, 0.68);
+
+      border:
+        1px solid rgba(80, 139, 224, 0.17);
+
+      transition:
+        transform 0.15s ease,
+        border-color 0.15s ease;
+    }
+
+    .faq-link:hover {
+      transform: translateY(-1px);
+
+      border-color:
+        rgba(80, 150, 255, 0.40);
+    }
+
+    .faq-number {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      width: 28px;
+      height: 28px;
+
+      flex: 0 0 auto;
+
+      border-radius: 9px;
+
+      color: #5ca8ff;
+
+      background:
+        rgba(47, 126, 242, 0.15);
+
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .faq-link-text {
+      font-size: 13px;
+      line-height: 1.4;
+      font-weight: 650;
+    }
+
+
+    /* =========================================================
+       FAQ ITEMS
+       ========================================================= */
+
+    .faq-list {
+      margin-top: 40px;
+    }
+
+    .faq-item {
+      scroll-margin-top: 20px;
+
+      padding: 32px 0;
+
+      border-top:
+        1px solid rgba(255, 255, 255, 0.075);
+    }
+
+    .faq-item:first-child {
+      border-top: 0;
+      padding-top: 0;
+    }
+
+    .question-number {
+      display: inline-block;
+
+      margin-bottom: 10px;
+
+      color: #58a6ff;
+
+      font-size: 11px;
+      font-weight: 800;
+
+      letter-spacing: 0.11em;
+      text-transform: uppercase;
+    }
+
+    .faq-item h2 {
+      font-size: 22px;
+    }
+
+    .faq-item ul {
+      margin:
+        5px
+        0
+        18px
+        20px;
+
+      padding: 0;
+
+      color: rgba(226, 232, 242, 0.82);
+    }
+
+    .faq-item li {
+      margin: 8px 0;
+
+      padding-left: 3px;
+
+      font-size: 15px;
+      line-height: 1.65;
+    }
+
+
+    /* =========================================================
+       INFO BOX
+       ========================================================= */
+
+    .info-box {
+      position: relative;
+
+      margin: 22px 0 0;
+
+      padding: 20px 22px 20px 60px;
+
+      border-radius: 19px;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(20, 76, 162, 0.34),
+          rgba(7, 32, 76, 0.42)
+        );
+
+      border:
+        1px solid rgba(66, 145, 255, 0.35);
+    }
+
+    .info-icon {
+      position: absolute;
+
+      left: 20px;
+      top: 20px;
+
+      width: 27px;
+      height: 27px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 50%;
+
+      color: #ffffff;
+
+      background: #347ff0;
+
+      font-size: 15px;
+      font-weight: 850;
+    }
+
+    .info-title {
+      display: block;
+
+      margin-bottom: 5px;
+
+      color: #ffffff;
+
+      font-weight: 750;
+    }
+
+    .info-box p {
+      margin: 0;
+
+      font-size: 14px;
+    }
+
+
+    /* =========================================================
+       GREEN BOX
+       ========================================================= */
+
+    .success-box {
+      margin-top: 20px;
+
+      padding: 20px 22px;
+
+      border-radius: 19px;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(15, 104, 75, 0.28),
+          rgba(5, 42, 47, 0.34)
+        );
+
+      border:
+        1px solid rgba(58, 215, 155, 0.27);
+    }
+
+    .success-title {
+      display: block;
+
+      margin-bottom: 6px;
+
+      color: #44dda0;
+
+      font-size: 15px;
+      font-weight: 780;
+    }
+
+    .success-box p {
+      margin: 0;
+
+      font-size: 14px;
+    }
+
+
+    /* =========================================================
+       MAPPY TIP
+       ========================================================= */
+
+    .mappy-tip {
+      display: flex;
+      align-items: center;
+
+      gap: 18px;
+
+      margin-top: 24px;
+
+      padding: 18px 20px;
+
+      border-radius: 20px;
+
+      background:
+        rgba(4, 13, 29, 0.58);
+
+      border:
+        1px solid rgba(255, 255, 255, 0.075);
+    }
+
+    .mappy-tip-image {
+      width: 70px;
+      height: 70px;
+
+      flex: 0 0 auto;
+
+      object-fit: contain;
+    }
+
+    .mappy-tip-title {
+      display: block;
+
+      margin-bottom: 4px;
+
+      color: #ffffff;
+
+      font-size: 14px;
+      font-weight: 750;
+    }
+
+    .mappy-tip p {
+      margin: 0;
+
+      color: rgba(215, 224, 238, 0.74);
+
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+
+    /* =========================================================
+       CONTACT
+       ========================================================= */
+
+    .contact-box {
+      margin-top: 38px;
+
+      padding: 26px;
+
+      text-align: center;
+
+      border-radius: 22px;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(19, 64, 126, 0.38),
+          rgba(7, 28, 61, 0.45)
+        );
+
+      border:
+        1px solid rgba(70, 144, 241, 0.26);
+    }
+
+    .contact-box h2 {
+      margin-bottom: 9px;
+    }
+
+    .contact-box p {
+      max-width: 600px;
+
+      margin:
+        0
+        auto
+        16px;
+    }
+
+    .email {
+      display: inline-block;
+
+      padding: 11px 18px;
+
+      border-radius: 999px;
+
+      color: #ffffff;
+
+      text-decoration: none;
+
+      background:
+        rgba(47, 126, 242, 0.26);
+
+      border:
+        1px solid rgba(76, 153, 255, 0.35);
+
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+
+    /* =========================================================
+       FOOTER
+       ========================================================= */
+
+    .footer {
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      gap: 9px;
+
+      padding: 30px 5px 0;
+
+      color: rgba(179, 192, 211, 0.48);
+
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .footer-logo {
+      width: 23px;
+      height: 23px;
+
+      object-fit: contain;
+
+      opacity: 0.72;
+    }
+
+
+    /* =========================================================
+       MOBILE
+       ========================================================= */
+
+    @media (max-width: 700px) {
+
+      body {
+        background-attachment: scroll;
+      }
+
+      .page {
+        padding-left: 15px;
+        padding-right: 15px;
+      }
+
+      .brand-header {
+        margin-bottom: 25px;
+      }
+
+      .brand-logo {
+        width: 42px;
+        height: 42px;
+      }
+
+      .brand-name {
+        font-size: 16px;
+      }
+
+      .support-pill {
+        padding: 8px 12px;
+        font-size: 11px;
+      }
+
+      .hero {
+        display: block;
+
+        min-height: 0;
+
+        padding: 27px 23px 0;
+
+        border-radius: 25px;
+      }
+
+      h1 {
+        font-size: 37px;
+      }
+
+      .hero-description {
+        font-size: 15px;
+      }
+
+      .mappy {
+        position: relative;
+
+        display: block;
+
+        right: auto;
+        bottom: auto;
+
+        width: 230px;
+
+        margin: 12px auto -18px;
+      }
+
+      .content-card {
+        margin-top: 16px;
+
+        padding: 27px 20px;
+
+        border-radius: 25px;
+      }
+
+      .faq-index {
+        grid-template-columns: 1fr;
+      }
+
+      .faq-item {
+        padding: 28px 0;
+      }
+
+      .faq-item h2 {
+        font-size: 20px;
+      }
+
+      p {
+        font-size: 15px;
+      }
+
+      .mappy-tip {
+        align-items: flex-start;
+
+        padding: 16px;
+      }
+
+      .mappy-tip-image {
+        width: 55px;
+        height: 55px;
+      }
+
+    }
+
+
+    @media (max-width: 390px) {
+
+      .support-pill {
+        display: none;
+      }
+
+      h1 {
+        font-size: 33px;
+      }
+
+    }
+
   </style>
 </head>
 
+
 <body>
 
-  <main class="container">
+  <main class="page">
 
-    <h1>Tesla Powerwall Backup Reserve Limits</h1>
 
-    <p class="updated">MAP Energy Support</p>
+    <!-- HEADER -->
 
-    <p>
-      Tesla places restrictions on the backup reserve percentages that can
-      be configured for a Powerwall. These restrictions also apply when
-      MAP Energy changes the backup reserve through an automation.
-    </p>
+    <header class="brand-header">
 
-    <h2>What backup reserve values can be used?</h2>
+      <div class="brand">
 
-    <p>
-      Tesla currently allows the Powerwall backup reserve to be set to:
-    </p>
+        <img
+          src="map-energy-logo.PNG"
+          alt="MAP Energy"
+          class="brand-logo"
+        >
 
-    <ul>
-      <li class="allowed">Any value from 0% to 80%</li>
-      <li class="allowed">100%</li>
-    </ul>
+        <div class="brand-text">
 
-    <p>
-      Backup reserve values between <strong>81% and 99%</strong> are not
-      supported by Tesla.
-    </p>
+          <span class="brand-name">
+            MAP Energy
+          </span>
 
-    <div class="notice">
-      <strong>Important:</strong>
-      If a backup reserve between 81% and 99% is requested, Tesla may
-      limit or adjust the requested value rather than maintaining that
-      reserve percentage.
-    </div>
+          <span class="brand-subtitle">
+            Help &amp; Documentation
+          </span>
 
-    <h2>Why does MAP Energy have this restriction?</h2>
+        </div>
 
-    <p>
-      This is a Tesla Powerwall restriction rather than a limitation
-      introduced by MAP Energy.
-    </p>
+      </div>
 
-    <p>
-      MAP Energy communicates with your Powerwall through Tesla's services,
-      so changes made by an automation must use values that Tesla currently
-      accepts.
-    </p>
+      <div class="support-pill">
+        FAQ
+      </div>
 
-    <h2>How does this affect MAP Energy automations?</h2>
+    </header>
 
-    <p>
-      Automations that use the <strong>Adjust Backup Reserve</strong>
-      action should use a reserve of 80% or below, or 100%.
-    </p>
 
-    <p>
-      For example:
-    </p>
 
-    <ul>
-      <li>Setting the backup reserve to 20% is supported.</li>
-      <li>Setting the backup reserve to 80% is supported.</li>
-      <li>Setting the backup reserve to 90% is not supported.</li>
-      <li>Setting the backup reserve to 100% is supported.</li>
-    </ul>
+    <!-- HERO -->
 
-    <h2>Using 100% backup reserve</h2>
+    <section class="hero">
 
-    <p>
-      Setting the backup reserve to 100% can be useful when you want to
-      prevent the Powerwall from supplying normal household demand.
-    </p>
+      <div class="hero-content">
 
-    <p>
-      MAP Energy automations can therefore temporarily set the reserve to
-      100% and later return it to another supported value.
-    </p>
+        <div class="eyebrow">
 
-    <h2>Existing automations</h2>
+          <span class="eyebrow-dot"></span>
 
-    <p>
-      If you created an automation using a backup reserve between 81% and
-      99%, we recommend editing it and selecting either:
-    </p>
+          Help &amp; Support
 
-    <ul>
-      <li>80% or lower; or</li>
-      <li>100%.</li>
-    </ul>
+        </div>
 
-    <p>
-      This helps ensure the automation behaves consistently with Tesla's
-      current Powerwall controls.
-    </p>
+        <h1>
+          Frequently Asked Questions
+        </h1>
 
-    <h2>Need help?</h2>
+        <p class="hero-description">
+          Answers to common questions about MAP Energy, Tesla
+          Powerwall, automations, EV charging, smart tariffs,
+          Home Assistant and connected energy services.
+        </p>
 
-    <p>
-      If an automation is not changing your Powerwall backup reserve as
-      expected, check the automation history in MAP Energy first. This can
-      help confirm whether the action was successfully sent to Tesla.
-    </p>
+      </div>
 
-    <p>
-      You can also contact MAP Energy support if you need help diagnosing
-      an automation or Powerwall control issue.
-    </p>
+
+      <img
+        src="mappy-docs.PNG"
+        alt="Mappy, the MAP Energy assistant"
+        class="mappy"
+      >
+
+    </section>
+
+
+
+    <!-- FAQ CONTENT -->
+
+    <article class="content-card">
+
+
+      <h2>
+        Find an answer
+      </h2>
+
+      <p>
+        Select a question below to jump directly to the answer.
+      </p>
+
+
+      <nav class="faq-index">
+
+        <a class="faq-link" href="#export">
+          <span class="faq-number">01</span>
+          <span class="faq-link-text">
+            Can MAP Energy control Powerwall grid export?
+          </span>
+        </a>
+
+        <a class="faq-link" href="#unexpected">
+          <span class="faq-number">02</span>
+          <span class="faq-link-text">
+            Why is my Powerwall charging or discharging unexpectedly?
+          </span>
+        </a>
+
+        <a class="faq-link" href="#iog">
+          <span class="faq-number">03</span>
+          <span class="faq-link-text">
+            How does Intelligent Octopus Go work with MAP Energy?
+          </span>
+        </a>
+
+        <a class="faq-link" href="#edf">
+          <span class="faq-number">04</span>
+          <span class="faq-link-text">
+            Does MAP Energy support EDF smart charging and Power Perks?
+          </span>
+        </a>
+
+        <a class="faq-link" href="#automation">
+          <span class="faq-number">05</span>
+          <span class="faq-link-text">
+            Why didn't my automation run?
+          </span>
+        </a>
+
+        <a class="faq-link" href="#background">
+          <span class="faq-number">06</span>
+          <span class="faq-link-text">
+            Does the app need to stay open for automations?
+          </span>
+        </a>
+
+        <a class="faq-link" href="#reserve">
+          <span class="faq-number">07</span>
+          <span class="faq-link-text">
+            Why can't I use a backup reserve between 81% and 99%?
+          </span>
+        </a>
+
+        <a class="faq-link" href="#ev">
+          <span class="faq-number">08</span>
+          <span class="faq-link-text">
+            Which EV chargers can MAP Energy work with?
+          </span>
+        </a>
+
+        <a class="faq-link" href="#ha">
+          <span class="faq-number">09</span>
+          <span class="faq-link-text">
+            Can MAP Energy trigger Home Assistant?
+          </span>
+        </a>
+
+        <a class="faq-link" href="#diagnostics">
+          <span class="faq-number">10</span>
+          <span class="faq-link-text">
+            Why can't I see Powerwall diagnostic data?
+          </span>
+        </a>
+
+        <a class="faq-link" href="#tesla">
+          <span class="faq-number">11</span>
+          <span class="faq-link-text">
+            Why is MAP Energy asking me to reconnect Tesla?
+          </span>
+        </a>
+
+        <a class="faq-link" href="#subscription">
+          <span class="faq-number">12</span>
+          <span class="faq-link-text">
+            Why isn't my Premium subscription showing?
+          </span>
+        </a>
+
+        <a class="faq-link" href="#history">
+          <span class="faq-number">13</span>
+          <span class="faq-link-text">
+            Where can I see what an automation did?
+          </span>
+        </a>
+
+        <a class="faq-link" href="#supplier">
+          <span class="faq-number">14</span>
+          <span class="faq-link-text">
+            Why are some supplier features unavailable?
+          </span>
+        </a>
+
+        <a class="faq-link" href="#suggest">
+          <span class="faq-number">15</span>
+          <span class="faq-link-text">
+            Can I suggest a feature or integration?
+          </span>
+        </a>
+
+      </nav>
+
+
+
+      <div class="faq-list">
+
+
+        <!-- 1 -->
+
+        <section class="faq-item" id="export">
+
+          <span class="question-number">
+            Question 01
+          </span>
+
+          <h2>
+            Can MAP Energy control Powerwall grid export?
+          </h2>
+
+          <p>
+            MAP Energy can control supported Tesla Powerwall settings
+            related to energy export where those controls are available
+            for your system.
+          </p>
+
+          <p>
+            Whether battery energy can actually be exported depends on
+            the configuration and permissions of your Tesla Energy
+            system. Your installer, Tesla or local grid requirements
+            may restrict battery export.
+          </p>
+
+          <p>
+            MAP Energy cannot override an export restriction imposed
+            on the Powerwall system itself.
+          </p>
+
+          <div class="info-box">
+
+            <div class="info-icon">i</div>
+
+            <span class="info-title">
+              Tesla remains in control of the Powerwall
+            </span>
+
+            <p>
+              MAP Energy changes supported Powerwall configuration
+              settings. The Powerwall itself ultimately determines
+              charging, discharging and energy flow based on those
+              settings and Tesla's control logic.
+            </p>
+
+          </div>
+
+        </section>
+
+
+
+        <!-- 2 -->
+
+        <section class="faq-item" id="unexpected">
+
+          <span class="question-number">
+            Question 02
+          </span>
+
+          <h2>
+            Why is my Powerwall charging or discharging when I don't expect it to?
+          </h2>
+
+          <p>
+            MAP Energy can change supported Powerwall settings, but it
+            does not continuously command the battery to charge or
+            discharge at a particular power level.
+          </p>
+
+          <p>
+            Tesla controls the actual behaviour of the Powerwall based
+            on its current configuration, operating mode, backup
+            reserve, grid charging settings, tariff information and
+            other Tesla system logic.
+          </p>
+
+          <p>
+            If the behaviour looks unexpected, check:
+          </p>
+
+          <ul>
+            <li>Your current backup reserve.</li>
+            <li>Your Powerwall operating mode.</li>
+            <li>Whether grid charging is enabled.</li>
+            <li>Your Energy Exports setting.</li>
+            <li>Recent MAP Energy automation history.</li>
+            <li>The Tesla app for any system or calibration messages.</li>
+          </ul>
+
+          <p>
+            Powerwall may also occasionally perform Tesla-managed
+            behaviour such as calibration that is not initiated by
+            MAP Energy.
+          </p>
+
+        </section>
+
+
+
+        <!-- 3 -->
+
+        <section class="faq-item" id="iog">
+
+          <span class="question-number">
+            Question 03
+          </span>
+
+          <h2>
+            How does Intelligent Octopus Go work with MAP Energy?
+          </h2>
+
+          <p>
+            MAP Energy can integrate supported Octopus Energy account
+            and tariff information with its energy monitoring and
+            automation features.
+          </p>
+
+          <p>
+            For Intelligent Octopus Go users, MAP Energy can use smart
+            charging information to help prevent unwanted Powerwall
+            discharge into your EV and apply your configured Powerwall
+            behaviour around smart charging periods.
+          </p>
+
+          <p>
+            Intelligent charging periods are controlled by Octopus and
+            can occur outside the normal overnight off-peak window.
+            MAP Energy responds to the supported smart charging
+            information available for your account.
+          </p>
+
+          <div class="success-box">
+
+            <span class="success-title">
+              Smart charging protection
+            </span>
+
+            <p>
+              This is particularly useful for preventing an EV charging
+              session from unexpectedly consuming energy you intended
+              to keep stored in your Powerwall.
+            </p>
+
+          </div>
+
+        </section>
+
+
+
+        <!-- 4 -->
+
+        <section class="faq-item" id="edf">
+
+          <span class="question-number">
+            Question 04
+          </span>
+
+          <h2>
+            Does MAP Energy support EDF smart charging and Power Perks?
+          </h2>
+
+          <p>
+            MAP Energy includes support for compatible EDF Energy
+            features, including supported Smart Bolt-On charging events
+            and EDF Power Perks events.
+          </p>
+
+          <p>
+            Where the relevant feature is available for your connected
+            account, MAP Energy can expose dedicated automation options
+            allowing your energy system to react automatically.
+          </p>
+
+          <p>
+            For example, an EDF Smart Bolt-On charging event can be
+            used to apply configured Powerwall behaviour or trigger a
+            Home Assistant webhook.
+          </p>
+
+        </section>
+
+
+
+        <!-- 5 -->
+
+        <section class="faq-item" id="automation">
+
+          <span class="question-number">
+            Question 05
+          </span>
+
+          <h2>
+            Why didn't my automation run?
+          </h2>
+
+          <p>
+            Start by checking the automation's history in MAP Energy.
+            This is normally the quickest way to understand what
+            happened.
+          </p>
+
+          <p>
+            An automation may not complete because:
+          </p>
+
+          <ul>
+            <li>A configured condition blocked the action.</li>
+            <li>The automation was outside its allowed time window.</li>
+            <li>The required trigger was not detected.</li>
+            <li>Tesla or another connected service returned an error.</li>
+            <li>A required integration was unavailable.</li>
+            <li>The automation had been disabled.</li>
+          </ul>
+
+          <p>
+            MAP Energy records successful, failed and blocked
+            automation activity where applicable so you can see the
+            outcome.
+          </p>
+
+        </section>
+
+
+
+        <!-- 6 -->
+
+        <section class="faq-item" id="background">
+
+          <span class="question-number">
+            Question 06
+          </span>
+
+          <h2>
+            Does the MAP Energy app need to stay open for automations to run?
+          </h2>
+
+          <p>
+            No.
+          </p>
+
+          <p>
+            MAP Energy automations are processed by the MAP Energy
+            service. Once an automation has been configured and
+            enabled, you do not need to leave the mobile app open.
+          </p>
+
+          <p>
+            Locking your phone or closing MAP Energy does not stop
+            enabled server-side automations from running.
+          </p>
+
+        </section>
+
+
+
+        <!-- 7 -->
+
+        <section class="faq-item" id="reserve">
+
+          <span class="question-number">
+            Question 07
+          </span>
+
+          <h2>
+            Why can't I use a backup reserve between 81% and 99%?
+          </h2>
+
+          <p>
+            Tesla currently restricts the backup reserve values that
+            can be submitted through its services.
+          </p>
+
+          <p>
+            Values from <strong>0–80%</strong> and
+            <strong>100%</strong> are supported, while values between
+            <strong>81% and 99%</strong> are not.
+          </p>
+
+          <p>
+            MAP Energy handles this restriction automatically and will
+            not intentionally submit an unsupported reserve value.
+          </p>
+
+          <p>
+            For automations that capture and later restore your reserve,
+            MAP Energy lets you choose whether 80% or 100% should be
+            used if the captured value falls within the unsupported
+            range.
+          </p>
+
+        </section>
+
+
+
+        <!-- 8 -->
+
+        <section class="faq-item" id="ev">
+
+          <span class="question-number">
+            Question 08
+          </span>
+
+          <h2>
+            Which EV chargers can MAP Energy work with?
+          </h2>
+
+          <p>
+            MAP Energy supports several ways of detecting EV charging,
+            depending on your equipment and available integrations.
+          </p>
+
+          <p>
+            Supported options can include:
+          </p>
+
+          <ul>
+            <li>Tesla Wall Connector.</li>
+            <li>myenergi Zappi.</li>
+            <li>Hypervolt.</li>
+            <li>Ohme.</li>
+            <li>Other supported charging detection methods.</li>
+          </ul>
+
+          <p>
+            Available integrations can change as MAP Energy develops
+            and as manufacturers make suitable interfaces available.
+          </p>
+
+        </section>
+
+
+
+        <!-- 9 -->
+
+        <section class="faq-item" id="ha">
+
+          <span class="question-number">
+            Question 09
+          </span>
+
+          <h2>
+            Can MAP Energy trigger Home Assistant?
+          </h2>
+
+          <p>
+            Yes.
+          </p>
+
+          <p>
+            If Home Assistant has been connected to MAP Energy, you can
+            use a <strong>Home Assistant Webhook</strong> as an
+            automation action.
+          </p>
+
+          <p>
+            When the MAP Energy automation runs, a structured event is
+            sent to your Home Assistant webhook containing information
+            such as the event name, automation, trigger, timestamp and
+            message.
+          </p>
+
+          <p>
+            You can then use Home Assistant to decide what should
+            happen next — for example, controlling another device,
+            running a scene, sending a notification or starting
+            another Home Assistant automation.
+          </p>
+
+          <div class="mappy-tip">
+
+            <img
+              src="mappy-docs.PNG"
+              alt="Mappy"
+              class="mappy-tip-image"
+            >
+
+            <div>
+
+              <span class="mappy-tip-title">
+                Mappy tip
+              </span>
+
+              <p>
+                The Automations documentation includes an example of
+                the full JSON payload MAP Energy sends to Home
+                Assistant.
+              </p>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+
+        <!-- 10 -->
+
+        <section class="faq-item" id="diagnostics">
+
+          <span class="question-number">
+            Question 10
+          </span>
+
+          <h2>
+            Why can't I see Powerwall diagnostic data?
+          </h2>
+
+          <p>
+            Standard Powerwall information can be retrieved through
+            Tesla's supported cloud services, but advanced diagnostic
+            information may require an additional connection to your
+            Powerwall.
+          </p>
+
+          <p>
+            Initial diagnostic pairing may require your phone to be on
+            the same local network as the Powerwall and may require
+            physical confirmation at the Powerwall during the pairing
+            process.
+          </p>
+
+          <p>
+            If diagnostic pairing fails, check that:
+          </p>
+
+          <ul>
+            <li>Your phone is connected to the Powerwall's local network.</li>
+            <li>The Powerwall can be discovered from your phone.</li>
+            <li>You followed the in-app pairing instructions.</li>
+            <li>Any requested physical Powerwall confirmation was completed.</li>
+          </ul>
+
+          <p>
+            See the dedicated Powerwall Diagnostic Data documentation
+            for more information.
+          </p>
+
+        </section>
+
+
+
+        <!-- 11 -->
+
+        <section class="faq-item" id="tesla">
+
+          <span class="question-number">
+            Question 11
+          </span>
+
+          <h2>
+            Why is MAP Energy asking me to reconnect Tesla?
+          </h2>
+
+          <p>
+            MAP Energy connects to Tesla using authorised access rather
+            than storing your Tesla password.
+          </p>
+
+          <p>
+            From time to time Tesla may require an account to
+            authenticate again. This can happen if an authorisation
+            expires, access is revoked, account security changes, or
+            Tesla requires renewed authentication.
+          </p>
+
+          <p>
+            When this happens, MAP Energy may ask you to reconnect your
+            Tesla account before Tesla data and controls can continue.
+          </p>
+
+          <div class="info-box">
+
+            <div class="info-icon">i</div>
+
+            <span class="info-title">
+              MAP Energy does not store your Tesla password
+            </span>
+
+            <p>
+              Tesla authentication takes place through Tesla's
+              authorised sign-in process. MAP Energy stores the
+              authorised credentials required to access the services
+              you have connected, not your Tesla account password.
+            </p>
+
+          </div>
+
+        </section>
+
+
+
+        <!-- 12 -->
+
+        <section class="faq-item" id="subscription">
+
+          <span class="question-number">
+            Question 12
+          </span>
+
+          <h2>
+            Why isn't my Premium subscription showing?
+          </h2>
+
+          <p>
+            Premium access is linked to purchases and promotional
+            access recognised by MAP Energy.
+          </p>
+
+          <p>
+            If you have just subscribed or redeemed promotional access
+            and Premium is not showing immediately:
+          </p>
+
+          <ul>
+            <li>Make sure the purchase completed successfully.</li>
+            <li>Make sure you are using the correct store account.</li>
+            <li>Close and reopen MAP Energy.</li>
+            <li>Use any available restore purchase option if required.</li>
+          </ul>
+
+          <p>
+            If Premium still does not appear, contact MAP Energy
+            support and we can help investigate.
+          </p>
+
+        </section>
+
+
+
+        <!-- 13 -->
+
+        <section class="faq-item" id="history">
+
+          <span class="question-number">
+            Question 13
+          </span>
+
+          <h2>
+            Where can I see what an automation did?
+          </h2>
+
+          <p>
+            MAP Energy keeps automation history so you can review
+            previous automation runs.
+          </p>
+
+          <p>
+            Depending on the automation and result, the history can
+            show whether the action succeeded, failed or was blocked.
+          </p>
+
+          <p>
+            If a Powerwall setting did not change as expected, the
+            automation history should normally be the first place you
+            check.
+          </p>
+
+          <p>
+            MAP Energy only records a successful action after the
+            relevant action has completed successfully rather than
+            simply because the automation was due to run.
+          </p>
+
+        </section>
+
+
+
+        <!-- 14 -->
+
+        <section class="faq-item" id="supplier">
+
+          <span class="question-number">
+            Question 14
+          </span>
+
+          <h2>
+            Why are some supplier or tariff features unavailable?
+          </h2>
+
+          <p>
+            MAP Energy supports multiple energy supplier integrations,
+            but the information available varies between suppliers,
+            tariffs and accounts.
+          </p>
+
+          <p>
+            Some features require information such as:
+          </p>
+
+          <ul>
+            <li>Current import and export tariffs.</li>
+            <li>Half-hourly electricity prices.</li>
+            <li>Smart charging schedules or events.</li>
+            <li>Meter information.</li>
+            <li>Supplier-specific account capabilities.</li>
+          </ul>
+
+          <p>
+            If a supplier does not expose the required information, or
+            your account does not have the relevant product enabled,
+            some MAP Energy features may not be available.
+          </p>
+
+        </section>
+
+
+
+        <!-- 15 -->
+
+        <section class="faq-item" id="suggest">
+
+          <span class="question-number">
+            Question 15
+          </span>
+
+          <h2>
+            Can I suggest a feature, supplier or device integration?
+          </h2>
+
+          <p>
+            Absolutely.
+          </p>
+
+          <p>
+            MAP Energy continues to evolve based on feedback from the
+            community. Suggestions for new automations, suppliers,
+            EV chargers, energy devices and improvements to existing
+            features are welcome.
+          </p>
+
+          <p>
+            Whether a new integration is possible depends partly on
+            whether the manufacturer or service provides a suitable
+            and reliable way for MAP Energy to communicate with it.
+          </p>
+
+          <div class="success-box">
+
+            <span class="success-title">
+              User feedback helps shape MAP Energy
+            </span>
+
+            <p>
+              If there is something you would like MAP Energy to do,
+              send the suggestion through the available feedback or
+              support channels.
+            </p>
+
+          </div>
+
+        </section>
+
+
+      </div>
+
+
+
+      <!-- CONTACT -->
+
+      <div class="contact-box">
+
+        <h2>
+          Still need help?
+        </h2>
+
+        <p>
+          If your question isn't answered here, get in touch with
+          MAP Energy support and include as much information as
+          possible about the issue you're seeing.
+        </p>
+
+        <a
+          class="email"
+          href="mailto:support@aptica.uk"
+        >
+          support@aptica.uk
+        </a>
+
+      </div>
+
+
+    </article>
+
+
+
+    <!-- FOOTER -->
+
+    <footer class="footer">
+
+      <img
+        src="map-energy-logo.PNG"
+        alt="MAP Energy"
+        class="footer-logo"
+      >
+
+      <span>
+        MAP Energy • Powerwall control, insights &amp; automation
+      </span>
+
+    </footer>
+
 
   </main>
 
