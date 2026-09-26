@@ -1,1194 +1,1820 @@
-<!doctype html>
-
+<!DOCTYPE html>
 <html lang="en-GB">
 
 <head>
 
-  <meta charset="utf-8" />
+  <meta charset="UTF-8">
 
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, viewport-fit=cover"
+  >
 
-  <title>MAP Energy – Powerwall, EV, Solar and Home Energy Automation</title>
+  <title>MAP Energy | Powerwall, EV, Solar & Home Energy Automation</title>
 
-  <meta name="description" content="MAP Energy helps you monitor, understand and automate connected home energy systems, including Tesla Powerwall, EV charging, solar, smart tariffs and Powerwall diagnostics." />
+  <meta
+    name="description"
+    content="MAP Energy brings your Tesla Powerwall, EV charging, solar, smart tariffs and home energy together. Monitor live energy, understand your usage and create powerful energy automations."
+  >
 
   <style>
 
-    :root {
-
-      color-scheme: light dark;
-
-      --brand-blue: #2f80ed;
-
-      --brand-blue-dark: #1769d4;
-
-      --brand-blue-soft: rgba(47, 128, 237, 0.12);
-
-      --brand-grey: #8c98a8;
-
-      --energy-yellow: #f2c94c;
-
-      --energy-yellow-soft: rgba(242, 201, 76, 0.18);
-
-      --bg-primary: #f7f9fc;
-
-      --bg-card: rgba(255,255,255,0.86);
-
-      --bg-card-soft: rgba(255,255,255,0.54);
-
-      --bg-panel: rgba(255,255,255,0.68);
-
-      --border: rgba(47, 128, 237, 0.14);
-
-      --border-strong: rgba(47, 128, 237, 0.24);
-
-      --text-primary: #17212f;
-
-      --text-secondary: #5f6b7a;
-
-      --text-muted: #7b8796;
-
-      --success: #27ae60;
-
-      --warning: #f2994a;
-
-      --danger: #eb5757;
-
-      --shadow: 0 12px 30px rgba(24, 39, 75, 0.08);
-
-      --shadow-strong: 0 24px 68px rgba(24, 39, 75, 0.16);
-
-      --radius-xl: 26px;
-
-      --radius-lg: 18px;
-
-      --radius-md: 14px;
-
-    }
-
-    @media (prefers-color-scheme: dark) {
-
-      :root {
-
-        --bg-primary: #0d1117;
-
-        --bg-card: rgba(22, 27, 34, 0.9);
-
-        --bg-card-soft: rgba(255,255,255,0.045);
-
-        --bg-panel: rgba(255,255,255,0.055);
-
-        --border: rgba(255,255,255,0.08);
-
-        --border-strong: rgba(255,255,255,0.13);
-
-        --text-primary: #f3f6fb;
-
-        --text-secondary: #a9b4c2;
-
-        --text-muted: #8b96a5;
-
-        --shadow: 0 16px 36px rgba(0, 0, 0, 0.34);
-
-        --shadow-strong: 0 30px 78px rgba(0, 0, 0, 0.5);
-
-      }
-
-    }
-
     * {
-
       box-sizing: border-box;
-
     }
 
     html {
-
+      min-height: 100%;
       scroll-behavior: smooth;
-
+      background: #06101f;
     }
 
     body {
-
       margin: 0;
-
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-
-      color: var(--text-primary);
-
-      background:
-
-        radial-gradient(circle at 18% 0%, rgba(47, 128, 237, 0.28), transparent 32%),
-
-        radial-gradient(circle at 92% 6%, rgba(242, 201, 76, 0.26), transparent 28%),
-
-        radial-gradient(circle at 50% 45%, rgba(39, 174, 96, 0.08), transparent 30%),
-
-        linear-gradient(
-
-          to bottom,
-
-          rgba(47, 128, 237, 0.12) 0%,
-
-          rgba(242, 201, 76, 0.08) 34%,
-
-          var(--bg-primary) 74%
-
-        );
-
       min-height: 100vh;
 
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "SF Pro Display",
+        "SF Pro Text",
+        "Segoe UI",
+        Roboto,
+        Helvetica,
+        Arial,
+        sans-serif;
+
+      color: #ffffff;
+
+      background:
+        radial-gradient(
+          circle at 78% 4%,
+          rgba(36, 117, 238, 0.18),
+          transparent 27%
+        ),
+        radial-gradient(
+          circle at 15% 27%,
+          rgba(18, 89, 190, 0.10),
+          transparent 25%
+        ),
+        linear-gradient(
+          180deg,
+          #071326 0%,
+          #06101f 45%,
+          #040b16 100%
+        );
     }
 
     a {
-
-      color: var(--brand-blue);
-
-      text-decoration: none;
-
+      color: inherit;
     }
 
-    a:hover {
 
-      text-decoration: underline;
+    /* =========================================================
+       PAGE
+       ========================================================= */
 
-    }
-
-    p {
-
-      color: var(--text-secondary);
-
-    }
-
-    .shell {
-
-      max-width: 1160px;
+    .page {
+      width: 100%;
+      max-width: 1180px;
 
       margin: 0 auto;
 
-      padding: 28px 18px 64px;
-
+      padding:
+        max(24px, env(safe-area-inset-top))
+        24px
+        max(60px, env(safe-area-inset-bottom));
     }
 
-    .hero,
 
-    .section-card,
+    /* =========================================================
+       HEADER
+       ========================================================= */
 
-    .feature-card,
+    .site-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
 
-    .cta-card,
+      gap: 25px;
 
-    .public-metric-card,
-
-    .use-case-card,
-
-    .download-card,
-
-    .trust-card,
-
-    .workflow-card {
-
-      background: var(--bg-card);
-
-      border: 1px solid var(--border);
-
-      border-radius: var(--radius-xl);
-
-      box-shadow: var(--shadow);
-
-      backdrop-filter: blur(12px);
-
-      -webkit-backdrop-filter: blur(12px);
-
+      margin-bottom: 28px;
     }
+
+    .brand {
+      display: flex;
+      align-items: center;
+
+      gap: 12px;
+
+      color: #ffffff;
+      text-decoration: none;
+    }
+
+    .brand-logo {
+      width: 48px;
+      height: 48px;
+
+      object-fit: contain;
+
+      filter:
+        drop-shadow(
+          0 6px 16px rgba(0, 0, 0, 0.28)
+        );
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-name {
+      font-size: 18px;
+      line-height: 1.1;
+
+      font-weight: 850;
+
+      letter-spacing: -0.02em;
+    }
+
+    .brand-subtitle {
+      margin-top: 4px;
+
+      color: rgba(198, 213, 234, 0.58);
+
+      font-size: 11px;
+      font-weight: 650;
+    }
+
+    .desktop-nav {
+      display: flex;
+      align-items: center;
+
+      gap: 7px;
+    }
+
+    .desktop-nav a {
+      padding: 9px 12px;
+
+      border-radius: 11px;
+
+      color: rgba(213, 225, 241, 0.72);
+
+      text-decoration: none;
+
+      font-size: 12px;
+      font-weight: 700;
+
+      transition:
+        color 0.15s ease,
+        background 0.15s ease;
+    }
+
+    .desktop-nav a:hover {
+      color: #ffffff;
+
+      background:
+        rgba(255, 255, 255, 0.055);
+    }
+
+    .desktop-nav .nav-download {
+      margin-left: 5px;
+
+      color: #ffffff;
+
+      background: #347ff0;
+
+      border:
+        1px solid rgba(102, 168, 255, 0.38);
+    }
+
+    .desktop-nav .nav-download:hover {
+      background: #438cf8;
+    }
+
+
+    /* =========================================================
+       HERO
+       ========================================================= */
 
     .hero {
+      position: relative;
 
-      padding: 24px 22px 28px;
+      display: grid;
 
-      margin-bottom: 18px;
+      grid-template-columns:
+        minmax(0, 1.1fr)
+        minmax(330px, 0.9fr);
 
-      box-shadow: var(--shadow-strong);
+      gap: 35px;
+
+      align-items: center;
+
+      min-height: 550px;
+
+      padding: 55px;
 
       overflow: hidden;
 
-      position: relative;
+      border-radius: 36px;
 
+      background:
+        linear-gradient(
+          135deg,
+          rgba(17, 51, 101, 0.94),
+          rgba(5, 18, 42, 0.96) 63%,
+          rgba(5, 14, 31, 0.97)
+        );
+
+      border:
+        1px solid rgba(82, 148, 239, 0.27);
+
+      box-shadow:
+        0 38px 110px rgba(0, 0, 0, 0.38),
+        inset 0 1px 0 rgba(255, 255, 255, 0.055);
     }
 
-    .hero::after {
-
+    .hero::before {
       content: "";
 
       position: absolute;
 
-      right: -120px;
+      width: 560px;
+      height: 560px;
 
-      top: -120px;
+      right: -170px;
+      top: -250px;
 
-      width: 300px;
+      border-radius: 50%;
 
-      height: 300px;
-
-      border-radius: 999px;
-
-      background: radial-gradient(circle, rgba(47, 128, 237, 0.18), transparent 70%);
+      background:
+        radial-gradient(
+          circle,
+          rgba(48, 139, 255, 0.30),
+          transparent 67%
+        );
 
       pointer-events: none;
-
     }
 
-    .brand {
+    .hero::after {
+      content: "";
 
-      display: flex;
+      position: absolute;
 
-      align-items: center;
+      width: 400px;
+      height: 400px;
 
-      gap: 10px;
+      left: -210px;
+      bottom: -270px;
 
-      margin-bottom: 18px;
+      border-radius: 50%;
 
+      background:
+        radial-gradient(
+          circle,
+          rgba(238, 166, 60, 0.09),
+          transparent 67%
+        );
+
+      pointer-events: none;
+    }
+
+    .hero-content {
       position: relative;
-
-      z-index: 1;
-
+      z-index: 2;
     }
 
-    .logo {
-
-      height: 46px;
-
-      width: auto;
-
-    }
-
-    .brand-text {
-
-      font-size: 20px;
-
-      font-weight: 850;
-
-      letter-spacing: -0.01em;
-
-    }
-
-    .brand-divider {
-
-      height: 1px;
-
-      background: var(--border);
-
-      margin: 18px 0 22px;
-
-      position: relative;
-
-      z-index: 1;
-
-    }
-
-    .nav-links {
-
-      display: flex;
-
-      flex-wrap: wrap;
-
-      gap: 14px;
-
-      margin-bottom: 26px;
-
-      position: relative;
-
-      z-index: 1;
-
-    }
-
-    .nav-links a {
-
-      font-size: 0.95rem;
-
-      font-weight: 700;
-
-    }
-
-    .hero-grid {
-
-      display: grid;
-
-      grid-template-columns: 1.18fr 0.82fr;
-
-      gap: 24px;
-
-      align-items: stretch;
-
-      position: relative;
-
-      z-index: 1;
-
-    }
-
-    @media (max-width: 940px) {
-
-      .hero-grid {
-
-        grid-template-columns: 1fr;
-
-      }
-
-    }
-
-    .eyebrow {
-
+    .hero-eyebrow {
       display: inline-flex;
-
       align-items: center;
 
       gap: 8px;
 
-      width: fit-content;
-
-      margin-bottom: 14px;
+      margin-bottom: 20px;
 
       padding: 7px 11px;
 
       border-radius: 999px;
 
-      font-size: 0.82rem;
+      color: #83bcff;
 
+      background:
+        rgba(44, 125, 240, 0.13);
+
+      border:
+        1px solid rgba(81, 153, 255, 0.22);
+
+      font-size: 10px;
       font-weight: 850;
 
-      color: var(--brand-blue);
-
-      background: var(--brand-blue-soft);
-
-      border: 1px solid rgba(47, 128, 237, 0.22);
-
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
     }
 
-    .eyebrow-dot {
+    .hero-eyebrow-dot {
+      width: 7px;
+      height: 7px;
 
-      width: 8px;
+      border-radius: 50%;
 
-      height: 8px;
+      background: #3fd394;
 
-      border-radius: 999px;
-
-      background: var(--success);
-
-      box-shadow: 0 0 14px rgba(39, 174, 96, 0.72);
-
+      box-shadow:
+        0 0 11px rgba(63, 211, 148, 0.7);
     }
 
     h1 {
+      max-width: 680px;
 
-      margin: 0 0 14px;
+      margin: 0 0 22px;
 
-      font-size: clamp(2.55rem, 6vw, 4.75rem);
+      color: #ffffff;
 
-      line-height: 0.97;
+      font-size: clamp(47px, 6vw, 72px);
+      line-height: 0.98;
 
-      letter-spacing: -0.06em;
+      font-weight: 880;
 
-      max-width: 780px;
-
+      letter-spacing: -0.055em;
     }
 
-    .lead {
-
-      margin: 0 0 14px;
-
-      color: var(--text-secondary);
-
-      font-size: 1.1rem;
-
-      line-height: 1.56;
-
-      max-width: 760px;
-
-    }
-
-    .hero-highlight {
-
-      color: var(--text-primary);
-
-      font-weight: 800;
-
-    }
-
-    .button-row {
-
-      display: flex;
-
-      flex-wrap: wrap;
-
-      gap: 12px;
-
-      margin-top: 22px;
-
-    }
-
-    .button {
-
-      display: inline-flex;
-
-      align-items: center;
-
-      justify-content: center;
-
-      min-height: 46px;
-
-      padding: 11px 16px;
-
-      border-radius: 999px;
-
-      border: 1px solid var(--border);
-
-      font-weight: 850;
-
-      text-decoration: none;
-
-      transition: transform 0.16s ease, box-shadow 0.16s ease, background 0.16s ease;
-
-      white-space: nowrap;
-
-    }
-
-    .button:hover {
-
-      text-decoration: none;
-
-      transform: translateY(-1px);
-
-    }
-
-    .button-primary {
-
-      background: var(--brand-blue);
-
-      color: white;
-
-      border-color: rgba(47, 128, 237, 0.4);
-
-      box-shadow: 0 12px 22px rgba(47, 128, 237, 0.22);
-
-    }
-
-    .button-primary:hover {
-
-      background: var(--brand-blue-dark);
-
-    }
-
-    .button-secondary {
-
-      background: rgba(255,255,255,0.48);
-
-      color: var(--text-primary);
-
-    }
-
-    @media (prefers-color-scheme: dark) {
-
-      .button-secondary {
-
-        background: rgba(255,255,255,0.05);
-
-      }
-
-    }
-
-    .hero-panel {
-
-      display: grid;
-
-      gap: 12px;
-
-      height: 100%;
-
-    }
-
-    .product-panel {
-
-      background:
-
-        linear-gradient(135deg, rgba(47, 128, 237, 0.14), rgba(242, 201, 76, 0.12)),
-
-        var(--bg-card-soft);
-
-      border: 1px solid var(--border-strong);
-
-      border-radius: var(--radius-xl);
-
-      padding: 18px;
-
-      display: grid;
-
-      gap: 12px;
-
-      min-height: 100%;
-
-    }
-
-    .flow-card {
-
-      border-radius: var(--radius-lg);
-
-      background: var(--bg-panel);
-
-      border: 1px solid var(--border);
-
-      padding: 14px;
-
-    }
-
-    .flow-title {
-
-      display: flex;
-
-      align-items: center;
-
-      justify-content: space-between;
-
-      gap: 12px;
-
-      margin-bottom: 12px;
-
-    }
-
-    .flow-title strong {
-
-      font-size: 1rem;
-
-      letter-spacing: -0.02em;
-
-    }
-
-    .live-pill {
-
-      display: inline-flex;
-
-      align-items: center;
-
-      gap: 6px;
-
-      padding: 5px 9px;
-
-      border-radius: 999px;
-
-      font-size: 0.76rem;
-
-      font-weight: 850;
-
-      color: var(--success);
-
-      background: rgba(39, 174, 96, 0.12);
-
-      border: 1px solid rgba(39, 174, 96, 0.2);
-
-    }
-
-    .live-pill::before {
-
-      content: "";
-
-      width: 7px;
-
-      height: 7px;
-
-      border-radius: 999px;
-
-      background: var(--success);
-
-    }
-
-    .flow-grid {
-
-      display: grid;
-
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-
-      gap: 10px;
-
-    }
-
-    .flow-item {
-
-      border-radius: var(--radius-md);
-
-      background: var(--bg-card-soft);
-
-      border: 1px solid var(--border);
-
-      padding: 12px;
-
-    }
-
-    .flow-label {
-
-      display: block;
-
-      color: var(--text-muted);
-
-      font-size: 0.78rem;
-
-      margin-bottom: 5px;
-
-    }
-
-    .flow-value {
-
-      display: block;
-
-      color: var(--text-primary);
-
-      font-size: 1.08rem;
-
-      font-weight: 900;
-
-      letter-spacing: -0.03em;
-
-    }
-
-    .rule-stack {
-
-      display: grid;
-
-      gap: 9px;
-
-    }
-
-    .rule-card {
-
-      display: grid;
-
-      grid-template-columns: auto 1fr;
-
-      gap: 10px;
-
-      align-items: start;
-
-      border-radius: var(--radius-lg);
-
-      background: var(--bg-panel);
-
-      border: 1px solid var(--border);
-
-      padding: 12px;
-
-    }
-
-    .rule-icon {
-
-      width: 30px;
-
-      height: 30px;
-
-      border-radius: 999px;
-
-      display: grid;
-
-      place-items: center;
-
-      background: var(--brand-blue-soft);
-
-      color: var(--brand-blue);
-
-      font-weight: 900;
-
-      font-size: 0.9rem;
-
-    }
-
-    .rule-card strong {
-
-      display: block;
-
-      font-size: 0.92rem;
-
-      margin-bottom: 3px;
-
-    }
-
-    .rule-card span {
-
-      color: var(--text-secondary);
-
-      font-size: 0.84rem;
-
-      line-height: 1.36;
-
-    }
-
-    .section {
-
-      margin-top: 30px;
-
-    }
-
-    .section-header {
-
-      display: flex;
-
-      justify-content: space-between;
-
-      align-items: baseline;
-
-      gap: 16px;
-
-      flex-wrap: wrap;
-
-      margin-bottom: 14px;
-
-    }
-
-    .section-title {
+    .hero-description {
+      max-width: 650px;
 
       margin: 0;
 
-      font-size: 1.46rem;
+      color: rgba(220, 230, 243, 0.78);
+
+      font-size: 18px;
+      line-height: 1.67;
+    }
+
+    .hero-description strong {
+      color: #ffffff;
+
+      font-weight: 750;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+
+      gap: 10px;
+
+      margin-top: 29px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+
+      gap: 8px;
+
+      min-height: 46px;
+
+      padding: 12px 18px;
+
+      border-radius: 14px;
+
+      text-decoration: none;
+
+      font-size: 13px;
+      font-weight: 780;
+
+      transition:
+        transform 0.16s ease,
+        background 0.16s ease,
+        border-color 0.16s ease;
+    }
+
+    .button:hover {
+      transform: translateY(-1px);
+    }
+
+    .button-primary {
+      color: #ffffff;
+
+      background: #347ff0;
+
+      border:
+        1px solid rgba(106, 173, 255, 0.46);
+
+      box-shadow:
+        0 10px 27px rgba(31, 101, 214, 0.24);
+    }
+
+    .button-primary:hover {
+      background: #428bf8;
+    }
+
+    .button-secondary {
+      color: #ffffff;
+
+      background:
+        rgba(7, 23, 49, 0.66);
+
+      border:
+        1px solid rgba(108, 161, 234, 0.24);
+    }
+
+    .button-secondary:hover {
+      background:
+        rgba(14, 39, 77, 0.78);
+
+      border-color:
+        rgba(108, 161, 234, 0.40);
+    }
+
+
+    /* =========================================================
+       HERO VISUAL
+       ========================================================= */
+
+    .hero-visual {
+      position: relative;
+      z-index: 2;
+
+      min-height: 410px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .energy-orbit {
+      position: relative;
+
+      width: 350px;
+      height: 350px;
+
+      border-radius: 50%;
+
+      background:
+        radial-gradient(
+          circle,
+          rgba(47, 126, 242, 0.14),
+          rgba(5, 18, 42, 0.08) 56%,
+          transparent 57%
+        );
+
+      border:
+        1px solid rgba(89, 157, 247, 0.10);
+    }
+
+    .energy-orbit::before {
+      content: "";
+
+      position: absolute;
+
+      inset: 38px;
+
+      border-radius: 50%;
+
+      border:
+        1px solid rgba(93, 160, 249, 0.13);
+    }
+
+    .energy-centre {
+      position: absolute;
+
+      left: 50%;
+      top: 50%;
+
+      transform: translate(-50%, -50%);
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      width: 145px;
+      height: 145px;
+
+      border-radius: 50%;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(27, 76, 146, 0.95),
+          rgba(8, 27, 59, 0.96)
+        );
+
+      border:
+        1px solid rgba(90, 161, 255, 0.34);
+
+      box-shadow:
+        0 22px 55px rgba(0, 0, 0, 0.34),
+        0 0 55px rgba(45, 128, 245, 0.10);
+    }
+
+    .energy-centre-logo {
+      width: 58px;
+      height: 58px;
+
+      object-fit: contain;
+
+      margin-bottom: 7px;
+    }
+
+    .energy-centre span {
+      color: rgba(224, 235, 249, 0.78);
+
+      font-size: 11px;
+      font-weight: 750;
+    }
+
+    .energy-node {
+      position: absolute;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      width: 92px;
+      height: 92px;
+
+      border-radius: 24px;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(12, 36, 72, 0.96),
+          rgba(5, 18, 39, 0.96)
+        );
+
+      border:
+        1px solid rgba(88, 151, 236, 0.24);
+
+      box-shadow:
+        0 16px 36px rgba(0, 0, 0, 0.26);
+    }
+
+    .energy-node-icon {
+      margin-bottom: 6px;
+
+      color: #67afff;
+
+      font-size: 22px;
+      line-height: 1;
+    }
+
+    .energy-node-name {
+      color: #ffffff;
+
+      font-size: 11px;
+      font-weight: 750;
+    }
+
+    .node-solar {
+      left: 50%;
+      top: -20px;
+
+      transform: translateX(-50%);
+    }
+
+    .node-battery {
+      left: -19px;
+      top: 50%;
+
+      transform: translateY(-50%);
+    }
+
+    .node-grid {
+      right: -19px;
+      top: 50%;
+
+      transform: translateY(-50%);
+    }
+
+    .node-ev {
+      left: 50%;
+      bottom: -20px;
+
+      transform: translateX(-50%);
+    }
+
+
+    /* =========================================================
+       INTRO STRIP
+       ========================================================= */
+
+    .intro-strip {
+      display: grid;
+
+      grid-template-columns: repeat(4, 1fr);
+
+      gap: 1px;
+
+      margin-top: 18px;
+
+      overflow: hidden;
+
+      border-radius: 24px;
+
+      background:
+        rgba(96, 145, 211, 0.16);
+
+      border:
+        1px solid rgba(93, 145, 220, 0.16);
+
+      box-shadow:
+        0 20px 55px rgba(0, 0, 0, 0.22);
+    }
+
+    .intro-item {
+      padding: 23px 21px;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(10, 28, 54, 0.94),
+          rgba(5, 15, 32, 0.94)
+        );
+    }
+
+    .intro-value {
+      display: block;
+
+      margin-bottom: 5px;
+
+      color: #ffffff;
+
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    .intro-label {
+      color: rgba(193, 207, 227, 0.63);
+
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+
+    /* =========================================================
+       SECTIONS
+       ========================================================= */
+
+    .section {
+      margin-top: 78px;
+    }
+
+    .section-heading {
+      max-width: 760px;
+
+      margin-bottom: 27px;
+    }
+
+    .section-eyebrow {
+      display: block;
+
+      margin-bottom: 8px;
+
+      color: #59a8ff;
+
+      font-size: 10px;
+      font-weight: 850;
+
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .section-heading h2 {
+      margin: 0 0 12px;
+
+      color: #ffffff;
+
+      font-size: clamp(29px, 4vw, 40px);
+      line-height: 1.12;
+
+      font-weight: 830;
+
+      letter-spacing: -0.035em;
+    }
+
+    .section-heading p {
+      margin: 0;
+
+      color: rgba(204, 217, 235, 0.68);
+
+      font-size: 16px;
+      line-height: 1.65;
+    }
+
+
+    /* =========================================================
+       FEATURE CARDS
+       ========================================================= */
+
+    .feature-grid {
+      display: grid;
+
+      grid-template-columns: repeat(2, 1fr);
+
+      gap: 16px;
+    }
+
+    .feature-card {
+      position: relative;
+
+      min-height: 260px;
+
+      padding: 28px;
+
+      overflow: hidden;
+
+      border-radius: 25px;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(11, 31, 62, 0.90),
+          rgba(5, 15, 33, 0.92)
+        );
+
+      border:
+        1px solid rgba(77, 139, 226, 0.19);
+
+      box-shadow:
+        0 22px 60px rgba(0, 0, 0, 0.24);
+    }
+
+    .feature-card::after {
+      content: "";
+
+      position: absolute;
+
+      width: 190px;
+      height: 190px;
+
+      right: -85px;
+      bottom: -100px;
+
+      border-radius: 50%;
+
+      background:
+        radial-gradient(
+          circle,
+          rgba(43, 130, 255, 0.13),
+          transparent 70%
+        );
+    }
+
+    .feature-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      width: 48px;
+      height: 48px;
+
+      margin-bottom: 23px;
+
+      border-radius: 14px;
+
+      color: #ffffff;
+
+      background:
+        rgba(47, 126, 242, 0.20);
+
+      border:
+        1px solid rgba(68, 145, 255, 0.28);
+
+      font-size: 21px;
+    }
+
+    .feature-card h3 {
+      position: relative;
+      z-index: 2;
+
+      margin: 0 0 10px;
+
+      color: #ffffff;
+
+      font-size: 20px;
+      font-weight: 790;
+
+      letter-spacing: -0.02em;
+    }
+
+    .feature-card p {
+      position: relative;
+      z-index: 2;
+
+      margin: 0;
+
+      color: rgba(204, 217, 235, 0.70);
+
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    .feature-label {
+      display: inline-block;
+
+      position: relative;
+      z-index: 2;
+
+      margin-top: 20px;
+
+      color: #59a8ff;
+
+      font-size: 10px;
+      font-weight: 850;
+
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+    }
+
+
+    /* =========================================================
+       CONNECTED SYSTEM
+       ========================================================= */
+
+    .connected-card {
+      display: grid;
+
+      grid-template-columns:
+        minmax(0, 0.85fr)
+        minmax(0, 1.15fr);
+
+      gap: 42px;
+
+      align-items: center;
+
+      padding: 40px;
+
+      border-radius: 29px;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(13, 45, 88, 0.92),
+          rgba(5, 18, 40, 0.94)
+        );
+
+      border:
+        1px solid rgba(80, 146, 236, 0.24);
+
+      box-shadow:
+        0 28px 75px rgba(0, 0, 0, 0.28);
+    }
+
+    .connected-card h2 {
+      margin: 0 0 14px;
+
+      color: #ffffff;
+
+      font-size: 31px;
+      line-height: 1.15;
+
+      letter-spacing: -0.035em;
+    }
+
+    .connected-card > div > p {
+      margin: 0;
+
+      color: rgba(207, 220, 238, 0.71);
+
+      font-size: 15px;
+      line-height: 1.68;
+    }
+
+    .connection-grid {
+      display: grid;
+
+      grid-template-columns: repeat(2, 1fr);
+
+      gap: 11px;
+    }
+
+    .connection-item {
+      padding: 18px;
+
+      border-radius: 17px;
+
+      background:
+        rgba(5, 17, 37, 0.62);
+
+      border:
+        1px solid rgba(90, 147, 226, 0.16);
+    }
+
+    .connection-title {
+      display: block;
+
+      margin-bottom: 5px;
+
+      color: #ffffff;
+
+      font-size: 14px;
+      font-weight: 770;
+    }
+
+    .connection-description {
+      color: rgba(190, 206, 227, 0.62);
+
+      font-size: 12px;
+      line-height: 1.48;
+    }
+
+
+    /* =========================================================
+       AUTOMATIONS
+       ========================================================= */
+
+    .automation-card {
+      position: relative;
+
+      padding: 42px;
+
+      overflow: hidden;
+
+      border-radius: 30px;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(15, 54, 107, 0.94),
+          rgba(5, 20, 46, 0.95)
+        );
+
+      border:
+        1px solid rgba(77, 151, 250, 0.28);
+
+      box-shadow:
+        0 30px 80px rgba(0, 0, 0, 0.30);
+    }
+
+    .automation-card::before {
+      content: "";
+
+      position: absolute;
+
+      width: 390px;
+      height: 390px;
+
+      right: -150px;
+      top: -180px;
+
+      border-radius: 50%;
+
+      background:
+        radial-gradient(
+          circle,
+          rgba(47, 133, 255, 0.24),
+          transparent 68%
+        );
+    }
+
+    .automation-top {
+      position: relative;
+      z-index: 2;
+
+      max-width: 750px;
+    }
+
+    .automation-top h2 {
+      margin: 0 0 12px;
+
+      color: #ffffff;
+
+      font-size: 32px;
+      line-height: 1.15;
+
+      letter-spacing: -0.035em;
+    }
+
+    .automation-top p {
+      margin: 0;
+
+      color: rgba(211, 224, 241, 0.73);
+
+      font-size: 15px;
+      line-height: 1.68;
+    }
+
+    .automation-flow {
+      position: relative;
+      z-index: 2;
+
+      display: grid;
+
+      grid-template-columns: 1fr auto 1fr auto 1fr;
+
+      gap: 12px;
+
+      align-items: center;
+
+      margin-top: 31px;
+    }
+
+    .automation-step {
+      min-height: 130px;
+
+      padding: 20px;
+
+      border-radius: 19px;
+
+      background:
+        rgba(5, 18, 40, 0.65);
+
+      border:
+        1px solid rgba(89, 151, 236, 0.20);
+    }
+
+    .automation-number {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      width: 28px;
+      height: 28px;
+
+      margin-bottom: 13px;
+
+      border-radius: 9px;
+
+      color: #ffffff;
+
+      background: #347ff0;
+
+      font-size: 11px;
+      font-weight: 850;
+    }
+
+    .automation-step strong {
+      display: block;
+
+      margin-bottom: 5px;
+
+      color: #ffffff;
+
+      font-size: 14px;
+    }
+
+    .automation-step span {
+      color: rgba(196, 212, 233, 0.66);
+
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .automation-arrow {
+      color: #65adff;
+
+      font-size: 21px;
+    }
+
+    .automation-link {
+      display: inline-flex;
+
+      position: relative;
+      z-index: 2;
+
+      margin-top: 25px;
+
+      color: #7fbcff;
+
+      text-decoration: none;
+
+      font-size: 13px;
+      font-weight: 750;
+    }
+
+    .automation-link:hover {
+      color: #ffffff;
+    }
+
+
+    /* =========================================================
+       SMART ENERGY
+       ========================================================= */
+
+    .smart-grid {
+      display: grid;
+
+      grid-template-columns: repeat(3, 1fr);
+
+      gap: 15px;
+    }
+
+    .smart-card {
+      padding: 25px;
+
+      border-radius: 22px;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(10, 29, 58, 0.90),
+          rgba(5, 15, 32, 0.91)
+        );
+
+      border:
+        1px solid rgba(78, 137, 219, 0.18);
+    }
+
+    .smart-card-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      width: 42px;
+      height: 42px;
+
+      margin-bottom: 17px;
+
+      border-radius: 13px;
+
+      color: #ffffff;
+
+      background:
+        rgba(47, 126, 242, 0.18);
+
+      border:
+        1px solid rgba(68, 145, 255, 0.25);
+
+      font-size: 18px;
+    }
+
+    .smart-card h3 {
+      margin: 0 0 8px;
+
+      color: #ffffff;
+
+      font-size: 17px;
+      font-weight: 780;
+    }
+
+    .smart-card p {
+      margin: 0;
+
+      color: rgba(199, 214, 233, 0.68);
+
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+
+    /* =========================================================
+       DIAGNOSTICS
+       ========================================================= */
+
+    .diagnostics-card {
+      display: grid;
+
+      grid-template-columns:
+        minmax(0, 1.1fr)
+        minmax(280px, 0.9fr);
+
+      gap: 40px;
+
+      align-items: center;
+
+      padding: 40px;
+
+      border-radius: 29px;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(11, 35, 69, 0.92),
+          rgba(5, 16, 35, 0.94)
+        );
+
+      border:
+        1px solid rgba(82, 142, 225, 0.20);
+    }
+
+    .diagnostics-card h2 {
+      margin: 0 0 13px;
+
+      color: #ffffff;
+
+      font-size: 30px;
+      line-height: 1.18;
 
       letter-spacing: -0.03em;
-
     }
 
-    .section-subtitle {
+    .diagnostics-card p {
+      margin: 0;
 
-      margin: 7px 0 0;
+      color: rgba(203, 217, 235, 0.70);
 
-      max-width: 800px;
-
-      line-height: 1.56;
-
+      font-size: 15px;
+      line-height: 1.68;
     }
 
-    .metrics-updated {
+    .diagnostic-list {
+      display: grid;
 
-      color: var(--text-secondary);
-
-      font-size: 0.9rem;
-
+      gap: 10px;
     }
 
-    .download-card {
+    .diagnostic-item {
+      display: flex;
+      align-items: center;
+
+      gap: 12px;
+
+      padding: 14px 16px;
+
+      border-radius: 15px;
+
+      background:
+        rgba(5, 17, 36, 0.62);
+
+      border:
+        1px solid rgba(78, 137, 219, 0.15);
+
+      color: rgba(221, 231, 243, 0.82);
+
+      font-size: 13px;
+      font-weight: 650;
+    }
+
+    .diagnostic-check {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      width: 23px;
+      height: 23px;
+
+      flex: 0 0 auto;
+
+      border-radius: 50%;
+
+      color: #4ee09d;
+
+      background:
+        rgba(48, 198, 133, 0.11);
+
+      border:
+        1px solid rgba(48, 198, 133, 0.18);
+
+      font-size: 11px;
+      font-weight: 900;
+    }
+
+
+    /* =========================================================
+       PREMIUM
+       ========================================================= */
+
+    .premium-card {
+      position: relative;
+
+      padding: 43px;
+
+      overflow: hidden;
+
+      border-radius: 30px;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(17, 57, 113, 0.94),
+          rgba(7, 25, 55, 0.96)
+        );
+
+      border:
+        1px solid rgba(79, 155, 255, 0.30);
+
+      box-shadow:
+        0 30px 80px rgba(0, 0, 0, 0.30);
+    }
+
+    .premium-card::after {
+      content: "";
+
+      position: absolute;
+
+      width: 440px;
+      height: 440px;
+
+      right: -180px;
+      top: -230px;
+
+      border-radius: 50%;
+
+      background:
+        radial-gradient(
+          circle,
+          rgba(48, 139, 255, 0.27),
+          transparent 68%
+        );
+    }
+
+    .premium-content {
+      position: relative;
+      z-index: 2;
+
+      max-width: 780px;
+    }
+
+    .premium-badge {
+      display: inline-flex;
+
+      margin-bottom: 16px;
+
+      padding: 6px 10px;
+
+      border-radius: 999px;
+
+      color: #ffffff;
+
+      background:
+        rgba(52, 127, 240, 0.32);
+
+      border:
+        1px solid rgba(91, 161, 255, 0.30);
+
+      font-size: 9px;
+      font-weight: 850;
+
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+    }
+
+    .premium-card h2 {
+      margin: 0 0 13px;
+
+      color: #ffffff;
+
+      font-size: 34px;
+      line-height: 1.15;
+
+      letter-spacing: -0.04em;
+    }
+
+    .premium-card p {
+      margin: 0;
+
+      color: rgba(215, 227, 242, 0.74);
+
+      font-size: 15px;
+      line-height: 1.68;
+    }
+
+    .premium-features {
+      display: flex;
+      flex-wrap: wrap;
+
+      gap: 8px;
+
+      margin-top: 22px;
+    }
+
+    .premium-feature {
+      padding: 8px 11px;
+
+      border-radius: 11px;
+
+      color: rgba(232, 239, 248, 0.85);
+
+      background:
+        rgba(5, 19, 42, 0.50);
+
+      border:
+        1px solid rgba(99, 158, 239, 0.19);
+
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .premium-actions {
+      display: flex;
+      flex-wrap: wrap;
+
+      gap: 10px;
+
+      margin-top: 26px;
+    }
+
+
+    /* =========================================================
+       DOWNLOAD
+       ========================================================= */
+
+    .download-section {
+      position: relative;
 
       display: grid;
 
       grid-template-columns: 1fr auto;
 
-      gap: 18px;
+      gap: 30px;
 
       align-items: center;
+
+      margin-top: 78px;
+
+      padding: 38px;
+
+      overflow: hidden;
+
+      border-radius: 29px;
 
       background:
+        linear-gradient(
+          135deg,
+          rgba(78, 49, 15, 0.30),
+          rgba(16, 30, 52, 0.92)
+        );
 
-        linear-gradient(135deg, rgba(47, 128, 237, 0.17), rgba(242, 201, 76, 0.13)),
-
-        var(--bg-card);
-
-      padding: 22px;
-
+      border:
+        1px solid rgba(235, 167, 64, 0.22);
     }
 
-    @media (max-width: 820px) {
-
-      .download-card {
-
-        grid-template-columns: 1fr;
-
-      }
-
-    }
-
-    .download-card h2 {
-
-      margin: 0 0 8px;
-
-      font-size: 1.6rem;
-
-      letter-spacing: -0.035em;
-
-    }
-
-    .download-actions {
-
-      display: flex;
-
-      flex-wrap: wrap;
-
-      gap: 12px;
-
-      justify-content: flex-end;
-
-    }
-
-    @media (max-width: 820px) {
-
-      .download-actions {
-
-        justify-content: flex-start;
-
-      }
-
-    }
-
-    .public-metrics-grid {
-
-      display: grid;
-
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-
-      gap: 18px;
-
-    }
-
-    @media (max-width: 920px) {
-
-      .public-metrics-grid {
-
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-
-      }
-
-    }
-
-    @media (max-width: 560px) {
-
-      .public-metrics-grid {
-
-        grid-template-columns: 1fr;
-
-      }
-
-    }
-
-    .public-metric-card {
-
-      padding: 20px;
-
-      min-height: 152px;
-
-    }
-
-    .public-metric-label {
-
-      display: block;
-
-      margin-bottom: 10px;
-
-      color: var(--text-secondary);
-
-      font-size: 0.9rem;
-
-    }
-
-    .public-metric-value {
-
-      display: block;
-
-      margin-bottom: 10px;
-
-      font-size: 2.15rem;
-
-      line-height: 1;
-
-      font-weight: 950;
-
-      color: var(--text-primary);
-
-      letter-spacing: -0.04em;
-
-    }
-
-    .public-metric-note {
-
-      margin: 0;
-
-      color: var(--text-secondary);
-
-      font-size: 0.92rem;
-
-      line-height: 1.4;
-
-    }
-
-    .features-grid {
-
-      display: grid;
-
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-
-      gap: 18px;
-
-    }
-
-    @media (max-width: 760px) {
-
-      .features-grid {
-
-        grid-template-columns: 1fr;
-
-      }
-
-    }
-
-    .feature-card,
-
-    .use-case-card,
-
-    .workflow-card,
-
-    .trust-card {
-
-      padding: 20px;
-
-    }
-
-    .feature-badge {
-
-      display: inline-flex;
-
-      align-items: center;
-
-      padding: 7px 11px;
-
-      border-radius: 999px;
-
-      font-size: 0.78rem;
-
-      font-weight: 850;
-
-      color: var(--brand-blue);
-
-      background: var(--brand-blue-soft);
-
-      border: 1px solid rgba(47, 128, 237, 0.22);
-
-      margin-bottom: 12px;
-
-    }
-
-    .feature-card h3,
-
-    .use-case-card h3,
-
-    .workflow-card h3,
-
-    .trust-card h3 {
-
-      margin: 0 0 8px;
-
-      font-size: 1.13rem;
-
-      letter-spacing: -0.018em;
-
-    }
-
-    .feature-card p,
-
-    .use-case-card p,
-
-    .section-card p,
-
-    .cta-card p,
-
-    .download-card p,
-
-    .workflow-card p,
-
-    .trust-card p {
-
-      margin: 0;
-
-      line-height: 1.56;
-
-    }
-
-    .section-card,
-
-    .cta-card {
-
-      padding: 22px;
-
-    }
-
-    .split-card {
-
-      display: grid;
-
-      grid-template-columns: 1fr 1fr;
-
-      gap: 18px;
-
-      align-items: start;
-
-    }
-
-    @media (max-width: 820px) {
-
-      .split-card {
-
-        grid-template-columns: 1fr;
-
-      }
-
-    }
-
-    .check-list {
-
-      list-style: none;
-
-      margin: 16px 0 0;
-
-      padding: 0;
-
-      display: grid;
-
-      gap: 10px;
-
-    }
-
-    .check-list li {
-
-      position: relative;
-
-      padding-left: 28px;
-
-      color: var(--text-primary);
-
-      line-height: 1.45;
-
-    }
-
-    .check-list li::before {
-
-      content: "✓";
+    .download-section::before {
+      content: "";
 
       position: absolute;
 
-      left: 0;
+      width: 300px;
+      height: 300px;
 
-      top: 0;
+      left: -130px;
+      bottom: -200px;
 
-      color: var(--success);
+      border-radius: 50%;
 
-      font-weight: 950;
-
+      background:
+        radial-gradient(
+          circle,
+          rgba(239, 167, 59, 0.13),
+          transparent 70%
+        );
     }
 
-    .steps {
-
-      margin: 10px 0 0 1.2rem;
-
-      padding: 0;
-
+    .download-content {
+      position: relative;
+      z-index: 2;
     }
 
-    .steps li {
+    .download-section h2 {
+      margin: 0 0 9px;
 
-      margin: 8px 0;
+      color: #ffffff;
 
-      color: var(--text-primary);
+      font-size: 28px;
+      font-weight: 810;
 
-      line-height: 1.45;
-
+      letter-spacing: -0.03em;
     }
 
-    .workflow-grid {
+    .download-section p {
+      max-width: 680px;
 
+      margin: 0;
+
+      color: rgba(211, 220, 233, 0.70);
+
+      font-size: 14px;
+      line-height: 1.62;
+    }
+
+    .download-actions {
+      position: relative;
+      z-index: 2;
+
+      display: flex;
+      flex-wrap: wrap;
+
+      gap: 9px;
+    }
+
+
+    /* =========================================================
+       HELP
+       ========================================================= */
+
+    .help-grid {
       display: grid;
 
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: repeat(3, 1fr);
 
-      gap: 18px;
-
+      gap: 15px;
     }
 
-    @media (max-width: 920px) {
+    .help-card {
+      display: block;
 
-      .workflow-grid {
+      padding: 24px;
 
-        grid-template-columns: 1fr;
+      color: inherit;
+      text-decoration: none;
 
-      }
+      border-radius: 21px;
 
+      background:
+        linear-gradient(
+          145deg,
+          rgba(10, 29, 57, 0.90),
+          rgba(5, 15, 32, 0.91)
+        );
+
+      border:
+        1px solid rgba(78, 137, 219, 0.18);
+
+      transition:
+        transform 0.17s ease,
+        border-color 0.17s ease;
     }
 
-    .workflow-step {
+    .help-card:hover {
+      transform: translateY(-2px);
 
-      display: inline-flex;
+      border-color:
+        rgba(83, 156, 255, 0.38);
+    }
 
+    .help-card h3 {
+      margin: 0 0 7px;
+
+      color: #ffffff;
+
+      font-size: 16px;
+      font-weight: 770;
+    }
+
+    .help-card p {
+      margin: 0;
+
+      color: rgba(196, 211, 230, 0.66);
+
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .help-arrow {
+      display: block;
+
+      margin-top: 15px;
+
+      color: #59a8ff;
+
+      font-size: 17px;
+    }
+
+
+    /* =========================================================
+       FOOTER
+       ========================================================= */
+
+    .footer {
+      margin-top: 65px;
+
+      padding-top: 28px;
+
+      border-top:
+        1px solid rgba(116, 158, 218, 0.12);
+    }
+
+    .footer-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 25px;
+    }
+
+    .footer-brand {
+      display: flex;
       align-items: center;
 
-      justify-content: center;
-
-      width: 34px;
-
-      height: 34px;
-
-      border-radius: 999px;
-
-      background: var(--brand-blue);
-
-      color: white;
-
-      font-weight: 900;
-
-      margin-bottom: 12px;
-
-      box-shadow: 0 10px 20px rgba(47, 128, 237, 0.22);
-
+      gap: 10px;
     }
 
-    .trust-grid {
+    .footer-logo {
+      width: 32px;
+      height: 32px;
 
-      display: grid;
+      object-fit: contain;
 
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-
-      gap: 18px;
-
+      opacity: 0.85;
     }
 
-    @media (max-width: 820px) {
+    .footer-brand-name {
+      color: rgba(226, 235, 247, 0.83);
 
-      .trust-grid {
+      font-size: 13px;
+      font-weight: 750;
+    }
 
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+
+      gap: 17px;
+    }
+
+    .footer-links a {
+      color: rgba(185, 202, 223, 0.56);
+
+      text-decoration: none;
+
+      font-size: 11px;
+      font-weight: 650;
+    }
+
+    .footer-links a:hover {
+      color: #ffffff;
+    }
+
+    .footer-bottom {
+      margin-top: 22px;
+
+      color: rgba(173, 189, 210, 0.43);
+
+      font-size: 10px;
+      line-height: 1.65;
+    }
+
+
+    /* =========================================================
+       MOBILE
+       ========================================================= */
+
+    @media (max-width: 900px) {
+
+      .desktop-nav {
+        display: none;
+      }
+
+      .hero {
         grid-template-columns: 1fr;
 
+        padding: 42px 35px 20px;
+      }
+
+      .hero-visual {
+        min-height: 380px;
+      }
+
+      .intro-strip {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .connected-card,
+      .diagnostics-card {
+        grid-template-columns: 1fr;
+      }
+
+      .automation-flow {
+        grid-template-columns: 1fr;
+      }
+
+      .automation-arrow {
+        transform: rotate(90deg);
+
+        text-align: center;
+      }
+
+      .smart-grid,
+      .help-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .download-section {
+        grid-template-columns: 1fr;
       }
 
     }
 
-    .loading {
 
-      color: var(--text-secondary);
+    @media (max-width: 700px) {
+
+      .page {
+        padding-left: 15px;
+        padding-right: 15px;
+      }
+
+      .site-header {
+        margin-bottom: 20px;
+      }
+
+      .brand-logo {
+        width: 42px;
+        height: 42px;
+      }
+
+      .brand-name {
+        font-size: 16px;
+      }
+
+      .hero {
+        padding: 31px 23px 8px;
+
+        border-radius: 27px;
+      }
+
+      h1 {
+        font-size: 43px;
+      }
+
+      .hero-description {
+        font-size: 15px;
+      }
+
+      .hero-actions {
+        display: grid;
+
+        grid-template-columns: 1fr;
+      }
+
+      .button {
+        width: 100%;
+      }
+
+      .hero-visual {
+        min-height: 330px;
+      }
+
+      .energy-orbit {
+        transform: scale(0.78);
+      }
+
+      .intro-strip {
+        grid-template-columns: 1fr;
+
+        border-radius: 21px;
+      }
+
+      .section {
+        margin-top: 55px;
+      }
+
+      .section-heading h2 {
+        font-size: 29px;
+      }
+
+      .feature-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .feature-card {
+        min-height: 0;
+
+        padding: 24px;
+      }
+
+      .connected-card,
+      .automation-card,
+      .diagnostics-card,
+      .premium-card,
+      .download-section {
+        padding: 27px 22px;
+
+        border-radius: 24px;
+      }
+
+      .connection-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .automation-top h2,
+      .premium-card h2,
+      .connected-card h2,
+      .diagnostics-card h2 {
+        font-size: 27px;
+      }
+
+      .download-actions {
+        display: grid;
+
+        grid-template-columns: 1fr;
+
+        width: 100%;
+      }
+
+      .footer-top {
+        align-items: flex-start;
+        flex-direction: column;
+      }
 
     }
 
-    .error-text {
 
-      color: var(--danger);
+    @media (max-width: 390px) {
 
-    }
+      h1 {
+        font-size: 38px;
+      }
 
-    .fine-print {
+      .hero-visual {
+        min-height: 300px;
+      }
 
-      color: var(--text-muted);
-
-      font-size: 0.86rem;
-
-      line-height: 1.45;
-
-    }
-
-    footer {
-
-      margin-top: 30px;
-
-      text-align: center;
-
-      color: var(--text-secondary);
-
-      font-size: 0.94rem;
+      .energy-orbit {
+        transform: scale(0.70);
+      }
 
     }
 
@@ -1196,225 +1822,222 @@
 
 </head>
 
+
 <body>
 
-  <div class="shell">
+  <main class="page">
 
-    <header class="hero">
 
-      <div class="brand">
+    <!-- =====================================================
+         HEADER
+         ===================================================== -->
 
-        <img src="/MAP%20Logo.png" alt="MAP Energy Logo" class="logo">
+    <header class="site-header">
 
-        <span class="brand-text">MAP Energy</span>
+      <a
+        href="/map-energy/"
+        class="brand"
+      >
 
-      </div>
+        <img
+          src="/MAP%20Logo.png"
+          alt="MAP Energy"
+          class="brand-logo"
+        >
 
-      <div class="brand-divider"></div>
+        <div class="brand-text">
 
-      <nav class="nav-links">
+          <span class="brand-name">
+            MAP Energy
+          </span>
 
-        <a href="/">Aptica</a>
+          <span class="brand-subtitle">
+            Smarter home energy
+          </span>
 
-        <a href="/map-energy/documentation/">Documentation</a>
+        </div>
 
-        <a href="/map-energy/portal/">Web Portal</a>
+      </a>
 
-        <a href="/map-energy/privacy/">Privacy</a>
 
-        <a href="/map-energy/terms/">Terms</a>
+      <nav
+        class="desktop-nav"
+        aria-label="Main navigation"
+      >
 
-        <a href="mailto:support@aptica.uk">Support</a>
+        <a href="/map-energy/documentation/">
+          Documentation
+        </a>
+
+        <a href="/map-energy/portal/">
+          Web Portal
+        </a>
+
+        <a href="/map-energy/privacy/">
+          Privacy
+        </a>
+
+        <a href="mailto:support@aptica.uk">
+          Support
+        </a>
+
+        <a
+          href="https://apps.apple.com/gb/app/map-energy/id6756628340"
+          target="_blank"
+          rel="noopener"
+          class="nav-download"
+        >
+          Download
+        </a>
 
       </nav>
 
-      <div class="hero-grid">
+    </header>
 
-        <div>
 
-          <div class="eyebrow">
 
-            <span class="eyebrow-dot"></span>
+    <!-- =====================================================
+         HERO
+         ===================================================== -->
 
-            Available now on iOS and Android
+    <section class="hero">
 
-          </div>
+      <div class="hero-content">
 
-          <h1>Your Powerwall, EV charger and solar setup — working together.</h1>
+        <div class="hero-eyebrow">
 
-          <p class="lead">
+          <span class="hero-eyebrow-dot"></span>
 
-            MAP Energy helps connected home energy users monitor live energy behaviour, understand what happened, and automate useful actions around batteries, EV charging, solar forecasts and smart tariffs.
-
-          </p>
-
-          <p class="lead">
-
-            Built for energy homes worldwide, with powerful tools for <span class="hero-highlight">Tesla Powerwall owners</span>, EV charging users and anyone who wants more control than the default app provides.
-
-          </p>
-
-          <div class="button-row">
-
-            <a class="button button-primary" id="appStoreHeroButton" href="#" target="_blank" rel="noopener">
-
-              Download on App Store
-
-            </a>
-
-            <a class="button button-primary" id="googlePlayHeroButton" href="#" target="_blank" rel="noopener">
-
-              Get it on Google Play
-
-            </a>
-
-            <a class="button button-secondary" href="/map-energy/documentation/">
-
-              Read Documentation
-
-            </a>
-
-            <a class="button button-secondary" href="/map-energy/portal/">
-
-              Open Web Portal
-
-            </a>
-
-          </div>
+          Available on iOS &amp; Android
 
         </div>
 
-        <div class="product-panel">
 
-          <div class="flow-card">
+        <h1>
+          Your home energy.
+          Working together.
+        </h1>
 
-            <div class="flow-title">
 
-              <strong>Live energy picture</strong>
+        <p class="hero-description">
+          MAP Energy brings your <strong>Tesla Powerwall, EV charging,
+          solar and electricity tariff</strong> together in one place —
+          helping you understand what's happening now and automate what
+          happens next.
+        </p>
 
-              <span class="live-pill">Live</span>
 
-            </div>
+        <div class="hero-actions">
 
-            <div class="flow-grid">
+          <a
+            class="button button-primary"
+            href="https://apps.apple.com/gb/app/map-energy/id6756628340"
+            target="_blank"
+            rel="noopener"
+          >
+            Download for iPhone
+            <span>→</span>
+          </a>
 
-              <div class="flow-item">
+          <a
+            class="button button-primary"
+            href="https://play.google.com/store/apps/details?id=com.mapenergy.app&pcampaignid=web_share"
+            target="_blank"
+            rel="noopener"
+          >
+            Download for Android
+            <span>→</span>
+          </a>
 
-                <span class="flow-label">Battery</span>
-
-                <span class="flow-value">Powerwall</span>
-
-              </div>
-
-              <div class="flow-item">
-
-                <span class="flow-label">EV</span>
-
-                <span class="flow-value">Charging</span>
-
-              </div>
-
-              <div class="flow-item">
-
-                <span class="flow-label">Solar</span>
-
-                <span class="flow-value">Forecasts</span>
-
-              </div>
-
-              <div class="flow-item">
-
-                <span class="flow-label">Grid</span>
-
-                <span class="flow-value">Tariffs</span>
-
-              </div>
-
-            </div>
-
-          </div>
-
-          <div class="rule-stack">
-
-            <div class="rule-card">
-
-              <div class="rule-icon">1</div>
-
-              <div>
-
-                <strong>Monitor what your home is doing</strong>
-
-                <span>Battery, solar, grid, home and EV charging in one focused app.</span>
-
-              </div>
-
-            </div>
-
-            <div class="rule-card">
-
-              <div class="rule-icon">2</div>
-
-              <div>
-
-                <strong>Automate the repetitive parts</strong>
-
-                <span>Use schedules, battery levels and EV charging events to trigger useful actions.</span>
-
-              </div>
-
-            </div>
-
-            <div class="rule-card">
-
-              <div class="rule-icon">3</div>
-
-              <div>
-
-                <strong>Get clear notifications</strong>
-
-                <span>Know when automations run, when they are blocked and when something important happens.</span>
-
-              </div>
-
-            </div>
-
-          </div>
+          <a
+            class="button button-secondary"
+            href="/map-energy/documentation/"
+          >
+            Explore Documentation
+          </a>
 
         </div>
 
       </div>
 
-    </header>
 
-    <section class="section">
 
-      <div class="download-card">
+      <!-- ENERGY VISUAL -->
 
-        <div>
+      <div
+        class="hero-visual"
+        aria-hidden="true"
+      >
 
-          <h2>Download MAP Energy</h2>
+        <div class="energy-orbit">
 
-          <p>
 
-            Start monitoring and automating your connected home energy setup from your phone.
+          <div class="energy-node node-solar">
 
-          </p>
+            <span class="energy-node-icon">
+              ☀
+            </span>
 
-        </div>
+            <span class="energy-node-name">
+              Solar
+            </span>
 
-        <div class="download-actions">
+          </div>
 
-          <a class="button button-primary" id="appStoreTopButton" href="#" target="_blank" rel="noopener">
 
-            App Store
+          <div class="energy-node node-battery">
 
-          </a>
+            <span class="energy-node-icon">
+              ⚡
+            </span>
 
-          <a class="button button-primary" id="googlePlayTopButton" href="#" target="_blank" rel="noopener">
+            <span class="energy-node-name">
+              Powerwall
+            </span>
 
-            Google Play
+          </div>
 
-          </a>
+
+          <div class="energy-node node-grid">
+
+            <span class="energy-node-icon">
+              ↔
+            </span>
+
+            <span class="energy-node-name">
+              Grid
+            </span>
+
+          </div>
+
+
+          <div class="energy-node node-ev">
+
+            <span class="energy-node-icon">
+              ↯
+            </span>
+
+            <span class="energy-node-name">
+              EV
+            </span>
+
+          </div>
+
+
+          <div class="energy-centre">
+
+            <img
+              src="/MAP%20Logo.png"
+              alt=""
+              class="energy-centre-logo"
+            >
+
+            <span>
+              MAP Energy
+            </span>
+
+          </div>
+
 
         </div>
 
@@ -1422,477 +2045,609 @@
 
     </section>
 
-    <section class="section">
 
-      <div class="section-header">
 
-        <div>
+    <!-- =====================================================
+         PRODUCT SUMMARY
+         ===================================================== -->
 
-          <h2 class="section-title">MAP Energy at a glance</h2>
+    <div class="intro-strip">
 
-          <p class="section-subtitle">
+      <div class="intro-item">
 
-            Live operational stats from the MAP Energy platform.
+        <span class="intro-value">
+          Live Energy
+        </span>
 
-          </p>
-
-        </div>
-
-        <span class="metrics-updated">
-
-          Metrics updated: <span id="metricsUpdatedAt">Loading…</span>
-
+        <span class="intro-label">
+          See how energy is moving around your home.
         </span>
 
       </div>
 
-      <div class="public-metrics-grid">
 
-        <article class="public-metric-card">
+      <div class="intro-item">
 
-          <span class="public-metric-label">Active monitored sites</span>
+        <span class="intro-value">
+          Smart Automations
+        </span>
 
-          <strong class="public-metric-value loading" id="activeSitesMetric">—</strong>
-
-          <p class="public-metric-note">Connected sites recently reporting telemetry.</p>
-
-        </article>
-
-        <article class="public-metric-card">
-
-          <span class="public-metric-label">Automations last 24 hours</span>
-
-          <strong class="public-metric-value loading" id="automationsTodayMetric">—</strong>
-
-          <p class="public-metric-note">Automation runs processed in the last day.</p>
-
-        </article>
-
-        <article class="public-metric-card">
-
-          <span class="public-metric-label">Automations last 7 days</span>
-
-          <strong class="public-metric-value loading" id="automations7dMetric">—</strong>
-
-          <p class="public-metric-note">Automation activity across MAP Energy.</p>
-
-        </article>
-
-        <article class="public-metric-card">
-
-          <span class="public-metric-label">Automation success rate</span>
-
-          <strong class="public-metric-value loading" id="successRate7dMetric">—</strong>
-
-          <p class="public-metric-note">Successful completed automations over the last 7 days.</p>
-
-        </article>
+        <span class="intro-label">
+          Let your energy system react automatically.
+        </span>
 
       </div>
 
-    </section>
 
-    <section class="section">
+      <div class="intro-item">
 
-      <h2 class="section-title">Built for connected home energy</h2>
+        <span class="intro-value">
+          EV Integration
+        </span>
 
-      <p class="section-subtitle">
-
-        MAP Energy brings monitoring, automation and diagnostics together in one practical app for modern energy homes.
-
-      </p>
-
-      <div class="features-grid" style="margin-top: 16px;">
-
-        <article class="feature-card">
-
-          <div class="feature-badge">Tesla Powerwall</div>
-
-          <h3>Powerwall monitoring and control</h3>
-
-          <p>
-
-            View useful Powerwall and Tesla Energy information, monitor battery behaviour and create automations for supported Powerwall actions.
-
-          </p>
-
-        </article>
-
-        <article class="feature-card">
-
-          <div class="feature-badge">EV Charging</div>
-
-          <h3>EV charging awareness</h3>
-
-          <p>
-
-            Track EV charging behaviour and use charging activity as a trigger for notifications and supported automations.
-
-          </p>
-
-        </article>
-
-        <article class="feature-card">
-
-          <div class="feature-badge">Solar</div>
-
-          <h3>Solar visibility and forecasts</h3>
-
-          <p>
-
-            Understand solar generation and use forecast tools to help decide when to charge, hold, export or use stored energy.
-
-          </p>
-
-        </article>
-
-        <article class="feature-card">
-
-          <div class="feature-badge">Smart Tariffs</div>
-
-          <h3>Smart tariff ready</h3>
-
-          <p>
-
-            Designed for homes using dynamic or smart electricity tariffs, with automation logic that can support charging windows and energy price behaviour where available.
-
-          </p>
-
-        </article>
+        <span class="intro-label">
+          Bring vehicle charging into the picture.
+        </span>
 
       </div>
 
-    </section>
 
-    <section class="section">
+      <div class="intro-item">
 
-      <h2 class="section-title">Automations designed for real energy decisions</h2>
+        <span class="intro-value">
+          Powerwall Insights
+        </span>
 
-      <p class="section-subtitle">
-
-        Create useful workflows around the way your home actually behaves, not just generic timers.
-
-      </p>
-
-      <div class="features-grid" style="margin-top: 16px;">
-
-        <article class="use-case-card">
-
-          <div class="feature-badge">Backup Reserve</div>
-
-          <h3>Adjust battery reserve automatically</h3>
-
-          <p>
-
-            Schedule or trigger Powerwall backup reserve changes based on your home energy routine, battery level or EV charging behaviour.
-
-          </p>
-
-        </article>
-
-        <article class="use-case-card">
-
-          <div class="feature-badge">Battery Mode</div>
-
-          <h3>Change supported operating modes</h3>
-
-          <p>
-
-            Create automations for supported Tesla Energy operating modes, helping your system behave the way you want at the right time.
-
-          </p>
-
-        </article>
-
-        <article class="use-case-card">
-
-          <div class="feature-badge">EV Events</div>
-
-          <h3>React when your EV starts or stops charging</h3>
-
-          <p>
-
-            Use EV charging activity as a signal for energy automations, charging workflows and useful notifications.
-
-          </p>
-
-        </article>
-
-        <article class="use-case-card">
-
-          <div class="feature-badge">Notifications</div>
-
-          <h3>Know what happened and when</h3>
-
-          <p>
-
-            Receive notifications when automations run, are blocked, or when important battery and EV events happen at your site.
-
-          </p>
-
-        </article>
+        <span class="intro-label">
+          Go deeper than standard energy monitoring.
+        </span>
 
       </div>
 
-    </section>
+    </div>
+
+
+
+    <!-- =====================================================
+         WHAT MAP ENERGY DOES
+         ===================================================== -->
 
     <section class="section">
 
-      <h2 class="section-title">Example workflows</h2>
+      <div class="section-heading">
 
-      <p class="section-subtitle">
+        <span class="section-eyebrow">
+          One Energy App
+        </span>
 
-        MAP Energy is designed around practical routines that energy users already think about every day.
-
-      </p>
-
-      <div class="workflow-grid" style="margin-top: 16px;">
-
-        <article class="workflow-card">
-
-          <span class="workflow-step">1</span>
-
-          <h3>When the EV starts charging</h3>
-
-          <p>
-
-            Trigger a notification, change a supported battery setting, or prepare the home for an overnight charging session.
-
-          </p>
-
-        </article>
-
-        <article class="workflow-card">
-
-          <span class="workflow-step">2</span>
-
-          <h3>When battery level crosses a threshold</h3>
-
-          <p>
-
-            Run actions or send alerts when your Powerwall rises above or falls below a chosen state of charge.
-
-          </p>
-
-        </article>
-
-        <article class="workflow-card">
-
-          <span class="workflow-step">3</span>
-
-          <h3>When a smart tariff window arrives</h3>
-
-          <p>
-
-            Build routines around charging windows, export behaviour and scheduled energy decisions where supported.
-
-          </p>
-
-        </article>
-
-      </div>
-
-    </section>
-
-    <section class="section">
-
-      <h2 class="section-title">Powerwall diagnostics and deeper insight</h2>
-
-      <div class="section-card split-card">
-
-        <div>
-
-          <p>
-
-            MAP Energy is built for users who want more than a simple overview. Where supported, Powerwall diagnostic tools can help expose deeper information about your system and make troubleshooting easier.
-
-          </p>
-
-          <ul class="check-list">
-
-            <li>Powerwall site information and useful system details.</li>
-
-            <li>Diagnostic features for compatible Powerwall systems.</li>
-
-            <li>Local pairing support where available.</li>
-
-            <li>Designed around real user feedback and requested features.</li>
-
-          </ul>
-
-        </div>
-
-        <div>
-
-          <p>
-
-            The goal is simple: give connected energy users a clearer picture of what their system is doing, why it is doing it, and how to automate the repetitive parts.
-
-          </p>
-
-          <ul class="check-list">
-
-            <li>Less guesswork.</li>
-
-            <li>More useful notifications.</li>
-
-            <li>More flexible automation.</li>
-
-            <li>Better visibility across battery, solar, grid and EV usage.</li>
-
-          </ul>
-
-        </div>
-
-      </div>
-
-    </section>
-
-    <section class="section">
-
-      <h2 class="section-title">Why MAP Energy?</h2>
-
-      <div class="section-card">
+        <h2>
+          Understand your whole energy system
+        </h2>
 
         <p>
-
-          Default energy apps are useful, but many connected home energy users want more visibility, smarter notifications and more flexible automations. MAP Energy is built to fill that gap with practical tools for Powerwall owners, EV charging users, solar households and smart tariff users across supported regions.
-
+          Your battery, solar, grid, EV and electricity tariff all
+          affect each other. MAP Energy helps bring that information
+          together so you can see the bigger picture.
         </p>
 
       </div>
 
-    </section>
 
-    <section class="section">
+      <div class="feature-grid">
 
-      <h2 class="section-title">Designed for confidence</h2>
 
-      <div class="trust-grid" style="margin-top: 16px;">
+        <article class="feature-card">
 
-        <article class="trust-card">
+          <div class="feature-icon">
+            ⚡
+          </div>
 
-          <div class="feature-badge">Control</div>
-
-          <h3>You remain in control</h3>
+          <h3>
+            Tesla Powerwall
+          </h3>
 
           <p>
-
-            Automations are created by you and can be paused, adjusted or removed as your energy routine changes.
-
+            Monitor Powerwall state of charge and energy behaviour,
+            review historical activity and control supported Tesla
+            Energy settings from MAP Energy.
           </p>
+
+          <span class="feature-label">
+            Battery Monitoring &amp; Control
+          </span>
 
         </article>
 
-        <article class="trust-card">
 
-          <div class="feature-badge">Transparency</div>
 
-          <h3>Clear history and notifications</h3>
+        <article class="feature-card">
+
+          <div class="feature-icon">
+            ↯
+          </div>
+
+          <h3>
+            EV Charging
+          </h3>
 
           <p>
-
-            MAP Energy is built to explain what happened, when it happened and whether an automation succeeded or was blocked.
-
+            Connect supported EV charging integrations and understand
+            when your vehicle is charging, how much power it is using
+            and how charging interacts with your home battery.
           </p>
+
+          <span class="feature-label">
+            Connected Charging
+          </span>
 
         </article>
 
-        <article class="trust-card">
 
-          <div class="feature-badge">Availability</div>
 
-          <h3>Built for iOS and Android</h3>
+        <article class="feature-card">
+
+          <div class="feature-icon">
+            ☀
+          </div>
+
+          <h3>
+            Solar &amp; Forecasting
+          </h3>
 
           <p>
-
-            MAP Energy is available for both major mobile platforms, with active development and user-requested improvements.
-
+            Follow solar generation, configure your PV installation
+            and use solar forecasts to better understand the energy
+            likely to be available to your home.
           </p>
 
+          <span class="feature-label">
+            Solar Intelligence
+          </span>
+
         </article>
+
+
+
+        <article class="feature-card">
+
+          <div class="feature-icon">
+            £
+          </div>
+
+          <h3>
+            Electricity Tariffs
+          </h3>
+
+          <p>
+            Connect supported electricity suppliers and bring tariff
+            information and compatible smart charging events into
+            your wider MAP Energy setup.
+          </p>
+
+          <span class="feature-label">
+            Smart Energy
+          </span>
+
+        </article>
+
 
       </div>
 
     </section>
 
-    <section class="section">
 
-      <h2 class="section-title">How it works</h2>
 
-      <div class="section-card">
-
-        <ol class="steps">
-
-          <li>Download MAP Energy on iOS or Android.</li>
-
-          <li>Create or sign in to your MAP Energy account.</li>
-
-          <li>Connect supported energy services.</li>
-
-          <li>Monitor, understand and automate your home energy setup.</li>
-
-        </ol>
-
-      </div>
-
-    </section>
+    <!-- =====================================================
+         CONNECTIONS
+         ===================================================== -->
 
     <section class="section">
 
-      <div class="download-card">
+      <div class="connected-card">
 
         <div>
 
-          <h2>Ready to get more from your home energy system?</h2>
+          <span class="section-eyebrow">
+            Connected Energy
+          </span>
+
+          <h2>
+            Bring your energy services together
+          </h2>
 
           <p>
-
-            Download MAP Energy and start building smarter routines around your Powerwall, EV charging, solar and tariffs.
-
+            MAP Energy is designed around the systems already in your
+            home. Connect the services relevant to you and use them
+            together rather than treating every device as a separate
+            island.
           </p>
 
         </div>
 
-        <div class="download-actions">
 
-          <a class="button button-primary" id="appStoreBottomButton" href="#" target="_blank" rel="noopener">
+        <div class="connection-grid">
 
-            App Store
 
-          </a>
+          <div class="connection-item">
 
-          <a class="button button-primary" id="googlePlayBottomButton" href="#" target="_blank" rel="noopener">
+            <span class="connection-title">
+              Tesla Energy
+            </span>
 
-            Google Play
+            <span class="connection-description">
+              Powerwall monitoring, history and supported controls.
+            </span>
 
-          </a>
+          </div>
+
+
+          <div class="connection-item">
+
+            <span class="connection-title">
+              EV Chargers
+            </span>
+
+            <span class="connection-description">
+              Tesla Wall Connector, Zappi, Hypervolt, Ohme and
+              supported charging detection.
+            </span>
+
+          </div>
+
+
+          <div class="connection-item">
+
+            <span class="connection-title">
+              Energy Suppliers
+            </span>
+
+            <span class="connection-description">
+              Supported tariff, rate and smart energy integrations.
+            </span>
+
+          </div>
+
+
+          <div class="connection-item">
+
+            <span class="connection-title">
+              Home Assistant
+            </span>
+
+            <span class="connection-description">
+              Send structured webhook events from MAP Energy
+              automations into your smart home.
+            </span>
+
+          </div>
+
+
+          <div class="connection-item">
+
+            <span class="connection-title">
+              Solar Forecasting
+            </span>
+
+            <span class="connection-description">
+              Use your PV configuration to understand expected
+              generation.
+            </span>
+
+          </div>
+
+
+          <div class="connection-item">
+
+            <span class="connection-title">
+              MAP Energy Web
+            </span>
+
+            <span class="connection-description">
+              Access supported MAP Energy information through the
+              web portal.
+            </span>
+
+          </div>
+
 
         </div>
 
       </div>
 
     </section>
+
+
+
+    <!-- =====================================================
+         AUTOMATIONS
+         ===================================================== -->
 
     <section class="section">
 
-      <h2 class="section-title">Support and documentation</h2>
+      <div class="automation-card">
 
-      <div class="cta-card">
+        <div class="automation-top">
+
+          <span class="section-eyebrow">
+            Automations
+          </span>
+
+          <h2>
+            Your energy system can react for you
+          </h2>
+
+          <p>
+            MAP Energy automations connect events happening around
+            your home with useful actions. Build simple rules or
+            combine conditions to make your Powerwall and connected
+            energy setup respond automatically.
+          </p>
+
+        </div>
+
+
+        <div class="automation-flow">
+
+
+          <div class="automation-step">
+
+            <span class="automation-number">
+              1
+            </span>
+
+            <strong>
+              Something happens
+            </strong>
+
+            <span>
+              An EV starts charging, battery SOC changes, a schedule
+              arrives or an energy condition is met.
+            </span>
+
+          </div>
+
+
+          <div class="automation-arrow">
+            →
+          </div>
+
+
+          <div class="automation-step">
+
+            <span class="automation-number">
+              2
+            </span>
+
+            <strong>
+              MAP Energy checks
+            </strong>
+
+            <span>
+              Apply configured conditions, time windows and blocking
+              rules before anything changes.
+            </span>
+
+          </div>
+
+
+          <div class="automation-arrow">
+            →
+          </div>
+
+
+          <div class="automation-step">
+
+            <span class="automation-number">
+              3
+            </span>
+
+            <strong>
+              Your action runs
+            </strong>
+
+            <span>
+              Adjust supported Powerwall settings, send a notification
+              or trigger Home Assistant.
+            </span>
+
+          </div>
+
+
+        </div>
+
+
+        <a
+          href="/map-energy/documentation/automations.html"
+          class="automation-link"
+        >
+          Explore MAP Energy Automations →
+        </a>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         SMART TARIFFS
+         ===================================================== -->
+
+    <section class="section">
+
+      <div class="section-heading">
+
+        <span class="section-eyebrow">
+          Smarter Electricity
+        </span>
+
+        <h2>
+          Built for modern energy tariffs
+        </h2>
 
         <p>
-
-          Need help getting started, connecting Tesla, using automations, setting up EV charging integrations or troubleshooting Powerwall diagnostics?
-
+          Cheap charging windows, smart EV schedules and free
+          electricity events can change how you want your battery
+          to behave. MAP Energy can bring supported tariff events
+          into your automation strategy.
         </p>
 
-        <div class="button-row">
+      </div>
 
-          <a class="button button-primary" href="/map-energy/documentation/">Open Documentation</a>
 
-          <a class="button button-secondary" href="/map-energy/portal/">Open Web Portal</a>
+      <div class="smart-grid">
 
-          <a class="button button-secondary" href="mailto:support@aptica.uk">Contact Support</a>
+
+        <article class="smart-card">
+
+          <div class="smart-card-icon">
+            ⚡
+          </div>
+
+          <h3>
+            Intelligent Charging
+          </h3>
+
+          <p>
+            Use supported smart charging events to coordinate your
+            Powerwall behaviour with EV charging.
+          </p>
+
+        </article>
+
+
+        <article class="smart-card">
+
+          <div class="smart-card-icon">
+            £
+          </div>
+
+          <h3>
+            Electricity Prices
+          </h3>
+
+          <p>
+            Use available tariff and price information as part of
+            how you understand and automate your energy use.
+          </p>
+
+        </article>
+
+
+        <article class="smart-card">
+
+          <div class="smart-card-icon">
+            ✦
+          </div>
+
+          <h3>
+            Supplier Events
+          </h3>
+
+          <p>
+            Supported supplier events can become triggers for
+            Powerwall actions, notifications and Home Assistant.
+          </p>
+
+        </article>
+
+
+      </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         DIAGNOSTICS
+         ===================================================== -->
+
+    <section class="section">
+
+      <div class="diagnostics-card">
+
+        <div>
+
+          <span class="section-eyebrow">
+            Go Deeper
+          </span>
+
+          <h2>
+            More insight into your Powerwall
+          </h2>
+
+          <p>
+            For supported Powerwall systems, MAP Energy can provide
+            access to additional diagnostic information beyond the
+            standard cloud energy view, helping you understand more
+            about the system behind your everyday energy data.
+          </p>
+
+
+          <div
+            class="hero-actions"
+            style="margin-top: 22px;"
+          >
+
+            <a
+              href="/map-energy/documentation/powerwall-diagnostic-data.html"
+              class="button button-secondary"
+            >
+              Learn about Diagnostics
+              <span>→</span>
+            </a>
+
+          </div>
+
+        </div>
+
+
+        <div class="diagnostic-list">
+
+
+          <div class="diagnostic-item">
+
+            <span class="diagnostic-check">
+              ✓
+            </span>
+
+            Additional Powerwall information
+
+          </div>
+
+
+          <div class="diagnostic-item">
+
+            <span class="diagnostic-check">
+              ✓
+            </span>
+
+            Battery and system insight
+
+          </div>
+
+
+          <div class="diagnostic-item">
+
+            <span class="diagnostic-check">
+              ✓
+            </span>
+
+            Solar diagnostic information where supported
+
+          </div>
+
+
+          <div class="diagnostic-item">
+
+            <span class="diagnostic-check">
+              ✓
+            </span>
+
+            Useful troubleshooting information
+
+          </div>
+
 
         </div>
 
@@ -1900,287 +2655,311 @@
 
     </section>
 
-    <footer>
 
-      <p>MAP Energy is built and operated by Aptica Ltd.</p>
 
-      <p class="fine-print">
+    <!-- =====================================================
+         PREMIUM
+         ===================================================== -->
 
-        MAP Energy is an independent app and is not affiliated with Tesla, Inc. Availability of features depends on supported services, account permissions, hardware compatibility and region.
+    <section class="section">
 
-      </p>
+      <div class="premium-card">
 
-      <p>© <span id="year"></span> Aptica Ltd. All rights reserved.</p>
+        <div class="premium-content">
+
+          <span class="premium-badge">
+            14-Day Free Trial
+          </span>
+
+          <h2>
+            Get more from MAP Energy with Premium
+          </h2>
+
+          <p>
+            Premium unlocks MAP Energy's advanced features, including
+            automations, supported Powerwall diagnostic data and the
+            web portal. Energy Manager is also being developed as an
+            upcoming Premium feature.
+          </p>
+
+
+          <div class="premium-features">
+
+            <span class="premium-feature">
+              Automations
+            </span>
+
+            <span class="premium-feature">
+              Powerwall Diagnostics
+            </span>
+
+            <span class="premium-feature">
+              Web Portal
+            </span>
+
+            <span class="premium-feature">
+              Energy Manager — Coming Soon
+            </span>
+
+          </div>
+
+
+          <div class="premium-actions">
+
+            <a
+              href="/map-energy/documentation/subscription.html"
+              class="button button-primary"
+            >
+              Explore Premium
+              <span>→</span>
+            </a>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         HELP
+         ===================================================== -->
+
+    <section class="section">
+
+      <div class="section-heading">
+
+        <span class="section-eyebrow">
+          Learn &amp; Explore
+        </span>
+
+        <h2>
+          Everything you need to get started
+        </h2>
+
+        <p>
+          Explore the MAP Energy documentation, see what's new or
+          access your account through the web portal.
+        </p>
+
+      </div>
+
+
+      <div class="help-grid">
+
+
+        <a
+          href="/map-energy/documentation/"
+          class="help-card"
+        >
+
+          <h3>
+            Documentation
+          </h3>
+
+          <p>
+            Setup guides, automations, Powerwall information,
+            EV integrations and answers to common questions.
+          </p>
+
+          <span class="help-arrow">
+            →
+          </span>
+
+        </a>
+
+
+
+        <a
+          href="/map-energy/documentation/releases.html"
+          class="help-card"
+        >
+
+          <h3>
+            Release Notes
+          </h3>
+
+          <p>
+            See the latest MAP Energy features, improvements and
+            changes across iOS and Android.
+          </p>
+
+          <span class="help-arrow">
+            →
+          </span>
+
+        </a>
+
+
+
+        <a
+          href="/map-energy/portal/"
+          class="help-card"
+        >
+
+          <h3>
+            Web Portal
+          </h3>
+
+          <p>
+            Open the MAP Energy web experience and access supported
+            information from your browser.
+          </p>
+
+          <span class="help-arrow">
+            →
+          </span>
+
+        </a>
+
+
+      </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         DOWNLOAD
+         ===================================================== -->
+
+    <section class="download-section">
+
+      <div class="download-content">
+
+        <span class="section-eyebrow">
+          Get MAP Energy
+        </span>
+
+        <h2>
+          Ready to take more control of your energy?
+        </h2>
+
+        <p>
+          Download MAP Energy for iPhone or Android and start bringing
+          your Powerwall, EV charging, solar and electricity tariff
+          together.
+        </p>
+
+      </div>
+
+
+      <div class="download-actions">
+
+        <a
+          class="button button-primary"
+          href="https://apps.apple.com/gb/app/map-energy/id6756628340"
+          target="_blank"
+          rel="noopener"
+        >
+          App Store
+          <span>→</span>
+        </a>
+
+        <a
+          class="button button-primary"
+          href="https://play.google.com/store/apps/details?id=com.mapenergy.app&pcampaignid=web_share"
+          target="_blank"
+          rel="noopener"
+        >
+          Google Play
+          <span>→</span>
+        </a>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         FOOTER
+         ===================================================== -->
+
+    <footer class="footer">
+
+      <div class="footer-top">
+
+
+        <div class="footer-brand">
+
+          <img
+            src="/MAP%20Logo.png"
+            alt="MAP Energy"
+            class="footer-logo"
+          >
+
+          <span class="footer-brand-name">
+            MAP Energy by Aptica Ltd
+          </span>
+
+        </div>
+
+
+        <nav
+          class="footer-links"
+          aria-label="Footer navigation"
+        >
+
+          <a href="/">
+            Aptica
+          </a>
+
+          <a href="/map-energy/documentation/">
+            Documentation
+          </a>
+
+          <a href="/map-energy/portal/">
+            Web Portal
+          </a>
+
+          <a href="/map-energy/privacy/">
+            Privacy
+          </a>
+
+          <a href="/map-energy/terms/">
+            Terms
+          </a>
+
+          <a href="mailto:support@aptica.uk">
+            Support
+          </a>
+
+        </nav>
+
+
+      </div>
+
+
+      <div class="footer-bottom">
+
+        <div>
+          MAP Energy is an independent app and is not affiliated with
+          Tesla, Inc. Availability of features depends on supported
+          services, account permissions, hardware compatibility and
+          region.
+        </div>
+
+        <div style="margin-top: 7px;">
+          © <span id="year"></span> Aptica Ltd. All rights reserved.
+        </div>
+
+      </div>
 
     </footer>
 
-  </div>
+
+  </main>
+
+
 
   <script>
 
-    const METRICS_URL = "https://powerwake-backend-production.mapenergy.workers.dev/api/map-energy/public-metrics";
-
-    const APP_STORE_URL = "https://apps.apple.com/gb/app/map-energy/id6756628340";
-
-    const GOOGLE_PLAY_URL = "https://play.google.com/store/apps/details?id=com.mapenergy.app&pcampaignid=web_share";
-
-    document.getElementById("year").textContent = new Date().getFullYear();
-
-    function applyStoreLinks() {
-
-      const appStoreIds = [
-
-        "appStoreHeroButton",
-
-        "appStoreTopButton",
-
-        "appStoreBottomButton"
-
-      ];
-
-      const googlePlayIds = [
-
-        "googlePlayHeroButton",
-
-        "googlePlayTopButton",
-
-        "googlePlayBottomButton"
-
-      ];
-
-      for (const id of appStoreIds) {
-
-        const el = document.getElementById(id);
-
-        if (!el) continue;
-
-        el.href = APP_STORE_URL;
-
-        if (APP_STORE_URL === "#") {
-
-          el.removeAttribute("target");
-
-          el.removeAttribute("rel");
-
-        }
-
-      }
-
-      for (const id of googlePlayIds) {
-
-        const el = document.getElementById(id);
-
-        if (!el) continue;
-
-        el.href = GOOGLE_PLAY_URL;
-
-        if (GOOGLE_PLAY_URL === "#") {
-
-          el.removeAttribute("target");
-
-          el.removeAttribute("rel");
-
-        }
-
-      }
-
-    }
-
-    function formatNumber(value) {
-
-      const number = Number(value ?? 0);
-
-      if (!Number.isFinite(number)) {
-
-        return "0";
-
-      }
-
-      return number.toLocaleString("en-GB");
-
-    }
-
-    function formatPercent(value) {
-
-      const number = Number(value ?? 0);
-
-      if (!Number.isFinite(number)) {
-
-        return "0.0%";
-
-      }
-
-      return `${number.toFixed(1)}%`;
-
-    }
-
-    function formatUpdatedAt(epochSeconds) {
-
-      const ts = Number(epochSeconds ?? 0);
-
-      if (!Number.isFinite(ts) || ts <= 0) {
-
-        return "Unknown";
-
-      }
-
-      return new Date(ts * 1000).toLocaleString("en-GB", {
-
-        day: "2-digit",
-
-        month: "short",
-
-        year: "numeric",
-
-        hour: "2-digit",
-
-        minute: "2-digit"
-
-      });
-
-    }
-
-    function setMetricText(id, value) {
-
-      const el = document.getElementById(id);
-
-      if (!el) return;
-
-      el.textContent = value;
-
-      el.classList.remove("loading", "error-text");
-
-    }
-
-    function setMetricsError() {
-
-      const ids = [
-
-        "activeSitesMetric",
-
-        "automationsTodayMetric",
-
-        "automations7dMetric",
-
-        "successRate7dMetric"
-
-      ];
-
-      for (const id of ids) {
-
-        const el = document.getElementById(id);
-
-        if (!el) continue;
-
-        el.textContent = "—";
-
-        el.classList.remove("loading");
-
-        el.classList.add("error-text");
-
-      }
-
-      const updatedEl = document.getElementById("metricsUpdatedAt");
-
-      if (updatedEl) {
-
-        updatedEl.textContent = "Unavailable";
-
-        updatedEl.classList.add("error-text");
-
-      }
-
-    }
-
-    async function loadPublicMetrics() {
-
-      try {
-
-        const res = await fetch(METRICS_URL, {
-
-          method: "GET",
-
-          headers: {
-
-            "Accept": "application/json"
-
-          },
-
-          cache: "no-store"
-
-        });
-
-        if (!res.ok) {
-
-          throw new Error(`Metrics request failed with status ${res.status}`);
-
-        }
-
-        const metrics = await res.json();
-
-        setMetricText(
-
-          "activeSitesMetric",
-
-          formatNumber(metrics.active_monitored_sites)
-
-        );
-
-        setMetricText(
-
-          "automationsTodayMetric",
-
-          formatNumber(metrics.automations_today)
-
-        );
-
-        setMetricText(
-
-          "automations7dMetric",
-
-          formatNumber(metrics.automations_7d)
-
-        );
-
-        setMetricText(
-
-          "successRate7dMetric",
-
-          formatPercent(metrics.success_rate_7d)
-
-        );
-
-        const updatedEl = document.getElementById("metricsUpdatedAt");
-
-        if (updatedEl) {
-
-          updatedEl.textContent = formatUpdatedAt(metrics.updated_at);
-
-          updatedEl.classList.remove("error-text");
-
-        }
-
-      } catch (err) {
-
-        console.error("Failed to load MAP Energy metrics", err);
-
-        setMetricsError();
-
-      }
-
-    }
-
-    document.addEventListener("DOMContentLoaded", () => {
-
-      applyStoreLinks();
-
-      loadPublicMetrics();
-
-      // Backend metrics are refreshed every 15 minutes, so 5 minutes is plenty.
-
-      setInterval(loadPublicMetrics, 5 * 60 * 1000);
-
-    });
+    document.getElementById("year").textContent =
+      new Date().getFullYear();
 
   </script>
 
