@@ -44,3 +44,16 @@ test('zero-power energy flow has no animated paths',()=>{
  assert.equal(flows.get('solar:battery'),2);
  assert.equal(flows.get('solar:grid'),1);
 });
+test('today totals always show one decimal place, including zero and whole numbers',()=>{
+ const p=portal();
+ for(const [value,expected] of [[0,'0.0'],[1,'1.0'],[12.36,'12.4'],[null,'--']]) assert.equal(p.fmtKwhNumber(value),expected);
+});
+test('Powerwall editors accept known settings and preserve export aliases',()=>{
+ const p=portal();
+ assert.equal(p.settingValue('backup',{backup_reserve_percent:0}),0);
+ assert.equal(p.settingValue('backup',{backup_reserve_percent:100}),100);
+ for(const value of [null,'',-1,101,'invalid']) assert.equal(p.settingValue('backup',{backup_reserve_percent:value}),null);
+ assert.equal(p.settingValue('export',{export_rule:'no_export'}),'never');
+ assert.equal(p.settingValue('mode',{operation_mode:'autonomous'}),'autonomous');
+ assert.equal(p.settingValue('mode',{operation_mode:'unknown'}),null);
+});

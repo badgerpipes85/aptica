@@ -15,6 +15,9 @@ let chartRequest = 0;
 let overviewRequest = 0;
 let activePage = "live";
 let lastUpdated = null;
+let settingEdit = null;
+let settingSaving = false;
+let pendingSetting = null;
 
 const $ = id => document.getElementById(id);
 const nf = new Intl.NumberFormat("en-GB", { maximumFractionDigits: 2 });
@@ -117,7 +120,7 @@ function fmtNodeKw(value, absolute = false) {
 
 function fmtKwhNumber(value) {
   const number = value == null || value === "" ? NaN : Number(value);
-  return Number.isFinite(number) ? nf1.format(number) : "--";
+  return Number.isFinite(number) ? nodeNumber.format(number) : "--";
 }
 
 function fmtRate(value) {
@@ -151,6 +154,116 @@ function prettyMode(value) {
 
 function prettyExport(value) {
   return { battery_ok: "Everything", pv_only: "Solar", never: "Nothing", no_export: "Nothing" }[String(value || "").toLowerCase()] || value || "--";
+}
+
+const powerwallSettings = {
+  backup: { title: "Backup Reserve", field: "backup_reserve_percent", path: "backup-reserve", parameter: "backup_reserve_percent", description: "Choose how much of your Powerwall should be kept aside for backup protection." },
+  mode: { title: "Operation Mode", field: "operation_mode", path: "operation-mode", parameter: "mode", description: "Choose how your Powerwall should manage stored energy for this site.", options: [
+    ["autonomous", "Savings", "Optimises charging and discharging around energy prices.", "blue"],
+    ["self_consumption", "Self-Powered", "Uses stored solar to help power the home.", "green"],
+    ["backup", "Backup", "Prioritises keeping energy available for backup.", "red"]
+  ] },
+  export: { title: "Energy Exports", field: "export_rule", path: "export-rule", parameter: "export_rule", description: "Choose how your Powerwall should handle exporting energy to the grid.", options: [
+    ["never", "Don't Export", "Prevents your Powerwall from intentionally exporting energy.", "red"],
+    ["pv_only", "Solar Only", "Allows excess solar generation to export to the grid.", "yellow"],
+    ["battery_ok", "Everything", "Allows both solar and stored energy to export.", "green"]
+  ] }
+};
+
+function settingValue(kind, settings = currentOverview?.tesla_settings) {
+  const value = settings?.[powerwallSettings[kind].field];
+  if (value == null || value === "") return null;
+  if (kind === "backup") {
+    const number = Number(value);
+    return Number.isFinite(number) && number >= 0 && number <= 100 ? Math.round(number) : null;
+  }
+  const normalized = String(value).toLowerCase();
+  const canonical = kind === "export" && normalized === "no_export" ? "never" : normalized;
+  return powerwallSettings[kind].options.some(option => option[0] === canonical) ? canonical : null;
+}
+
+function updateSettingControls() {
+  if (pendingSetting) {
+    const { kind, value, sentAt } = pendingSetting;
+    if (settingValue(kind) === value) {
+      const label = kind === "backup" ? `${value}%` : kind === "mode" ? prettyMode(value) : prettyExport(value);
+      showError("settingsStatus", `${powerwallSettings[kind].title} updated to ${label}.`);
+      pendingSetting = null;
+    } else if (Date.now() - sentAt > 90000) {
+      showError("settingsStatus", "The update has not been confirmed yet. Refresh to check the current setting before trying again.");
+      pendingSetting = null;
+    }
+  }
+  document.querySelectorAll("[data-setting]").forEach(button => {
+    button.disabled = settingSaving || !!pendingSetting || settingValue(button.dataset.setting) == null;
+  });
+}
+
+function openSettingEditor(kind) {
+  const value = settingValue(kind);
+  const siteKey = $("siteSelect").value;
+  if (value == null || !siteKey || settingSaving || pendingSetting) return;
+  const config = powerwallSettings[kind];
+  settingEdit = { kind, value, siteKey, version: contextVersion };
+  setText("settingTitle", config.title);
+  setText("settingSite", $("siteSelect").selectedOptions[0]?.textContent || "Energy site");
+  setText("settingDescription", config.description);
+  showError("settingError", "");
+  $("settingFields").innerHTML = kind === "backup"
+    ? `<div class="reserve-editor"><label for="reserveInput"><output id="reserveOutput" for="reserveInput">${value}%</output>Backup Reserve</label><input id="reserveInput" name="setting" type="range" min="0" max="100" step="1" value="${value}"><div class="reserve-scale"><span>0%</span><span>100%</span></div></div>`
+    : `<fieldset class="setting-options" aria-label="${config.title}">${config.options.map(([key, label, description, tone]) => `<label class="setting-option ${tone}"><input type="radio" name="setting" value="${key}" ${key === value ? "checked" : ""}><span><strong>${label}</strong><small>${description}</small></span></label>`).join("")}</fieldset>`;
+  $("confirmSetting").disabled = true;
+  $("settingEditor").showModal();
+}
+
+function selectedSettingValue() {
+  if (!settingEdit) return null;
+  return settingEdit.kind === "backup" ? Number($("reserveInput").value) : $("settingFields").querySelector("input:checked")?.value;
+}
+
+function settingInputChanged() {
+  const value = selectedSettingValue();
+  if (settingEdit?.kind === "backup") setText("reserveOutput", `${value}%`);
+  $("confirmSetting").disabled = settingSaving || value == null || value === settingEdit?.value;
+}
+
+async function savePowerwallSetting(event) {
+  event.preventDefault();
+  const edit = settingEdit;
+  const value = selectedSettingValue();
+  if (!edit || settingSaving || value == null || value === edit.value || edit.version !== contextVersion || edit.siteKey !== $("siteSelect").value) return;
+  const config = powerwallSettings[edit.kind];
+  if (edit.kind === "backup" ? !Number.isInteger(value) || value < 0 || value > 100 : !config.options.some(option => option[0] === value)) return;
+  settingSaving = true;
+  overviewRequest++; // Discard a poll started before this command.
+  showError("settingError", "");
+  setText("confirmSetting", "Saving…");
+  for (const id of ["confirmSetting", "cancelSetting", "siteSelect", "headerSignOut", "refreshButton"]) $(id).disabled = true;
+  $("settingFields").querySelectorAll("input").forEach(input => input.disabled = true);
+  updateSettingControls();
+  let sent = false;
+  try {
+    const result = await api(`/v1/tesla/${config.path}`, { method: "POST", body: JSON.stringify({ site_key: edit.siteKey, [config.parameter]: value }) });
+    const response = result.response ?? result;
+    if (response.result === false || response.success === false || Number(response.code) >= 400 || result.error || result.error_description) throw new Error("Tesla did not accept the change. Refresh the current setting before trying again.");
+    sent = true;
+    pendingSetting = { kind: edit.kind, value, sentAt: Date.now() };
+    showError("settingsStatus", "Update sent. Waiting for Powerwall to confirm the new setting…");
+    $("settingEditor").close();
+    await loadOverview(edit.siteKey);
+  } catch (error) {
+    if (error.name !== "AbortError" && edit.version === contextVersion) {
+      if (sent) showError("settingsStatus", "Update sent, but the latest setting could not be loaded. Use Refresh to check it.");
+      else showError("settingError", `${friendlyError(error)} Refresh the current setting before retrying if the connection was interrupted.`);
+    }
+  } finally {
+    settingSaving = false;
+    setText("confirmSetting", "Confirm");
+    for (const id of ["cancelSetting", "siteSelect", "headerSignOut", "refreshButton"]) $(id).disabled = false;
+    $("settingFields").querySelectorAll("input").forEach(input => input.disabled = false);
+    settingInputChanged();
+    updateSettingControls();
+  }
 }
 
 function allocateLiveFlows(live) {
@@ -360,6 +473,7 @@ async function loadOverview(siteKey) {
   setCardTone("backupCard", "green");
   setCardTone("modeCard", ({ autonomous: "blue", self_consumption: "green", backup: "red" })[String(data.tesla_settings?.operation_mode || "").toLowerCase()] || "grey");
   setCardTone("exportCard", ({ pv_only: "yellow", battery_ok: "green", never: "red", no_export: "red" })[String(data.tesla_settings?.export_rule || "").toLowerCase()] || "grey");
+  updateSettingControls();
   setText("teslaStatus", data.connection?.tesla_status || "Not connected");
   setText("teslaHealth", data.connection?.tesla_health || "Unknown");
   setText("telemetryAge", data.connection?.last_telemetry_age_seconds == null ? "--" : `${Math.round(data.connection.last_telemetry_age_seconds / 60)} min`);
@@ -612,7 +726,7 @@ async function loadSettings(siteKey) {
   const data = await api(`/v1/web/settings?site_key=${encodeURIComponent(siteKey)}`);
   const imported = data.supplier?.import;
   const exported = data.supplier?.export;
-  $("settingsCards").innerHTML = settingsCard("Portal access", "Account", [["Access", "Premium"], ["Portal mode", "Read only"], ["Selected site", $("siteSelect").selectedOptions[0]?.textContent]]) + settingsCard("Site configuration", "Energy", [["Timezone", data.timezone], ["EV charger", ({wallConnector: "Tesla Wall Connector", zappi: "myenergi Zappi", hypervolt: "Hypervolt", ohme: "Ohme", none: "Not connected"})[data.ev_charger_type] || data.ev_charger_type]]) + settingsCard("Tesla connection", "Inverter", [["Status", data.tesla?.status || "Not connected"], ["Health", data.tesla?.health], ["Site ID", data.tesla?.site_id_suffix], ["Last error", data.tesla?.last_error]]) + settingsCard("Energy supplier", "Tariffs", [["Import", imported ? imported.display_name || imported.source : "--"], ["Export", exported ? exported.display_name || exported.source : "--"]]) + settingsCard("Tesla tariff sync", "Sync", [["Enabled", data.tesla_tariff_sync?.enabled ? "Yes" : "No"], ["Last synced", fmtTime(data.tesla_tariff_sync?.last_synced_at)], ["Last reason", data.tesla_tariff_sync?.last_sync_reason], ["Last error", data.tesla_tariff_sync?.last_error]]);
+  $("settingsCards").innerHTML = settingsCard("Portal access", "Account", [["Access", "Premium"], ["Powerwall controls", "Backup, Mode and Export"], ["Selected site", $("siteSelect").selectedOptions[0]?.textContent]]) + settingsCard("Site configuration", "Energy", [["Timezone", data.timezone], ["EV charger", ({wallConnector: "Tesla Wall Connector", zappi: "myenergi Zappi", hypervolt: "Hypervolt", ohme: "Ohme", none: "Not connected"})[data.ev_charger_type] || data.ev_charger_type]]) + settingsCard("Tesla connection", "Inverter", [["Status", data.tesla?.status || "Not connected"], ["Health", data.tesla?.health], ["Site ID", data.tesla?.site_id_suffix], ["Last error", data.tesla?.last_error]]) + settingsCard("Energy supplier", "Tariffs", [["Import", imported ? imported.display_name || imported.source : "--"], ["Export", exported ? exported.display_name || exported.source : "--"]]) + settingsCard("Tesla tariff sync", "Sync", [["Enabled", data.tesla_tariff_sync?.enabled ? "Yes" : "No"], ["Last synced", fmtTime(data.tesla_tariff_sync?.last_synced_at)], ["Last reason", data.tesla_tariff_sync?.last_sync_reason], ["Last error", data.tesla_tariff_sync?.last_error]]);
 }
 
 const pageCopy = {
@@ -633,6 +747,11 @@ function updateTimestamp() {
 
 function resetSiteView() {
   currentOverview = null;
+  pendingSetting = null;
+  settingEdit = null;
+  if ($("settingEditor").open) $("settingEditor").close();
+  showError("settingsStatus", "");
+  updateSettingControls();
   lastUpdated = null;
   overviewRequest++;
   chartRequest++;
@@ -717,6 +836,12 @@ document.addEventListener("DOMContentLoaded", async () => {
   setText("year", new Date().getFullYear());
   $("loginForm").addEventListener("submit", signIn);
   $("headerSignOut").addEventListener("click", signOut);
+  document.querySelectorAll("[data-setting]").forEach(button => button.addEventListener("click", () => openSettingEditor(button.dataset.setting)));
+  $("settingForm").addEventListener("submit", savePowerwallSetting);
+  $("settingFields").addEventListener("input", settingInputChanged);
+  $("cancelSetting").addEventListener("click", () => { if (!settingSaving) $("settingEditor").close(); });
+  $("settingEditor").addEventListener("cancel", event => { if (settingSaving) event.preventDefault(); });
+  $("settingEditor").addEventListener("close", () => { settingEdit = null; });
   $("closeNodeChart").addEventListener("click", () => $("nodeChart").close());
   $("nodeChart").addEventListener("close", () => chartRequest++);
   document.querySelectorAll(".energy-node").forEach(button => button.addEventListener("click", () => loadNodeChart(button.dataset.node).catch(handlePageError)));
@@ -736,7 +861,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   let refreshing = false;
   window.setInterval(async () => {
     const siteKey = $("siteSelect").value;
-    if (!siteKey || document.hidden || refreshing || $("appView").classList.contains("hidden") || $("refreshButton").disabled) return;
+    if (!siteKey || document.hidden || refreshing || settingSaving || $("appView").classList.contains("hidden") || $("refreshButton").disabled) return;
     refreshing = true;
     try { await loadOverview(siteKey); } catch (error) { handlePageError(error); }
     finally { refreshing = false; }

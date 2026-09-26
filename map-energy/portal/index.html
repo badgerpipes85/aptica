@@ -7,8 +7,8 @@
   <meta name="description" content="Secure MAP Energy portal for Premium users.">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src https://powerwake-backend-production.mapenergy.workers.dev https://powerwake-backend-staging.mapenergy.workers.dev; base-uri 'none'; form-action 'self'">
   <title>MAP Energy Portal</title>
-  <link rel="stylesheet" href="portal.css?v=2">
-  <script src="portal.js?v=2" defer></script>
+  <link rel="stylesheet" href="portal.css?v=3">
+  <script src="portal.js?v=3" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#portal-main">Skip to portal content</a>
@@ -20,7 +20,7 @@
       <img src="/map-energy/assets/map-energy-portal-logo.png" alt="">
       <span><strong>MAP Energy</strong><small>Web Portal</small></span>
     </a>
-    <span id="portalBadge" class="portal-access hidden">Premium · Read only</span>
+    <span id="portalBadge" class="portal-access hidden">Premium</span>
     <button id="headerSignOut" class="button button-quiet hidden" type="button">Sign out</button>
   </header>
 
@@ -29,7 +29,7 @@
       <div class="login-intro">
         <span class="eyebrow">Your energy. Clearly connected.</span>
         <h1 id="loginTitle">A better view of your connected home.</h1>
-        <p>View live Tesla Powerwall flows, supplier pricing, energy history and automation activity. This Premium portal is read-only; make changes in the MAP Energy app.</p>
+        <p>View live Tesla Powerwall flows, supplier pricing, energy history and automation activity. Adjust Backup Reserve, Operation Mode and Energy Exports directly from the Premium portal.</p>
         <div class="login-feature-grid" aria-hidden="true">
           <div><span class="feature-icon solar">☀</span><strong>Live energy</strong><small>See power move</small></div>
           <div><span class="feature-icon battery">▰</span><strong>Powerwall</strong><small>State and reserve</small></div>
@@ -113,16 +113,26 @@
                 <div class="summary-metric export"><svg><use href="/map-energy/assets/map-energy-icons.svg#export"></use></svg><div><span>Export Today</span><strong><b id="exportToday">--</b><small>kWh</small></strong></div></div>
               </div>
               <div id="liveState" class="energy-state"><svg><use id="liveStateIcon" href="/map-energy/assets/map-energy-icons.svg#bolt"></use></svg><span id="liveStateText">Monitoring live home energy flow</span></div>
-              <div class="section-caption"><span>Powerwall settings</span><span>Manage in the app</span></div>
+              <div class="section-caption"><span>Powerwall settings</span><span>Tap to adjust</span></div>
               <div class="control-grid">
-                <div id="backupCard" class="control-card green"><span><svg><use href="/map-energy/assets/map-energy-icons.svg#shield"></use></svg>Backup</span><strong id="backupReserve">--</strong></div>
-                <div id="modeCard" class="control-card blue"><span><svg><use href="/map-energy/assets/map-energy-icons.svg#mode"></use></svg>Mode</span><strong id="operationMode">--</strong></div>
-                <div id="exportCard" class="control-card yellow"><span><svg><use href="/map-energy/assets/map-energy-icons.svg#export"></use></svg>Export</span><strong id="exportRule">--</strong></div>
+                <button type="button" data-setting="backup" disabled aria-haspopup="dialog" id="backupCard" class="control-card green"><span><svg><use href="/map-energy/assets/map-energy-icons.svg#shield"></use></svg>Backup</span><strong id="backupReserve">--</strong></button>
+                <button type="button" data-setting="mode" disabled aria-haspopup="dialog" id="modeCard" class="control-card blue"><span><svg><use href="/map-energy/assets/map-energy-icons.svg#mode"></use></svg>Mode</span><strong id="operationMode">--</strong></button>
+                <button type="button" data-setting="export" disabled aria-haspopup="dialog" id="exportCard" class="control-card yellow"><span><svg><use href="/map-energy/assets/map-energy-icons.svg#export"></use></svg>Export</span><strong id="exportRule">--</strong></button>
               </div>
+              <p id="settingsStatus" class="settings-status hidden" role="status"></p>
             </div>
           </article>
 
           <p class="flow-hint">Select an energy node to explore today's readings.</p>
+          <dialog id="settingEditor" class="glass chart-dialog setting-dialog" aria-labelledby="settingTitle" aria-describedby="settingDescription">
+            <form id="settingForm">
+              <div class="panel-heading"><div><span class="eyebrow">Powerwall setting</span><h2 id="settingTitle"></h2><p id="settingSite"></p></div><button id="cancelSetting" class="button button-quiet" type="button">Cancel</button></div>
+              <p id="settingDescription"></p>
+              <div id="settingFields"></div>
+              <p id="settingError" class="notice notice-error hidden" role="alert"></p>
+              <button id="confirmSetting" class="button button-primary" type="submit" disabled>Confirm</button>
+            </form>
+          </dialog>
           <dialog id="nodeChart" class="glass chart-dialog" aria-labelledby="nodeChartTitle">
             <div class="panel-heading"><div><span class="eyebrow">Today</span><h2 id="nodeChartTitle">Energy</h2><p id="nodeChartSub">30-minute intervals</p></div><button id="closeNodeChart" class="button button-quiet" type="button">Close</button></div>
             <div id="nodeChartBars" class="node-timeline" role="status"></div>
