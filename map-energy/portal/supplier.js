@@ -43,9 +43,8 @@ function tariffCard(tariff, zone, index=0) {
   const status=tariff.rate_origin==='supplier'?`Supplier rates checked ${supplierTimestamp(tariff.rates_checked_at,zone)}`:`Saved rates · ${supplierTimestamp(tariff.updated_at,zone)}`;
   return `<article class="glass supplier-card ${tariff.kind==='export'?'export':'import'}" data-supplier-card="${index}"><div class="tariff-heading"><span class="tariff-icon"><svg><use href="/map-energy/assets/map-energy-icons.svg#${tariff.kind==='export'?'export':'import'}"></use></svg></span><div><h2>${title}</h2><p>${escapeHtml(source)}</p></div></div>
     ${tariff.stale?`<p class="notice notice-error">Today’s rates are unavailable. Showing saved rates for ${escapeHtml(fmtDate(tariff.day_start_utc))}; these are not current prices.</p>`:''}
-    <div class="supplier-rate-chart"><output class="supplier-hover hidden" aria-hidden="true"></output><svg class="supplier-svg" viewBox="0 0 620 155" role="img" aria-label="${title} electricity prices. Hover over the bars or use the reading selector below."><line class="supplier-zero" x1="10" x2="610" y1="${y(0)}" y2="${y(0)}"/>${bars}${ticks}</svg></div>
+    <div class="supplier-rate-chart"><output class="supplier-hover hidden" aria-hidden="true"></output><svg class="supplier-svg" viewBox="0 0 620 155" role="img" aria-label="${title} electricity prices. Hover over the bars to explore rates."><line class="supplier-zero" x1="10" x2="610" y1="${y(0)}" y2="${y(0)}"/>${bars}${ticks}</svg></div>
     <div class="supplier-legend"><span>Prices include VAT</span><span class="legend-now">Yellow: current / selected</span></div>
-    <label class="supplier-reading-label">Explore rates<input class="supplier-reading" aria-label="Select ${title.toLowerCase()} rate" type="range" min="0" max="${slots.length-1}" value="${Math.max(0,current)}" step="1"></label>
     <div class="tariff-footer"><div><strong>${escapeHtml(supplierRate(tariff.standing_charge_pence,tariff.source,true))}</strong><small>Standing charge</small></div><div class="current-rate" aria-live="polite"><strong>${escapeHtml(supplierRate(currentValue,tariff.source))}</strong><small>${tariff.stale?'Current rate unavailable':'Current rate'}</small></div></div>
     <p class="supplier-range">Lowest ${escapeHtml(supplierRate(values.length?Math.min(...values):null,tariff.source))} · Highest ${escapeHtml(supplierRate(values.length?Math.max(...values):null,tariff.source))}</p>
     <details class="supplier-data-info"><summary>Rate information</summary><p>${escapeHtml(status)}</p>${tariff.rate_origin!=='supplier'?'<p>Saved by MAP Energy. Opening this page does not change the saved-rate timestamp.</p>':''}${tariff.refresh_unavailable?'<p>The supplier could not be refreshed. Saved rates are shown.</p>':''}${tariff.standing_charge_pence==null?'<p>The standing charge is not available from the connected data.</p>':''}</details>
@@ -64,6 +63,7 @@ async function loadSupplier(siteKey) {
   $('supplierCards').innerHTML='<div class="empty">Loading supplier rates…</div>';
   const [data,referral]=await Promise.all([api(`/v1/web/supplier?site_key=${encodeURIComponent(siteKey)}`),api('/v1/config/edf-referral').catch(()=>null)]);
   if(request!==supplierRequest||version!==contextVersion) return;
+  data.tariffs=[...(data.tariffs||[])].sort((a,b)=>(a.kind==='import'?0:1)-(b.kind==='import'?0:1));
   supplierView={data,referral,loadedAt:new Date()};
   updateTimestamp();
   const tariffs=data.tariffs||[],zone=data.timezone||siteTimezone();
@@ -78,14 +78,14 @@ function clearSupplierSelections() {
 function bindSupplierCharts(container=$('supplierCards'), tariffs=supplierView.data.tariffs, zone=supplierView.data.timezone||siteTimezone()) {
   for(const card of container.querySelectorAll('[data-supplier-card]')) {
     const tariff=tariffs[Number(card.dataset.supplierCard)],slots=supplierSlots(tariff,zone);
-    const read=card.querySelector('.current-rate'),slider=card.querySelector('.supplier-reading'),tooltip=card.querySelector('.supplier-hover');
+    const read=card.querySelector('.current-rate'),tooltip=card.querySelector('.supplier-hover');
     const show=(index,selected)=>{
       const slot=slots[index],now=Date.now()/1000,current=slots.findIndex(s=>s.start<=now&&s.end>now);
       card.querySelectorAll('.supplier-slot').forEach((bar,i)=>{bar.classList.toggle('selected',selected&&i===index);bar.classList.toggle('current',!selected&&!tariff.stale&&i===current);});
       const value=selected?slot?.value:tariff.stale?null:slots[current]?.value;
       read.querySelector('strong').textContent=supplierRate(value,tariff.source);
       read.querySelector('small').textContent=selected?`Rate at ${supplierSlotLabel(slot,zone)}`:tariff.stale?'Current rate unavailable':'Current rate';
-      if(selected) {slider.value=index;slider.setAttribute('aria-valuetext',`${supplierSlotLabel(slot,zone)} · ${supplierRate(value,tariff.source)}`);tooltip.textContent=`${supplierSlotLabel(slot,zone)} · ${supplierRate(value,tariff.source)}`;}
+      if(selected) {tooltip.textContent=`${supplierSlotLabel(slot,zone)} · ${supplierRate(value,tariff.source)}`;}
       tooltip.classList.toggle('hidden',!selected);
     };
     const select=index=>{clearTimeout(supplierSelections.get(card));show(index,true);supplierSelections.set(card,setTimeout(()=>{show(0,false);supplierSelections.delete(card);},5000));};
@@ -93,7 +93,6 @@ function bindSupplierCharts(container=$('supplierCards'), tariffs=supplierView.d
     graph.addEventListener('pointermove',event=>{const bar=event.target.closest('[data-slot]');if(bar) select(Number(bar.dataset.slot));});
     graph.addEventListener('pointerdown',event=>{const bar=event.target.closest('[data-slot]');if(bar) select(Number(bar.dataset.slot));});
     graph.addEventListener('pointerleave',()=>{clearTimeout(supplierSelections.get(card));show(0,false);});
-    slider.addEventListener('input',()=>select(Number(slider.value)));
   }
 }
 document.addEventListener('DOMContentLoaded',()=>{
