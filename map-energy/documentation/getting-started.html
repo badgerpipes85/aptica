@@ -1,72 +1,2251 @@
-<!doctype html>
-<html lang="en-GB">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Getting Started – MAP Energy</title>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, viewport-fit=cover"
+  >
+
+  <title>Getting Started | MAP Energy</title>
+
+  <meta
+    name="description"
+    content="Get started with MAP Energy. Install the app, create your account, connect Tesla Energy, explore Live, History, Supplier and PV data, and configure optional integrations and automations."
+  >
 
   <style>
-    body{
-      margin:0;
-      padding:40px 20px;
-      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
-      background:#0d1117;
-      color:#f3f6fb;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      min-height:100vh;
-      text-align:center;
+
+    * {
+      box-sizing: border-box;
     }
 
-    .card{
-      max-width:700px;
-      padding:40px;
-      border-radius:24px;
-      background:rgba(255,255,255,0.04);
-      border:1px solid rgba(255,255,255,0.08);
+    html {
+      min-height: 100%;
+      background: #06101f;
+      scroll-behavior: smooth;
     }
 
-    h1{
-      margin-top:0;
-      font-size:2.4rem;
+    body {
+      margin: 0;
+      min-height: 100vh;
+
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "SF Pro Display",
+        "SF Pro Text",
+        "Segoe UI",
+        Roboto,
+        Helvetica,
+        Arial,
+        sans-serif;
+
+      color: #ffffff;
+
+      background:
+        linear-gradient(
+          180deg,
+          rgba(4, 11, 25, 0.18) 0%,
+          rgba(4, 11, 25, 0.42) 40%,
+          rgba(3, 8, 20, 0.72) 100%
+        ),
+        url("map-energy-docs-bg.PNG")
+        center top / cover fixed no-repeat;
     }
 
-    p{
-      color:#a9b4c2;
-      line-height:1.6;
+
+    /* =========================================================
+       PAGE
+       ========================================================= */
+
+    .page {
+      width: 100%;
+      max-width: 940px;
+
+      margin: 0 auto;
+
+      padding:
+        max(32px, env(safe-area-inset-top))
+        24px
+        max(70px, env(safe-area-inset-bottom));
     }
 
-    a{
-      color:#2f80ed;
-      text-decoration:none;
+
+    /* =========================================================
+       HEADER
+       ========================================================= */
+
+    .brand-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      margin-bottom: 38px;
     }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+    }
+
+    .brand-logo {
+      width: 48px;
+      height: 48px;
+
+      object-fit: contain;
+
+      filter:
+        drop-shadow(
+          0 5px 14px rgba(0, 0, 0, 0.25)
+        );
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-name {
+      color: #ffffff;
+
+      font-size: 18px;
+      line-height: 1.1;
+
+      font-weight: 800;
+      letter-spacing: -0.01em;
+    }
+
+    .brand-subtitle {
+      margin-top: 4px;
+
+      color: rgba(204, 215, 231, 0.62);
+
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .support-pill {
+      padding: 9px 15px;
+
+      border-radius: 999px;
+
+      color: rgba(224, 235, 249, 0.85);
+
+      font-size: 12px;
+      font-weight: 700;
+
+      background: rgba(6, 18, 39, 0.58);
+
+      border:
+        1px solid rgba(116, 158, 218, 0.20);
+
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+
+
+    /* =========================================================
+       DOCUMENTATION NAVIGATION
+       ========================================================= */
+
+    .docs-navigation {
+      margin:
+        -18px
+        0
+        18px;
+    }
+
+    .docs-home-link {
+      display: inline-flex;
+      align-items: center;
+
+      gap: 8px;
+
+      padding: 8px 12px;
+
+      border-radius: 12px;
+
+      color: rgba(196, 214, 239, 0.72);
+
+      text-decoration: none;
+
+      background:
+        rgba(6, 18, 39, 0.42);
+
+      border:
+        1px solid rgba(116, 158, 218, 0.13);
+
+      font-size: 12px;
+      font-weight: 700;
+
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+
+      transition:
+        color 0.15s ease,
+        background 0.15s ease,
+        border-color 0.15s ease;
+    }
+
+    .docs-home-link:hover {
+      color: #ffffff;
+
+      background:
+        rgba(16, 45, 86, 0.66);
+
+      border-color:
+        rgba(90, 156, 248, 0.30);
+    }
+
+    .docs-home-arrow {
+      color: #59a8ff;
+
+      font-size: 15px;
+      line-height: 1;
+    }
+
+
+    /* =========================================================
+       HERO
+       ========================================================= */
+
+    .hero {
+      position: relative;
+
+      display: flex;
+      align-items: center;
+
+      min-height: 340px;
+
+      padding: 40px 310px 40px 38px;
+
+      overflow: hidden;
+
+      border-radius: 30px;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(14, 36, 72, 0.90),
+          rgba(5, 16, 38, 0.88)
+        );
+
+      border:
+        1px solid rgba(81, 144, 232, 0.25);
+
+      box-shadow:
+        0 30px 90px rgba(0, 0, 0, 0.35),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+    }
+
+    .hero::before {
+      content: "";
+
+      position: absolute;
+
+      width: 350px;
+      height: 350px;
+
+      right: -80px;
+      top: -100px;
+
+      border-radius: 50%;
+
+      background:
+        radial-gradient(
+          circle,
+          rgba(29, 122, 255, 0.24),
+          transparent 68%
+        );
+
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      margin-bottom: 14px;
+
+      color: #59a8ff;
+
+      font-size: 12px;
+      font-weight: 800;
+
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow-dot {
+      width: 7px;
+      height: 7px;
+
+      border-radius: 50%;
+
+      background: #4294ff;
+
+      box-shadow:
+        0 0 12px rgba(66, 148, 255, 0.9);
+    }
+
+    h1 {
+      max-width: 540px;
+
+      margin: 0 0 17px;
+
+      color: #ffffff;
+
+      font-size: clamp(37px, 5.5vw, 53px);
+      line-height: 1.03;
+
+      letter-spacing: -0.04em;
+
+      font-weight: 850;
+    }
+
+    .hero-description {
+      max-width: 530px;
+
+      margin: 0;
+
+      color: rgba(221, 229, 241, 0.78);
+
+      font-size: 16px;
+      line-height: 1.65;
+    }
+
+    .mappy {
+      position: absolute;
+
+      z-index: 1;
+
+      right: 8px;
+      bottom: -28px;
+
+      width: 310px;
+      max-height: 330px;
+
+      object-fit: contain;
+      object-position: bottom center;
+
+      filter:
+        drop-shadow(
+          0 20px 25px rgba(0, 0, 0, 0.30)
+        );
+    }
+
+
+    /* =========================================================
+       CONTENT
+       ========================================================= */
+
+    .content-card {
+      margin-top: 22px;
+
+      padding: 38px;
+
+      border-radius: 30px;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(12, 29, 55, 0.88),
+          rgba(5, 13, 29, 0.90)
+        );
+
+      border:
+        1px solid rgba(93, 145, 220, 0.19);
+
+      box-shadow:
+        0 28px 80px rgba(0, 0, 0, 0.38),
+        inset 0 1px 0 rgba(255, 255, 255, 0.04);
+
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+    }
+
+    section + section {
+      margin-top: 46px;
+      padding-top: 42px;
+
+      border-top:
+        1px solid rgba(255, 255, 255, 0.075);
+    }
+
+    h2 {
+      margin: 0 0 17px;
+
+      color: #ffffff;
+
+      font-size: 25px;
+      line-height: 1.25;
+
+      letter-spacing: -0.018em;
+
+      font-weight: 780;
+    }
+
+    h3 {
+      margin: 0 0 8px;
+
+      color: #ffffff;
+
+      font-size: 17px;
+      font-weight: 750;
+    }
+
+    p {
+      margin: 0 0 17px;
+
+      color: rgba(226, 232, 242, 0.82);
+
+      font-size: 16px;
+      line-height: 1.72;
+    }
+
+    p:last-child {
+      margin-bottom: 0;
+    }
+
+    strong {
+      color: #ffffff;
+      font-weight: 720;
+    }
+
+
+    /* =========================================================
+       START STEPS
+       ========================================================= */
+
+    .setup-steps {
+      margin-top: 25px;
+    }
+
+    .setup-step {
+      display: flex;
+
+      gap: 18px;
+
+      padding: 21px 0;
+
+      border-bottom:
+        1px solid rgba(255, 255, 255, 0.065);
+    }
+
+    .setup-step:last-child {
+      border-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .step-number {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      width: 38px;
+      height: 38px;
+
+      flex: 0 0 auto;
+
+      border-radius: 12px;
+
+      color: #ffffff;
+
+      background: #347ff0;
+
+      box-shadow:
+        0 8px 20px rgba(34, 106, 220, 0.22);
+
+      font-size: 14px;
+      font-weight: 850;
+    }
+
+    .step-content {
+      padding-top: 3px;
+    }
+
+    .step-title {
+      display: block;
+
+      margin-bottom: 6px;
+
+      color: #ffffff;
+
+      font-size: 16px;
+      font-weight: 760;
+    }
+
+    .step-content p {
+      margin: 0;
+
+      font-size: 14px;
+      line-height: 1.62;
+    }
+
+
+    /* =========================================================
+       FEATURE GRID
+       ========================================================= */
+
+    .feature-grid {
+      display: grid;
+
+      grid-template-columns: repeat(2, 1fr);
+
+      gap: 14px;
+
+      margin-top: 24px;
+    }
+
+    .feature-card {
+      padding: 22px;
+
+      border-radius: 19px;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(7, 23, 49, 0.82),
+          rgba(4, 13, 29, 0.76)
+        );
+
+      border:
+        1px solid rgba(68, 137, 235, 0.20);
+    }
+
+    .feature-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      width: 38px;
+      height: 38px;
+
+      margin-bottom: 14px;
+
+      border-radius: 11px;
+
+      color: #ffffff;
+
+      background:
+        rgba(47, 126, 242, 0.22);
+
+      border:
+        1px solid rgba(68, 145, 255, 0.30);
+
+      font-size: 17px;
+      font-weight: 750;
+    }
+
+    .feature-card p {
+      margin: 0;
+
+      color: rgba(208, 219, 235, 0.73);
+
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+
+    /* =========================================================
+       TAB CARDS
+       ========================================================= */
+
+    .tab-grid {
+      display: grid;
+
+      grid-template-columns: repeat(2, 1fr);
+
+      gap: 14px;
+
+      margin-top: 24px;
+    }
+
+    .tab-card {
+      position: relative;
+
+      padding: 22px;
+
+      overflow: hidden;
+
+      border-radius: 19px;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(7, 23, 49, 0.82),
+          rgba(4, 13, 29, 0.76)
+        );
+
+      border:
+        1px solid rgba(68, 137, 235, 0.20);
+    }
+
+    .tab-name {
+      display: block;
+
+      margin-bottom: 8px;
+
+      color: #59a8ff;
+
+      font-size: 11px;
+      font-weight: 850;
+
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+    }
+
+    .tab-card h3 {
+      margin-bottom: 7px;
+    }
+
+    .tab-card p {
+      margin: 0;
+
+      color: rgba(208, 219, 235, 0.73);
+
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+
+    /* =========================================================
+       INFO BOXES
+       ========================================================= */
+
+    .info-box {
+      position: relative;
+
+      margin: 24px 0 0;
+
+      padding: 22px 23px 22px 62px;
+
+      border-radius: 20px;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(20, 76, 162, 0.34),
+          rgba(7, 32, 76, 0.42)
+        );
+
+      border:
+        1px solid rgba(66, 145, 255, 0.35);
+    }
+
+    .info-icon {
+      position: absolute;
+
+      left: 21px;
+      top: 22px;
+
+      width: 27px;
+      height: 27px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 50%;
+
+      color: #ffffff;
+
+      background: #347ff0;
+
+      font-size: 15px;
+      font-weight: 850;
+    }
+
+    .info-title {
+      display: block;
+
+      margin-bottom: 5px;
+
+      color: #ffffff;
+
+      font-weight: 750;
+    }
+
+    .info-box p {
+      margin: 0;
+
+      font-size: 14px;
+    }
+
+    .success-box {
+      position: relative;
+
+      margin-top: 24px;
+
+      padding: 22px 23px 22px 62px;
+
+      border-radius: 20px;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(22, 105, 78, 0.29),
+          rgba(7, 47, 47, 0.38)
+        );
+
+      border:
+        1px solid rgba(62, 211, 154, 0.27);
+    }
+
+    .success-icon {
+      position: absolute;
+
+      left: 21px;
+      top: 22px;
+
+      width: 27px;
+      height: 27px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 50%;
+
+      color: #ffffff;
+
+      background: #2ab77d;
+
+      font-size: 14px;
+      font-weight: 850;
+    }
+
+    .success-title {
+      display: block;
+
+      margin-bottom: 5px;
+
+      color: #ffffff;
+
+      font-weight: 750;
+    }
+
+    .success-box p {
+      margin: 0;
+
+      font-size: 14px;
+    }
+
+
+    /* =========================================================
+       QUICK LINKS
+       ========================================================= */
+
+    .quick-links {
+      display: grid;
+
+      grid-template-columns: repeat(2, 1fr);
+
+      gap: 13px;
+
+      margin-top: 23px;
+    }
+
+    .quick-link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 15px;
+
+      padding: 18px;
+
+      color: inherit;
+      text-decoration: none;
+
+      border-radius: 17px;
+
+      background:
+        rgba(6, 21, 45, 0.64);
+
+      border:
+        1px solid rgba(74, 139, 231, 0.18);
+
+      transition:
+        transform 0.15s ease,
+        border-color 0.15s ease,
+        background 0.15s ease;
+    }
+
+    .quick-link:hover {
+      transform: translateY(-2px);
+
+      background:
+        rgba(11, 34, 70, 0.72);
+
+      border-color:
+        rgba(82, 155, 255, 0.38);
+    }
+
+    .quick-link-title {
+      display: block;
+
+      margin-bottom: 3px;
+
+      color: #ffffff;
+
+      font-size: 14px;
+      font-weight: 750;
+    }
+
+    .quick-link-description {
+      color: rgba(196, 210, 229, 0.65);
+
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .quick-link-arrow {
+      flex: 0 0 auto;
+
+      color: #59a8ff;
+
+      font-size: 18px;
+    }
+
+
+    /* =========================================================
+       MAPPY TIP
+       ========================================================= */
+
+    .mappy-tip {
+      display: flex;
+      align-items: center;
+
+      gap: 18px;
+
+      margin-top: 26px;
+
+      padding: 18px 20px;
+
+      border-radius: 20px;
+
+      background:
+        rgba(4, 13, 29, 0.58);
+
+      border:
+        1px solid rgba(255, 255, 255, 0.075);
+    }
+
+    .mappy-tip-image {
+      width: 70px;
+      height: 70px;
+
+      flex: 0 0 auto;
+
+      object-fit: contain;
+    }
+
+    .mappy-tip-title {
+      display: block;
+
+      margin-bottom: 4px;
+
+      color: #ffffff;
+
+      font-size: 14px;
+      font-weight: 750;
+    }
+
+    .mappy-tip p {
+      margin: 0;
+
+      color: rgba(215, 224, 238, 0.74);
+
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+
+    /* =========================================================
+       SUPPORT
+       ========================================================= */
+
+    .support-link {
+      color: #66afff;
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    .support-link:hover {
+      text-decoration: underline;
+    }
+
+
+    /* =========================================================
+       FOOTER
+       ========================================================= */
+
+    .footer {
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      gap: 9px;
+
+      padding: 30px 5px 0;
+
+      color: rgba(179, 192, 211, 0.48);
+
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .footer-logo {
+      width: 23px;
+      height: 23px;
+
+      object-fit: contain;
+
+      opacity: 0.72;
+    }
+
+
+    /* =========================================================
+       MOBILE
+       ========================================================= */
+
+    @media (max-width: 700px) {
+
+      body {
+        background-attachment: scroll;
+      }
+
+      .page {
+        padding-left: 15px;
+        padding-right: 15px;
+      }
+
+      .brand-header {
+        margin-bottom: 25px;
+      }
+
+      .brand-logo {
+        width: 42px;
+        height: 42px;
+      }
+
+      .brand-name {
+        font-size: 16px;
+      }
+
+      .support-pill {
+        padding: 8px 12px;
+        font-size: 11px;
+      }
+
+      .docs-navigation {
+        margin:
+          -9px
+          0
+          16px;
+      }
+
+      .docs-home-link {
+        padding: 8px 11px;
+        font-size: 11px;
+      }
+
+      .hero {
+        display: block;
+
+        min-height: 0;
+
+        padding: 27px 23px 0;
+
+        border-radius: 25px;
+      }
+
+      h1 {
+        font-size: 37px;
+      }
+
+      .hero-description {
+        font-size: 15px;
+      }
+
+      .mappy {
+        position: relative;
+
+        display: block;
+
+        right: auto;
+        bottom: auto;
+
+        width: 230px;
+
+        margin: 12px auto -18px;
+      }
+
+      .content-card {
+        margin-top: 16px;
+
+        padding: 27px 20px;
+
+        border-radius: 25px;
+      }
+
+      section + section {
+        margin-top: 36px;
+        padding-top: 34px;
+      }
+
+      h2 {
+        font-size: 22px;
+      }
+
+      p {
+        font-size: 15px;
+      }
+
+      .feature-grid,
+      .tab-grid,
+      .quick-links {
+        grid-template-columns: 1fr;
+      }
+
+      .mappy-tip {
+        align-items: flex-start;
+
+        padding: 16px;
+      }
+
+      .mappy-tip-image {
+        width: 55px;
+        height: 55px;
+      }
+
+    }
+
+
+    @media (max-width: 390px) {
+
+      .support-pill {
+        display: none;
+      }
+
+      h1 {
+        font-size: 33px;
+      }
+
+    }
+
   </style>
 </head>
 
+
 <body>
-  <div class="card">
-    <h1>Getting Started</h1>
 
-    <p>
-      MAP Energy getting started documentation is currently being prepared.
-    </p>
+  <main class="page">
 
-    <p>
-      This section will cover:
-    </p>
 
-    <p>
-      • Installing the app<br>
-      • Creating an account<br>
-      • Connecting Tesla Energy<br>
-      • Local Powerwall pairing<br>
-      • Initial setup
-    </p>
+    <!-- HEADER -->
 
-    <p>
-      <a href="/map-energy/documentation/">← Back to Documentation</a>
-    </p>
-  </div>
+    <header class="brand-header">
+
+      <div class="brand">
+
+        <img
+          src="map-energy-logo.PNG"
+          alt="MAP Energy"
+          class="brand-logo"
+        >
+
+        <div class="brand-text">
+
+          <span class="brand-name">
+            MAP Energy
+          </span>
+
+          <span class="brand-subtitle">
+            Help &amp; Documentation
+          </span>
+
+        </div>
+
+      </div>
+
+      <div class="support-pill">
+        Getting Started
+      </div>
+
+    </header>
+
+
+
+    <!-- DOCUMENTATION NAVIGATION -->
+
+    <nav class="docs-navigation" aria-label="Documentation navigation">
+
+      <a
+        href="docs.html"
+        class="docs-home-link"
+      >
+        <span class="docs-home-arrow">←</span>
+        <span>Documentation Home</span>
+      </a>
+
+    </nav>
+
+
+
+    <!-- HERO -->
+
+    <section class="hero">
+
+      <div class="hero-content">
+
+        <div class="eyebrow">
+
+          <span class="eyebrow-dot"></span>
+
+          Start Here
+
+        </div>
+
+        <h1>
+          Getting Started with MAP Energy
+        </h1>
+
+        <p class="hero-description">
+          Connect your energy system, explore your live energy data
+          and configure the integrations that matter to you. This
+          guide will take you through the main steps to get MAP Energy
+          up and running.
+        </p>
+
+      </div>
+
+
+      <img
+        src="mappy-docs.PNG"
+        alt="Mappy, the MAP Energy assistant"
+        class="mappy"
+      >
+
+    </section>
+
+
+
+    <!-- CONTENT -->
+
+    <article class="content-card">
+
+
+      <!-- OVERVIEW -->
+
+      <section>
+
+        <h2>
+          Welcome to MAP Energy
+        </h2>
+
+        <p>
+          MAP Energy brings your home energy information together in
+          one place, with a particular focus on Tesla Powerwall
+          monitoring, control and automation.
+        </p>
+
+        <p>
+          Once connected, you can see how energy is moving around your
+          home, review historical usage, connect supported electricity
+          suppliers and EV chargers, view solar information and build
+          automations around your energy system.
+        </p>
+
+        <p>
+          You do not need to configure every integration immediately.
+          The best place to start is by creating your MAP Energy
+          account and connecting Tesla Energy.
+        </p>
+
+
+        <div class="success-box">
+
+          <div class="success-icon">
+            ✓
+          </div>
+
+          <span class="success-title">
+            Start simple
+          </span>
+
+          <p>
+            Connect your Powerwall first and make sure your Live data
+            is working. You can add your supplier, EV charger,
+            diagnostics and automations afterwards.
+          </p>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- FIRST SETUP -->
+
+      <section>
+
+        <h2>
+          Your first MAP Energy setup
+        </h2>
+
+        <p>
+          Follow these steps when setting up MAP Energy for the first
+          time.
+        </p>
+
+
+        <div class="setup-steps">
+
+
+          <div class="setup-step">
+
+            <span class="step-number">
+              1
+            </span>
+
+            <div class="step-content">
+
+              <span class="step-title">
+                Install MAP Energy
+              </span>
+
+              <p>
+                Install MAP Energy on your supported iPhone, iPad or
+                Android device and open the app.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="setup-step">
+
+            <span class="step-number">
+              2
+            </span>
+
+            <div class="step-content">
+
+              <span class="step-title">
+                Create your MAP Energy account
+              </span>
+
+              <p>
+                Follow the registration process in the app to create
+                your MAP Energy account and sign in.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="setup-step">
+
+            <span class="step-number">
+              3
+            </span>
+
+            <div class="step-content">
+
+              <span class="step-title">
+                Connect Tesla Energy
+              </span>
+
+              <p>
+                Start the Tesla connection from MAP Energy and sign in
+                through Tesla's authentication process. Review the
+                requested permissions and authorise MAP Energy to
+                access your supported Tesla Energy information.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="setup-step">
+
+            <span class="step-number">
+              4
+            </span>
+
+            <div class="step-content">
+
+              <span class="step-title">
+                Select your energy site
+              </span>
+
+              <p>
+                Once Tesla is connected, MAP Energy can load the
+                supported energy sites available to your Tesla
+                account. Select the site you want to use with
+                MAP Energy.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="setup-step">
+
+            <span class="step-number">
+              5
+            </span>
+
+            <div class="step-content">
+
+              <span class="step-title">
+                Check your Live screen
+              </span>
+
+              <p>
+                Confirm that MAP Energy is showing your Powerwall
+                state of charge and available energy flows such as
+                solar, battery, home, grid and EV charging.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="setup-step">
+
+            <span class="step-number">
+              6
+            </span>
+
+            <div class="step-content">
+
+              <span class="step-title">
+                Add your optional integrations
+              </span>
+
+              <p>
+                Once the main Tesla connection is working, you can
+                connect supported electricity suppliers, EV chargers
+                and other MAP Energy features relevant to your setup.
+              </p>
+
+            </div>
+
+          </div>
+
+
+        </div>
+
+      </section>
+
+
+
+      <!-- TESLA -->
+
+      <section>
+
+        <h2>
+          Connecting Tesla Energy
+        </h2>
+
+        <p>
+          Your Tesla connection is at the centre of most MAP Energy
+          Powerwall functionality.
+        </p>
+
+        <p>
+          MAP Energy uses Tesla's account authentication process to
+          connect to supported Tesla Energy systems. You will be asked
+          to sign in to Tesla and approve the permissions required for
+          the features you want to use.
+        </p>
+
+        <p>
+          After authentication completes, MAP Energy can associate
+          your selected Tesla Energy site with your MAP Energy account.
+        </p>
+
+
+        <div class="info-box">
+
+          <div class="info-icon">
+            i
+          </div>
+
+          <span class="info-title">
+            Tesla may occasionally require you to reconnect
+          </span>
+
+          <p>
+            Tesla authentication can expire or require renewed
+            authorisation. If MAP Energy tells you that your Tesla
+            account needs to be reconnected, follow the connection
+            process again from the app.
+          </p>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- LIVE -->
+
+      <section>
+
+        <h2>
+          Check your Live energy data
+        </h2>
+
+        <p>
+          Once Tesla Energy is connected, the Live screen is one of
+          the best places to confirm that your system is working
+          correctly with MAP Energy.
+        </p>
+
+
+        <div class="feature-grid">
+
+
+          <div class="feature-card">
+
+            <div class="feature-icon">
+              ☀
+            </div>
+
+            <h3>
+              Solar
+            </h3>
+
+            <p>
+              See the current solar generation reported for your
+              connected Tesla Energy site.
+            </p>
+
+          </div>
+
+
+          <div class="feature-card">
+
+            <div class="feature-icon">
+              ⚡
+            </div>
+
+            <h3>
+              Battery
+            </h3>
+
+            <p>
+              View your Powerwall state of charge and whether the
+              battery is currently charging or discharging.
+            </p>
+
+          </div>
+
+
+          <div class="feature-card">
+
+            <div class="feature-icon">
+              ⌂
+            </div>
+
+            <h3>
+              Home
+            </h3>
+
+            <p>
+              Understand the power currently being used by your home
+              and where that energy is coming from.
+            </p>
+
+          </div>
+
+
+          <div class="feature-card">
+
+            <div class="feature-icon">
+              ↔
+            </div>
+
+            <h3>
+              Grid
+            </h3>
+
+            <p>
+              See when your home is importing electricity from the
+              grid or exporting surplus energy.
+            </p>
+
+          </div>
+
+
+          <div class="feature-card">
+
+            <div class="feature-icon">
+              ↯
+            </div>
+
+            <h3>
+              EV
+            </h3>
+
+            <p>
+              Where supported and configured, MAP Energy can include
+              EV charging information alongside your wider home
+              energy data.
+            </p>
+
+          </div>
+
+
+          <div class="feature-card">
+
+            <div class="feature-icon">
+              %
+            </div>
+
+            <h3>
+              State of Charge
+            </h3>
+
+            <p>
+              Keep track of the energy remaining in your Powerwall
+              and how its state of charge changes throughout the day.
+            </p>
+
+          </div>
+
+
+        </div>
+
+      </section>
+
+
+
+      <!-- APP -->
+
+      <section>
+
+        <h2>
+          Find your way around MAP Energy
+        </h2>
+
+        <p>
+          MAP Energy separates your energy information into several
+          main areas.
+        </p>
+
+
+        <div class="tab-grid">
+
+
+          <div class="tab-card">
+
+            <span class="tab-name">
+              Live
+            </span>
+
+            <h3>
+              What's happening now
+            </h3>
+
+            <p>
+              View current Powerwall state of charge and the live
+              flow of energy between solar, battery, home, grid and
+              supported EV charging.
+            </p>
+
+          </div>
+
+
+          <div class="tab-card">
+
+            <span class="tab-name">
+              Supplier
+            </span>
+
+            <h3>
+              Tariffs &amp; electricity prices
+            </h3>
+
+            <p>
+              Connect supported energy suppliers and view available
+              tariff and rate information within MAP Energy.
+            </p>
+
+          </div>
+
+
+          <div class="tab-card">
+
+            <span class="tab-name">
+              PV
+            </span>
+
+            <h3>
+              Solar forecasting
+            </h3>
+
+            <p>
+              Configure your solar installation and use supported
+              forecasting services to understand expected solar
+              generation.
+            </p>
+
+          </div>
+
+
+          <div class="tab-card">
+
+            <span class="tab-name">
+              History
+            </span>
+
+            <h3>
+              Understand past energy use
+            </h3>
+
+            <p>
+              Review historical solar generation, home consumption,
+              grid import and export, battery activity and supported
+              EV charging information.
+            </p>
+
+          </div>
+
+
+          <div class="tab-card">
+
+            <span class="tab-name">
+              Settings
+            </span>
+
+            <h3>
+              Configure MAP Energy
+            </h3>
+
+            <p>
+              Manage your connections, notifications, display
+              preferences, integrations and other MAP Energy
+              settings.
+            </p>
+
+          </div>
+
+
+          <div class="tab-card">
+
+            <span class="tab-name">
+              Automations
+            </span>
+
+            <h3>
+              Make your system respond
+            </h3>
+
+            <p>
+              Premium users can create automations that react to
+              schedules, EV charging, battery levels, electricity
+              prices, solar conditions and supported tariff events.
+            </p>
+
+          </div>
+
+
+        </div>
+
+      </section>
+
+
+
+      <!-- SUPPLIER -->
+
+      <section>
+
+        <h2>
+          Connect your electricity supplier
+        </h2>
+
+        <p>
+          Supplier connections are optional, but they can give
+          MAP Energy additional information about your electricity
+          tariff, prices and supported smart tariff events.
+        </p>
+
+        <p>
+          The exact information available depends on your supplier,
+          tariff and the data that supplier makes available.
+        </p>
+
+        <p>
+          If your supplier is supported, open the relevant connection
+          option in MAP Energy and follow the instructions shown in
+          the app.
+        </p>
+
+
+        <div class="info-box">
+
+          <div class="info-icon">
+            i
+          </div>
+
+          <span class="info-title">
+            Not every supplier feature is available everywhere
+          </span>
+
+          <p>
+            Supplier capabilities can vary by country, supplier,
+            tariff and account type. MAP Energy will only display
+            features that are supported by the relevant integration.
+          </p>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- EV -->
+
+      <section>
+
+        <h2>
+          Connect your EV charger
+        </h2>
+
+        <p>
+          If you have a supported EV charger, connecting it can give
+          MAP Energy a better understanding of when your vehicle is
+          charging and how EV charging fits into your wider home
+          energy use.
+        </p>
+
+        <p>
+          Supported integrations include Tesla Wall Connector,
+          myenergi Zappi, Hypervolt and Ohme, with capabilities
+          varying between integrations.
+        </p>
+
+        <p>
+          EV charging events can also be used with MAP Energy
+          automations, for example to change Powerwall behaviour when
+          charging starts or stops.
+        </p>
+
+
+        <div class="quick-links">
+
+          <a
+            href="ev-charger-integrations.html"
+            class="quick-link"
+          >
+
+            <div>
+
+              <span class="quick-link-title">
+                EV Charger Integrations
+              </span>
+
+              <span class="quick-link-description">
+                Supported chargers, charging data and EV automations.
+              </span>
+
+            </div>
+
+            <span class="quick-link-arrow">
+              →
+            </span>
+
+          </a>
+
+
+          <a
+            href="automations.html"
+            class="quick-link"
+          >
+
+            <div>
+
+              <span class="quick-link-title">
+                Automations
+              </span>
+
+              <span class="quick-link-description">
+                Learn how EV events can trigger actions.
+              </span>
+
+            </div>
+
+            <span class="quick-link-arrow">
+              →
+            </span>
+
+          </a>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- PV -->
+
+      <section>
+
+        <h2>
+          Configure your solar system
+        </h2>
+
+        <p>
+          If your home has solar PV, MAP Energy can use information
+          about your installation to provide supported solar
+          forecasting features.
+        </p>
+
+        <p>
+          Enter the requested details for your solar installation,
+          such as system size and orientation, as accurately as
+          possible. These values help the forecasting service model
+          the expected output from your panels.
+        </p>
+
+        <p>
+          Where your installation contains multiple arrays with
+          different orientations, MAP Energy can support separate
+          array configuration where available.
+        </p>
+
+      </section>
+
+
+
+      <!-- PREMIUM -->
+
+      <section>
+
+        <h2>
+          Explore MAP Energy Premium
+        </h2>
+
+        <p>
+          Once your core system is connected, Premium unlocks the
+          more advanced parts of MAP Energy.
+        </p>
+
+
+        <div class="feature-grid">
+
+
+          <div class="feature-card">
+
+            <div class="feature-icon">
+              ⚡
+            </div>
+
+            <h3>
+              Automations
+            </h3>
+
+            <p>
+              Automatically respond to schedules, energy conditions,
+              EV charging and supported smart tariff events.
+            </p>
+
+          </div>
+
+
+          <div class="feature-card">
+
+            <div class="feature-icon">
+              ◉
+            </div>
+
+            <h3>
+              Diagnostic Data
+            </h3>
+
+            <p>
+              Access supported Powerwall diagnostic information after
+              completing the required diagnostic connection.
+            </p>
+
+          </div>
+
+
+          <div class="feature-card">
+
+            <div class="feature-icon">
+              ⌘
+            </div>
+
+            <h3>
+              Web Portal
+            </h3>
+
+            <p>
+              Access supported MAP Energy information through the
+              MAP Energy web experience.
+            </p>
+
+          </div>
+
+
+          <div class="feature-card">
+
+            <div class="feature-icon">
+              ✦
+            </div>
+
+            <h3>
+              Energy Manager
+            </h3>
+
+            <p>
+              Energy Manager is an upcoming Premium feature designed
+              to intelligently plan and optimise your connected
+              energy system.
+            </p>
+
+          </div>
+
+
+        </div>
+
+
+        <div class="quick-links">
+
+          <a
+            href="subscription.html"
+            class="quick-link"
+          >
+
+            <div>
+
+              <span class="quick-link-title">
+                MAP Energy Premium
+              </span>
+
+              <span class="quick-link-description">
+                Trial, pricing and Premium features.
+              </span>
+
+            </div>
+
+            <span class="quick-link-arrow">
+              →
+            </span>
+
+          </a>
+
+
+          <a
+            href="powerwall-diagnostic-data.html"
+            class="quick-link"
+          >
+
+            <div>
+
+              <span class="quick-link-title">
+                Powerwall Diagnostic Data
+              </span>
+
+              <span class="quick-link-description">
+                Learn about the additional diagnostic connection.
+              </span>
+
+            </div>
+
+            <span class="quick-link-arrow">
+              →
+            </span>
+
+          </a>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- AUTOMATIONS -->
+
+      <section>
+
+        <h2>
+          Create your first automation
+        </h2>
+
+        <p>
+          Once you are comfortable with the live information shown by
+          MAP Energy, you can start using automations to make your
+          energy system respond automatically.
+        </p>
+
+        <p>
+          An automation combines a <strong>trigger</strong> with one
+          or more <strong>actions</strong>. You can also use supported
+          conditions and time windows to control when the automation
+          is allowed to run.
+        </p>
+
+        <p>
+          For example, an EV charging event could trigger a change to
+          your Powerwall backup reserve, or a supported smart tariff
+          event could trigger a Powerwall action or Home Assistant
+          webhook.
+        </p>
+
+
+        <div class="mappy-tip">
+
+          <img
+            src="mappy-docs.PNG"
+            alt="Mappy"
+            class="mappy-tip-image"
+          >
+
+          <div>
+
+            <span class="mappy-tip-title">
+              Start with a simple automation
+            </span>
+
+            <p>
+              A notification-only automation is a useful way to
+              understand how triggers behave before using an
+              automation that changes your Powerwall settings.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="quick-links">
+
+          <a
+            href="automations.html"
+            class="quick-link"
+          >
+
+            <div>
+
+              <span class="quick-link-title">
+                Automation Guide
+              </span>
+
+              <span class="quick-link-description">
+                Triggers, conditions, actions and examples.
+              </span>
+
+            </div>
+
+            <span class="quick-link-arrow">
+              →
+            </span>
+
+          </a>
+
+
+          <a
+            href="backup-reserve.html"
+            class="quick-link"
+          >
+
+            <div>
+
+              <span class="quick-link-title">
+                Backup Reserve
+              </span>
+
+              <span class="quick-link-description">
+                Understand Tesla's supported reserve settings.
+              </span>
+
+            </div>
+
+            <span class="quick-link-arrow">
+              →
+            </span>
+
+          </a>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- NEXT -->
+
+      <section>
+
+        <h2>
+          You're ready to explore
+        </h2>
+
+        <p>
+          Once your Tesla Energy site is connected and Live data is
+          appearing, the main MAP Energy setup is complete.
+        </p>
+
+        <p>
+          From there, which features you configure depends on your
+          own energy system. You can add supplier data, connect an EV
+          charger, configure solar forecasting, explore diagnostics
+          or start building automations.
+        </p>
+
+
+        <div class="success-box">
+
+          <div class="success-icon">
+            ✓
+          </div>
+
+          <span class="success-title">
+            Core setup complete
+          </span>
+
+          <p>
+            If your Powerwall state of charge and live energy flows
+            are visible, MAP Energy is successfully receiving data
+            for your connected Tesla Energy site.
+          </p>
+
+        </div>
+
+
+        <div class="quick-links">
+
+          <a
+            href="faq.html"
+            class="quick-link"
+          >
+
+            <div>
+
+              <span class="quick-link-title">
+                Frequently Asked Questions
+              </span>
+
+              <span class="quick-link-description">
+                Find answers to common setup and troubleshooting questions.
+              </span>
+
+            </div>
+
+            <span class="quick-link-arrow">
+              →
+            </span>
+
+          </a>
+
+
+          <a
+            href="releases.html"
+            class="quick-link"
+          >
+
+            <div>
+
+              <span class="quick-link-title">
+                Release Notes
+              </span>
+
+              <span class="quick-link-description">
+                See what's new in the latest MAP Energy releases.
+              </span>
+
+            </div>
+
+            <span class="quick-link-arrow">
+              →
+            </span>
+
+          </a>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- SUPPORT -->
+
+      <section>
+
+        <h2>
+          Need help getting connected?
+        </h2>
+
+        <p>
+          If something isn't working as expected, check the
+          frequently asked questions first for common connection and
+          setup issues.
+        </p>
+
+        <p>
+          If you still need help, contact MAP Energy support at
+          <a
+            href="mailto:support@aptica.uk"
+            class="support-link"
+          >support@aptica.uk</a>.
+        </p>
+
+        <p>
+          When contacting support, include whether you're using iOS
+          or Android and a brief description of where you're getting
+          stuck.
+        </p>
+
+      </section>
+
+
+    </article>
+
+
+
+    <!-- FOOTER -->
+
+    <footer class="footer">
+
+      <img
+        src="map-energy-logo.PNG"
+        alt="MAP Energy"
+        class="footer-logo"
+      >
+
+      <span>
+        MAP Energy • Powerwall control, insights &amp; automation
+      </span>
+
+    </footer>
+
+
+  </main>
+
 </body>
 </html>
