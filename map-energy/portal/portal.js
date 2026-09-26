@@ -332,7 +332,7 @@ async function loadOverview(siteKey) {
   setText("liveStateText", insight.text);
   $("liveState").classList.remove("blue", "yellow", "green", "neutral");
   $("liveState").classList.add(insight.tone);
-  $("liveStateIcon").setAttribute("href", `assets/map-energy-icons.svg#${insight.icon}`);
+  $("liveStateIcon").setAttribute("href", `/map-energy/assets/map-energy-icons.svg#${insight.icon}`);
   setCardTone("backupCard", "green");
   setCardTone("modeCard", ({ autonomous: "blue", self_consumption: "green", backup: "red" })[String(data.tesla_settings?.operation_mode || "").toLowerCase()] || "grey");
   setCardTone("exportCard", ({ pv_only: "yellow", battery_ok: "green", never: "red", no_export: "red" })[String(data.tesla_settings?.export_rule || "").toLowerCase()] || "grey");
@@ -412,9 +412,9 @@ function tariffCard(tariff, timeZone) {
   const title = isExport ? "Export" : "Import";
   const accent = isExport ? "export" : "import";
   const currentRate = Number.isFinite(Number(slots[currentIndex])) ? Number(slots[currentIndex]) : tariff.current_rate_pence;
-  const source = tariff.display_name || ({ edf: "EDF UK", octopus: "Octopus Energy", amber: "Amber Electric", comed: "ComEd", manual: "Custom tariff" })[String(tariff.source || "").toLowerCase()] || tariff.source || "Supplier tariff";
+  const source = tariff.display_name || ({ edf: "EDF", octopus: "Octopus Energy", amber: "Amber Electric", comed: "ComEd", manual: "Custom tariff" })[String(tariff.source || "").toLowerCase()] || tariff.source || "Supplier tariff";
   return `<article class="glass supplier-card ${accent}">
-    <div class="tariff-heading"><span class="tariff-icon"><svg><use href="assets/map-energy-icons.svg#${isExport ? "export" : "import"}"></use></svg></span><div><h2>${title}</h2><p>${escapeHtml(source)}</p></div></div>
+    <div class="tariff-heading"><span class="tariff-icon"><svg><use href="/map-energy/assets/map-energy-icons.svg#${isExport ? "export" : "import"}"></use></svg></span><div><h2>${title}</h2><p>${escapeHtml(source)}</p></div></div>
     <div class="tariff-chart"><div class="tariff-bars">${bars}</div><div class="tariff-axis"><span>00</span><span>06</span><span>12</span><span>18</span><span>23</span></div></div>
     <div class="tariff-footer"><div><strong>${escapeHtml(fmtRate(tariff.lowest_rate_pence))}</strong><small>Lowest today</small></div><div class="current-rate"><strong>${escapeHtml(fmtRate(currentRate))}</strong><small>Current rate</small></div></div>
     <div class="tariff-updated">Highest ${escapeHtml(fmtRate(tariff.highest_rate_pence))} · Updated ${escapeHtml(fmtTime(tariff.updated_at))}</div>
@@ -438,8 +438,8 @@ async function loadHistory(siteKey) {
     }), { imported: 0, exported: 0 });
     const hasCosts = detailSlots.some(slot => slot.import_cost != null || slot.export_revenue != null);
     return `<article class="glass history-day clickable" data-day="${escapeHtml(day.day_start_utc)}">
-    <div class="history-day-head"><span class="history-calendar"><svg><use href="assets/map-energy-icons.svg#calendar"></use></svg></span><div><strong>${escapeHtml(fmtDate(day.first_ts, day.date_utc))}</strong><small>Daily energy summary</small></div><span class="history-chevron">›</span></div>
-    <div class="history-metrics"><div class="import"><span><svg><use href="assets/map-energy-icons.svg#import"></use></svg>Import</span><strong>${escapeHtml(fmtKwh(day.import_kwh))}</strong></div><div class="solar"><span><svg><use href="assets/map-energy-icons.svg#solar"></use></svg>PV</span><strong>${escapeHtml(fmtKwh(day.solar_kwh))}</strong></div><div class="export"><span><svg><use href="assets/map-energy-icons.svg#export"></use></svg>Export</span><strong>${escapeHtml(fmtKwh(day.export_kwh))}</strong></div><div class="net"><span>Net cost</span><strong>${hasCosts ? escapeHtml(fmtMoney(costs.imported - costs.exported)) : "--"}</strong></div></div>
+    <div class="history-day-head"><span class="history-calendar"><svg><use href="/map-energy/assets/map-energy-icons.svg#calendar"></use></svg></span><div><strong>${escapeHtml(fmtDate(day.first_ts, day.date_utc))}</strong><small>Daily energy summary</small></div><span class="history-chevron">›</span></div>
+    <div class="history-metrics"><div class="import"><span><svg><use href="/map-energy/assets/map-energy-icons.svg#import"></use></svg>Import</span><strong>${escapeHtml(fmtKwh(day.import_kwh))}</strong></div><div class="solar"><span><svg><use href="/map-energy/assets/map-energy-icons.svg#solar"></use></svg>PV</span><strong>${escapeHtml(fmtKwh(day.solar_kwh))}</strong></div><div class="export"><span><svg><use href="/map-energy/assets/map-energy-icons.svg#export"></use></svg>Export</span><strong>${escapeHtml(fmtKwh(day.export_kwh))}</strong></div><div class="net"><span>Net cost</span><strong>${hasCosts ? escapeHtml(fmtMoney(costs.imported - costs.exported)) : "--"}</strong></div></div>
   </article>`;
   }).join("") : `<div class="empty">No completed energy history is available yet.</div>`;
   document.querySelectorAll("[data-day]").forEach(element => element.addEventListener("click", () => loadHistoryDay(siteKey, element.dataset.day).catch(handlePageError)));
@@ -468,7 +468,7 @@ async function loadHistoryDay(siteKey, dayStart) {
   const net = totals.importCost - totals.exportRevenue;
   $("historyList").innerHTML = `<article class="glass history-detail"><div class="history-detail-head"><div><span class="eyebrow">Daily detail</span><h2>${escapeHtml(fmtDate(data.day_start_utc))}</h2><p>${escapeHtml(fmtKwh(energyTotals.importKwh))} imported · ${escapeHtml(fmtKwh(energyTotals.solarKwh))} solar</p></div><button id="closeDay" class="button button-quiet" type="button">Close</button></div>
     <section class="history-flow"><div class="history-section-title"><span class="history-chart-icon">▥</span><div><strong>30-minute grid flow</strong><small>Import and export by slot</small></div></div><div class="history-flow-chart">${bars}</div><div class="tariff-axis"><span>00</span><span>06</span><span>12</span><span>18</span><span>23</span></div></section>
-    <section class="history-summary"><div class="history-section-title"><span class="history-calendar"><svg><use href="assets/map-energy-icons.svg#bolt"></use></svg></span><div><strong>Energy Summary</strong><small>Costs and energy totals</small></div></div><div class="history-summary-grid"><div class="import"><span>Import kWh</span><strong>${escapeHtml(fmtKwh(energyTotals.importKwh))}</strong></div><div class="export"><span>Export kWh</span><strong>${escapeHtml(fmtKwh(energyTotals.exportKwh))}</strong></div><div class="import"><span>Import cost</span><strong>${escapeHtml(fmtMoney(totals.importCost))}</strong></div><div class="export"><span>Export value</span><strong>${escapeHtml(fmtMoney(totals.exportRevenue))}</strong></div><div><span>Solar</span><strong>${escapeHtml(fmtKwh(energyTotals.solarKwh))}</strong></div><div><span>Net</span><strong>${escapeHtml(fmtMoney(net))}</strong></div></div></section></article>`;
+    <section class="history-summary"><div class="history-section-title"><span class="history-calendar"><svg><use href="/map-energy/assets/map-energy-icons.svg#bolt"></use></svg></span><div><strong>Energy Summary</strong><small>Costs and energy totals</small></div></div><div class="history-summary-grid"><div class="import"><span>Import kWh</span><strong>${escapeHtml(fmtKwh(energyTotals.importKwh))}</strong></div><div class="export"><span>Export kWh</span><strong>${escapeHtml(fmtKwh(energyTotals.exportKwh))}</strong></div><div class="import"><span>Import cost</span><strong>${escapeHtml(fmtMoney(totals.importCost))}</strong></div><div class="export"><span>Export value</span><strong>${escapeHtml(fmtMoney(totals.exportRevenue))}</strong></div><div><span>Solar</span><strong>${escapeHtml(fmtKwh(energyTotals.solarKwh))}</strong></div><div><span>Net</span><strong>${escapeHtml(fmtMoney(net))}</strong></div></div></section></article>`;
   $("closeDay").addEventListener("click", () => loadHistory(siteKey).catch(handlePageError));
 }
 
@@ -509,7 +509,7 @@ function runSummary(run) {
 function ruleCard(rule) {
   const status = rule.paused ? "Paused" : "Active";
   const detail = `${rule.message || triggerText(rule.payload)}${rule.next_fire_at ? ` · Next ${fmtTime(rule.next_fire_at)}` : ""}`;
-  return `<article class="automation-rule-card"><span class="automation-rule-icon"><svg><use href="assets/map-energy-icons.svg#automation"></use></svg></span><div><strong>${escapeHtml(automationName(rule))}</strong><small>${escapeHtml(detail)}</small></div><span class="automation-status ${status.toLowerCase()}">${status}</span></article>`;
+  return `<article class="automation-rule-card"><span class="automation-rule-icon"><svg><use href="/map-energy/assets/map-energy-icons.svg#automation"></use></svg></span><div><strong>${escapeHtml(automationName(rule))}</strong><small>${escapeHtml(detail)}</small></div><span class="automation-status ${status.toLowerCase()}">${status}</span></article>`;
 }
 
 function runCard(run, timezone) {
@@ -535,12 +535,12 @@ async function loadAutomations(siteKey) {
   const rules = data.automations || [];
   const history = data.history || [];
   const smart = data.smart_charging;
-  const smartCard = smart ? `<article class="smart-scheduling-card"><span class="smart-scheduling-icon"><svg><use href="assets/map-energy-icons.svg#car"></use></svg></span><div><h2>${escapeHtml(smart.title)}</h2><p>${escapeHtml(smart.summary)}</p></div><span class="readonly-toggle ${smart.enabled ? "on" : ""}" role="switch" aria-checked="${smart.enabled}" aria-disabled="true"><i></i></span></article>` : "";
-  const rulesContent = rules.length ? `<div class="automation-rules">${rules.map(ruleCard).join("")}</div>` : `<div class="automation-empty"><span><svg><use href="assets/map-energy-icons.svg#automation"></use></svg></span><h2>${smart ? "No other automations yet" : "No automations yet"}</h2><p>${smart ? "Create another automation in the MAP Energy app." : "Create your first automation in the MAP Energy app."}</p></div>`;
+  const smartCard = smart ? `<article class="smart-scheduling-card"><span class="smart-scheduling-icon"><svg><use href="/map-energy/assets/map-energy-icons.svg#car"></use></svg></span><div><h2>${escapeHtml(smart.title)}</h2><p>${escapeHtml(smart.summary)}</p></div><span class="readonly-toggle ${smart.enabled ? "on" : ""}" role="switch" aria-checked="${smart.enabled}" aria-disabled="true"><i></i></span></article>` : "";
+  const rulesContent = rules.length ? `<div class="automation-rules">${rules.map(ruleCard).join("")}</div>` : `<div class="automation-empty"><span><svg><use href="/map-energy/assets/map-energy-icons.svg#automation"></use></svg></span><h2>${smart ? "No other automations yet" : "No automations yet"}</h2><p>${smart ? "Create another automation in the MAP Energy app." : "Create your first automation in the MAP Energy app."}</p></div>`;
   const groups = new Map();
   history.forEach(run => { const day = dayKeyAndLabel(run.executed_at, data.timezone); const group = groups.get(day.key) || { label: day.label, runs: [] }; group.runs.push(run); groups.set(day.key, group); });
   const historyContent = history.length ? Array.from(groups.values()).map(group => `<section class="run-day"><header><h3>${escapeHtml(group.label)}</h3><span>${group.runs.length}</span></header><div>${group.runs.map(run => runCard(run, data.timezone)).join("")}</div></section>`).join("") : `<div class="automation-empty compact"><h2>No automation history yet</h2><p>Executed automations will appear here.</p></div>`;
-  $("automationList").innerHTML = `<div class="automation-config">${smartCard}${rulesContent}</div><article class="run-log"><div class="run-log-heading"><span><svg><use href="assets/map-energy-icons.svg#history"></use></svg></span><div><h2>Run Log</h2><p>${history.length} automation run${history.length === 1 ? "" : "s"} recorded.</p></div></div>${historyContent}</article>`;
+  $("automationList").innerHTML = `<div class="automation-config">${smartCard}${rulesContent}</div><article class="run-log"><div class="run-log-heading"><span><svg><use href="/map-energy/assets/map-energy-icons.svg#history"></use></svg></span><div><h2>Run Log</h2><p>${history.length} automation run${history.length === 1 ? "" : "s"} recorded.</p></div></div>${historyContent}</article>`;
 }
 
 function settingsCard(title, eyebrow, rows) {
@@ -558,7 +558,7 @@ const pageCopy = {
   live: ["Live energy", "A real-time view of power moving through your home"],
   supplier: ["Supplier", "Your current import and export tariff information"],
   history: ["Energy history", "Recent daily usage, generation and grid totals"],
-  automations: ["Automation", "Smart actions for your Powerwall"],
+  automations: ["Automations", "View configured automations and their run history"],
   settings: ["Portal settings", "A read-only summary of your site configuration"]
 };
 

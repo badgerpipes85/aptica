@@ -54,7 +54,7 @@
           rgba(4, 11, 25, 0.42) 40%,
           rgba(3, 8, 20, 0.72) 100%
         ),
-        url("/map-energy/assets/map-energy-docs-bg.png")
+        url("/map-energy/assets/map-energy-docs-bg.PNG")
         center top / cover fixed no-repeat;
     }
 
@@ -676,6 +676,11 @@
       line-height: 1.55;
     }
 
+    .example-row > span:last-child {
+      min-width: 0;
+      overflow-wrap: anywhere;
+    }
+
     .example-type {
       flex: 0 0 62px;
 
@@ -1233,7 +1238,7 @@
       <div class="brand">
 
         <img
-          src="/map-energy/assets/map-energy-logo.png"
+          src="/map-energy/assets/map-energy-logo.PNG"
           alt="MAP Energy"
           class="brand-logo"
         >
@@ -1265,7 +1270,7 @@
     <nav class="docs-navigation" aria-label="Documentation navigation">
 
       <a
-        href="docs.html"
+        href="/map-energy/documentation/"
         class="docs-home-link"
       >
         <span class="docs-home-arrow">←</span>
@@ -1305,7 +1310,7 @@
 
 
       <img
-        src="/map-energy/assets/mappy-docs.png"
+        src="/map-energy/assets/mappy-docs.PNG"
         alt="Mappy, the MAP Energy assistant"
         class="mappy"
       >
@@ -1414,8 +1419,9 @@
         </h2>
 
         <p>
-          The trigger determines when MAP Energy should evaluate and
-          run your automation.
+          The trigger determines when MAP Energy should evaluate and run your
+          automation. Automations require MAP Energy Premium and the connections needed
+          by the selected trigger and actions.
         </p>
 
 
@@ -1505,8 +1511,9 @@
             </h3>
 
             <p>
-              Respond to monitored power conditions such as grid,
-              home or energy-flow thresholds where supported.
+              Respond to supported grid import, grid export or other monitored power
+              thresholds. Choose the direction and threshold offered by your connected
+              system.
             </p>
 
           </div>
@@ -1523,8 +1530,7 @@
             </h3>
 
             <p>
-              Use solar conditions and forecast information to make
-              decisions based on expected generation.
+              Respond to supported solar generation conditions or a solar forecast above or below a selected energy threshold. Forecast energy and current generation power describe different things; check the units shown in the app.
             </p>
 
           </div>
@@ -1581,7 +1587,7 @@
           <div class="smart-card">
 
             <span class="smart-badge">
-              EDF Energy
+              EDF
             </span>
 
             <h3>
@@ -1599,7 +1605,7 @@
           <div class="smart-card">
 
             <span class="smart-badge">
-              EDF Energy
+              EDF
             </span>
 
             <h3>
@@ -1744,8 +1750,7 @@
             </h3>
 
             <p>
-              Change the Powerwall backup reserve to a selected
-              percentage.
+              Change the Tesla Powerwall backup reserve to a selected percentage, or restore a previously captured reserve where supported.
             </p>
 
           </div>
@@ -2237,7 +2242,7 @@
         <div class="mappy-tip">
 
           <img
-            src="/map-energy/assets/mappy-docs.png"
+            src="/map-energy/assets/mappy-docs.PNG"
             alt="Mappy"
             class="mappy-tip-image"
           >
@@ -2249,10 +2254,7 @@
             </span>
 
             <p>
-              The event name is particularly useful when building
-              Home Assistant automations. It gives you a predictable
-              value that can be checked before deciding which Home
-              Assistant action should run.
+              In Home Assistant, use a webhook-triggered automation and inspect the incoming JSON event field before choosing an action. The MAP Energy event name is a value in that payload; receiving a webhook does not by itself fire an event with that name on the Home Assistant event bus.
             </p>
 
           </div>
@@ -2592,7 +2594,7 @@
         <div class="mappy-tip">
 
           <img
-            src="/map-energy/assets/mappy-docs.png"
+            src="/map-energy/assets/mappy-docs.PNG"
             alt="Mappy"
             class="mappy-tip-image"
           >
@@ -2705,7 +2707,7 @@
     <footer class="footer">
 
       <img
-        src="/map-energy/assets/map-energy-logo.png"
+        src="/map-energy/assets/map-energy-logo.PNG"
         alt="MAP Energy"
         class="footer-logo"
       >

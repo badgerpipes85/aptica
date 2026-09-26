@@ -17,7 +17,7 @@
 
   <header class="site-header">
     <a class="brand" href="/map-energy/" aria-label="MAP Energy home">
-      <img src="assets/map-energy-logo.png" alt="">
+      <img src="/map-energy/assets/map-energy-portal-logo.png" alt="">
       <span><strong>MAP Energy</strong><small>Web Portal</small></span>
     </a>
     <button id="headerSignOut" class="button button-quiet hidden" type="button">Sign out</button>
@@ -28,7 +28,7 @@
       <div class="login-intro">
         <span class="eyebrow">Your energy. Clearly connected.</span>
         <h1 id="loginTitle">A better view of your connected home.</h1>
-        <p>Live Powerwall flow, supplier pricing, energy history and automation activity—available securely wherever you are.</p>
+        <p>View live Tesla Powerwall flows, supplier pricing, energy history and automation activity. This Premium portal is read-only; make changes in the MAP Energy app.</p>
         <div class="login-feature-grid" aria-hidden="true">
           <div><span class="feature-icon solar">☀</span><strong>Live energy</strong><small>See power move</small></div>
           <div><span class="feature-icon battery">▰</span><strong>Powerwall</strong><small>State and reserve</small></div>
@@ -60,11 +60,11 @@
 
       <aside class="glass sidebar" aria-label="Portal navigation">
         <nav class="portal-nav">
-          <button class="nav-button active" data-page="live" type="button"><span><svg class="nav-icon"><use href="assets/map-energy-icons.svg#bolt"></use></svg></span><b>Live</b></button>
-          <button class="nav-button" data-page="supplier" type="button"><span><svg class="nav-icon"><use href="assets/map-energy-icons.svg#supplier"></use></svg></span><b>Supplier</b></button>
-          <button class="nav-button" data-page="history" type="button"><span><svg class="nav-icon"><use href="assets/map-energy-icons.svg#history"></use></svg></span><b>History</b></button>
-          <button class="nav-button" data-page="automations" type="button"><span><svg class="nav-icon"><use href="assets/map-energy-icons.svg#automation"></use></svg></span><b>Automations</b></button>
-          <button class="nav-button" data-page="settings" type="button"><span><svg class="nav-icon"><use href="assets/map-energy-icons.svg#settings"></use></svg></span><b>Settings</b></button>
+          <button class="nav-button active" data-page="live" type="button"><span><svg class="nav-icon"><use href="/map-energy/assets/map-energy-icons.svg#bolt"></use></svg></span><b>Live</b></button>
+          <button class="nav-button" data-page="supplier" type="button"><span><svg class="nav-icon"><use href="/map-energy/assets/map-energy-icons.svg#supplier"></use></svg></span><b>Supplier</b></button>
+          <button class="nav-button" data-page="history" type="button"><span><svg class="nav-icon"><use href="/map-energy/assets/map-energy-icons.svg#history"></use></svg></span><b>History</b></button>
+          <button class="nav-button" data-page="automations" type="button"><span><svg class="nav-icon"><use href="/map-energy/assets/map-energy-icons.svg#automation"></use></svg></span><b>Automations</b></button>
+          <button class="nav-button" data-page="settings" type="button"><span><svg class="nav-icon"><use href="/map-energy/assets/map-energy-icons.svg#settings"></use></svg></span><b>Settings</b></button>
         </nav>
       </aside>
 
@@ -90,25 +90,25 @@
                 <g data-from="grid" data-to="ev"><line class="flow-base" x1="70" y1="82" x2="17" y2="39"></line><line class="flow-pulse" pathLength="100" x1="70" y1="82" x2="17" y2="39"></line></g>
                 <g data-from="grid" data-to="battery"><line class="flow-base" x1="70" y1="82" x2="30" y2="82"></line><line class="flow-pulse" pathLength="100" x1="70" y1="82" x2="30" y2="82"></line></g>
               </svg>
-              <button class="energy-node solar" data-node="solar" type="button"><svg class="node-icon"><use href="assets/map-energy-icons.svg#solar"></use></svg><span class="node-reading"><strong id="solarKw">--</strong><small>kW</small></span></button>
-              <button class="energy-node ev" data-node="ev" type="button"><svg class="node-icon"><use href="assets/map-energy-icons.svg#car"></use></svg><span class="node-reading"><strong id="evNodeKw">--</strong><small>kW</small></span></button>
-              <button class="energy-node home" data-node="home" type="button"><svg class="node-icon"><use href="assets/map-energy-icons.svg#home"></use></svg><span class="node-reading"><strong id="homeKw">--</strong><small>kW</small></span></button>
-              <button class="energy-node battery" data-node="battery" type="button"><svg class="node-icon"><use href="assets/map-energy-icons.svg#battery"></use></svg><span class="node-reading"><strong id="batteryPowerKw">--</strong><small>kW</small></span></button>
-              <button class="energy-node grid" data-node="grid" type="button"><svg class="node-icon"><use href="assets/map-energy-icons.svg#bolt"></use></svg><span class="node-reading"><strong id="gridKw">--</strong><small>kW</small></span></button>
+              <button class="energy-node solar" data-node="solar" type="button"><svg class="node-icon"><use href="/map-energy/assets/map-energy-icons.svg#solar"></use></svg><span class="node-reading"><strong id="solarKw">--</strong><small>kW</small></span></button>
+              <button class="energy-node ev" data-node="ev" type="button"><svg class="node-icon"><use href="/map-energy/assets/map-energy-icons.svg#car"></use></svg><span class="node-reading"><strong id="evNodeKw">--</strong><small>kW</small></span></button>
+              <button class="energy-node home" data-node="home" type="button"><svg class="node-icon"><use href="/map-energy/assets/map-energy-icons.svg#home"></use></svg><span class="node-reading"><strong id="homeKw">--</strong><small>kW</small></span></button>
+              <button class="energy-node battery" data-node="battery" type="button"><svg class="node-icon"><use href="/map-energy/assets/map-energy-icons.svg#battery"></use></svg><span class="node-reading"><strong id="batteryPowerKw">--</strong><small>kW</small></span></button>
+              <button class="energy-node grid" data-node="grid" type="button"><svg class="node-icon"><use href="/map-energy/assets/map-energy-icons.svg#bolt"></use></svg><span class="node-reading"><strong id="gridKw">--</strong><small>kW</small></span></button>
             </div>
 
             <div class="live-details">
               <div class="today-grid">
-                <div class="summary-metric solar"><svg><use href="assets/map-energy-icons.svg#solar"></use></svg><div><span>Solar Today</span><strong><b id="solarToday">--</b><small>kWh</small></strong></div></div>
-                <div class="summary-metric battery"><svg><use href="assets/map-energy-icons.svg#battery"></use></svg><div><span>Battery SOC</span><strong><b id="batterySummarySoc">--</b><small>%</small></strong></div></div>
-                <div class="summary-metric import"><svg><use href="assets/map-energy-icons.svg#import"></use></svg><div><span>Import Today</span><strong><b id="importToday">--</b><small>kWh</small></strong></div></div>
-                <div class="summary-metric export"><svg><use href="assets/map-energy-icons.svg#export"></use></svg><div><span>Export Today</span><strong><b id="exportToday">--</b><small>kWh</small></strong></div></div>
+                <div class="summary-metric solar"><svg><use href="/map-energy/assets/map-energy-icons.svg#solar"></use></svg><div><span>Solar Today</span><strong><b id="solarToday">--</b><small>kWh</small></strong></div></div>
+                <div class="summary-metric battery"><svg><use href="/map-energy/assets/map-energy-icons.svg#battery"></use></svg><div><span>Battery SOC</span><strong><b id="batterySummarySoc">--</b><small>%</small></strong></div></div>
+                <div class="summary-metric import"><svg><use href="/map-energy/assets/map-energy-icons.svg#import"></use></svg><div><span>Import Today</span><strong><b id="importToday">--</b><small>kWh</small></strong></div></div>
+                <div class="summary-metric export"><svg><use href="/map-energy/assets/map-energy-icons.svg#export"></use></svg><div><span>Export Today</span><strong><b id="exportToday">--</b><small>kWh</small></strong></div></div>
               </div>
-              <div id="liveState" class="energy-state"><svg><use id="liveStateIcon" href="assets/map-energy-icons.svg#bolt"></use></svg><span id="liveStateText">Monitoring live home energy flow</span></div>
+              <div id="liveState" class="energy-state"><svg><use id="liveStateIcon" href="/map-energy/assets/map-energy-icons.svg#bolt"></use></svg><span id="liveStateText">Monitoring live home energy flow</span></div>
               <div class="control-grid">
-                <div id="backupCard" class="control-card green"><span><svg><use href="assets/map-energy-icons.svg#shield"></use></svg>Backup</span><strong id="backupReserve">--</strong></div>
-                <div id="modeCard" class="control-card blue"><span><svg><use href="assets/map-energy-icons.svg#mode"></use></svg>Mode</span><strong id="operationMode">--</strong></div>
-                <div id="exportCard" class="control-card yellow"><span><svg><use href="assets/map-energy-icons.svg#export"></use></svg>Export</span><strong id="exportRule">--</strong></div>
+                <div id="backupCard" class="control-card green"><span><svg><use href="/map-energy/assets/map-energy-icons.svg#shield"></use></svg>Backup</span><strong id="backupReserve">--</strong></div>
+                <div id="modeCard" class="control-card blue"><span><svg><use href="/map-energy/assets/map-energy-icons.svg#mode"></use></svg>Mode</span><strong id="operationMode">--</strong></div>
+                <div id="exportCard" class="control-card yellow"><span><svg><use href="/map-energy/assets/map-energy-icons.svg#export"></use></svg>Export</span><strong id="exportRule">--</strong></div>
               </div>
             </div>
           </article>
