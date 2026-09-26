@@ -531,55 +531,6 @@ function siteHalfHourIndex(timeZone) {
   }
 }
 
-async function loadHistory(siteKey) {
-  const version = contextVersion;
-  const data = await api(`/v1/web/history?site_key=${encodeURIComponent(siteKey)}`);
-  const days = Array.isArray(data.days) ? data.days.slice(0, 7) : [];
-  const details = await Promise.all(days.map(day => api(`/v1/web/history-day?site_key=${encodeURIComponent(siteKey)}&day_start_utc=${encodeURIComponent(day.day_start_utc)}`).catch(() => null)));
-  if (version !== contextVersion) return;
-  $("historyList").innerHTML = days.length ? days.map((day, index) => {
-    const detailSlots = details[index]?.slots || [];
-    const costs = detailSlots.reduce((result, slot) => ({
-      imported: result.imported + (Number(slot.import_cost) || 0),
-      exported: result.exported + (Number(slot.export_revenue) || 0)
-    }), { imported: 0, exported: 0 });
-    const hasCosts = detailSlots.some(slot => slot.import_cost != null || slot.export_revenue != null);
-    return `<button type="button" class="glass history-day clickable" data-day="${escapeHtml(day.day_start_utc)}">
-    <span class="history-day-head"><span class="history-calendar"><svg><use href="/map-energy/assets/map-energy-icons.svg#calendar"></use></svg></span><span><strong>${escapeHtml(fmtDate(day.first_ts, day.date_utc))}</strong><small>Daily energy summary</small></span><span class="history-chevron">›</span></span>
-    <span class="history-metrics"><span class="import"><span><svg><use href="/map-energy/assets/map-energy-icons.svg#import"></use></svg>Import</span><strong>${escapeHtml(fmtKwh(day.import_kwh))}</strong></span><span class="solar"><span><svg><use href="/map-energy/assets/map-energy-icons.svg#solar"></use></svg>PV</span><strong>${escapeHtml(fmtKwh(day.solar_kwh))}</strong></span><span class="export"><span><svg><use href="/map-energy/assets/map-energy-icons.svg#export"></use></svg>Export</span><strong>${escapeHtml(fmtKwh(day.export_kwh))}</strong></span><span class="net"><span>Net cost</span><strong>${hasCosts ? escapeHtml(fmtMoney(costs.imported - costs.exported)) : "--"}</strong></span></span>
-  </button>`;
-  }).join("") : `<div class="empty">No completed energy history is available yet.</div>`;
-  document.querySelectorAll("[data-day]").forEach(element => element.addEventListener("click", () => loadHistoryDay(siteKey, element.dataset.day).catch(handlePageError)));
-}
-
-async function loadHistoryDay(siteKey, dayStart) {
-  const data = await api(`/v1/web/history-day?site_key=${encodeURIComponent(siteKey)}&day_start_utc=${encodeURIComponent(dayStart)}`);
-  const slots = data.slots || [];
-  const totals = slots.reduce((result, slot) => ({
-    importKwh: result.importKwh + (Number(slot.import_kwh) || 0), exportKwh: result.exportKwh + (Number(slot.export_kwh) || 0), solarKwh: result.solarKwh + (Number(slot.solar_kwh) || 0),
-    importCost: result.importCost + (Number(slot.import_cost) || 0), exportRevenue: result.exportRevenue + (Number(slot.export_revenue) || 0)
-  }), { importKwh: 0, exportKwh: 0, solarKwh: 0, importCost: 0, exportRevenue: 0 });
-  const energyTotals = data.totals ? {
-    importKwh: Number(data.totals.import_kwh) || 0,
-    exportKwh: Number(data.totals.export_kwh) || 0,
-    solarKwh: Number(data.totals.solar_kwh) || 0
-  } : totals;
-  const maxFlow = Math.max(.01, ...slots.flatMap(slot => [Number(slot.import_kwh) || 0, Number(slot.export_kwh) || 0]));
-  const bars = slots.map(slot => {
-    const imported = Math.max(Number(slot.import_kwh) || 0, 0);
-    const exported = Math.max(Number(slot.export_kwh) || 0, 0);
-    const importHeight = Math.max(0, Math.min(20, Math.round(imported / maxFlow * 20)));
-    const exportHeight = Math.max(0, Math.min(20, Math.round(exported / maxFlow * 20)));
-    return `<i><b class="history-import h${importHeight}"></b><b class="history-export h${exportHeight}"></b></i>`;
-  }).join("");
-  const hasCosts = slots.some(slot => slot.import_cost != null || slot.export_revenue != null);
-  const net = totals.importCost - totals.exportRevenue;
-  $("historyList").innerHTML = `<article class="glass history-detail"><div class="history-detail-head"><div><span class="eyebrow">Daily detail</span><h2>${escapeHtml(fmtDate(data.day_start_utc))}</h2><p>${escapeHtml(fmtKwh(energyTotals.importKwh))} imported · ${escapeHtml(fmtKwh(energyTotals.solarKwh))} solar</p></div><button id="closeDay" class="button button-quiet" type="button">Close</button></div>
-    <section class="history-flow"><div class="history-section-title"><span class="history-chart-icon">▥</span><div><strong>30-minute grid flow</strong><small>Import and export by slot</small></div></div><div class="history-flow-chart">${bars}</div><div class="tariff-axis"><span>00</span><span>06</span><span>12</span><span>18</span><span>23</span></div></section>
-    <section class="history-summary"><div class="history-section-title"><span class="history-calendar"><svg><use href="/map-energy/assets/map-energy-icons.svg#bolt"></use></svg></span><div><strong>Energy Summary</strong><small>Energy costs exclude standing charges</small></div></div><div class="history-summary-grid"><div class="import"><span>Import kWh</span><strong>${escapeHtml(fmtKwh(energyTotals.importKwh))}</strong></div><div class="export"><span>Export kWh</span><strong>${escapeHtml(fmtKwh(energyTotals.exportKwh))}</strong></div><div class="import"><span>Import cost</span><strong>${hasCosts ? escapeHtml(fmtMoney(totals.importCost)) : "--"}</strong></div><div class="export"><span>Export value</span><strong>${hasCosts ? escapeHtml(fmtMoney(totals.exportRevenue)) : "--"}</strong></div><div><span>Solar</span><strong>${escapeHtml(fmtKwh(energyTotals.solarKwh))}</strong></div><div><span>Net</span><strong>${hasCosts ? escapeHtml(fmtMoney(net)) : "--"}</strong></div></div></section></article>`;
-  $("closeDay").addEventListener("click", () => loadHistory(siteKey).catch(handlePageError));
-}
-
 function triggerText(payload) {
   const trigger = payload?.trigger;
   if (!trigger) return "Automation executed";
@@ -691,11 +642,14 @@ function siteTimezone() {
 
 function updateTimestamp() {
   const supplier = activePage === "supplier";
-  const timestamp = supplier ? supplierView?.loadedAt : lastUpdated;
-  setText("updatedAt", timestamp ? `${supplier ? "Loaded" : "Updated"} ${timestamp.toLocaleTimeString("en-GB", {timeZone: siteTimezone(), hour: "2-digit", minute: "2-digit"})}` : "Waiting for data");
+  const historical = activePage === "history";
+  const timestamp = historical ? historyView?.loadedAt : supplier ? supplierView?.loadedAt : lastUpdated;
+  setText("updatedAt", timestamp ? `${supplier || historical ? "Loaded" : "Updated"} ${timestamp.toLocaleTimeString("en-GB", {timeZone: siteTimezone(), hour: "2-digit", minute: "2-digit"})}` : "Waiting for data");
 }
 
 function resetSiteView() {
+  historyView = null;
+  historyRequest++;
   clearSupplierSelections();
   if ($("supplierAgile").open) $("supplierAgile").close();
   supplierView = null;
