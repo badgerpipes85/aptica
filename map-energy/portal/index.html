@@ -7,10 +7,11 @@
   <meta name="description" content="Secure MAP Energy portal for Premium users.">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src https://powerwake-backend-production.mapenergy.workers.dev https://powerwake-backend-staging.mapenergy.workers.dev; base-uri 'none'; form-action 'self'">
   <title>MAP Energy Portal</title>
-  <link rel="stylesheet" href="portal.css?v=5">
-  <script src="portal.js?v=5" defer></script>
-  <script src="power-perks.js?v=5" defer></script>
-  <script src="node-details.js?v=5" defer></script>
+  <link rel="stylesheet" href="portal.css?v=6">
+  <script src="portal.js?v=6" defer></script>
+  <script src="power-perks.js?v=6" defer></script>
+  <script src="node-details.js?v=6" defer></script>
+  <script src="supplier.js?v=6" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#portal-main">Skip to portal content</a>
@@ -157,7 +158,7 @@
 
         </section>
 
-        <section id="page-supplier" class="page" aria-label="Supplier tariffs"><div id="supplierCards" class="content-grid"></div></section>
+        <section id="page-supplier" class="page" aria-label="Supplier tariffs"><div id="supplierCards" class="content-grid"></div><dialog id="supplierAgile" class="glass chart-dialog" aria-labelledby="supplierAgileTitle"><div class="panel-heading"><div><h2 id="supplierAgileTitle">Octopus Agile</h2><p>Import and export rates</p></div><button id="closeSupplierAgile" class="button button-quiet" type="button">Close</button></div><div id="supplierAgileContent"></div></dialog></section>
         <section id="page-history" class="page" aria-label="Energy history"><div class="view-note"><span>Last 7 completed days</span><span>Select a day for details</span></div><div id="historyList" class="stack"></div></section>
         <section id="page-automations" class="page" aria-label="Automations"><p class="view-description">Review your rules and recent activity. Create or change automations in the MAP Energy app.</p><div id="automationList" class="stack"></div></section>
         <section id="page-settings" class="page" aria-label="Settings"><p class="view-description">Your connected services at a glance. Manage connections in the MAP Energy app.</p><div id="settingsCards" class="content-grid"></div></section>

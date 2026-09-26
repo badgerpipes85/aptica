@@ -523,43 +523,6 @@ function siteHalfHourIndex(timeZone) {
   }
 }
 
-function tariffCard(tariff, timeZone) {
-  const slots = Array.isArray(tariff.slots) ? tariff.slots : [];
-  const values = slots.filter(value => value != null).map(Number).filter(Number.isFinite);
-  const min = values.length ? Math.min(...values) : 0;
-  const max = values.length ? Math.max(...values) : 1;
-  const range = Math.max(Math.abs(min), Math.abs(max), .01);
-  const currentIndex = siteHalfHourIndex(timeZone);
-  const isExport = tariff.kind === "export";
-  const bars = slots.map((value, index) => {
-    const number = value == null || value === "" ? NaN : Number(value);
-    const height = Number.isFinite(number) ? Math.max(5, Math.abs(number) / range * 116) : 0;
-    let band = isExport ? "export" : "mid";
-    if (!isExport && number <= min + .01) band = "offpeak";
-    if (!isExport && number >= max - .01 && max > min + .01) band = "peak";
-    if (number < 0) band = "negative";
-    if (!Number.isFinite(number)) band = "missing";
-    const heightClass = `h${Math.max(0, Math.min(20, Math.round(height / 6)))}`;
-    return `<i class="tariff-bar ${band} ${heightClass} ${index === currentIndex ? "current" : ""}" title="${escapeHtml(fmtRate(number))}"></i>`;
-  }).join("");
-  const title = isExport ? "Export" : "Import";
-  const accent = isExport ? "export" : "import";
-  const currentRate = slots[currentIndex] != null && Number.isFinite(Number(slots[currentIndex])) ? Number(slots[currentIndex]) : tariff.current_rate_pence;
-  const source = tariff.display_name || ({ edf: "EDF", octopus: "Octopus Energy", amber: "Amber Electric", comed: "ComEd", manual: "Custom tariff" })[String(tariff.source || "").toLowerCase()] || tariff.source || "Supplier tariff";
-  return `<article class="glass supplier-card ${accent}">
-    <div class="tariff-heading"><span class="tariff-icon"><svg><use href="/map-energy/assets/map-energy-icons.svg#${isExport ? "export" : "import"}"></use></svg></span><div><h2>${title}</h2><p>${escapeHtml(source)}</p></div></div>
-    <div class="tariff-chart"><div class="tariff-bars">${bars}</div><div class="tariff-axis"><span>00</span><span>06</span><span>12</span><span>18</span><span>23</span></div></div>
-    <div class="chart-legend">${isExport ? '<span class="legend-rate">Export rate</span>' : '<span class="legend-low">Low / negative</span><span class="legend-high">Highest</span>'}<span class="legend-now">Current interval</span></div>
-    <div class="tariff-footer"><div><strong>${escapeHtml(fmtRate(tariff.lowest_rate_pence))}</strong><small>Lowest today</small></div><div class="current-rate"><strong>${escapeHtml(fmtRate(currentRate))}</strong><small>Current rate</small></div></div>
-    <div class="tariff-updated">Highest ${escapeHtml(fmtRate(tariff.highest_rate_pence))} · Updated ${escapeHtml(fmtTime(tariff.updated_at))}</div>
-  </article>`;
-}
-
-async function loadSupplier(siteKey) {
-  const data = await api(`/v1/web/supplier?site_key=${encodeURIComponent(siteKey)}`);
-  $("supplierCards").innerHTML = data.tariffs?.length ? data.tariffs.map(tariff => tariffCard(tariff, data.timezone)).join("") : `<div class="empty">No supplier tariffs are available for this site yet.</div>`;
-}
-
 async function loadHistory(siteKey) {
   const version = contextVersion;
   const data = await api(`/v1/web/history?site_key=${encodeURIComponent(siteKey)}`);
@@ -719,10 +682,16 @@ function siteTimezone() {
 }
 
 function updateTimestamp() {
-  setText("updatedAt", lastUpdated ? `Updated ${lastUpdated.toLocaleTimeString("en-GB", {hour: "2-digit", minute: "2-digit"})}` : "Waiting for data");
+  const supplier = activePage === "supplier";
+  const timestamp = supplier ? supplierView?.loadedAt : lastUpdated;
+  setText("updatedAt", timestamp ? `${supplier ? "Loaded" : "Updated"} ${timestamp.toLocaleTimeString("en-GB", {timeZone: siteTimezone(), hour: "2-digit", minute: "2-digit"})}` : "Waiting for data");
 }
 
 function resetSiteView() {
+  clearSupplierSelections();
+  if ($("supplierAgile").open) $("supplierAgile").close();
+  supplierView = null;
+  supplierRequest++;
   resetPowerPerksView();
   currentOverview = null;
   pendingSetting = null;
