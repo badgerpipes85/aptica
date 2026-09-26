@@ -7,8 +7,8 @@
   <meta name="description" content="Secure MAP Energy portal for Premium users.">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src https://powerwake-backend-production.mapenergy.workers.dev https://powerwake-backend-staging.mapenergy.workers.dev; base-uri 'none'; form-action 'self'">
   <title>MAP Energy Portal</title>
-  <link rel="stylesheet" href="portal.css">
-  <script src="portal.js" defer></script>
+  <link rel="stylesheet" href="portal.css?v=2">
+  <script src="portal.js?v=2" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#portal-main">Skip to portal content</a>
@@ -20,6 +20,7 @@
       <img src="/map-energy/assets/map-energy-portal-logo.png" alt="">
       <span><strong>MAP Energy</strong><small>Web Portal</small></span>
     </a>
+    <span id="portalBadge" class="portal-access hidden">Premium · Read only</span>
     <button id="headerSignOut" class="button button-quiet hidden" type="button">Sign out</button>
   </header>
 
@@ -51,11 +52,14 @@
       <header class="workspace-header">
         <div>
           <span class="eyebrow">Your home energy</span>
-          <h1 id="pageTitle">Live energy</h1>
+          <h1 id="pageTitle" tabindex="-1">Live energy</h1>
           <p id="pageSubtitle">A real-time view of power moving through your home</p>
-          <div class="header-meta"><span id="updatedAt">Connecting…</span></div>
+          <div class="header-meta"><span id="updatedAt" role="status">Connecting…</span><span id="siteTimezone"></span></div>
         </div>
-        <label class="site-picker"><span>Energy Site</span><select id="siteSelect" aria-label="Energy Site"></select></label>
+        <div class="workspace-tools">
+          <label class="site-picker"><span>Energy site</span><select id="siteSelect" aria-label="Energy site"></select></label>
+          <button id="refreshButton" class="button button-quiet refresh-button" type="button" aria-label="Refresh current view"><svg aria-hidden="true"><use href="/map-energy/assets/map-energy-icons.svg#history"></use></svg><span>Refresh</span></button>
+        </div>
       </header>
 
       <aside class="glass sidebar" aria-label="Portal navigation">
@@ -69,11 +73,14 @@
       </aside>
 
       <div class="workspace">
+        <div id="pageLoading" class="loading-state hidden" role="status"><span class="loading-dot"></span> Updating your energy data…</div>
+        <div id="noSite" class="empty-state glass hidden"><h2>Connect your energy system</h2><p>Connect Tesla and select an energy site in the MAP Energy app, then refresh the portal.</p><a href="/map-energy/documentation/getting-started.html">Connection guide →</a></div>
         <div id="appError" class="notice notice-error hidden" role="alert"></div>
 
         <section id="page-live" class="page active">
           <article class="glass live-card">
             <div class="live-card-head">
+              <div><span class="eyebrow">Right now</span><h2 class="live-title">Your energy flow</h2></div>
               <span id="livePill" class="live-pill"><i></i><span>Live</span></span>
             </div>
 
@@ -90,14 +97,15 @@
                 <g data-from="grid" data-to="ev"><line class="flow-base" x1="70" y1="82" x2="17" y2="39"></line><line class="flow-pulse" pathLength="100" x1="70" y1="82" x2="17" y2="39"></line></g>
                 <g data-from="grid" data-to="battery"><line class="flow-base" x1="70" y1="82" x2="30" y2="82"></line><line class="flow-pulse" pathLength="100" x1="70" y1="82" x2="30" y2="82"></line></g>
               </svg>
-              <button class="energy-node solar" data-node="solar" type="button"><svg class="node-icon"><use href="/map-energy/assets/map-energy-icons.svg#solar"></use></svg><span class="node-reading"><strong id="solarKw">--</strong><small>kW</small></span></button>
-              <button class="energy-node ev" data-node="ev" type="button"><svg class="node-icon"><use href="/map-energy/assets/map-energy-icons.svg#car"></use></svg><span class="node-reading"><strong id="evNodeKw">--</strong><small>kW</small></span></button>
-              <button class="energy-node home" data-node="home" type="button"><svg class="node-icon"><use href="/map-energy/assets/map-energy-icons.svg#home"></use></svg><span class="node-reading"><strong id="homeKw">--</strong><small>kW</small></span></button>
-              <button class="energy-node battery" data-node="battery" type="button"><svg class="node-icon"><use href="/map-energy/assets/map-energy-icons.svg#battery"></use></svg><span class="node-reading"><strong id="batteryPowerKw">--</strong><small>kW</small></span></button>
-              <button class="energy-node grid" data-node="grid" type="button"><svg class="node-icon"><use href="/map-energy/assets/map-energy-icons.svg#bolt"></use></svg><span class="node-reading"><strong id="gridKw">--</strong><small>kW</small></span></button>
+              <button class="energy-node solar" data-node="solar" type="button" aria-label="View Solar history"><svg class="node-icon"><use href="/map-energy/assets/map-energy-icons.svg#solar"></use></svg><span class="node-reading"><strong id="solarKw">--</strong><small>kW</small></span><span class="node-label">Solar</span></button>
+              <button class="energy-node ev" data-node="ev" type="button" aria-label="View EV history"><svg class="node-icon"><use href="/map-energy/assets/map-energy-icons.svg#car"></use></svg><span class="node-reading"><strong id="evNodeKw">--</strong><small>kW</small></span><span class="node-label">EV</span></button>
+              <button class="energy-node home" data-node="home" type="button" aria-label="View Home history"><svg class="node-icon"><use href="/map-energy/assets/map-energy-icons.svg#home"></use></svg><span class="node-reading"><strong id="homeKw">--</strong><small>kW</small></span><span class="node-label">Home</span></button>
+              <button class="energy-node battery" data-node="battery" type="button" aria-label="View Powerwall history"><svg class="node-icon"><use href="/map-energy/assets/map-energy-icons.svg#battery"></use></svg><span class="node-reading"><strong id="batteryPowerKw">--</strong><small>kW</small></span><span class="node-label">Powerwall</span></button>
+              <button class="energy-node grid" data-node="grid" type="button" aria-label="View Grid history"><svg class="node-icon"><use href="/map-energy/assets/map-energy-icons.svg#bolt"></use></svg><span class="node-reading"><strong id="gridKw">--</strong><small>kW</small></span><span class="node-label">Grid</span></button>
             </div>
 
             <div class="live-details">
+              <div class="section-caption"><span>Today at a glance</span><span id="batteryState">Waiting for data</span></div>
               <div class="today-grid">
                 <div class="summary-metric solar"><svg><use href="/map-energy/assets/map-energy-icons.svg#solar"></use></svg><div><span>Solar Today</span><strong><b id="solarToday">--</b><small>kWh</small></strong></div></div>
                 <div class="summary-metric battery"><svg><use href="/map-energy/assets/map-energy-icons.svg#battery"></use></svg><div><span>Battery SOC</span><strong><b id="batterySummarySoc">--</b><small>%</small></strong></div></div>
@@ -105,6 +113,7 @@
                 <div class="summary-metric export"><svg><use href="/map-energy/assets/map-energy-icons.svg#export"></use></svg><div><span>Export Today</span><strong><b id="exportToday">--</b><small>kWh</small></strong></div></div>
               </div>
               <div id="liveState" class="energy-state"><svg><use id="liveStateIcon" href="/map-energy/assets/map-energy-icons.svg#bolt"></use></svg><span id="liveStateText">Monitoring live home energy flow</span></div>
+              <div class="section-caption"><span>Powerwall settings</span><span>Manage in the app</span></div>
               <div class="control-grid">
                 <div id="backupCard" class="control-card green"><span><svg><use href="/map-energy/assets/map-energy-icons.svg#shield"></use></svg>Backup</span><strong id="backupReserve">--</strong></div>
                 <div id="modeCard" class="control-card blue"><span><svg><use href="/map-energy/assets/map-energy-icons.svg#mode"></use></svg>Mode</span><strong id="operationMode">--</strong></div>
@@ -113,21 +122,22 @@
             </div>
           </article>
 
-          <article id="nodeChart" class="glass panel hidden">
+          <p class="flow-hint">Select an energy node to explore today's readings.</p>
+          <dialog id="nodeChart" class="glass chart-dialog" aria-labelledby="nodeChartTitle">
             <div class="panel-heading"><div><span class="eyebrow">Today</span><h2 id="nodeChartTitle">Energy</h2><p id="nodeChartSub">30-minute intervals</p></div><button id="closeNodeChart" class="button button-quiet" type="button">Close</button></div>
-            <div id="nodeChartBars" class="chart-bars"></div>
-          </article>
+            <div id="nodeChartBars" class="node-timeline" role="status"></div>
+          </dialog>
 
         </section>
 
-        <section id="page-supplier" class="page"><div id="supplierCards" class="content-grid"></div></section>
-        <section id="page-history" class="page"><div id="historyList" class="stack"></div></section>
-        <section id="page-automations" class="page"><div id="automationList" class="stack"></div></section>
-        <section id="page-settings" class="page"><div id="settingsCards" class="content-grid"></div></section>
+        <section id="page-supplier" class="page" aria-label="Supplier tariffs"><div id="supplierCards" class="content-grid"></div></section>
+        <section id="page-history" class="page" aria-label="Energy history"><div class="view-note"><span>Last 7 completed days</span><span>Select a day for details</span></div><div id="historyList" class="stack"></div></section>
+        <section id="page-automations" class="page" aria-label="Automations"><p class="view-description">Review your rules and recent activity. Create or change automations in the MAP Energy app.</p><div id="automationList" class="stack"></div></section>
+        <section id="page-settings" class="page" aria-label="Settings"><p class="view-description">Your connected services at a glance. Manage connections in the MAP Energy app.</p><div id="settingsCards" class="content-grid"></div></section>
       </div>
     </section>
   </main>
 
-  <footer class="portal-footer"><span>© <span id="year"></span> Aptica Ltd</span><span>Protected MAP Energy Premium access</span></footer>
+  <footer class="portal-footer"><span>© <span id="year"></span> Aptica Ltd</span><nav aria-label="Help and policies"><a href="/map-energy/documentation/">Help</a><a href="/map-energy/privacy/">Privacy</a><a href="/map-energy/terms/">Terms</a></nav></footer>
 </body>
 </html>

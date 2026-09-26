@@ -9,6 +9,12 @@ const SESSION_KEY = `map_energy_portal_session_${isStaging ? "staging" : "produc
 const SITE_KEY = `map_energy_portal_site_${isStaging ? "staging" : "production"}`;
 let accessToken = sessionStorage.getItem(SESSION_KEY) || "";
 let currentOverview = null;
+let contextVersion = 0;
+let viewRequest = 0;
+let chartRequest = 0;
+let overviewRequest = 0;
+let activePage = "live";
+let lastUpdated = null;
 
 const $ = id => document.getElementById(id);
 const nf = new Intl.NumberFormat("en-GB", { maximumFractionDigits: 2 });
@@ -46,13 +52,18 @@ function friendlyError(error) {
 }
 
 async function api(path, options = {}) {
+  const version = contextVersion;
   const headers = { Accept: "application/json", ...(options.headers || {}) };
   if (options.body) headers["Content-Type"] = "application/json";
   if (accessToken) headers.Authorization = `Bearer ${accessToken}`;
   const response = await fetch(`${API_BASE}${path}`, { ...options, headers, cache: "no-store" });
   const data = await response.json().catch(() => ({}));
+  if (version !== contextVersion) throw new DOMException("Site changed", "AbortError");
   if (!response.ok) {
-    if (response.status === 401 && path !== "/v1/web-auth/login") clearSession();
+    if (response.status === 401 && path !== "/v1/web-auth/login") {
+      clearSession();
+      showLogin("Your session has ended. Please sign in again.");
+    }
     throw new Error(data.message || data.error || `Request failed (${response.status})`);
   }
   return data;
@@ -64,11 +75,15 @@ function saveSession(token) {
 }
 
 function clearSession() {
+  contextVersion++;
+  resetSiteView();
   accessToken = "";
   sessionStorage.removeItem(SESSION_KEY);
 }
 
 function showLogin(message = "") {
+  $("portalBadge").classList.add("hidden");
+  if ($("nodeChart").open) $("nodeChart").close();
   document.body.classList.remove("portal-active");
   $("loginView").classList.remove("hidden");
   $("appView").classList.add("hidden");
@@ -77,6 +92,7 @@ function showLogin(message = "") {
 }
 
 function showApp() {
+  $("portalBadge").classList.remove("hidden");
   document.body.classList.add("portal-active");
   $("loginView").classList.add("hidden");
   $("appView").classList.remove("hidden");
@@ -84,47 +100,47 @@ function showApp() {
 }
 
 function fmtKw(value) {
-  const number = Number(value);
+  const number = value == null || value === "" ? NaN : Number(value);
   return Number.isFinite(number) ? (Math.abs(number) >= 10 ? nf1.format(number) : nf.format(number)) : "--";
 }
 
 function fmtKwh(value) {
-  const number = Number(value);
+  const number = value == null || value === "" ? NaN : Number(value);
   return Number.isFinite(number) ? `${nf1.format(number)} kWh` : "--";
 }
 
 function fmtNodeKw(value, absolute = false) {
-  const number = Number(value);
+  const number = value == null || value === "" ? NaN : Number(value);
   if (!Number.isFinite(number)) return "--";
   return nodeNumber.format(absolute ? Math.abs(number) : number);
 }
 
 function fmtKwhNumber(value) {
-  const number = Number(value);
+  const number = value == null || value === "" ? NaN : Number(value);
   return Number.isFinite(number) ? nf1.format(number) : "--";
 }
 
 function fmtRate(value) {
-  const number = Number(value);
+  const number = value == null || value === "" ? NaN : Number(value);
   return Number.isFinite(number) ? `${nf1.format(number)}p/kWh` : "--";
 }
 
 function fmtMoney(value) {
-  const number = Number(value);
+  const number = value == null || value === "" ? NaN : Number(value);
   return Number.isFinite(number) ? new Intl.NumberFormat("en-GB", { style: "currency", currency: "GBP" }).format(number) : "--";
 }
 
 function fmtTime(value) {
-  const number = Number(value);
+  const number = value == null || value === "" ? NaN : Number(value);
   return Number.isFinite(number) && number > 0
-    ? new Date(number * 1000).toLocaleString("en-GB", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })
+    ? new Date(number * 1000).toLocaleString("en-GB", { timeZone: siteTimezone(), day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })
     : "--";
 }
 
 function fmtDate(value, fallback = "--") {
-  const number = Number(value);
+  const number = value == null || value === "" ? NaN : Number(value);
   return Number.isFinite(number) && number > 0
-    ? new Date(number * 1000).toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" })
+    ? new Date(number * 1000).toLocaleDateString("en-GB", { timeZone: siteTimezone(), weekday: "short", day: "numeric", month: "short" })
     : fallback;
 }
 
@@ -273,7 +289,7 @@ async function exchangeAppLink() {
     showError("loginError", friendlyError(error));
   } finally {
     params.delete("portal_token");
-    params.delete("environment");
+    // Keep the staging selector so a reload uses the same session environment.
     const cleanUrl = `${window.location.pathname}${params.toString() ? `?${params}` : ""}${window.location.hash}`;
     window.history.replaceState({}, "", cleanUrl);
   }
@@ -298,14 +314,16 @@ async function loadSites() {
   const saved = sessionStorage.getItem(SITE_KEY);
   if (saved && (data.sites || []).some(site => site.site_key === saved)) select.value = saved;
   if (!select.value && data.sites?.[0]) select.value = data.sites[0].site_key;
-  if (!select.value) showError("appError", "No energy sites are connected to this MAP Energy account.");
+  $("noSite").classList.toggle("hidden", !!select.value);
+  $("refreshButton").disabled = false;
   return select.value;
 }
 
 async function loadOverview(siteKey) {
   if (!siteKey) return;
-  showError("appError", "");
+  const request = ++overviewRequest;
   const data = await api(`/v1/web/overview?site_key=${encodeURIComponent(siteKey)}`);
+  if (request !== overviewRequest) return;
   currentOverview = data;
   const live = data.live || {};
   const hasLive = live.source === "tesla_live_status";
@@ -319,7 +337,7 @@ async function loadOverview(siteKey) {
   setText("gridKw", hasLive ? fmtNodeKw(live.grid_kw) : "--");
   setText("evNodeKw", hasLive ? fmtNodeKw(live.ev_kw) : "--");
   setText("batteryPowerKw", hasLive ? fmtNodeKw(live.battery_kw, true) : "--");
-  const soc = hasLive && Number.isFinite(Number(live.battery_soc)) ? Math.round(Number(live.battery_soc)) : null;
+  const soc = hasLive && live.battery_soc != null && Number.isFinite(Number(live.battery_soc)) ? Math.round(Number(live.battery_soc)) : null;
   setText("batterySummarySoc", soc ?? "--");
   setText("solarToday", fmtKwhNumber(data.today?.solar_kwh));
   setText("importToday", fmtKwhNumber(data.today?.import_kwh));
@@ -329,9 +347,15 @@ async function loadOverview(siteKey) {
   setText("exportRule", prettyExport(data.tesla_settings?.export_rule));
   const flows = allocateLiveFlows(live);
   const insight = liveInsight(live, flows);
-  setText("liveStateText", insight.text);
+  setText("liveStateText", hasLive ? insight.text : "Live readings are unavailable. Check your Tesla connection in the MAP Energy app.");
+  setText("batteryState", !hasLive || live.battery_kw == null ? "No live battery data" : live.battery_kw > .05 ? "Battery discharging" : live.battery_kw < -.05 ? "Battery charging" : "Battery idle");
+  document.querySelector(".energy-node.grid").classList.toggle("exporting", hasLive && live.grid_kw < -.05);
+  for (const node of ["solar", "home", "grid", "battery", "ev"]) {
+    const value = hasLive ? fmtNodeKw(live[`${node}_kw`], node === "battery") : "--";
+    document.querySelector(`[data-node="${node}"]`).setAttribute("aria-label", `${nodeLabel(node)}: ${value} kW. View today's history`);
+  }
   $("liveState").classList.remove("blue", "yellow", "green", "neutral");
-  $("liveState").classList.add(insight.tone);
+  $("liveState").classList.add(hasLive ? insight.tone : "neutral");
   $("liveStateIcon").setAttribute("href", `/map-energy/assets/map-energy-icons.svg#${insight.icon}`);
   setCardTone("backupCard", "green");
   setCardTone("modeCard", ({ autonomous: "blue", self_consumption: "green", backup: "red" })[String(data.tesla_settings?.operation_mode || "").toLowerCase()] || "grey");
@@ -341,7 +365,9 @@ async function loadOverview(siteKey) {
   setText("telemetryAge", data.connection?.last_telemetry_age_seconds == null ? "--" : `${Math.round(data.connection.last_telemetry_age_seconds / 60)} min`);
   setText("automationCount", data.automations?.active_count ?? 0);
   setText("automationRuns", data.automations?.recent_runs ?? 0);
-  setText("updatedAt", `Updated ${new Date().toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" })}`);
+  if (activePage === "live") showError("appError", "");
+  lastUpdated = new Date();
+  updateTimestamp();
   const pill = $("livePill");
   pill.classList.toggle("offline", !hasLive);
   pill.querySelector("span").textContent = hasLive ? "Live" : "Not live";
@@ -349,34 +375,49 @@ async function loadOverview(siteKey) {
 }
 
 function nodeLabel(node) {
-  return ({ solar: "Solar generation", home: "Home usage", grid: "Grid energy", battery: "Battery charge", ev: "EV charging" })[node] || "Energy";
+  return ({ solar: "Solar generation", home: "Home usage", grid: "Net grid energy", battery: "Battery charge", ev: "EV charging" })[node] || "Energy";
 }
 
 function nodeValue(slot, node) {
-  if (node === "solar") return Number(slot.solar_kwh) || 0;
-  if (node === "home") return Number(slot.home_kwh) || 0;
-  if (node === "grid") return Math.max(Number(slot.import_kwh) || 0, Number(slot.export_kwh) || 0);
-  if (node === "battery") return Number(slot.battery_soc);
-  if (node === "ev") return Number(slot.ev_kw) || 0;
-  return 0;
+  const value = node === "grid"
+    ? (slot.import_kwh == null && slot.export_kwh == null ? null : Number(slot.import_kwh || 0) - Number(slot.export_kwh || 0))
+    : slot[{ solar: "solar_kwh", home: "home_kwh", battery: "battery_soc", ev: "ev_kw" }[node]];
+  return value == null ? NaN : Number(value);
 }
 
 async function loadNodeChart(node) {
   const siteKey = $("siteSelect").value;
   if (!siteKey || !currentOverview?.day_start_utc) return;
-  const data = await api(`/v1/web/history-day?site_key=${encodeURIComponent(siteKey)}&day_start_utc=${encodeURIComponent(currentOverview.day_start_utc)}`);
-  const slots = data.slots || [];
-  const values = slots.map(slot => nodeValue(slot, node)).filter(Number.isFinite);
-  const max = Math.max(.01, ...values);
+  const request = ++chartRequest;
   setText("nodeChartTitle", nodeLabel(node));
-  setText("nodeChartSub", `Today in 30-minute intervals · ${node === "battery" ? "%" : node === "ev" ? "kW" : "kWh"}`);
-  $("nodeChartBars").innerHTML = slots.map(slot => {
-    const value = nodeValue(slot, node);
-    const height = Number.isFinite(value) ? Math.max(3, value / max * 150) : 3;
-    return `<i class="chart-bar ${escapeHtml(node)}" style="height:${height.toFixed(0)}px"></i>`;
-  }).join("");
-  $("nodeChart").classList.remove("hidden");
-  $("nodeChart").scrollIntoView({ behavior: "smooth", block: "nearest" });
+  setText("nodeChartSub", `Today · ${siteTimezone()} · ${node === "grid" ? "Net import above / net export below zero" : "30-minute readings"}`);
+  $("nodeChartBars").innerHTML = '<div class="empty">Loading readings…</div>';
+  if (!$("nodeChart").open) $("nodeChart").showModal();
+  try {
+    const data = await api(`/v1/web/history-day?site_key=${encodeURIComponent(siteKey)}&day_start_utc=${encodeURIComponent(currentOverview.day_start_utc)}`);
+    if (request !== chartRequest || !$("nodeChart").open) return;
+    const slots = data.slots || [];
+    const unit = node === "battery" ? "%" : node === "ev" ? "kW" : "kWh";
+    const values = slots.map(slot => nodeValue(slot, node));
+    if (!values.some(Number.isFinite)) {
+      $("nodeChartBars").innerHTML = '<div class="empty">No readings available for this part of your system today.</div>';
+      return;
+    }
+    const limit = Math.max(.01, ...values.filter(Number.isFinite).map(Math.abs));
+    const negative = values.some(v => v < 0);
+    const baseline = negative ? 110 : 200;
+    const scale = negative ? 90 : 180;
+    const step = 600 / Math.max(slots.length, 1);
+    const bars = values.map((value, i) => {
+      if (!Number.isFinite(value)) return "";
+      const height = Math.abs(value) / limit * scale;
+      const label = slots[i].start_ts ? fmtTime(slots[i].start_ts) : `Interval ${i + 1}`;
+      return `<rect class="timeline-bar ${node}" x="${(i * step + 1).toFixed(2)}" y="${(value < 0 ? baseline : baseline - height).toFixed(2)}" width="${Math.max(1, step - 2).toFixed(2)}" height="${height.toFixed(2)}" rx="2"><title>${escapeHtml(label)}: ${nf1.format(value)} ${unit}</title></rect>`;
+    }).join("");
+    $("nodeChartBars").innerHTML = `<div class="chart-scale"><span>${nf1.format(limit)} ${unit}</span><span>${negative ? "±" : "From zero"}</span></div><svg class="timeline-svg" viewBox="0 0 600 220" role="img" aria-label="${escapeHtml(nodeLabel(node))} over ${slots.length} intervals"><line x1="0" x2="600" y1="${baseline}" y2="${baseline}" class="chart-baseline"/>${bars}</svg><div class="chart-scale"><span>Start of day</span><span>End of day</span></div>`;
+  } catch (error) {
+    if (error.name !== "AbortError" && request === chartRequest) $("nodeChartBars").innerHTML = `<div class="empty">${escapeHtml(friendlyError(error))}. Close and select the node to retry.</div>`;
+  }
 }
 
 function siteHalfHourIndex(timeZone) {
@@ -393,29 +434,31 @@ function siteHalfHourIndex(timeZone) {
 
 function tariffCard(tariff, timeZone) {
   const slots = Array.isArray(tariff.slots) ? tariff.slots : [];
-  const values = slots.map(Number).filter(Number.isFinite);
+  const values = slots.filter(value => value != null).map(Number).filter(Number.isFinite);
   const min = values.length ? Math.min(...values) : 0;
   const max = values.length ? Math.max(...values) : 1;
   const range = Math.max(Math.abs(min), Math.abs(max), .01);
   const currentIndex = siteHalfHourIndex(timeZone);
   const isExport = tariff.kind === "export";
   const bars = slots.map((value, index) => {
-    const number = Number(value);
+    const number = value == null || value === "" ? NaN : Number(value);
     const height = Number.isFinite(number) ? Math.max(5, Math.abs(number) / range * 116) : 0;
     let band = isExport ? "export" : "mid";
     if (!isExport && number <= min + .01) band = "offpeak";
     if (!isExport && number >= max - .01 && max > min + .01) band = "peak";
     if (number < 0) band = "negative";
+    if (!Number.isFinite(number)) band = "missing";
     const heightClass = `h${Math.max(0, Math.min(20, Math.round(height / 6)))}`;
     return `<i class="tariff-bar ${band} ${heightClass} ${index === currentIndex ? "current" : ""}" title="${escapeHtml(fmtRate(number))}"></i>`;
   }).join("");
   const title = isExport ? "Export" : "Import";
   const accent = isExport ? "export" : "import";
-  const currentRate = Number.isFinite(Number(slots[currentIndex])) ? Number(slots[currentIndex]) : tariff.current_rate_pence;
+  const currentRate = slots[currentIndex] != null && Number.isFinite(Number(slots[currentIndex])) ? Number(slots[currentIndex]) : tariff.current_rate_pence;
   const source = tariff.display_name || ({ edf: "EDF", octopus: "Octopus Energy", amber: "Amber Electric", comed: "ComEd", manual: "Custom tariff" })[String(tariff.source || "").toLowerCase()] || tariff.source || "Supplier tariff";
   return `<article class="glass supplier-card ${accent}">
     <div class="tariff-heading"><span class="tariff-icon"><svg><use href="/map-energy/assets/map-energy-icons.svg#${isExport ? "export" : "import"}"></use></svg></span><div><h2>${title}</h2><p>${escapeHtml(source)}</p></div></div>
     <div class="tariff-chart"><div class="tariff-bars">${bars}</div><div class="tariff-axis"><span>00</span><span>06</span><span>12</span><span>18</span><span>23</span></div></div>
+    <div class="chart-legend">${isExport ? '<span class="legend-rate">Export rate</span>' : '<span class="legend-low">Low / negative</span><span class="legend-high">Highest</span>'}<span class="legend-now">Current interval</span></div>
     <div class="tariff-footer"><div><strong>${escapeHtml(fmtRate(tariff.lowest_rate_pence))}</strong><small>Lowest today</small></div><div class="current-rate"><strong>${escapeHtml(fmtRate(currentRate))}</strong><small>Current rate</small></div></div>
     <div class="tariff-updated">Highest ${escapeHtml(fmtRate(tariff.highest_rate_pence))} · Updated ${escapeHtml(fmtTime(tariff.updated_at))}</div>
   </article>`;
@@ -427,9 +470,11 @@ async function loadSupplier(siteKey) {
 }
 
 async function loadHistory(siteKey) {
+  const version = contextVersion;
   const data = await api(`/v1/web/history?site_key=${encodeURIComponent(siteKey)}`);
   const days = Array.isArray(data.days) ? data.days.slice(0, 7) : [];
   const details = await Promise.all(days.map(day => api(`/v1/web/history-day?site_key=${encodeURIComponent(siteKey)}&day_start_utc=${encodeURIComponent(day.day_start_utc)}`).catch(() => null)));
+  if (version !== contextVersion) return;
   $("historyList").innerHTML = days.length ? days.map((day, index) => {
     const detailSlots = details[index]?.slots || [];
     const costs = detailSlots.reduce((result, slot) => ({
@@ -437,10 +482,10 @@ async function loadHistory(siteKey) {
       exported: result.exported + (Number(slot.export_revenue) || 0)
     }), { imported: 0, exported: 0 });
     const hasCosts = detailSlots.some(slot => slot.import_cost != null || slot.export_revenue != null);
-    return `<article class="glass history-day clickable" data-day="${escapeHtml(day.day_start_utc)}">
-    <div class="history-day-head"><span class="history-calendar"><svg><use href="/map-energy/assets/map-energy-icons.svg#calendar"></use></svg></span><div><strong>${escapeHtml(fmtDate(day.first_ts, day.date_utc))}</strong><small>Daily energy summary</small></div><span class="history-chevron">›</span></div>
-    <div class="history-metrics"><div class="import"><span><svg><use href="/map-energy/assets/map-energy-icons.svg#import"></use></svg>Import</span><strong>${escapeHtml(fmtKwh(day.import_kwh))}</strong></div><div class="solar"><span><svg><use href="/map-energy/assets/map-energy-icons.svg#solar"></use></svg>PV</span><strong>${escapeHtml(fmtKwh(day.solar_kwh))}</strong></div><div class="export"><span><svg><use href="/map-energy/assets/map-energy-icons.svg#export"></use></svg>Export</span><strong>${escapeHtml(fmtKwh(day.export_kwh))}</strong></div><div class="net"><span>Net cost</span><strong>${hasCosts ? escapeHtml(fmtMoney(costs.imported - costs.exported)) : "--"}</strong></div></div>
-  </article>`;
+    return `<button type="button" class="glass history-day clickable" data-day="${escapeHtml(day.day_start_utc)}">
+    <span class="history-day-head"><span class="history-calendar"><svg><use href="/map-energy/assets/map-energy-icons.svg#calendar"></use></svg></span><span><strong>${escapeHtml(fmtDate(day.first_ts, day.date_utc))}</strong><small>Daily energy summary</small></span><span class="history-chevron">›</span></span>
+    <span class="history-metrics"><span class="import"><span><svg><use href="/map-energy/assets/map-energy-icons.svg#import"></use></svg>Import</span><strong>${escapeHtml(fmtKwh(day.import_kwh))}</strong></span><span class="solar"><span><svg><use href="/map-energy/assets/map-energy-icons.svg#solar"></use></svg>PV</span><strong>${escapeHtml(fmtKwh(day.solar_kwh))}</strong></span><span class="export"><span><svg><use href="/map-energy/assets/map-energy-icons.svg#export"></use></svg>Export</span><strong>${escapeHtml(fmtKwh(day.export_kwh))}</strong></span><span class="net"><span>Net cost</span><strong>${hasCosts ? escapeHtml(fmtMoney(costs.imported - costs.exported)) : "--"}</strong></span></span>
+  </button>`;
   }).join("") : `<div class="empty">No completed energy history is available yet.</div>`;
   document.querySelectorAll("[data-day]").forEach(element => element.addEventListener("click", () => loadHistoryDay(siteKey, element.dataset.day).catch(handlePageError)));
 }
@@ -465,10 +510,11 @@ async function loadHistoryDay(siteKey, dayStart) {
     const exportHeight = Math.max(0, Math.min(20, Math.round(exported / maxFlow * 20)));
     return `<i><b class="history-import h${importHeight}"></b><b class="history-export h${exportHeight}"></b></i>`;
   }).join("");
+  const hasCosts = slots.some(slot => slot.import_cost != null || slot.export_revenue != null);
   const net = totals.importCost - totals.exportRevenue;
   $("historyList").innerHTML = `<article class="glass history-detail"><div class="history-detail-head"><div><span class="eyebrow">Daily detail</span><h2>${escapeHtml(fmtDate(data.day_start_utc))}</h2><p>${escapeHtml(fmtKwh(energyTotals.importKwh))} imported · ${escapeHtml(fmtKwh(energyTotals.solarKwh))} solar</p></div><button id="closeDay" class="button button-quiet" type="button">Close</button></div>
     <section class="history-flow"><div class="history-section-title"><span class="history-chart-icon">▥</span><div><strong>30-minute grid flow</strong><small>Import and export by slot</small></div></div><div class="history-flow-chart">${bars}</div><div class="tariff-axis"><span>00</span><span>06</span><span>12</span><span>18</span><span>23</span></div></section>
-    <section class="history-summary"><div class="history-section-title"><span class="history-calendar"><svg><use href="/map-energy/assets/map-energy-icons.svg#bolt"></use></svg></span><div><strong>Energy Summary</strong><small>Costs and energy totals</small></div></div><div class="history-summary-grid"><div class="import"><span>Import kWh</span><strong>${escapeHtml(fmtKwh(energyTotals.importKwh))}</strong></div><div class="export"><span>Export kWh</span><strong>${escapeHtml(fmtKwh(energyTotals.exportKwh))}</strong></div><div class="import"><span>Import cost</span><strong>${escapeHtml(fmtMoney(totals.importCost))}</strong></div><div class="export"><span>Export value</span><strong>${escapeHtml(fmtMoney(totals.exportRevenue))}</strong></div><div><span>Solar</span><strong>${escapeHtml(fmtKwh(energyTotals.solarKwh))}</strong></div><div><span>Net</span><strong>${escapeHtml(fmtMoney(net))}</strong></div></div></section></article>`;
+    <section class="history-summary"><div class="history-section-title"><span class="history-calendar"><svg><use href="/map-energy/assets/map-energy-icons.svg#bolt"></use></svg></span><div><strong>Energy Summary</strong><small>Energy costs exclude standing charges</small></div></div><div class="history-summary-grid"><div class="import"><span>Import kWh</span><strong>${escapeHtml(fmtKwh(energyTotals.importKwh))}</strong></div><div class="export"><span>Export kWh</span><strong>${escapeHtml(fmtKwh(energyTotals.exportKwh))}</strong></div><div class="import"><span>Import cost</span><strong>${hasCosts ? escapeHtml(fmtMoney(totals.importCost)) : "--"}</strong></div><div class="export"><span>Export value</span><strong>${hasCosts ? escapeHtml(fmtMoney(totals.exportRevenue)) : "--"}</strong></div><div><span>Solar</span><strong>${escapeHtml(fmtKwh(energyTotals.solarKwh))}</strong></div><div><span>Net</span><strong>${hasCosts ? escapeHtml(fmtMoney(net)) : "--"}</strong></div></div></section></article>`;
   $("closeDay").addEventListener("click", () => loadHistory(siteKey).catch(handlePageError));
 }
 
@@ -497,8 +543,9 @@ function actionText(action) {
   if (action?.type === "tesla_export") return `Export → ${{ pv_only: "Solar Only", battery_ok: "Everything", never: "Nothing", no_export: "Nothing" }[action.export_policy] || action.export_policy || "Unknown"}`;
   if (action?.type === "set_op_mode") return `Mode → ${{ autonomous: "Savings", self_consumption: "Self-Powered", backup: "Backup" }[action.op_mode] || action.op_mode || "Unknown"}`;
   if (action?.type === "set_grid_charging") return `Grid charging → ${action.enabled ? "ON" : "OFF"}`;
+  if (action?.type === "home_assistant_event") return "Send a Home Assistant event";
   if (action?.type === "notification_only") return "Send notification";
-  return "Unknown action";
+  return String(action?.type || "Action").replaceAll("_", " ");
 }
 
 function runSummary(run) {
@@ -525,8 +572,10 @@ function dayKeyAndLabel(timestamp, timezone) {
   const date = new Date(Number(timestamp) * 1000);
   const key = date.toLocaleDateString("en-CA", { timeZone: timezone });
   const today = new Date().toLocaleDateString("en-CA", { timeZone: timezone });
-  const yesterdayDate = new Date(); yesterdayDate.setDate(yesterdayDate.getDate() - 1);
-  const yesterday = yesterdayDate.toLocaleDateString("en-CA", { timeZone: timezone });
+  const parts = new Intl.DateTimeFormat("en-CA", {timeZone: timezone, year: "numeric", month: "2-digit", day: "2-digit"}).formatToParts(new Date());
+  const part = type => Number(parts.find(item => item.type === type).value);
+  const yesterdayDate = new Date(Date.UTC(part("year"), part("month") - 1, part("day") - 1, 12));
+  const yesterday = yesterdayDate.toLocaleDateString("en-CA", {timeZone: "UTC"});
   return { key, label: key === today ? "Today" : key === yesterday ? "Yesterday" : date.toLocaleDateString("en-GB", { day: "numeric", month: "short", timeZone: timezone }) };
 }
 
@@ -535,12 +584,24 @@ async function loadAutomations(siteKey) {
   const rules = data.automations || [];
   const history = data.history || [];
   const smart = data.smart_charging;
-  const smartCard = smart ? `<article class="smart-scheduling-card"><span class="smart-scheduling-icon"><svg><use href="/map-energy/assets/map-energy-icons.svg#car"></use></svg></span><div><h2>${escapeHtml(smart.title)}</h2><p>${escapeHtml(smart.summary)}</p></div><span class="readonly-toggle ${smart.enabled ? "on" : ""}" role="switch" aria-checked="${smart.enabled}" aria-disabled="true"><i></i></span></article>` : "";
+  const smartCard = smart ? `<article class="smart-scheduling-card"><span class="smart-scheduling-icon"><svg><use href="/map-energy/assets/map-energy-icons.svg#car"></use></svg></span><div><h2>${escapeHtml(smart.title)}</h2><p>${escapeHtml(smart.summary)}</p></div><span class="automation-status ${smart.enabled ? "active" : "paused"}">${smart.enabled ? "Enabled" : "Paused"}</span></article>` : "";
   const rulesContent = rules.length ? `<div class="automation-rules">${rules.map(ruleCard).join("")}</div>` : `<div class="automation-empty"><span><svg><use href="/map-energy/assets/map-energy-icons.svg#automation"></use></svg></span><h2>${smart ? "No other automations yet" : "No automations yet"}</h2><p>${smart ? "Create another automation in the MAP Energy app." : "Create your first automation in the MAP Energy app."}</p></div>`;
   const groups = new Map();
   history.forEach(run => { const day = dayKeyAndLabel(run.executed_at, data.timezone); const group = groups.get(day.key) || { label: day.label, runs: [] }; group.runs.push(run); groups.set(day.key, group); });
   const historyContent = history.length ? Array.from(groups.values()).map(group => `<section class="run-day"><header><h3>${escapeHtml(group.label)}</h3><span>${group.runs.length}</span></header><div>${group.runs.map(run => runCard(run, data.timezone)).join("")}</div></section>`).join("") : `<div class="automation-empty compact"><h2>No automation history yet</h2><p>Executed automations will appear here.</p></div>`;
-  $("automationList").innerHTML = `<div class="automation-config">${smartCard}${rulesContent}</div><article class="run-log"><div class="run-log-heading"><span><svg><use href="/map-energy/assets/map-energy-icons.svg#history"></use></svg></span><div><h2>Run Log</h2><p>${history.length} automation run${history.length === 1 ? "" : "s"} recorded.</p></div></div>${historyContent}</article>`;
+  $("automationList").innerHTML = `<div class="automation-overview"><div><strong>${rules.filter(rule => !rule.paused).length}</strong><span>Active rules</span></div><div><strong>${rules.filter(rule => rule.paused).length}</strong><span>Paused</span></div><div><strong>${history.filter(run => ["failed", "error", "partial", "blocked"].includes(run.status)).length}</strong><span>Runs to review</span></div></div><div class="automation-config">${smartCard}${rulesContent}</div><article class="run-log"><div class="run-log-heading"><span><svg><use href="/map-energy/assets/map-energy-icons.svg#history"></use></svg></span><div><h2>Run Log</h2><p>${history.length} recent run${history.length === 1 ? "" : "s"}</p></div></div><div class="segmented" aria-label="Filter automation activity"><button type="button" data-run-filter="all" aria-pressed="true">All activity</button><button type="button" data-run-filter="attention" aria-pressed="false">Needs attention</button></div>${historyContent}<p id="noAttention" class="empty hidden">No failed, partial or blocked runs in this history.</p></article>`;
+  document.querySelectorAll("[data-run-filter]").forEach(button => button.addEventListener("click", () => {
+    const attention = button.dataset.runFilter === "attention";
+    document.querySelectorAll("[data-run-filter]").forEach(item => item.setAttribute("aria-pressed", String(item === button)));
+    let visible = 0;
+    document.querySelectorAll(".automation-run-card").forEach(card => {
+      const show = !attention || ["failed", "error", "partial", "blocked"].some(status => card.classList.contains(status));
+      card.classList.toggle("hidden", !show);
+      if (show) visible++;
+    });
+    document.querySelectorAll(".run-day").forEach(day => day.classList.toggle("hidden", !day.querySelector(".automation-run-card:not(.hidden)")));
+    $("noAttention").classList.toggle("hidden", !attention || visible > 0);
+  }));
 }
 
 function settingsCard(title, eyebrow, rows) {
@@ -551,7 +612,7 @@ async function loadSettings(siteKey) {
   const data = await api(`/v1/web/settings?site_key=${encodeURIComponent(siteKey)}`);
   const imported = data.supplier?.import;
   const exported = data.supplier?.export;
-  $("settingsCards").innerHTML = settingsCard("Portal access", "Account", [["Access", "Premium"], ["Portal mode", "Read only"], ["Selected site", $("siteSelect").selectedOptions[0]?.textContent]]) + settingsCard("Site configuration", "Energy", [["Timezone", data.timezone], ["EV charger", data.ev_charger_type]]) + settingsCard("Tesla connection", "Inverter", [["Status", data.tesla?.status || "Not connected"], ["Health", data.tesla?.health], ["Site ID", data.tesla?.site_id_suffix], ["Last error", data.tesla?.last_error]]) + settingsCard("Energy supplier", "Tariffs", [["Import", imported ? imported.display_name || imported.source : "--"], ["Export", exported ? exported.display_name || exported.source : "--"]]) + settingsCard("Tesla tariff sync", "Sync", [["Enabled", data.tesla_tariff_sync?.enabled ? "Yes" : "No"], ["Last synced", fmtTime(data.tesla_tariff_sync?.last_synced_at)], ["Last reason", data.tesla_tariff_sync?.last_sync_reason], ["Last error", data.tesla_tariff_sync?.last_error]]);
+  $("settingsCards").innerHTML = settingsCard("Portal access", "Account", [["Access", "Premium"], ["Portal mode", "Read only"], ["Selected site", $("siteSelect").selectedOptions[0]?.textContent]]) + settingsCard("Site configuration", "Energy", [["Timezone", data.timezone], ["EV charger", ({wallConnector: "Tesla Wall Connector", zappi: "myenergi Zappi", hypervolt: "Hypervolt", ohme: "Ohme", none: "Not connected"})[data.ev_charger_type] || data.ev_charger_type]]) + settingsCard("Tesla connection", "Inverter", [["Status", data.tesla?.status || "Not connected"], ["Health", data.tesla?.health], ["Site ID", data.tesla?.site_id_suffix], ["Last error", data.tesla?.last_error]]) + settingsCard("Energy supplier", "Tariffs", [["Import", imported ? imported.display_name || imported.source : "--"], ["Export", exported ? exported.display_name || exported.source : "--"]]) + settingsCard("Tesla tariff sync", "Sync", [["Enabled", data.tesla_tariff_sync?.enabled ? "Yes" : "No"], ["Last synced", fmtTime(data.tesla_tariff_sync?.last_synced_at)], ["Last reason", data.tesla_tariff_sync?.last_sync_reason], ["Last error", data.tesla_tariff_sync?.last_error]]);
 }
 
 const pageCopy = {
@@ -562,33 +623,93 @@ const pageCopy = {
   settings: ["Portal settings", "A read-only summary of your site configuration"]
 };
 
-async function showPage(page) {
-  document.querySelectorAll(".nav-button").forEach(button => button.classList.toggle("active", button.dataset.page === page));
+function siteTimezone() {
+  return currentOverview?.timezone || currentOverview?.site?.timezone || "UTC";
+}
+
+function updateTimestamp() {
+  setText("updatedAt", lastUpdated ? `Updated ${lastUpdated.toLocaleTimeString("en-GB", {hour: "2-digit", minute: "2-digit"})}` : "Waiting for data");
+}
+
+function resetSiteView() {
+  currentOverview = null;
+  lastUpdated = null;
+  overviewRequest++;
+  chartRequest++;
+  if ($("nodeChart").open) $("nodeChart").close();
+  for (const id of ["solarKw", "homeKw", "gridKw", "evNodeKw", "batteryPowerKw", "batterySummarySoc", "solarToday", "importToday", "exportToday", "backupReserve", "operationMode", "exportRule"]) setText(id, "--");
+  for (const id of ["supplierCards", "historyList", "automationList", "settingsCards"]) $(id).replaceChildren();
+  setText("siteTimezone", "");
+  setText("batteryState", "Waiting for data");
+  setText("liveStateText", "Waiting for your site's energy readings…");
+  $("livePill").classList.add("offline");
+  $("livePill").querySelector("span").textContent = "Connecting";
+  updateFlows({}, false);
+  updateTimestamp();
+}
+
+async function showPage(page, { refreshOverview = false, focus = false } = {}) {
+  if (!pageCopy[page]) page = "live";
+  activePage = page;
+  const request = ++viewRequest;
+  document.querySelectorAll(".nav-button").forEach(button => {
+    const selected = button.dataset.page === page;
+    button.classList.toggle("active", selected);
+    if (selected) button.setAttribute("aria-current", "page");
+    else button.removeAttribute("aria-current");
+  });
   document.querySelectorAll(".page").forEach(section => section.classList.toggle("active", section.id === `page-${page}`));
-  const copy = pageCopy[page] || pageCopy.live;
-  setText("pageTitle", copy[0]);
-  setText("pageSubtitle", copy[1]);
+  setText("pageTitle", pageCopy[page][0]);
+  setText("pageSubtitle", pageCopy[page][1]);
+  if (focus) $("pageTitle").focus({ preventScroll: true });
   const siteKey = $("siteSelect").value;
-  if (!siteKey) return;
-  if (page === "supplier") await loadSupplier(siteKey);
-  if (page === "history") await loadHistory(siteKey);
-  if (page === "automations") await loadAutomations(siteKey);
-  if (page === "settings") await loadSettings(siteKey);
+  if (!siteKey) {
+    document.querySelectorAll(".page").forEach(section => section.classList.remove("active"));
+    return;
+  }
+  showError("appError", "");
+  $("pageLoading").classList.remove("hidden");
+  document.querySelector(".workspace").setAttribute("aria-busy", "true");
+  $("refreshButton").disabled = true;
+  try {
+    if (refreshOverview) await loadOverview(siteKey);
+    if (page === "supplier") await loadSupplier(siteKey);
+    if (page === "history") await loadHistory(siteKey);
+    if (page === "automations") await loadAutomations(siteKey);
+    if (page === "settings") await loadSettings(siteKey);
+  } catch (error) {
+    if (request === viewRequest) handlePageError(error);
+  } finally {
+    if (request === viewRequest) {
+      $("pageLoading").classList.add("hidden");
+      document.querySelector(".workspace").setAttribute("aria-busy", "false");
+      $("refreshButton").disabled = false;
+    }
+  }
 }
 
 function handlePageError(error) {
-  showError("appError", friendlyError(error));
+  if (error.name === "AbortError") return;
+  showError("appError", `${friendlyError(error)} Use Refresh to try again.`);
+  if (activePage === "live") {
+    $("livePill").classList.add("offline");
+    $("livePill").querySelector("span").textContent = "Not updating";
+    updateFlows({}, false);
+    setText("liveStateText", "Connection interrupted. Readings may be out of date. Refresh to reconnect.");
+  }
 }
 
 async function boot() {
-  if (!accessToken) return showLogin();
+  if (!accessToken) return showLogin($("loginError").textContent);
   try {
     await api("/v1/web/me");
+    resetSiteView();
     showApp();
     const siteKey = await loadSites();
-    await loadOverview(siteKey);
+    if (siteKey) await showPage(location.hash.slice(1) || "live", {refreshOverview: true});
+    else document.querySelectorAll(".page").forEach(page => page.classList.remove("active"));
   } catch (error) {
-    showLogin(friendlyError(error));
+    if (error.name !== "AbortError") showLogin(friendlyError(error));
   }
 }
 
@@ -596,22 +717,28 @@ document.addEventListener("DOMContentLoaded", async () => {
   setText("year", new Date().getFullYear());
   $("loginForm").addEventListener("submit", signIn);
   $("headerSignOut").addEventListener("click", signOut);
-  $("closeNodeChart").addEventListener("click", () => $("nodeChart").classList.add("hidden"));
+  $("closeNodeChart").addEventListener("click", () => $("nodeChart").close());
+  $("nodeChart").addEventListener("close", () => chartRequest++);
   document.querySelectorAll(".energy-node").forEach(button => button.addEventListener("click", () => loadNodeChart(button.dataset.node).catch(handlePageError)));
-  document.querySelectorAll(".nav-button").forEach(button => button.addEventListener("click", () => showPage(button.dataset.page).catch(handlePageError)));
+  document.querySelectorAll(".nav-button").forEach(button => button.addEventListener("click", () => {
+    history.replaceState({}, "", `#${button.dataset.page}`);
+    showPage(button.dataset.page, { focus: true });
+  }));
+  $("refreshButton").addEventListener("click", () => $("siteSelect").value ? showPage(activePage, {refreshOverview: true}) : boot());
   $("siteSelect").addEventListener("change", async event => {
+    contextVersion++;
     sessionStorage.setItem(SITE_KEY, event.target.value);
-    $("nodeChart").classList.add("hidden");
-    try {
-      await loadOverview(event.target.value);
-      const activePage = document.querySelector(".nav-button.active")?.dataset.page || "live";
-      if (activePage !== "live") await showPage(activePage);
-    } catch (error) { handlePageError(error); }
+    resetSiteView();
+    await showPage(activePage, {refreshOverview: true});
   });
   await exchangeAppLink();
   await boot();
-  window.setInterval(() => {
+  let refreshing = false;
+  window.setInterval(async () => {
     const siteKey = $("siteSelect").value;
-    if (siteKey && !$("appView").classList.contains("hidden")) loadOverview(siteKey).catch(handlePageError);
+    if (!siteKey || document.hidden || refreshing || $("appView").classList.contains("hidden") || $("refreshButton").disabled) return;
+    refreshing = true;
+    try { await loadOverview(siteKey); } catch (error) { handlePageError(error); }
+    finally { refreshing = false; }
   }, 30000);
 });
