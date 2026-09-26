@@ -12,7 +12,7 @@
 
   <meta
     name="description"
-    content="Learn how MAP Energy automations can control your Powerwall, respond to battery and EV events, monitor energy conditions and automate your home energy system."
+    content="Learn how MAP Energy automations can control your Powerwall, respond to EV charging, smart tariffs and energy conditions, send Home Assistant webhooks and automate your home energy system."
   >
 
   <style>
@@ -616,7 +616,7 @@
     }
 
     .example-type {
-      flex: 0 0 58px;
+      flex: 0 0 62px;
 
       color: rgba(160, 184, 219, 0.65);
 
@@ -625,6 +625,249 @@
 
       letter-spacing: 0.06em;
       text-transform: uppercase;
+    }
+
+
+    /* =========================================================
+       SMART TARIFF CARDS
+       ========================================================= */
+
+    .smart-grid {
+      display: grid;
+
+      grid-template-columns: repeat(3, 1fr);
+
+      gap: 14px;
+
+      margin-top: 24px;
+    }
+
+    .smart-card {
+      padding: 21px;
+
+      border-radius: 19px;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(7, 23, 49, 0.82),
+          rgba(4, 13, 29, 0.76)
+        );
+
+      border:
+        1px solid rgba(68, 137, 235, 0.20);
+    }
+
+    .smart-badge {
+      display: inline-block;
+
+      margin-bottom: 13px;
+
+      padding: 5px 9px;
+
+      border-radius: 999px;
+
+      color: #5ca8ff;
+
+      background: rgba(47, 126, 242, 0.14);
+
+      border:
+        1px solid rgba(68, 145, 255, 0.20);
+
+      font-size: 10px;
+      font-weight: 800;
+
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .smart-card p {
+      margin: 0;
+
+      color: rgba(208, 219, 235, 0.73);
+
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+
+    /* =========================================================
+       HOME ASSISTANT
+       ========================================================= */
+
+    .ha-box {
+      margin-top: 25px;
+
+      padding: 24px;
+
+      border-radius: 21px;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(18, 77, 125, 0.34),
+          rgba(6, 34, 61, 0.46)
+        );
+
+      border:
+        1px solid rgba(69, 160, 224, 0.28);
+    }
+
+    .ha-heading {
+      display: flex;
+
+      align-items: center;
+
+      gap: 12px;
+
+      margin-bottom: 15px;
+    }
+
+    .ha-icon {
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      width: 38px;
+      height: 38px;
+
+      flex: 0 0 auto;
+
+      border-radius: 12px;
+
+      color: #ffffff;
+
+      background:
+        rgba(42, 153, 225, 0.22);
+
+      border:
+        1px solid rgba(76, 177, 239, 0.30);
+
+      font-size: 18px;
+    }
+
+    .ha-heading-text {
+      color: #ffffff;
+
+      font-size: 17px;
+      font-weight: 760;
+    }
+
+    .ha-box p {
+      margin-bottom: 14px;
+    }
+
+    .ha-box p:last-child {
+      margin-bottom: 0;
+    }
+
+
+    /* =========================================================
+       PAYLOAD
+       ========================================================= */
+
+    .payload {
+      margin-top: 22px;
+
+      overflow: hidden;
+
+      border-radius: 19px;
+
+      background: rgba(2, 9, 21, 0.86);
+
+      border:
+        1px solid rgba(97, 147, 215, 0.20);
+    }
+
+    .payload-header {
+      display: flex;
+
+      align-items: center;
+      justify-content: space-between;
+
+      padding: 13px 17px;
+
+      background:
+        rgba(18, 42, 76, 0.64);
+
+      border-bottom:
+        1px solid rgba(255, 255, 255, 0.07);
+    }
+
+    .payload-title {
+      color: rgba(224, 233, 246, 0.90);
+
+      font-size: 12px;
+      font-weight: 750;
+    }
+
+    .payload-badge {
+      color: #59a8ff;
+
+      font-size: 10px;
+      font-weight: 800;
+
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    pre {
+      margin: 0;
+
+      padding: 20px;
+
+      overflow-x: auto;
+
+      color: rgba(221, 232, 245, 0.88);
+
+      font-family:
+        "SFMono-Regular",
+        Consolas,
+        "Liberation Mono",
+        Menlo,
+        monospace;
+
+      font-size: 12px;
+      line-height: 1.65;
+
+      white-space: pre;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .payload-summary {
+      display: grid;
+
+      grid-template-columns: 115px 1fr;
+
+      gap: 8px 14px;
+
+      margin-top: 20px;
+
+      padding: 18px;
+
+      border-radius: 17px;
+
+      background:
+        rgba(4, 13, 29, 0.58);
+
+      border:
+        1px solid rgba(255, 255, 255, 0.07);
+
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .payload-key {
+      color: rgba(148, 174, 210, 0.66);
+
+      font-weight: 700;
+    }
+
+    .payload-value {
+      color: rgba(229, 235, 245, 0.88);
+
+      word-break: break-word;
     }
 
 
@@ -834,7 +1077,8 @@
         font-size: 15px;
       }
 
-      .feature-grid {
+      .feature-grid,
+      .smart-grid {
         grid-template-columns: 1fr;
       }
 
@@ -870,6 +1114,19 @@
       .mappy-tip-image {
         width: 55px;
         height: 55px;
+      }
+
+      .payload-summary {
+        grid-template-columns: 1fr;
+        gap: 3px;
+      }
+
+      .payload-key {
+        margin-top: 8px;
+      }
+
+      pre {
+        font-size: 11px;
       }
 
     }
@@ -950,9 +1207,9 @@
 
         <p class="hero-description">
           Automations let MAP Energy respond to schedules, battery
-          levels, EV charging, electricity prices and energy conditions
-          automatically — giving you greater control over how and when
-          your energy system operates.
+          levels, EV charging, smart tariff events and energy
+          conditions automatically — or pass those events into
+          Home Assistant to extend your automations across your home.
         </p>
 
       </div>
@@ -1072,6 +1329,7 @@
           run your automation.
         </p>
 
+
         <div class="feature-grid">
 
 
@@ -1189,6 +1447,109 @@
 
 
 
+      <!-- SMART TARIFF / EVENT AUTOMATIONS -->
+
+      <section>
+
+        <h2>
+          Smart tariff &amp; supplier events
+        </h2>
+
+        <p>
+          MAP Energy can also use supported smart tariff and supplier
+          events as part of your energy automation strategy.
+        </p>
+
+        <p>
+          Where a compatible supplier, tariff or feature has been
+          detected, MAP Energy can provide dedicated automation options
+          so that your Powerwall or connected services can respond to
+          those events automatically.
+        </p>
+
+
+        <div class="smart-grid">
+
+
+          <div class="smart-card">
+
+            <span class="smart-badge">
+              Octopus Energy
+            </span>
+
+            <h3>
+              Intelligent Octopus Go
+            </h3>
+
+            <p>
+              Enable MAP Energy automation behaviour around supported
+              Intelligent Octopus Go smart charging periods.
+            </p>
+
+          </div>
+
+
+          <div class="smart-card">
+
+            <span class="smart-badge">
+              EDF Energy
+            </span>
+
+            <h3>
+              Smart Bolt-On
+            </h3>
+
+            <p>
+              Respond to supported EDF Smart Bolt-On charging events,
+              including the start and end of smart charging.
+            </p>
+
+          </div>
+
+
+          <div class="smart-card">
+
+            <span class="smart-badge">
+              EDF Energy
+            </span>
+
+            <h3>
+              Power Perks
+            </h3>
+
+            <p>
+              Use supported EDF Power Perks events within MAP Energy
+              when Power Perks automation is enabled.
+            </p>
+
+          </div>
+
+
+        </div>
+
+
+        <div class="info-box">
+
+          <div class="info-icon">
+            i
+          </div>
+
+          <span class="info-title">
+            Availability depends on your account
+          </span>
+
+          <p>
+            Smart tariff and supplier automation options are shown
+            where MAP Energy has the required supplier connection,
+            tariff information or supported feature for your account.
+          </p>
+
+        </div>
+
+      </section>
+
+
+
       <!-- CONDITIONS -->
 
       <section>
@@ -1199,7 +1560,7 @@
 
         <p>
           A trigger tells MAP Energy when something has happened.
-          Conditions can then provide an additional check before the
+          Conditions can provide an additional check before the
           configured action is allowed to run.
         </p>
 
@@ -1208,6 +1569,7 @@
           automation is allowed to operate or prevent an action when
           another energy condition is not suitable.
         </p>
+
 
         <div class="example">
 
@@ -1252,6 +1614,7 @@
           </div>
 
         </div>
+
 
         <p style="margin-top:20px;">
           Time windows can also be used where available so that an
@@ -1389,6 +1752,25 @@
           </div>
 
 
+          <div class="feature-card">
+
+            <div class="feature-icon">
+              ⌂
+            </div>
+
+            <h3>
+              Home Assistant Webhook
+            </h3>
+
+            <p>
+              Send the automation event to your connected Home
+              Assistant instance so that Home Assistant can respond
+              using its own automations, devices and services.
+            </p>
+
+          </div>
+
+
         </div>
 
 
@@ -1404,10 +1786,387 @@
 
           <p>
             Some triggers and actions require a compatible Powerwall,
-            tariff, EV charger or other connected service. MAP Energy
-            only presents options that are applicable to the
-            integrations available to your account.
+            tariff, EV charger, Home Assistant connection or other
+            connected service. MAP Energy only presents options that
+            are applicable to the integrations available to your
+            account.
           </p>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- HOME ASSISTANT -->
+
+      <section>
+
+        <h2>
+          Home Assistant webhooks
+        </h2>
+
+        <p>
+          If you have connected Home Assistant to MAP Energy, a
+          <strong>Home Assistant Webhook</strong> can be selected as
+          an automation action.
+        </p>
+
+        <p>
+          Instead of changing a Powerwall setting directly, MAP Energy
+          sends information about the event to your Home Assistant
+          webhook. Home Assistant can then use that information as the
+          starting point for its own automation.
+        </p>
+
+
+        <div class="ha-box">
+
+          <div class="ha-heading">
+
+            <div class="ha-icon">
+              ⌂
+            </div>
+
+            <span class="ha-heading-text">
+              MAP Energy → Home Assistant
+            </span>
+
+          </div>
+
+          <p>
+            This allows a MAP Energy event to extend beyond your
+            Powerwall. For example, Home Assistant could respond by
+            controlling another compatible device, running a scene,
+            sending its own notification or starting another Home
+            Assistant automation.
+          </p>
+
+        </div>
+
+
+        <div class="example">
+
+          <span class="example-label">
+            Example
+          </span>
+
+          <div class="example-row">
+
+            <span class="example-type">
+              When
+            </span>
+
+            <span>
+              EDF Smart Bolt-On smart charging starts
+            </span>
+
+          </div>
+
+          <div class="example-row">
+
+            <span class="example-type">
+              Then
+            </span>
+
+            <span>
+              Send a Home Assistant webhook event
+            </span>
+
+          </div>
+
+          <div class="example-row">
+
+            <span class="example-type">
+              HA
+            </span>
+
+            <span>
+              Home Assistant receives
+              <strong>map_energy_smart_charging_started</strong>
+            </span>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- HOME ASSISTANT PAYLOAD -->
+
+      <section>
+
+        <h2>
+          What does Home Assistant receive?
+        </h2>
+
+        <p>
+          MAP Energy sends a structured payload containing information
+          about the automation, trigger and event that caused the
+          webhook to be sent.
+        </p>
+
+        <p>
+          The following is an anonymised example of a webhook generated
+          when an EDF Smart Bolt-On smart charging session started.
+        </p>
+
+
+        <div class="payload-summary">
+
+          <div class="payload-key">
+            Event
+          </div>
+
+          <div class="payload-value">
+            map_energy_smart_charging_started
+          </div>
+
+
+          <div class="payload-key">
+            Message
+          </div>
+
+          <div class="payload-value">
+            EDF Smart Bolt-On smart charging started.
+          </div>
+
+
+          <div class="payload-key">
+            Automation
+          </div>
+
+          <div class="payload-value">
+            Smart Bolt-On Start
+          </div>
+
+
+          <div class="payload-key">
+            Action
+          </div>
+
+          <div class="payload-value">
+            home_assistant_event
+          </div>
+
+
+          <div class="payload-key">
+            Trigger
+          </div>
+
+          <div class="payload-value">
+            EV — starts_charging
+          </div>
+
+
+          <div class="payload-key">
+            Source
+          </div>
+
+          <div class="payload-value">
+            map_energy
+          </div>
+
+        </div>
+
+
+        <div class="payload">
+
+          <div class="payload-header">
+
+            <span class="payload-title">
+              Example webhook payload
+            </span>
+
+            <span class="payload-badge">
+              JSON
+            </span>
+
+          </div>
+
+<pre>{
+  "schema_version": 1,
+  "type": "map_energy.automation_event",
+  "source": "map_energy",
+
+  "event": "map_energy_smart_charging_started",
+  "event_name": "map_energy_smart_charging_started",
+
+  "event_id": "example-event-id",
+
+  "occurred_at": "2026-09-25T23:01:48.421Z",
+
+  "site_key": "example-site-key",
+
+  "automation": {
+    "name": "Smart Bolt-On Start",
+    "action_type": "home_assistant_event",
+    "grouped": true
+  },
+
+  "trigger": {
+    "type": "ev",
+    "event": "starts_charging"
+  },
+
+  "message": "EDF Smart Bolt-On smart charging started.",
+
+  "data": {}
+}</pre>
+
+        </div>
+
+
+        <div class="info-box">
+
+          <div class="info-icon">
+            i
+          </div>
+
+          <span class="info-title">
+            Identifiers shown above are examples
+          </span>
+
+          <p>
+            The event ID and site key in this documentation have been
+            replaced with example values. Your webhook payload will
+            contain identifiers generated for the actual MAP Energy
+            event and site.
+          </p>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- HA PAYLOAD FIELDS -->
+
+      <section>
+
+        <h2>
+          Understanding the webhook payload
+        </h2>
+
+        <p>
+          The payload is designed to give Home Assistant enough context
+          to decide what should happen next.
+        </p>
+
+
+        <div class="feature-grid">
+
+
+          <div class="feature-card">
+
+            <h3>
+              event
+            </h3>
+
+            <p>
+              A machine-readable MAP Energy event name that can be
+              used to identify what happened.
+            </p>
+
+          </div>
+
+
+          <div class="feature-card">
+
+            <h3>
+              message
+            </h3>
+
+            <p>
+              A human-readable description of the event.
+            </p>
+
+          </div>
+
+
+          <div class="feature-card">
+
+            <h3>
+              automation
+            </h3>
+
+            <p>
+              Information about the MAP Energy automation that
+              generated the webhook.
+            </p>
+
+          </div>
+
+
+          <div class="feature-card">
+
+            <h3>
+              trigger
+            </h3>
+
+            <p>
+              Describes the trigger type and, where applicable, the
+              specific event that caused the automation to run.
+            </p>
+
+          </div>
+
+
+          <div class="feature-card">
+
+            <h3>
+              occurred_at
+            </h3>
+
+            <p>
+              The timestamp showing when the MAP Energy event
+              occurred.
+            </p>
+
+          </div>
+
+
+          <div class="feature-card">
+
+            <h3>
+              data
+            </h3>
+
+            <p>
+              Additional event-specific information can be provided
+              here when required.
+            </p>
+
+          </div>
+
+
+        </div>
+
+
+        <div class="mappy-tip">
+
+          <img
+            src="mappy-docs.PNG"
+            alt="Mappy"
+            class="mappy-tip-image"
+          >
+
+          <div>
+
+            <span class="mappy-tip-title">
+              Mappy tip
+            </span>
+
+            <p>
+              The event name is particularly useful when building
+              Home Assistant automations. It gives you a predictable
+              value that can be checked before deciding which Home
+              Assistant action should run.
+            </p>
+
+          </div>
 
         </div>
 
@@ -1425,7 +2184,8 @@
 
         <p>
           Automations can be combined in different ways depending on
-          how you use your Powerwall, EV and electricity tariff.
+          how you use your Powerwall, EV, electricity tariff and
+          connected services.
         </p>
 
 
@@ -1520,7 +2280,7 @@
             </span>
 
             <span>
-              Adjust the backup reserve to encourage charging
+              Adjust the Powerwall settings for your charging strategy
             </span>
 
           </div>
@@ -1531,7 +2291,7 @@
         <div class="example">
 
           <span class="example-label">
-            React to battery level
+            Smart charging into Home Assistant
           </span>
 
           <div class="example-row">
@@ -1541,7 +2301,7 @@
             </span>
 
             <span>
-              Powerwall state of charge crosses your selected threshold
+              A supported smart charging event begins
             </span>
 
           </div>
@@ -1553,7 +2313,20 @@
             </span>
 
             <span>
-              Change a Powerwall setting or send a notification
+              Send the event to Home Assistant
+            </span>
+
+          </div>
+
+          <div class="example-row">
+
+            <span class="example-type">
+              HA
+            </span>
+
+            <span>
+              Run your own Home Assistant automation or control
+              another connected device
             </span>
 
           </div>
@@ -1587,7 +2360,8 @@
             </span>
 
             <span>
-              Change the configured Powerwall setting
+              Change the configured Powerwall setting or send the
+              event to Home Assistant
             </span>
 
           </div>
@@ -1644,7 +2418,7 @@
 
 
 
-      <!-- GROUPED ACTIONS -->
+      <!-- MULTIPLE ACTIONS -->
 
       <section>
 
@@ -1653,15 +2427,21 @@
         </h2>
 
         <p>
-          Some energy strategies require more than one Powerwall
-          setting to change together.
+          Some energy strategies require more than one action to take
+          place together.
         </p>
 
         <p>
-          MAP Energy supports automations that can coordinate
-          compatible actions so that the required settings are applied
-          as part of the same automation run.
+          MAP Energy supports grouped automation behaviour where
+          compatible actions can be coordinated as part of the same
+          automation event.
         </p>
+
+        <p>
+          This can include Powerwall controls as well as connected
+          actions such as sending the event to Home Assistant.
+        </p>
+
 
         <div class="example">
 
@@ -1676,7 +2456,7 @@
             </span>
 
             <span>
-              Your scheduled cheap-rate period begins
+              Smart charging starts
             </span>
 
           </div>
@@ -1688,7 +2468,8 @@
             </span>
 
             <span>
-              Enable grid charging and adjust the backup reserve
+              Apply the configured Powerwall behaviour and send the
+              event to Home Assistant
             </span>
 
           </div>
@@ -1753,21 +2534,21 @@
       <section>
 
         <h2>
-          What happens if a command fails?
+          What happens if an action fails?
         </h2>
 
         <p>
-          MAP Energy relies on connected services such as Tesla and
-          supported EV or energy providers to carry out some
-          automation actions.
+          MAP Energy relies on connected services such as Tesla,
+          supported EV or energy providers and user-configured
+          integrations to carry out some automation actions.
         </p>
 
         <p>
           Temporary service availability, API errors or communication
-          problems can occasionally prevent a command from completing.
-          MAP Energy's automation service includes retry and execution
-          handling for supported actions, and the final result is
-          recorded in your automation history.
+          problems can occasionally prevent an action from completing.
+          MAP Energy includes execution and retry handling for supported
+          actions, and the result is recorded in your automation
+          history.
         </p>
 
         <p>
@@ -1780,7 +2561,7 @@
 
 
 
-      <!-- FAQ -->
+      <!-- APP OPEN -->
 
       <section>
 
@@ -1820,7 +2601,7 @@
 
         <p>
           You can also contact MAP Energy support if you need help
-          diagnosing an automation or connected device.
+          diagnosing an automation or connected service.
         </p>
 
       </section>
