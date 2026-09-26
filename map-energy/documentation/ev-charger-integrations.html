@@ -1,0 +1,2188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, viewport-fit=cover"
+  >
+
+  <title>EV Charger Integrations | MAP Energy</title>
+
+  <meta
+    name="description"
+    content="Connect supported EV chargers to MAP Energy including Tesla Wall Connector, myenergi Zappi, Hypervolt and Ohme. Use EV charging events with Powerwall automations and smart tariffs."
+  >
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-height: 100%;
+      background: #06101f;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "SF Pro Display",
+        "SF Pro Text",
+        "Segoe UI",
+        Roboto,
+        Helvetica,
+        Arial,
+        sans-serif;
+
+      color: #ffffff;
+
+      background:
+        linear-gradient(
+          180deg,
+          rgba(4, 11, 25, 0.18) 0%,
+          rgba(4, 11, 25, 0.42) 40%,
+          rgba(3, 8, 20, 0.72) 100%
+        ),
+        url("map-energy-docs-bg.PNG")
+        center top / cover fixed no-repeat;
+    }
+
+
+    /* =========================================================
+       PAGE
+       ========================================================= */
+
+    .page {
+      width: 100%;
+      max-width: 940px;
+
+      margin: 0 auto;
+
+      padding:
+        max(32px, env(safe-area-inset-top))
+        24px
+        max(70px, env(safe-area-inset-bottom));
+    }
+
+
+    /* =========================================================
+       HEADER
+       ========================================================= */
+
+    .brand-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      margin-bottom: 38px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+    }
+
+    .brand-logo {
+      width: 48px;
+      height: 48px;
+
+      object-fit: contain;
+
+      filter:
+        drop-shadow(
+          0 5px 14px rgba(0, 0, 0, 0.25)
+        );
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-name {
+      color: #ffffff;
+
+      font-size: 18px;
+      line-height: 1.1;
+
+      font-weight: 800;
+      letter-spacing: -0.01em;
+    }
+
+    .brand-subtitle {
+      margin-top: 4px;
+
+      color: rgba(204, 215, 231, 0.62);
+
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .support-pill {
+      padding: 9px 15px;
+
+      border-radius: 999px;
+
+      color: rgba(224, 235, 249, 0.85);
+
+      font-size: 12px;
+      font-weight: 700;
+
+      background: rgba(6, 18, 39, 0.58);
+
+      border:
+        1px solid rgba(116, 158, 218, 0.20);
+
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+
+
+    /* =========================================================
+       HERO
+       ========================================================= */
+
+    .hero {
+      position: relative;
+
+      display: flex;
+      align-items: center;
+
+      min-height: 320px;
+
+      padding: 38px 310px 38px 38px;
+
+      overflow: hidden;
+
+      border-radius: 30px;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(14, 36, 72, 0.90),
+          rgba(5, 16, 38, 0.88)
+        );
+
+      border:
+        1px solid rgba(81, 144, 232, 0.25);
+
+      box-shadow:
+        0 30px 90px rgba(0, 0, 0, 0.35),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+    }
+
+    .hero::before {
+      content: "";
+
+      position: absolute;
+
+      width: 350px;
+      height: 350px;
+
+      right: -80px;
+      top: -100px;
+
+      border-radius: 50%;
+
+      background:
+        radial-gradient(
+          circle,
+          rgba(29, 122, 255, 0.24),
+          transparent 68%
+        );
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      margin-bottom: 14px;
+
+      color: #59a8ff;
+
+      font-size: 12px;
+      font-weight: 800;
+
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow-dot {
+      width: 7px;
+      height: 7px;
+
+      border-radius: 50%;
+
+      background: #4294ff;
+
+      box-shadow:
+        0 0 12px rgba(66, 148, 255, 0.9);
+    }
+
+    h1 {
+      max-width: 540px;
+
+      margin: 0 0 17px;
+
+      color: #ffffff;
+
+      font-size: clamp(37px, 5.5vw, 53px);
+      line-height: 1.03;
+
+      letter-spacing: -0.04em;
+
+      font-weight: 850;
+    }
+
+    .hero-description {
+      max-width: 530px;
+
+      margin: 0;
+
+      color: rgba(221, 229, 241, 0.78);
+
+      font-size: 16px;
+      line-height: 1.65;
+    }
+
+    .mappy {
+      position: absolute;
+
+      z-index: 1;
+
+      right: 8px;
+      bottom: -28px;
+
+      width: 310px;
+      max-height: 330px;
+
+      object-fit: contain;
+      object-position: bottom center;
+
+      filter:
+        drop-shadow(
+          0 20px 25px rgba(0, 0, 0, 0.30)
+        );
+    }
+
+
+    /* =========================================================
+       CONTENT
+       ========================================================= */
+
+    .content-card {
+      margin-top: 22px;
+
+      padding: 38px;
+
+      border-radius: 30px;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(12, 29, 55, 0.88),
+          rgba(5, 13, 29, 0.90)
+        );
+
+      border:
+        1px solid rgba(93, 145, 220, 0.19);
+
+      box-shadow:
+        0 28px 80px rgba(0, 0, 0, 0.38),
+        inset 0 1px 0 rgba(255, 255, 255, 0.04);
+
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+    }
+
+    section + section {
+      margin-top: 46px;
+      padding-top: 42px;
+
+      border-top:
+        1px solid rgba(255, 255, 255, 0.075);
+    }
+
+    h2 {
+      margin: 0 0 17px;
+
+      color: #ffffff;
+
+      font-size: 25px;
+      line-height: 1.25;
+
+      letter-spacing: -0.018em;
+
+      font-weight: 780;
+    }
+
+    h3 {
+      margin: 0 0 8px;
+
+      color: #ffffff;
+
+      font-size: 17px;
+      font-weight: 750;
+    }
+
+    p {
+      margin: 0 0 17px;
+
+      color: rgba(226, 232, 242, 0.82);
+
+      font-size: 16px;
+      line-height: 1.72;
+    }
+
+    p:last-child {
+      margin-bottom: 0;
+    }
+
+    strong {
+      color: #ffffff;
+      font-weight: 720;
+    }
+
+
+    /* =========================================================
+       CHARGER CARDS
+       ========================================================= */
+
+    .charger-grid {
+      display: grid;
+
+      grid-template-columns: repeat(2, 1fr);
+
+      gap: 14px;
+
+      margin-top: 25px;
+    }
+
+    .charger-card {
+      position: relative;
+
+      padding: 23px;
+
+      overflow: hidden;
+
+      border-radius: 20px;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(7, 23, 49, 0.84),
+          rgba(4, 13, 29, 0.78)
+        );
+
+      border:
+        1px solid rgba(68, 137, 235, 0.21);
+    }
+
+    .charger-card::after {
+      content: "";
+
+      position: absolute;
+
+      width: 130px;
+      height: 130px;
+
+      right: -55px;
+      bottom: -65px;
+
+      border-radius: 50%;
+
+      background:
+        radial-gradient(
+          circle,
+          rgba(41, 129, 255, 0.12),
+          transparent 70%
+        );
+    }
+
+    .charger-badge {
+      display: inline-block;
+
+      margin-bottom: 12px;
+
+      padding: 5px 9px;
+
+      border-radius: 999px;
+
+      color: #5ca8ff;
+
+      background:
+        rgba(47, 126, 242, 0.14);
+
+      border:
+        1px solid rgba(68, 145, 255, 0.20);
+
+      font-size: 10px;
+      font-weight: 800;
+
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .charger-card p {
+      margin: 0;
+
+      color: rgba(208, 219, 235, 0.73);
+
+      font-size: 14px;
+      line-height: 1.58;
+    }
+
+
+    /* =========================================================
+       CAPABILITY ROWS
+       ========================================================= */
+
+    .capability-list {
+      margin-top: 24px;
+    }
+
+    .capability {
+      display: flex;
+
+      gap: 15px;
+
+      padding: 17px 0;
+
+      border-bottom:
+        1px solid rgba(255, 255, 255, 0.065);
+    }
+
+    .capability:last-child {
+      border-bottom: 0;
+    }
+
+    .capability-icon {
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      width: 37px;
+      height: 37px;
+
+      flex: 0 0 auto;
+
+      border-radius: 11px;
+
+      color: #ffffff;
+
+      background:
+        rgba(47, 126, 242, 0.20);
+
+      border:
+        1px solid rgba(68, 145, 255, 0.26);
+
+      font-size: 17px;
+    }
+
+    .capability-content {
+      padding-top: 2px;
+    }
+
+    .capability-title {
+      display: block;
+
+      margin-bottom: 4px;
+
+      color: #ffffff;
+
+      font-size: 15px;
+      font-weight: 750;
+    }
+
+    .capability-content p {
+      margin: 0;
+
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+
+    /* =========================================================
+       FLOW
+       ========================================================= */
+
+    .flow {
+      display: grid;
+
+      grid-template-columns: 1fr auto 1fr auto 1fr;
+
+      align-items: stretch;
+
+      gap: 10px;
+
+      margin-top: 25px;
+    }
+
+    .flow-card {
+      padding: 20px 14px;
+
+      text-align: center;
+
+      border-radius: 18px;
+
+      background:
+        rgba(5, 17, 37, 0.70);
+
+      border:
+        1px solid rgba(80, 139, 224, 0.18);
+    }
+
+    .flow-icon {
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      width: 34px;
+      height: 34px;
+
+      margin: 0 auto 10px;
+
+      border-radius: 11px;
+
+      color: #ffffff;
+
+      background: #347ff0;
+
+      font-size: 16px;
+      font-weight: 800;
+    }
+
+    .flow-title {
+      display: block;
+
+      color: #ffffff;
+
+      font-size: 13px;
+      font-weight: 750;
+    }
+
+    .flow-arrow {
+      display: flex;
+
+      align-items: center;
+
+      color: rgba(81, 154, 255, 0.75);
+
+      font-size: 20px;
+    }
+
+
+    /* =========================================================
+       EXAMPLES
+       ========================================================= */
+
+    .example {
+      margin-top: 18px;
+
+      padding: 20px;
+
+      border-radius: 19px;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(7, 22, 47, 0.80),
+          rgba(4, 12, 27, 0.76)
+        );
+
+      border:
+        1px solid rgba(91, 147, 230, 0.19);
+    }
+
+    .example-label {
+      display: block;
+
+      margin-bottom: 12px;
+
+      color: #52a0ff;
+
+      font-size: 11px;
+      font-weight: 800;
+
+      letter-spacing: 0.11em;
+      text-transform: uppercase;
+    }
+
+    .example-row {
+      display: flex;
+
+      gap: 10px;
+
+      margin-top: 9px;
+
+      color: rgba(226, 232, 242, 0.82);
+
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .example-type {
+      flex: 0 0 60px;
+
+      color: rgba(160, 184, 219, 0.65);
+
+      font-size: 11px;
+      font-weight: 800;
+
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+
+    /* =========================================================
+       CONNECTION STEPS
+       ========================================================= */
+
+    .steps {
+      margin-top: 24px;
+    }
+
+    .step {
+      display: flex;
+
+      gap: 17px;
+
+      padding: 17px 0;
+
+      border-bottom:
+        1px solid rgba(255, 255, 255, 0.065);
+    }
+
+    .step:last-child {
+      border-bottom: 0;
+    }
+
+    .step-number {
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      width: 34px;
+      height: 34px;
+
+      flex: 0 0 auto;
+
+      border-radius: 11px;
+
+      color: #ffffff;
+
+      background: #347ff0;
+
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .step-content {
+      padding-top: 4px;
+    }
+
+    .step-title {
+      display: block;
+
+      margin-bottom: 5px;
+
+      color: #ffffff;
+
+      font-size: 15px;
+      font-weight: 750;
+    }
+
+    .step-content p {
+      margin: 0;
+
+      font-size: 14px;
+    }
+
+
+    /* =========================================================
+       INFO BOX
+       ========================================================= */
+
+    .info-box {
+      position: relative;
+
+      margin: 24px 0 0;
+
+      padding: 22px 23px 22px 62px;
+
+      border-radius: 20px;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(20, 76, 162, 0.34),
+          rgba(7, 32, 76, 0.42)
+        );
+
+      border:
+        1px solid rgba(66, 145, 255, 0.35);
+    }
+
+    .info-icon {
+      position: absolute;
+
+      left: 21px;
+      top: 22px;
+
+      width: 27px;
+      height: 27px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 50%;
+
+      color: #ffffff;
+
+      background: #347ff0;
+
+      font-size: 15px;
+      font-weight: 850;
+    }
+
+    .info-title {
+      display: block;
+
+      margin-bottom: 5px;
+
+      color: #ffffff;
+
+      font-weight: 750;
+    }
+
+    .info-box p {
+      margin: 0;
+
+      font-size: 14px;
+    }
+
+
+    /* =========================================================
+       GREEN BOX
+       ========================================================= */
+
+    .success-box {
+      margin-top: 22px;
+
+      padding: 21px 22px;
+
+      border-radius: 19px;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(15, 104, 75, 0.28),
+          rgba(5, 42, 47, 0.34)
+        );
+
+      border:
+        1px solid rgba(58, 215, 155, 0.27);
+    }
+
+    .success-title {
+      display: block;
+
+      margin-bottom: 6px;
+
+      color: #44dda0;
+
+      font-size: 15px;
+      font-weight: 780;
+    }
+
+    .success-box p {
+      margin: 0;
+
+      font-size: 14px;
+    }
+
+
+    /* =========================================================
+       WARNING BOX
+       ========================================================= */
+
+    .warning-box {
+      margin-top: 22px;
+
+      padding: 21px 22px;
+
+      border-radius: 19px;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(139, 86, 20, 0.26),
+          rgba(67, 41, 8, 0.31)
+        );
+
+      border:
+        1px solid rgba(236, 166, 65, 0.25);
+    }
+
+    .warning-title {
+      display: block;
+
+      margin-bottom: 6px;
+
+      color: #f0b65b;
+
+      font-size: 15px;
+      font-weight: 780;
+    }
+
+    .warning-box p {
+      margin: 0;
+
+      font-size: 14px;
+    }
+
+
+    /* =========================================================
+       MAPPY TIP
+       ========================================================= */
+
+    .mappy-tip {
+      display: flex;
+      align-items: center;
+
+      gap: 18px;
+
+      margin-top: 26px;
+
+      padding: 18px 20px;
+
+      border-radius: 20px;
+
+      background:
+        rgba(4, 13, 29, 0.58);
+
+      border:
+        1px solid rgba(255, 255, 255, 0.075);
+    }
+
+    .mappy-tip-image {
+      width: 70px;
+      height: 70px;
+
+      flex: 0 0 auto;
+
+      object-fit: contain;
+    }
+
+    .mappy-tip-title {
+      display: block;
+
+      margin-bottom: 4px;
+
+      color: #ffffff;
+
+      font-size: 14px;
+      font-weight: 750;
+    }
+
+    .mappy-tip p {
+      margin: 0;
+
+      color: rgba(215, 224, 238, 0.74);
+
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+
+    /* =========================================================
+       FAQ
+       ========================================================= */
+
+    .faq-item {
+      padding: 22px 0;
+
+      border-bottom:
+        1px solid rgba(255, 255, 255, 0.07);
+    }
+
+    .faq-item:first-of-type {
+      padding-top: 5px;
+    }
+
+    .faq-item:last-child {
+      border-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .faq-question {
+      display: block;
+
+      margin-bottom: 8px;
+
+      color: #ffffff;
+
+      font-size: 16px;
+      font-weight: 760;
+    }
+
+    .faq-item p {
+      margin: 0;
+
+      font-size: 14px;
+    }
+
+
+    /* =========================================================
+       FOOTER
+       ========================================================= */
+
+    .footer {
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      gap: 9px;
+
+      padding: 30px 5px 0;
+
+      color: rgba(179, 192, 211, 0.48);
+
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .footer-logo {
+      width: 23px;
+      height: 23px;
+
+      object-fit: contain;
+
+      opacity: 0.72;
+    }
+
+
+    /* =========================================================
+       MOBILE
+       ========================================================= */
+
+    @media (max-width: 700px) {
+
+      body {
+        background-attachment: scroll;
+      }
+
+      .page {
+        padding-left: 15px;
+        padding-right: 15px;
+      }
+
+      .brand-header {
+        margin-bottom: 25px;
+      }
+
+      .brand-logo {
+        width: 42px;
+        height: 42px;
+      }
+
+      .brand-name {
+        font-size: 16px;
+      }
+
+      .support-pill {
+        padding: 8px 12px;
+        font-size: 11px;
+      }
+
+      .hero {
+        display: block;
+
+        min-height: 0;
+
+        padding: 27px 23px 0;
+
+        border-radius: 25px;
+      }
+
+      h1 {
+        font-size: 37px;
+      }
+
+      .hero-description {
+        font-size: 15px;
+      }
+
+      .mappy {
+        position: relative;
+
+        display: block;
+
+        right: auto;
+        bottom: auto;
+
+        width: 230px;
+
+        margin: 12px auto -18px;
+      }
+
+      .content-card {
+        margin-top: 16px;
+
+        padding: 27px 20px;
+
+        border-radius: 25px;
+      }
+
+      section + section {
+        margin-top: 36px;
+        padding-top: 34px;
+      }
+
+      h2 {
+        font-size: 22px;
+      }
+
+      p {
+        font-size: 15px;
+      }
+
+      .charger-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .flow {
+        grid-template-columns: 1fr;
+      }
+
+      .flow-arrow {
+        justify-content: center;
+
+        transform: rotate(90deg);
+      }
+
+      .mappy-tip {
+        align-items: flex-start;
+
+        padding: 16px;
+      }
+
+      .mappy-tip-image {
+        width: 55px;
+        height: 55px;
+      }
+
+    }
+
+
+    @media (max-width: 390px) {
+
+      .support-pill {
+        display: none;
+      }
+
+      h1 {
+        font-size: 33px;
+      }
+
+    }
+
+  </style>
+</head>
+
+
+<body>
+
+  <main class="page">
+
+
+    <!-- HEADER -->
+
+    <header class="brand-header">
+
+      <div class="brand">
+
+        <img
+          src="map-energy-logo.PNG"
+          alt="MAP Energy"
+          class="brand-logo"
+        >
+
+        <div class="brand-text">
+
+          <span class="brand-name">
+            MAP Energy
+          </span>
+
+          <span class="brand-subtitle">
+            Help &amp; Documentation
+          </span>
+
+        </div>
+
+      </div>
+
+      <div class="support-pill">
+        EV Charging
+      </div>
+
+    </header>
+
+
+
+    <!-- HERO -->
+
+    <section class="hero">
+
+      <div class="hero-content">
+
+        <div class="eyebrow">
+
+          <span class="eyebrow-dot"></span>
+
+          EV Charging
+
+        </div>
+
+        <h1>
+          EV Charger Integrations
+        </h1>
+
+        <p class="hero-description">
+          Connect a supported EV charger to MAP Energy so charging
+          can become part of your wider home energy system — including
+          Powerwall protection, smart tariff automations and EV
+          charging history.
+        </p>
+
+      </div>
+
+
+      <img
+        src="mappy-docs.PNG"
+        alt="Mappy, the MAP Energy assistant"
+        class="mappy"
+      >
+
+    </section>
+
+
+
+    <!-- CONTENT -->
+
+    <article class="content-card">
+
+
+      <!-- INTRODUCTION -->
+
+      <section>
+
+        <h2>
+          Why connect your EV charger?
+        </h2>
+
+        <p>
+          Your EV can be one of the largest electrical loads in your
+          home. Knowing when it starts and stops charging allows
+          MAP Energy to understand that load and coordinate your
+          Powerwall around it.
+        </p>
+
+        <p>
+          A supported charger connection can allow MAP Energy to
+          identify EV charging activity, display EV charging
+          information and use charging events as automation triggers.
+        </p>
+
+
+        <div class="flow">
+
+          <div class="flow-card">
+
+            <span class="flow-icon">
+              ⚡
+            </span>
+
+            <span class="flow-title">
+              EV starts charging
+            </span>
+
+          </div>
+
+          <div class="flow-arrow">
+            →
+          </div>
+
+          <div class="flow-card">
+
+            <span class="flow-icon">
+              ◉
+            </span>
+
+            <span class="flow-title">
+              MAP Energy detects it
+            </span>
+
+          </div>
+
+          <div class="flow-arrow">
+            →
+          </div>
+
+          <div class="flow-card">
+
+            <span class="flow-icon">
+              ✦
+            </span>
+
+            <span class="flow-title">
+              Your automation runs
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <div class="success-box">
+
+          <span class="success-title">
+            Protect your stored energy
+          </span>
+
+          <p>
+            One of the most useful EV automations is preventing your
+            Powerwall from supplying an EV charging session when you
+            would rather preserve that stored energy for your home.
+          </p>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- SUPPORTED CHARGERS -->
+
+      <section>
+
+        <h2>
+          Supported EV charger integrations
+        </h2>
+
+        <p>
+          MAP Energy supports several EV charging integrations.
+          The connection method and information available can differ
+          depending on the charger.
+        </p>
+
+
+        <div class="charger-grid">
+
+
+          <div class="charger-card">
+
+            <span class="charger-badge">
+              Tesla
+            </span>
+
+            <h3>
+              Tesla Wall Connector
+            </h3>
+
+            <p>
+              Integrate supported Tesla Wall Connector charging
+              information with MAP Energy for live EV power,
+              charging detection, history and EV-based automations.
+            </p>
+
+          </div>
+
+
+          <div class="charger-card">
+
+            <span class="charger-badge">
+              myenergi
+            </span>
+
+            <h3>
+              Zappi
+            </h3>
+
+            <p>
+              Connect a compatible myenergi Zappi so MAP Energy can
+              use available charging information as part of your
+              energy monitoring and automation setup.
+            </p>
+
+          </div>
+
+
+          <div class="charger-card">
+
+            <span class="charger-badge">
+              Hypervolt
+            </span>
+
+            <h3>
+              Hypervolt
+            </h3>
+
+            <p>
+              Connect a supported Hypervolt charger to provide MAP
+              Energy with charging status and available EV charging
+              information for monitoring and automations.
+            </p>
+
+          </div>
+
+
+          <div class="charger-card">
+
+            <span class="charger-badge">
+              Ohme
+            </span>
+
+            <h3>
+              Ohme
+            </h3>
+
+            <p>
+              Connect supported Ohme charging information so MAP
+              Energy can recognise charging activity and use EV
+              charging events within compatible automations.
+            </p>
+
+          </div>
+
+
+          <div class="charger-card">
+
+            <span class="charger-badge">
+              Other
+            </span>
+
+            <h3>
+              Other EV charging
+            </h3>
+
+            <p>
+              Where a direct charger integration is not available,
+              MAP Energy may still be able to identify EV charging
+              using other supported charging detection methods.
+            </p>
+
+          </div>
+
+
+        </div>
+
+
+        <div class="info-box">
+
+          <div class="info-icon">
+            i
+          </div>
+
+          <span class="info-title">
+            Capabilities vary by charger
+          </span>
+
+          <p>
+            Not every charger exposes the same information or control
+            capabilities. MAP Energy uses the functionality available
+            from each supported integration, so some features may
+            differ between charger brands.
+          </p>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- WHAT DATA -->
+
+      <section>
+
+        <h2>
+          What can MAP Energy use from my charger?
+        </h2>
+
+        <p>
+          The exact information available depends on the charger and
+          integration, but supported connections can provide MAP
+          Energy with useful EV charging information.
+        </p>
+
+
+        <div class="capability-list">
+
+
+          <div class="capability">
+
+            <div class="capability-icon">
+              ⚡
+            </div>
+
+            <div class="capability-content">
+
+              <span class="capability-title">
+                Charging status
+              </span>
+
+              <p>
+                Determine whether your EV is currently charging and
+                detect charging start and stop events.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="capability">
+
+            <div class="capability-icon">
+              kW
+            </div>
+
+            <div class="capability-content">
+
+              <span class="capability-title">
+                Charging power
+              </span>
+
+              <p>
+                Where available, MAP Energy can use the charger's
+                reported power to identify the EV load within your
+                home energy usage.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="capability">
+
+            <div class="capability-icon">
+              ↗
+            </div>
+
+            <div class="capability-content">
+
+              <span class="capability-title">
+                EV charging history
+              </span>
+
+              <p>
+                Supported EV charging data can be incorporated into
+                MAP Energy history so you can better understand how
+                much of your household energy use is going into
+                charging your vehicle.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="capability">
+
+            <div class="capability-icon">
+              ✦
+            </div>
+
+            <div class="capability-content">
+
+              <span class="capability-title">
+                Automation events
+              </span>
+
+              <p>
+                Charging start and stop events can be used to trigger
+                compatible MAP Energy automations.
+              </p>
+
+            </div>
+
+          </div>
+
+
+        </div>
+
+      </section>
+
+
+
+      <!-- AUTOMATIONS -->
+
+      <section>
+
+        <h2>
+          EV charger automations
+        </h2>
+
+        <p>
+          Once MAP Energy can identify when your EV starts and stops
+          charging, those events can be used as automation triggers.
+        </p>
+
+        <p>
+          This is particularly useful for coordinating EV charging
+          with a Tesla Powerwall.
+        </p>
+
+
+        <div class="example">
+
+          <span class="example-label">
+            Preserve your Powerwall
+          </span>
+
+          <div class="example-row">
+
+            <span class="example-type">
+              When
+            </span>
+
+            <span>
+              EV charging starts
+            </span>
+
+          </div>
+
+          <div class="example-row">
+
+            <span class="example-type">
+              Then
+            </span>
+
+            <span>
+              Adjust the Powerwall backup reserve to preserve
+              stored battery energy
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <div class="example">
+
+          <span class="example-label">
+            Restore normal operation
+          </span>
+
+          <div class="example-row">
+
+            <span class="example-type">
+              When
+            </span>
+
+            <span>
+              EV charging stops
+            </span>
+
+          </div>
+
+          <div class="example-row">
+
+            <span class="example-type">
+              Then
+            </span>
+
+            <span>
+              Restore your preferred Powerwall backup reserve
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <div class="example">
+
+          <span class="example-label">
+            Home Assistant
+          </span>
+
+          <div class="example-row">
+
+            <span class="example-type">
+              When
+            </span>
+
+            <span>
+              EV charging starts or stops
+            </span>
+
+          </div>
+
+          <div class="example-row">
+
+            <span class="example-type">
+              Then
+            </span>
+
+            <span>
+              Send the event to your connected Home Assistant
+              webhook
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <div class="mappy-tip">
+
+          <img
+            src="mappy-docs.PNG"
+            alt="Mappy"
+            class="mappy-tip-image"
+          >
+
+          <div>
+
+            <span class="mappy-tip-title">
+              Mappy tip
+            </span>
+
+            <p>
+              EV charging doesn't have to control your Powerwall.
+              You can also use an EV event for a notification or
+              send it to Home Assistant and decide what happens there.
+            </p>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- SMART TARIFFS -->
+
+      <section>
+
+        <h2>
+          EV charging &amp; smart tariffs
+        </h2>
+
+        <p>
+          EV charger information becomes even more useful when MAP
+          Energy is also connected to a supported smart electricity
+          tariff.
+        </p>
+
+        <p>
+          Some smart tariffs can schedule EV charging dynamically.
+          This means charging may begin outside the normal fixed
+          off-peak period.
+        </p>
+
+        <p>
+          MAP Energy can combine supported tariff information with
+          EV charging detection to help coordinate your Powerwall
+          around these charging periods.
+        </p>
+
+
+        <div class="success-box">
+
+          <span class="success-title">
+            Intelligent Octopus Go
+          </span>
+
+          <p>
+            MAP Energy includes automation support for compatible
+            Intelligent Octopus Go setups, helping your configured
+            Powerwall behaviour respond to smart EV charging periods.
+          </p>
+
+        </div>
+
+
+        <div class="success-box">
+
+          <span class="success-title">
+            EDF Smart Bolt-On
+          </span>
+
+          <p>
+            Supported EDF Smart Bolt-On events can also be used by
+            MAP Energy, including smart charging start and stop events
+            that can trigger Powerwall actions, notifications or
+            Home Assistant webhooks.
+          </p>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- CONNECTING -->
+
+      <section>
+
+        <h2>
+          Connecting an EV charger
+        </h2>
+
+        <p>
+          EV charger connections are configured from within
+          MAP Energy.
+        </p>
+
+        <p>
+          The exact connection process depends on the charger you
+          select, but MAP Energy will guide you through the information
+          required for that integration.
+        </p>
+
+
+        <div class="steps">
+
+
+          <div class="step">
+
+            <span class="step-number">
+              1
+            </span>
+
+            <div class="step-content">
+
+              <span class="step-title">
+                Open MAP Energy Settings
+              </span>
+
+              <p>
+                Open the EV charging or charger configuration area
+                within MAP Energy.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="step">
+
+            <span class="step-number">
+              2
+            </span>
+
+            <div class="step-content">
+
+              <span class="step-title">
+                Select your charger
+              </span>
+
+              <p>
+                Choose the EV charger or charging integration that
+                matches your setup.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="step">
+
+            <span class="step-number">
+              3
+            </span>
+
+            <div class="step-content">
+
+              <span class="step-title">
+                Complete the connection
+              </span>
+
+              <p>
+                Follow the instructions shown for that charger.
+                Different manufacturers require different connection
+                information or authorisation methods.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="step">
+
+            <span class="step-number">
+              4
+            </span>
+
+            <div class="step-content">
+
+              <span class="step-title">
+                Check charging detection
+              </span>
+
+              <p>
+                Once connected, MAP Energy can begin using the
+                supported charger information available from your
+                integration.
+              </p>
+
+            </div>
+
+          </div>
+
+
+        </div>
+
+      </section>
+
+
+
+      <!-- DETECTION -->
+
+      <section>
+
+        <h2>
+          How does MAP Energy detect charging?
+        </h2>
+
+        <p>
+          MAP Energy monitors available charger information to
+          determine when a charging session has started or stopped.
+        </p>
+
+        <p>
+          Charging does not always change instantaneously. Chargers
+          can briefly report low power, pause during a session or
+          take time to update their status.
+        </p>
+
+        <p>
+          MAP Energy therefore applies charging detection logic rather
+          than treating every individual power reading as a new
+          charging event.
+        </p>
+
+        <div class="info-box">
+
+          <div class="info-icon">
+            i
+          </div>
+
+          <span class="info-title">
+            This helps avoid false triggers
+          </span>
+
+          <p>
+            A brief drop or spike in charger power should not
+            necessarily be treated as the end or beginning of a
+            charging session. MAP Energy confirms charging state
+            before generating supported EV start and stop events.
+          </p>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- LIVE / HISTORY -->
+
+      <section>
+
+        <h2>
+          EV charging in Live &amp; History
+        </h2>
+
+        <p>
+          Where supported charging power is available, MAP Energy can
+          show the EV as part of your live home energy picture.
+        </p>
+
+        <p>
+          This makes it easier to understand how much of the power
+          currently entering your home is being used by the vehicle
+          rather than normal household demand.
+        </p>
+
+        <p>
+          Supported EV charging information can also be incorporated
+          into History, helping separate EV consumption from the rest
+          of your household energy use.
+        </p>
+
+      </section>
+
+
+
+      <!-- CONTROL DISCLAIMER -->
+
+      <section>
+
+        <h2>
+          Does MAP Energy control my EV charger?
+        </h2>
+
+        <p>
+          Connecting an EV charger does not automatically mean that
+          MAP Energy can remotely control every function of that
+          charger.
+        </p>
+
+        <p>
+          Charger manufacturers expose different capabilities.
+          Some integrations may provide charging status and power
+          information without providing direct charging control.
+        </p>
+
+        <p>
+          MAP Energy only uses the functionality supported by the
+          individual integration.
+        </p>
+
+
+        <div class="warning-box">
+
+          <span class="warning-title">
+            Charger capabilities vary
+          </span>
+
+          <p>
+            Do not assume that features available with one charger
+            will also be available with another. Available MAP Energy
+            options are determined by the capabilities of the
+            connected charger and integration.
+          </p>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- CONNECTION ISSUES -->
+
+      <section>
+
+        <h2>
+          What if my charger disconnects?
+        </h2>
+
+        <p>
+          Third-party charger integrations depend on the services
+          provided by the charger manufacturer.
+        </p>
+
+        <p>
+          Authentication can expire, manufacturer services can become
+          temporarily unavailable, or an account connection can be
+          revoked.
+        </p>
+
+        <p>
+          If MAP Energy cannot retrieve the charging information
+          required by an EV automation, that can prevent the expected
+          EV event from being detected.
+        </p>
+
+        <p>
+          If charging is no longer appearing correctly, check the EV
+          charger connection in MAP Energy and reconnect the
+          integration if requested.
+        </p>
+
+      </section>
+
+
+
+      <!-- FAQ -->
+
+      <section>
+
+        <h2>
+          EV charger questions
+        </h2>
+
+
+        <div class="faq-item">
+
+          <span class="faq-question">
+            Do I need an EV charger integration to use MAP Energy?
+          </span>
+
+          <p>
+            No. EV charger integrations are optional. MAP Energy can
+            still be used with your Powerwall and other supported
+            services without connecting an EV charger.
+          </p>
+
+        </div>
+
+
+        <div class="faq-item">
+
+          <span class="faq-question">
+            Why should MAP Energy know when my EV is charging?
+          </span>
+
+          <p>
+            EV charging can create a large household load. Detecting
+            it allows MAP Energy to distinguish that load and lets
+            you create automations that respond when charging starts
+            or stops.
+          </p>
+
+        </div>
+
+
+        <div class="faq-item">
+
+          <span class="faq-question">
+            Can MAP Energy stop my Powerwall charging my EV?
+          </span>
+
+          <p>
+            MAP Energy can use supported Powerwall controls to change
+            how your Powerwall behaves when EV charging is detected.
+            A common strategy is to preserve the Powerwall while the
+            vehicle is charging and restore normal settings when the
+            session finishes.
+          </p>
+
+        </div>
+
+
+        <div class="faq-item">
+
+          <span class="faq-question">
+            Does MAP Energy control the charging schedule?
+          </span>
+
+          <p>
+            Not necessarily. Smart charging schedules may be managed
+            by your charger, vehicle or electricity supplier. MAP
+            Energy can respond to supported charging events without
+            needing to be the service that originally scheduled the
+            charge.
+          </p>
+
+        </div>
+
+
+        <div class="faq-item">
+
+          <span class="faq-question">
+            Why does charging sometimes take a few minutes to appear?
+          </span>
+
+          <p>
+            Charger integrations update at different speeds, and MAP
+            Energy also confirms charging state to reduce false start
+            or stop events caused by short power fluctuations.
+          </p>
+
+        </div>
+
+
+        <div class="faq-item">
+
+          <span class="faq-question">
+            My charger isn't listed. Can it be added?
+          </span>
+
+          <p>
+            Possibly. New integrations depend on whether the charger
+            manufacturer provides a suitable and reliable way for MAP
+            Energy to retrieve the information required. Suggestions
+            for additional charger integrations are welcome.
+          </p>
+
+        </div>
+
+
+      </section>
+
+
+
+      <!-- HELP -->
+
+      <section>
+
+        <h2>
+          Need help?
+        </h2>
+
+        <p>
+          If your EV charger is connected but charging is not being
+          detected correctly, check the charger connection in
+          MAP Energy first.
+        </p>
+
+        <p>
+          If the connection appears healthy but the problem continues,
+          contact MAP Energy support and include your charger brand,
+          the approximate time of a recent charging session and a
+          description of what you expected to happen.
+        </p>
+
+        <p>
+          This information can help us compare the charger data with
+          MAP Energy's EV detection and automation history.
+        </p>
+
+      </section>
+
+
+    </article>
+
+
+
+    <!-- FOOTER -->
+
+    <footer class="footer">
+
+      <img
+        src="map-energy-logo.PNG"
+        alt="MAP Energy"
+        class="footer-logo"
+      >
+
+      <span>
+        MAP Energy • Powerwall control, insights &amp; automation
+      </span>
+
+    </footer>
+
+
+  </main>
+
+</body>
+</html>
