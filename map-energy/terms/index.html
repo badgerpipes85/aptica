@@ -1,479 +1,2650 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en-GB">
+
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
 
-<title>Terms of Service – MAP Energy</title>
+  <meta charset="UTF-8">
 
-<style>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, viewport-fit=cover"
+  >
 
-:root{
-color-scheme: light dark;
+  <title>Terms of Service | MAP Energy</title>
 
---brand-blue:#2f80ed;
---energy-yellow:#f2c94c;
---brand-grey:#8c98a8;
+  <meta
+    name="description"
+    content="Terms of Service for MAP Energy, operated by Aptica Ltd. These terms govern your use of the MAP Energy apps, web portal, automations and connected energy services."
+  >
 
---bg-primary:#f7f9fc;
---bg-card:rgba(255,255,255,0.82);
+  <style>
 
---border:rgba(47,128,237,0.14);
+    * {
+      box-sizing: border-box;
+    }
 
---text-primary:#17212f;
---text-secondary:#5f6b7a;
+    html {
+      min-height: 100%;
+      scroll-behavior: smooth;
+      background: #06101f;
+    }
 
---success:#27ae60;
---error:#eb5757;
+    body {
+      margin: 0;
+      min-height: 100vh;
 
---shadow:0 12px 30px rgba(24,39,75,0.08);
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "SF Pro Display",
+        "SF Pro Text",
+        "Segoe UI",
+        Roboto,
+        Helvetica,
+        Arial,
+        sans-serif;
 
---radius-xl:22px;
---radius-lg:16px;
---radius-md:14px;
-}
+      color: #ffffff;
 
-@media (prefers-color-scheme: dark){
+      background:
+        radial-gradient(
+          circle at 78% 4%,
+          rgba(36, 117, 238, 0.18),
+          transparent 27%
+        ),
+        radial-gradient(
+          circle at 15% 27%,
+          rgba(18, 89, 190, 0.10),
+          transparent 25%
+        ),
+        linear-gradient(
+          180deg,
+          #071326 0%,
+          #06101f 45%,
+          #040b16 100%
+        );
+    }
 
-:root{
---bg-primary:#0d1117;
---bg-card:rgba(22,27,34,0.88);
---border:rgba(255,255,255,0.08);
---text-primary:#f3f6fb;
---text-secondary:#a9b4c2;
---shadow:0 16px 36px rgba(0,0,0,0.34);
-}
+    a {
+      color: inherit;
+    }
 
-}
 
-*{box-sizing:border-box;}
+    /* =========================================================
+       PAGE
+       ========================================================= */
 
-body{
-margin:0;
-font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-color:var(--text-primary);
-background:
-linear-gradient(
-to bottom,
-rgba(47,128,237,0.18) 0%,
-rgba(242,201,76,0.10) 30%,
-var(--bg-primary) 70%
-);
-}
+    .page {
+      width: 100%;
+      max-width: 1180px;
 
-.shell{
-max-width:980px;
-margin:0 auto;
-padding:28px 18px 64px;
-}
+      margin: 0 auto;
 
-.hero{
-background:var(--bg-card);
-border:1px solid var(--border);
-border-radius:var(--radius-xl);
-box-shadow:var(--shadow);
-padding:24px;
-margin-bottom:20px;
-}
+      padding:
+        max(24px, env(safe-area-inset-top))
+        24px
+        max(60px, env(safe-area-inset-bottom));
+    }
 
-.brand{
-display:flex;
-align-items:center;
-gap:12px;
-}
 
-.logo{
-height:40px;
-width:auto;
-}
+    /* =========================================================
+       HEADER
+       ========================================================= */
 
-.brand-text{
-font-size:1.25rem;
-font-weight:600;
-letter-spacing:-0.01em;
-}
+    .site-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
 
-.brand-divider{
-height:1px;
-background:var(--border);
-margin:18px 0 22px;
-}
+      gap: 25px;
 
-h1{
-margin:0 0 10px;
-font-size:clamp(2rem,5vw,2.7rem);
-line-height:1.06;
-letter-spacing:-0.02em;
-}
+      margin-bottom: 28px;
+    }
 
-.hero p{
-margin:0;
-color:var(--text-secondary);
-}
+    .brand {
+      display: flex;
+      align-items: center;
 
-.hero-meta{
-margin-top:14px;
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-gap:10px;
-}
+      gap: 12px;
 
-.meta{
-background:rgba(255,255,255,0.3);
-border:1px solid var(--border);
-border-radius:var(--radius-md);
-padding:10px 12px;
-}
+      color: #ffffff;
+      text-decoration: none;
+    }
 
-.section-card{
-background:var(--bg-card);
-border:1px solid var(--border);
-border-radius:var(--radius-xl);
-box-shadow:var(--shadow);
-padding:22px;
-margin-bottom:18px;
-}
+    .brand-logo {
+      width: 48px;
+      height: 48px;
 
-h2{
-margin-top:0;
-font-size:1.3rem;
-}
+      object-fit: contain;
 
-p{
-line-height:1.6;
-}
+      filter:
+        drop-shadow(
+          0 6px 16px rgba(0, 0, 0, 0.28)
+        );
+    }
 
-ul{
-margin-left:20px;
-}
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+    }
 
-li{
-margin:6px 0;
-}
+    .brand-name {
+      font-size: 18px;
+      line-height: 1.1;
 
-.notice{
-border-left:4px solid var(--brand-blue);
-background:rgba(47,128,237,0.08);
-padding:14px;
-border-radius:12px;
-margin:14px 0;
-}
+      font-weight: 850;
 
-a{
-color:var(--brand-blue);
-text-decoration:none;
-}
+      letter-spacing: -0.02em;
+    }
 
-a:hover{
-text-decoration:underline;
-}
+    .brand-subtitle {
+      margin-top: 4px;
 
-footer{
-text-align:center;
-margin-top:30px;
-color:var(--text-secondary);
-}
+      color: rgba(198, 213, 234, 0.58);
 
-</style>
+      font-size: 11px;
+      font-weight: 650;
+    }
+
+    .desktop-nav {
+      display: flex;
+      align-items: center;
+
+      gap: 7px;
+    }
+
+    .desktop-nav a {
+      padding: 9px 12px;
+
+      border-radius: 11px;
+
+      color: rgba(213, 225, 241, 0.72);
+
+      text-decoration: none;
+
+      font-size: 12px;
+      font-weight: 700;
+
+      transition:
+        color 0.15s ease,
+        background 0.15s ease;
+    }
+
+    .desktop-nav a:hover {
+      color: #ffffff;
+
+      background:
+        rgba(255, 255, 255, 0.055);
+    }
+
+    .desktop-nav .active {
+      color: #ffffff;
+
+      background:
+        rgba(52, 127, 240, 0.15);
+
+      border:
+        1px solid rgba(87, 153, 246, 0.18);
+    }
+
+
+    /* =========================================================
+       HERO
+       ========================================================= */
+
+    .hero {
+      position: relative;
+
+      padding: 45px;
+
+      overflow: hidden;
+
+      border-radius: 32px;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(17, 51, 101, 0.94),
+          rgba(5, 18, 42, 0.96) 63%,
+          rgba(5, 14, 31, 0.97)
+        );
+
+      border:
+        1px solid rgba(82, 148, 239, 0.27);
+
+      box-shadow:
+        0 32px 90px rgba(0, 0, 0, 0.34),
+        inset 0 1px 0 rgba(255, 255, 255, 0.055);
+    }
+
+    .hero::before {
+      content: "";
+
+      position: absolute;
+
+      width: 500px;
+      height: 500px;
+
+      right: -170px;
+      top: -260px;
+
+      border-radius: 50%;
+
+      background:
+        radial-gradient(
+          circle,
+          rgba(48, 139, 255, 0.30),
+          transparent 67%
+        );
+
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+
+      max-width: 850px;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+
+      gap: 8px;
+
+      margin-bottom: 18px;
+
+      padding: 7px 11px;
+
+      border-radius: 999px;
+
+      color: #83bcff;
+
+      background:
+        rgba(44, 125, 240, 0.13);
+
+      border:
+        1px solid rgba(81, 153, 255, 0.22);
+
+      font-size: 10px;
+      font-weight: 850;
+
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+    }
+
+    .hero-eyebrow-dot {
+      width: 7px;
+      height: 7px;
+
+      border-radius: 50%;
+
+      background: #3fd394;
+
+      box-shadow:
+        0 0 11px rgba(63, 211, 148, 0.7);
+    }
+
+    h1 {
+      margin: 0 0 17px;
+
+      color: #ffffff;
+
+      font-size: clamp(40px, 6vw, 62px);
+      line-height: 1;
+
+      font-weight: 880;
+
+      letter-spacing: -0.05em;
+    }
+
+    .hero-description {
+      max-width: 760px;
+
+      margin: 0;
+
+      color: rgba(220, 230, 243, 0.76);
+
+      font-size: 16px;
+      line-height: 1.68;
+    }
+
+    .hero-meta {
+      display: grid;
+
+      grid-template-columns: repeat(3, 1fr);
+
+      gap: 10px;
+
+      margin-top: 28px;
+    }
+
+    .meta-card {
+      padding: 15px 16px;
+
+      border-radius: 15px;
+
+      background:
+        rgba(5, 18, 40, 0.52);
+
+      border:
+        1px solid rgba(91, 151, 232, 0.16);
+    }
+
+    .meta-label {
+      display: block;
+
+      margin-bottom: 5px;
+
+      color: rgba(183, 202, 226, 0.52);
+
+      font-size: 10px;
+      font-weight: 700;
+
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+    }
+
+    .meta-value {
+      color: #ffffff;
+
+      font-size: 13px;
+      font-weight: 750;
+    }
+
+    .meta-value a {
+      color: #83bcff;
+      text-decoration: none;
+    }
+
+
+    /* =========================================================
+       NOTICE
+       ========================================================= */
+
+    .terms-notice {
+      margin-top: 18px;
+
+      padding: 18px 20px;
+
+      border-radius: 19px;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(10, 31, 62, 0.90),
+          rgba(5, 16, 34, 0.92)
+        );
+
+      border:
+        1px solid rgba(78, 139, 224, 0.18);
+
+      color: rgba(205, 219, 237, 0.72);
+
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .terms-notice strong {
+      color: #ffffff;
+    }
+
+    .terms-notice a {
+      color: #69afff;
+      text-decoration: none;
+    }
+
+
+    /* =========================================================
+       LAYOUT
+       ========================================================= */
+
+    .terms-layout {
+      display: grid;
+
+      grid-template-columns: 250px minmax(0, 1fr);
+
+      gap: 18px;
+
+      align-items: start;
+
+      margin-top: 18px;
+    }
+
+
+    /* =========================================================
+       CONTENTS
+       ========================================================= */
+
+    .toc {
+      position: sticky;
+      top: 18px;
+
+      padding: 20px 17px;
+
+      border-radius: 22px;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(10, 29, 57, 0.90),
+          rgba(5, 15, 32, 0.92)
+        );
+
+      border:
+        1px solid rgba(78, 137, 219, 0.18);
+
+      box-shadow:
+        0 20px 55px rgba(0, 0, 0, 0.20);
+    }
+
+    .toc-title {
+      margin: 0 0 13px;
+
+      color: #ffffff;
+
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .toc ul {
+      list-style: none;
+
+      margin: 0;
+      padding: 0;
+
+      display: grid;
+
+      gap: 3px;
+    }
+
+    .toc a {
+      display: block;
+
+      padding: 7px 9px;
+
+      border-radius: 9px;
+
+      color: rgba(188, 205, 227, 0.62);
+
+      text-decoration: none;
+
+      font-size: 11px;
+      line-height: 1.35;
+
+      transition:
+        color 0.15s ease,
+        background 0.15s ease;
+    }
+
+    .toc a:hover {
+      color: #ffffff;
+
+      background:
+        rgba(52, 127, 240, 0.12);
+    }
+
+
+    /* =========================================================
+       TERMS CONTENT
+       ========================================================= */
+
+    .terms-card {
+      padding: 31px;
+
+      border-radius: 25px;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(10, 29, 57, 0.91),
+          rgba(5, 15, 32, 0.93)
+        );
+
+      border:
+        1px solid rgba(78, 137, 219, 0.18);
+
+      box-shadow:
+        0 22px 60px rgba(0, 0, 0, 0.22);
+    }
+
+    .terms-section + .terms-section {
+      margin-top: 32px;
+      padding-top: 29px;
+
+      border-top:
+        1px solid rgba(116, 158, 218, 0.12);
+    }
+
+    .section-number {
+      display: inline-flex;
+
+      align-items: center;
+      justify-content: center;
+
+      min-width: 29px;
+      height: 29px;
+
+      margin-bottom: 11px;
+
+      padding: 0 8px;
+
+      border-radius: 9px;
+
+      color: #ffffff;
+
+      background:
+        rgba(52, 127, 240, 0.18);
+
+      border:
+        1px solid rgba(88, 155, 247, 0.22);
+
+      font-size: 10px;
+      font-weight: 850;
+    }
+
+    .terms-section h2 {
+      margin: 0 0 13px;
+
+      color: #ffffff;
+
+      font-size: 23px;
+      line-height: 1.2;
+
+      font-weight: 800;
+
+      letter-spacing: -0.025em;
+    }
+
+    .terms-section h3 {
+      margin: 22px 0 9px;
+
+      color: #75b5ff;
+
+      font-size: 15px;
+      font-weight: 770;
+    }
+
+    .terms-section p {
+      margin: 10px 0;
+
+      color: rgba(207, 220, 237, 0.72);
+
+      font-size: 14px;
+      line-height: 1.72;
+    }
+
+    .terms-section strong {
+      color: rgba(240, 245, 252, 0.94);
+    }
+
+    .terms-section ul {
+      margin: 12px 0 12px 19px;
+      padding: 0;
+    }
+
+    .terms-section li {
+      margin: 8px 0;
+
+      padding-left: 3px;
+
+      color: rgba(207, 220, 237, 0.72);
+
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .terms-section a {
+      color: #69afff;
+      text-decoration: none;
+    }
+
+    .terms-section a:hover {
+      color: #ffffff;
+    }
+
+    .muted {
+      color: rgba(180, 198, 220, 0.55) !important;
+    }
+
+
+    /* =========================================================
+       CALLOUTS
+       ========================================================= */
+
+    .callout {
+      margin: 17px 0;
+
+      padding: 16px 17px;
+
+      border-radius: 15px;
+
+      background:
+        rgba(44, 125, 240, 0.09);
+
+      border:
+        1px solid rgba(74, 147, 250, 0.18);
+
+      border-left:
+        3px solid #4b94f6;
+    }
+
+    .callout p {
+      margin: 0;
+
+      color: rgba(220, 231, 245, 0.79);
+    }
+
+    .warning-callout {
+      background:
+        rgba(242, 153, 74, 0.08);
+
+      border-color:
+        rgba(242, 153, 74, 0.19);
+
+      border-left-color: #f2994a;
+    }
+
+    .success-callout {
+      background:
+        rgba(63, 211, 148, 0.07);
+
+      border-color:
+        rgba(63, 211, 148, 0.17);
+
+      border-left-color: #3fd394;
+    }
+
+
+    /* =========================================================
+       TAGS
+       ========================================================= */
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+
+      gap: 8px;
+
+      margin-top: 16px;
+    }
+
+    .tag {
+      padding: 7px 10px;
+
+      border-radius: 999px;
+
+      color: rgba(224, 235, 248, 0.82);
+
+      background:
+        rgba(5, 19, 42, 0.55);
+
+      border:
+        1px solid rgba(92, 151, 231, 0.18);
+
+      font-size: 10px;
+      font-weight: 750;
+    }
+
+
+    /* =========================================================
+       CONTACT CARD
+       ========================================================= */
+
+    .contact-card {
+      margin-top: 18px;
+
+      padding: 25px;
+
+      border-radius: 22px;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(15, 51, 99, 0.92),
+          rgba(5, 18, 40, 0.94)
+        );
+
+      border:
+        1px solid rgba(80, 146, 236, 0.24);
+    }
+
+    .contact-card h2 {
+      margin: 0 0 8px;
+
+      color: #ffffff;
+
+      font-size: 20px;
+    }
+
+    .contact-card p {
+      margin: 0;
+
+      color: rgba(202, 217, 236, 0.70);
+
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .contact-button {
+      display: inline-flex;
+
+      margin-top: 16px;
+
+      padding: 10px 14px;
+
+      border-radius: 12px;
+
+      color: #ffffff;
+
+      background: #347ff0;
+
+      border:
+        1px solid rgba(106, 173, 255, 0.42);
+
+      text-decoration: none;
+
+      font-size: 12px;
+      font-weight: 780;
+    }
+
+    .contact-button:hover {
+      background: #428bf8;
+    }
+
+
+    /* =========================================================
+       FOOTER
+       ========================================================= */
+
+    .footer {
+      margin-top: 58px;
+
+      padding-top: 27px;
+
+      border-top:
+        1px solid rgba(116, 158, 218, 0.12);
+    }
+
+    .footer-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 25px;
+    }
+
+    .footer-brand {
+      display: flex;
+      align-items: center;
+
+      gap: 10px;
+    }
+
+    .footer-logo {
+      width: 32px;
+      height: 32px;
+
+      object-fit: contain;
+
+      opacity: 0.85;
+    }
+
+    .footer-brand-name {
+      color: rgba(226, 235, 247, 0.83);
+
+      font-size: 13px;
+      font-weight: 750;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+
+      gap: 17px;
+    }
+
+    .footer-links a {
+      color: rgba(185, 202, 223, 0.56);
+
+      text-decoration: none;
+
+      font-size: 11px;
+      font-weight: 650;
+    }
+
+    .footer-links a:hover {
+      color: #ffffff;
+    }
+
+    .footer-bottom {
+      margin-top: 22px;
+
+      color: rgba(173, 189, 210, 0.43);
+
+      font-size: 10px;
+      line-height: 1.65;
+    }
+
+
+    /* =========================================================
+       MOBILE
+       ========================================================= */
+
+    @media (max-width: 900px) {
+
+      .desktop-nav {
+        display: none;
+      }
+
+      .terms-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .toc {
+        position: static;
+      }
+
+      .toc ul {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+    }
+
+
+    @media (max-width: 700px) {
+
+      .page {
+        padding-left: 15px;
+        padding-right: 15px;
+      }
+
+      .site-header {
+        margin-bottom: 20px;
+      }
+
+      .brand-logo {
+        width: 42px;
+        height: 42px;
+      }
+
+      .brand-name {
+        font-size: 16px;
+      }
+
+      .hero {
+        padding: 30px 22px;
+
+        border-radius: 26px;
+      }
+
+      h1 {
+        font-size: 40px;
+      }
+
+      .hero-description {
+        font-size: 14px;
+      }
+
+      .hero-meta {
+        grid-template-columns: 1fr;
+      }
+
+      .terms-layout {
+        margin-top: 14px;
+      }
+
+      .toc {
+        padding: 18px 15px;
+      }
+
+      .toc ul {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .terms-card {
+        padding: 24px 20px;
+
+        border-radius: 22px;
+      }
+
+      .terms-section h2 {
+        font-size: 21px;
+      }
+
+      .footer-top {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+    }
+
+
+    @media (max-width: 430px) {
+
+      .toc ul {
+        grid-template-columns: 1fr;
+      }
+
+    }
+
+  </style>
+
 </head>
+
 
 <body>
 
-<div class="shell">
+  <main class="page">
 
-<header class="hero">
 
-<div class="brand">
-<img src="/MAP Logo.png" alt="MAP Energy Logo" class="logo">
-<span class="brand-text">MAP Energy</span>
-</div>
+    <!-- =====================================================
+         HEADER
+         ===================================================== -->
 
-<div class="brand-divider"></div>
+    <header class="site-header">
 
-<h1>Terms of Service</h1>
+      <a
+        href="/map-energy/"
+        class="brand"
+      >
 
-<p>
-These Terms govern your use of the MAP Energy application and related services.
-</p>
+        <img
+          src="/map-energy/assets/map-energy-logo.PNG"
+          alt="MAP Energy"
+          class="brand-logo"
+        >
 
-<div class="hero-meta">
+        <div class="brand-text">
 
-<div class="meta">
-<strong>Service</strong><br>
-MAP Energy
-</div>
+          <span class="brand-name">
+            MAP Energy
+          </span>
 
-<div class="meta">
-<strong>Operator</strong><br>
-Aptica Ltd
-</div>
+          <span class="brand-subtitle">
+            Smarter home energy
+          </span>
 
-<div class="meta">
-<strong>Last updated</strong><br>
-March 2026
-</div>
+        </div>
 
-</div>
+      </a>
 
-</header>
 
+      <nav
+        class="desktop-nav"
+        aria-label="Main navigation"
+      >
 
+        <a href="/map-energy/">
+          Home
+        </a>
 
-<div class="section-card">
+        <a href="/map-energy/documentation/">
+          Documentation
+        </a>
 
-<h2>1. About MAP Energy</h2>
+        <a href="/map-energy/portal/">
+          Web Portal
+        </a>
 
-<p>
-MAP Energy is an energy monitoring and automation application operated by
-<strong>Aptica Ltd</strong>, a company registered in England and Wales.
-</p>
+        <a href="/map-energy/privacy/">
+          Privacy
+        </a>
 
-<p>
-The service allows users to connect supported energy systems and view telemetry,
-create automations, and receive notifications related to their energy usage.
-</p>
+        <a
+          href="/map-energy/terms/"
+          class="active"
+        >
+          Terms
+        </a>
 
-<p>
-MAP Energy is currently intended for users located in the United Kingdom.
-</p>
+        <a href="mailto:support@aptica.uk">
+          Support
+        </a>
 
-</div>
+      </nav>
 
+    </header>
 
 
-<div class="section-card">
 
-<h2>2. Eligibility</h2>
+    <!-- =====================================================
+         HERO
+         ===================================================== -->
 
-<ul>
-<li>You must be at least <strong>13 years old</strong> to use MAP Energy.</li>
-<li>If you are under 18, you must have permission from a parent or guardian.</li>
-<li>You must ensure that any energy systems connected to MAP Energy belong to you or that you have permission to connect them.</li>
-</ul>
+    <section class="hero">
 
-</div>
+      <div class="hero-content">
 
+        <div class="hero-eyebrow">
 
+          <span class="hero-eyebrow-dot"></span>
 
-<div class="section-card">
+          MAP Energy Service
 
-<h2>3. Service Description</h2>
+        </div>
 
-<p>MAP Energy may provide the following functionality:</p>
 
-<ul>
-<li>Viewing energy telemetry from connected systems</li>
-<li>Monitoring solar generation, battery state of charge, and grid import/export</li>
-<li>Monitoring EV charging power</li>
-<li>Creating automations based on energy conditions</li>
-<li>Sending notifications based on events</li>
-<li>Displaying data retrieved from third-party services</li>
-</ul>
+        <h1>
+          Terms of Service
+        </h1>
 
-<p>
-Certain features may require a <strong>paid subscription</strong>.
-Subscriptions unlock premium features such as advanced automation capabilities.
-</p>
 
-</div>
+        <p class="hero-description">
+          These Terms govern your use of MAP Energy, including our
+          mobile apps, web services, automations and supported
+          connections to third-party energy services.
+        </p>
 
 
+        <div class="hero-meta">
 
-<div class="section-card">
+          <div class="meta-card">
 
-<h2>4. Third-Party Services</h2>
+            <span class="meta-label">
+              Service
+            </span>
 
-<p>MAP Energy integrates with third-party services, including:</p>
+            <span class="meta-value">
+              MAP Energy
+            </span>
 
-<ul>
-<li>Tesla Energy APIs</li>
-<li>Octopus Energy APIs</li>
-<li>myenergi / Zappi APIs</li>
-<li>Apple Sign-In</li>
-<li>Apple Push Notification Service</li>
-</ul>
+          </div>
 
-<p>
-These services are operated by third parties and subject to their own
-terms and privacy policies.
-</p>
 
-<p>
-MAP Energy does not control the availability, accuracy, or behaviour of these services.
-</p>
+          <div class="meta-card">
 
-</div>
+            <span class="meta-label">
+              Operator
+            </span>
 
+            <span class="meta-value">
+              Aptica Ltd
+            </span>
 
+          </div>
 
-<div class="section-card">
 
-<h2>5. Automations and Energy Controls</h2>
+          <div class="meta-card">
 
-<p>
-MAP Energy may allow users to configure automations that interact with connected services.
-</p>
+            <span class="meta-label">
+              Last Updated
+            </span>
 
-<div class="notice">
-Users remain fully responsible for verifying automation settings and outcomes.
-</div>
+            <span class="meta-value">
+              September 2026
+            </span>
 
-<ul>
-<li>Automations may fail to execute</li>
-<li>External services may be unavailable</li>
-<li>Energy prices or tariffs may change</li>
-<li>Device states may change outside the app</li>
-</ul>
+          </div>
 
-<p>
-You must ensure that any energy configuration changes remain appropriate
-for your system and tariff conditions.
-</p>
+        </div>
 
-</div>
+      </div>
 
+    </section>
 
 
-<div class="section-card">
 
-<h2>6. Service Availability</h2>
+    <!-- =====================================================
+         NOTICE
+         ===================================================== -->
 
-<p>
-MAP Energy is provided <strong>"as is"</strong> and <strong>"as available"</strong>.
-</p>
+    <div class="terms-notice">
 
-<p>
-We do not guarantee uninterrupted or error-free service.
-</p>
+      By accessing or using MAP Energy, you agree to these Terms.
+      Please read them carefully, particularly the sections covering
+      <strong>automations, connected energy systems and third-party services</strong>.
 
-<p>
-Maintenance, infrastructure failures, or third-party outages may affect functionality.
-</p>
+      If you have any questions, contact
 
-</div>
+      <a href="mailto:support@aptica.uk">
+        support@aptica.uk
+      </a>.
 
+    </div>
 
 
-<div class="section-card">
 
-<h2>7. Limitation of Liability</h2>
+    <!-- =====================================================
+         TERMS CONTENT
+         ===================================================== -->
 
-<p>
-To the maximum extent permitted by law, Aptica Ltd shall not be liable for:
-</p>
+    <div class="terms-layout">
 
-<ul>
-<li>Energy costs or tariff decisions</li>
-<li>Charging schedules or automation behaviour</li>
-<li>Battery usage or export configuration</li>
-<li>Loss caused by third-party API failures</li>
-<li>Indirect or consequential losses</li>
-<li>Loss of energy revenue or savings</li>
-</ul>
 
-<p>
-You remain responsible for verifying all energy actions and automation behaviour.
-</p>
+      <!-- CONTENTS -->
 
-<p>
-Nothing in these terms excludes liability that cannot legally be excluded under UK law.
-</p>
+      <aside class="toc">
 
-</div>
+        <h2 class="toc-title">
+          Contents
+        </h2>
 
+        <ul>
 
+          <li>
+            <a href="#about">
+              1. About MAP Energy
+            </a>
+          </li>
 
-<div class="section-card">
+          <li>
+            <a href="#eligibility">
+              2. Eligibility
+            </a>
+          </li>
 
-<h2>8. User Responsibilities</h2>
+          <li>
+            <a href="#service">
+              3. The service
+            </a>
+          </li>
 
-<ul>
-<li>Provide accurate credentials when connecting services</li>
-<li>Disconnect services you no longer wish to use</li>
-<li>Review automation settings regularly</li>
-<li>Ensure your energy configuration remains appropriate</li>
-</ul>
+          <li>
+            <a href="#accounts">
+              4. Accounts &amp; security
+            </a>
+          </li>
 
-</div>
+          <li>
+            <a href="#third-parties">
+              5. Third-party services
+            </a>
+          </li>
 
+          <li>
+            <a href="#automations">
+              6. Automations &amp; controls
+            </a>
+          </li>
 
+          <li>
+            <a href="#diagnostics">
+              7. Diagnostic access
+            </a>
+          </li>
 
-<div class="section-card">
+          <li>
+            <a href="#tariffs">
+              8. Tariffs &amp; forecasts
+            </a>
+          </li>
 
-<h2>9. Termination</h2>
+          <li>
+            <a href="#subscriptions">
+              9. Subscriptions
+            </a>
+          </li>
 
-<p>
-We may suspend or terminate access if the service is misused,
-third-party access is revoked, or the platform is discontinued.
-</p>
+          <li>
+            <a href="#acceptable-use">
+              10. Acceptable use
+            </a>
+          </li>
 
-<p>
-Users may stop using the app or disconnect services at any time.
-</p>
+          <li>
+            <a href="#availability">
+              11. Service availability
+            </a>
+          </li>
 
-</div>
+          <li>
+            <a href="#liability">
+              12. Liability
+            </a>
+          </li>
 
+          <li>
+            <a href="#responsibilities">
+              13. Your responsibilities
+            </a>
+          </li>
 
+          <li>
+            <a href="#intellectual-property">
+              14. Intellectual property
+            </a>
+          </li>
 
-<div class="section-card">
+          <li>
+            <a href="#termination">
+              15. Suspension &amp; termination
+            </a>
+          </li>
 
-<h2>10. Changes to the Service</h2>
+          <li>
+            <a href="#changes">
+              16. Changes
+            </a>
+          </li>
 
-<p>
-We may modify, update, or discontinue parts of the service at any time.
-</p>
+          <li>
+            <a href="#consumer-rights">
+              17. Consumer rights
+            </a>
+          </li>
 
-<p>
-Features, integrations, and subscription functionality may change over time.
-</p>
+          <li>
+            <a href="#law">
+              18. Governing law
+            </a>
+          </li>
 
-</div>
+          <li>
+            <a href="#contact">
+              19. Contact
+            </a>
+          </li>
 
+        </ul>
 
+      </aside>
 
-<div class="section-card">
 
-<h2>11. Governing Law</h2>
 
-<p>
-These terms are governed by the laws of <strong>England and Wales</strong>.
-</p>
+      <!-- TERMS -->
 
-<p>
-Any disputes will be subject to the jurisdiction of the courts of England and Wales.
-</p>
+      <article class="terms-card">
 
-</div>
 
+        <!-- 1 -->
 
+        <section
+          class="terms-section"
+          id="about"
+        >
 
-<div class="section-card">
+          <span class="section-number">
+            01
+          </span>
 
-<h2>12. Contact</h2>
+          <h2>
+            About MAP Energy
+          </h2>
 
-<p>
-If you have questions about these Terms of Service:
-</p>
+          <p>
+            MAP Energy is an energy monitoring, control and automation
+            service operated by <strong>Aptica Ltd</strong>, a company
+            registered in England and Wales.
+          </p>
 
-<p>
-📧 <a href="mailto:support@aptica.uk">support@aptica.uk</a>
-</p>
+          <ul>
 
-</div>
+            <li>
+              <strong>Company:</strong>
+              Aptica Ltd
+            </li>
 
+            <li>
+              <strong>Company number:</strong>
+              16938524
+            </li>
 
+            <li>
+              <strong>Country of registration:</strong>
+              England and Wales
+            </li>
 
-<footer>
+            <li>
+              <strong>Contact:</strong>
+              <a href="mailto:support@aptica.uk">
+                support@aptica.uk
+              </a>
+            </li>
 
-© <span id="year"></span> Aptica Ltd
+          </ul>
 
-</footer>
+          <p>
+            These Terms apply to your use of MAP Energy, including
+            supported mobile applications, web services, backend
+            services, automations and related functionality.
+          </p>
 
-</div>
+          <p>
+            MAP Energy is available in supported countries and regions.
+            Some features, integrations and services are only available
+            in particular countries, with particular hardware, or
+            through particular third-party providers.
+          </p>
 
-<script>
-document.getElementById("year").textContent=new Date().getFullYear();
-</script>
+        </section>
+
+
+
+        <!-- 2 -->
+
+        <section
+          class="terms-section"
+          id="eligibility"
+        >
+
+          <span class="section-number">
+            02
+          </span>
+
+          <h2>
+            Eligibility
+          </h2>
+
+          <p>
+            You may only use MAP Energy where you are legally entitled
+            to do so and where you have authority to connect and
+            control the relevant energy systems and services.
+          </p>
+
+          <ul>
+
+            <li>
+              You must be at least <strong>13 years old</strong> to
+              use MAP Energy.
+            </li>
+
+            <li>
+              If you are under 18, you must have permission from a
+              parent or legal guardian.
+            </li>
+
+            <li>
+              You must own, control or have permission to access any
+              Powerwall, energy system, electricity account, EV
+              charger or other service that you connect to MAP Energy.
+            </li>
+
+            <li>
+              You must comply with the terms imposed by third-party
+              services you connect to MAP Energy.
+            </li>
+
+          </ul>
+
+        </section>
+
+
+
+        <!-- 3 -->
+
+        <section
+          class="terms-section"
+          id="service"
+        >
+
+          <span class="section-number">
+            03
+          </span>
+
+          <h2>
+            The MAP Energy service
+          </h2>
+
+          <p>
+            MAP Energy provides tools designed to help you understand,
+            monitor and control compatible home energy systems.
+          </p>
+
+          <p>
+            Depending on your hardware, region, subscription and
+            connected services, functionality may include:
+          </p>
+
+          <div class="tag-row">
+
+            <span class="tag">
+              Live Energy
+            </span>
+
+            <span class="tag">
+              Powerwall
+            </span>
+
+            <span class="tag">
+              Automations
+            </span>
+
+            <span class="tag">
+              Solar
+            </span>
+
+            <span class="tag">
+              EV Charging
+            </span>
+
+            <span class="tag">
+              Smart Tariffs
+            </span>
+
+            <span class="tag">
+              Diagnostics
+            </span>
+
+            <span class="tag">
+              Notifications
+            </span>
+
+          </div>
+
+          <ul>
+
+            <li>
+              Viewing live and historical energy information
+            </li>
+
+            <li>
+              Monitoring solar generation
+            </li>
+
+            <li>
+              Monitoring battery state of charge
+            </li>
+
+            <li>
+              Monitoring grid import and export
+            </li>
+
+            <li>
+              Monitoring household consumption
+            </li>
+
+            <li>
+              Monitoring supported EV charging
+            </li>
+
+            <li>
+              Viewing electricity tariffs and rates
+            </li>
+
+            <li>
+              Creating and running energy automations
+            </li>
+
+            <li>
+              Controlling supported Powerwall settings
+            </li>
+
+            <li>
+              Receiving notifications and service messages
+            </li>
+
+            <li>
+              Viewing supported Powerwall diagnostic information
+            </li>
+
+            <li>
+              Using supported solar forecasting features
+            </li>
+
+            <li>
+              Sending configured Home Assistant webhook events
+            </li>
+
+            <li>
+              Accessing supported functionality through the MAP
+              Energy web portal
+            </li>
+
+          </ul>
+
+          <p>
+            The exact features available to you may change over time
+            and may depend on third-party systems outside Aptica Ltd's
+            control.
+          </p>
+
+        </section>
+
+
+
+        <!-- 4 -->
+
+        <section
+          class="terms-section"
+          id="accounts"
+        >
+
+          <span class="section-number">
+            04
+          </span>
+
+          <h2>
+            Accounts and security
+          </h2>
+
+          <p>
+            You are responsible for maintaining the security of your
+            MAP Energy account, your devices and the third-party
+            services that you connect.
+          </p>
+
+          <p>
+            You must not knowingly allow another person to use your
+            MAP Energy account in a way that could compromise your
+            energy system, your connected services or MAP Energy.
+          </p>
+
+          <p>
+            If you believe your account or a connected service has
+            been compromised, you should disconnect affected services,
+            secure the relevant third-party account and contact MAP
+            Energy support where appropriate.
+          </p>
+
+          <p>
+            You are responsible for ensuring that the credentials,
+            tokens, account identifiers and other information you
+            provide when configuring a connection are valid and that
+            you have permission to use them.
+          </p>
+
+        </section>
+
+
+
+        <!-- 5 -->
+
+        <section
+          class="terms-section"
+          id="third-parties"
+        >
+
+          <span class="section-number">
+            05
+          </span>
+
+          <h2>
+            Third-party services
+          </h2>
+
+          <p>
+            MAP Energy relies on or communicates with third-party
+            services to provide many of its features.
+          </p>
+
+          <p>
+            Depending on your configuration, these may include:
+          </p>
+
+          <ul>
+
+            <li>
+              Tesla Energy services
+            </li>
+
+            <li>
+              Electricity supplier services
+            </li>
+
+            <li>
+              EV charger and charging services
+            </li>
+
+            <li>
+              Solar forecasting providers
+            </li>
+
+            <li>
+              Apple services
+            </li>
+
+            <li>
+              Google services
+            </li>
+
+            <li>
+              Cloud infrastructure providers
+            </li>
+
+            <li>
+              Home Assistant systems or webhook destinations
+              configured by you
+            </li>
+
+          </ul>
+
+          <p>
+            Third-party services are operated independently and are
+            subject to their own terms, privacy policies, technical
+            limitations and availability.
+          </p>
+
+          <p>
+            Aptica Ltd does not control third-party services and
+            cannot guarantee that an external API, integration,
+            authentication method, tariff service, charger service or
+            other external system will remain available or operate in
+            the same way.
+          </p>
+
+          <div class="callout">
+
+            <p>
+              A third-party provider may change, restrict or withdraw
+              an API or service at any time. This may cause a MAP
+              Energy integration or feature to stop working
+              temporarily or permanently.
+            </p>
+
+          </div>
+
+          <p>
+            MAP Energy may change or remove an integration if this is
+            required because of changes made by the relevant
+            third-party provider.
+          </p>
+
+        </section>
+
+
+
+        <!-- 6 -->
+
+        <section
+          class="terms-section"
+          id="automations"
+        >
+
+          <span class="section-number">
+            06
+          </span>
+
+          <h2>
+            Automations and energy controls
+          </h2>
+
+          <p>
+            MAP Energy allows supported energy systems to be monitored
+            and, where supported, controlled automatically.
+          </p>
+
+          <p>
+            Automations may be evaluated or executed through MAP
+            Energy's backend services and can therefore operate when
+            the MAP Energy app is not open on your device.
+          </p>
+
+          <p>
+            Depending on the features available to you, automations
+            may respond to factors such as:
+          </p>
+
+          <ul>
+
+            <li>
+              Time and schedules
+            </li>
+
+            <li>
+              EV charging activity
+            </li>
+
+            <li>
+              Battery state of charge
+            </li>
+
+            <li>
+              Electricity prices
+            </li>
+
+            <li>
+              Power and energy conditions
+            </li>
+
+            <li>
+              Solar conditions
+            </li>
+
+            <li>
+              Smart tariff or supplier events
+            </li>
+
+          </ul>
+
+          <p>
+            Actions may change supported Powerwall settings, send
+            notifications, send Home Assistant webhook events or
+            perform other supported actions.
+          </p>
+
+
+          <div class="callout warning-callout">
+
+            <p>
+              <strong>You remain responsible for your automation
+              configuration.</strong> Always check that triggers,
+              actions, schedules, limits and other settings are
+              appropriate for your home, energy system and tariff.
+            </p>
+
+          </div>
+
+
+          <p>
+            An automation may not run, may run later than expected or
+            may be unable to complete because of circumstances outside
+            MAP Energy's reasonable control.
+          </p>
+
+          <p>
+            These circumstances can include:
+          </p>
+
+          <ul>
+
+            <li>
+              Internet or network outages
+            </li>
+
+            <li>
+              Third-party API failures or rate limits
+            </li>
+
+            <li>
+              Expired or revoked authentication
+            </li>
+
+            <li>
+              Tesla or other connected-service outages
+            </li>
+
+            <li>
+              Changes to your hardware or energy system
+            </li>
+
+            <li>
+              Changes to electricity tariffs or supplier schedules
+            </li>
+
+            <li>
+              Conflicting settings or controls applied outside MAP
+              Energy
+            </li>
+
+            <li>
+              Service maintenance
+            </li>
+
+          </ul>
+
+          <p>
+            You should not rely on MAP Energy as the sole mechanism
+            for any action where failure, delay or unexpected
+            behaviour could create a risk to personal safety or
+            property.
+          </p>
+
+        </section>
+
+
+
+        <!-- 7 -->
+
+        <section
+          class="terms-section"
+          id="diagnostics"
+        >
+
+          <span class="section-number">
+            07
+          </span>
+
+          <h2>
+            Powerwall diagnostic access
+          </h2>
+
+          <p>
+            MAP Energy may provide additional diagnostic information
+            for compatible Powerwall systems.
+          </p>
+
+          <p>
+            Diagnostic functionality may require additional
+            authorisation, local pairing or other steps depending on
+            the Powerwall model and the access mechanisms available.
+          </p>
+
+          <p>
+            Diagnostic information is provided to help you understand
+            your system. It is not a substitute for professional
+            electrical, battery, solar or Tesla service advice.
+          </p>
+
+          <p>
+            You should not attempt repairs, electrical work or other
+            potentially hazardous actions solely because of
+            information displayed by MAP Energy.
+          </p>
+
+        </section>
+
+
+
+        <!-- 8 -->
+
+        <section
+          class="terms-section"
+          id="tariffs"
+        >
+
+          <span class="section-number">
+            08
+          </span>
+
+          <h2>
+            Tariffs, prices, forecasts and estimates
+          </h2>
+
+          <p>
+            MAP Energy may display electricity prices, tariff
+            information, smart charging periods, supplier events,
+            solar forecasts, estimated savings and other calculated
+            information.
+          </p>
+
+          <p>
+            This information may originate from third parties or be
+            calculated using information available to MAP Energy.
+          </p>
+
+          <div class="callout">
+
+            <p>
+              Your electricity supplier, energy account or other
+              authoritative provider remains the definitive source
+              for your actual tariff, prices, billing and settlement
+              information.
+            </p>
+
+          </div>
+
+          <p>
+            Forecasts and estimates are inherently uncertain. Actual
+            solar generation, consumption, electricity cost, battery
+            behaviour, export revenue or savings may differ from
+            values predicted or displayed by MAP Energy.
+          </p>
+
+          <p>
+            MAP Energy does not provide financial, investment or
+            professional energy advice.
+          </p>
+
+        </section>
+
+
+
+        <!-- 9 -->
+
+        <section
+          class="terms-section"
+          id="subscriptions"
+        >
+
+          <span class="section-number">
+            09
+          </span>
+
+          <h2>
+            Subscriptions, trials and payments
+          </h2>
+
+          <p>
+            Some MAP Energy features require an active paid
+            subscription.
+          </p>
+
+          <p>
+            Subscription options may include monthly and annual plans.
+            Prices are displayed by the relevant app store before you
+            subscribe and may vary by country, currency, tax and store.
+          </p>
+
+
+          <h3>
+            Free trials
+          </h3>
+
+          <p>
+            Eligible new subscriptions may include a free trial.
+            Where a trial is offered, the duration and applicable
+            terms are shown before you confirm the subscription.
+          </p>
+
+          <p>
+            Unless cancelled before the end of the trial in accordance
+            with the relevant store's rules, the subscription may
+            automatically convert to a paid subscription at the price
+            shown when you subscribed.
+          </p>
+
+
+          <h3>
+            Renewal
+          </h3>
+
+          <p>
+            Subscriptions may automatically renew unless cancelled in
+            accordance with the rules and deadlines of the platform
+            through which you purchased them.
+          </p>
+
+
+          <h3>
+            Managing or cancelling a subscription
+          </h3>
+
+          <p>
+            Subscriptions purchased through the Apple App Store or
+            Google Play are managed through the relevant store.
+          </p>
+
+          <p>
+            Cancelling a subscription normally prevents future
+            renewal. Access to paid features may continue until the
+            end of the period already paid for, subject to the
+            relevant store's rules.
+          </p>
+
+
+          <h3>
+            Refunds
+          </h3>
+
+          <p>
+            Where a subscription or purchase is processed by Apple or
+            Google, refund requests are generally handled under the
+            policies and processes of the relevant store.
+          </p>
+
+          <p>
+            Nothing in these Terms limits any refund or other consumer
+            right that you are legally entitled to.
+          </p>
+
+
+          <h3>
+            Changes to pricing
+          </h3>
+
+          <p>
+            Subscription prices may change in the future. Any changes
+            to an existing subscription will be handled in accordance
+            with applicable law and the rules of the relevant app
+            store.
+          </p>
+
+        </section>
+
+
+
+        <!-- 10 -->
+
+        <section
+          class="terms-section"
+          id="acceptable-use"
+        >
+
+          <span class="section-number">
+            10
+          </span>
+
+          <h2>
+            Acceptable use
+          </h2>
+
+          <p>
+            You must use MAP Energy lawfully and in a way that does
+            not interfere with the service or other users.
+          </p>
+
+          <p>
+            You must not:
+          </p>
+
+          <ul>
+
+            <li>
+              Attempt to gain unauthorised access to another user's
+              MAP Energy account or energy system
+            </li>
+
+            <li>
+              Connect a third-party account, charger or energy system
+              that you do not have permission to access
+            </li>
+
+            <li>
+              Attempt to bypass MAP Energy security or access controls
+            </li>
+
+            <li>
+              Deliberately overload, disrupt or interfere with MAP
+              Energy infrastructure
+            </li>
+
+            <li>
+              Use MAP Energy to send malicious or abusive requests to
+              third-party services
+            </li>
+
+            <li>
+              Use the service in violation of applicable law
+            </li>
+
+          </ul>
+
+          <p>
+            We may restrict access where reasonably necessary to
+            protect MAP Energy, its infrastructure, connected services
+            or other users.
+          </p>
+
+        </section>
+
+
+
+        <!-- 11 -->
+
+        <section
+          class="terms-section"
+          id="availability"
+        >
+
+          <span class="section-number">
+            11
+          </span>
+
+          <h2>
+            Service availability
+          </h2>
+
+          <p>
+            MAP Energy is provided on an ongoing service basis and we
+            aim to keep it reliable and available.
+          </p>
+
+          <p>
+            However, we do not guarantee that MAP Energy or any
+            particular feature will always be available, uninterrupted
+            or error-free.
+          </p>
+
+          <p>
+            Availability can be affected by:
+          </p>
+
+          <ul>
+
+            <li>
+              Planned maintenance
+            </li>
+
+            <li>
+              Emergency maintenance
+            </li>
+
+            <li>
+              Cloud infrastructure problems
+            </li>
+
+            <li>
+              Internet connectivity
+            </li>
+
+            <li>
+              Third-party outages
+            </li>
+
+            <li>
+              API restrictions or changes
+            </li>
+
+            <li>
+              Hardware availability
+            </li>
+
+            <li>
+              Authentication problems
+            </li>
+
+          </ul>
+
+          <p>
+            We may temporarily restrict functionality where reasonably
+            necessary for security, maintenance or service stability.
+          </p>
+
+        </section>
+
+
+
+        <!-- 12 -->
+
+        <section
+          class="terms-section"
+          id="liability"
+        >
+
+          <span class="section-number">
+            12
+          </span>
+
+          <h2>
+            Limitation of liability
+          </h2>
+
+          <p>
+            MAP Energy is intended to assist you with monitoring and
+            managing your home energy system. You remain responsible
+            for decisions relating to your energy use, tariffs,
+            hardware and automation configuration.
+          </p>
+
+          <p>
+            To the extent permitted by applicable law, Aptica Ltd is
+            not responsible for losses caused solely by matters outside
+            its reasonable control, including:
+          </p>
+
+          <ul>
+
+            <li>
+              Failure or unavailability of third-party APIs or
+              services
+            </li>
+
+            <li>
+              Changes made by third-party providers
+            </li>
+
+            <li>
+              Incorrect or delayed information supplied by a
+              third-party service
+            </li>
+
+            <li>
+              Internet, network or infrastructure failures outside
+              Aptica Ltd's reasonable control
+            </li>
+
+            <li>
+              Actions performed directly through another application
+              or service that conflict with MAP Energy
+            </li>
+
+            <li>
+              User-configured automations that do not reflect the
+              user's intended behaviour
+            </li>
+
+          </ul>
+
+          <p>
+            Where permitted by law, Aptica Ltd will not be responsible
+            for indirect or consequential losses that were not
+            reasonably foreseeable when you began using the service.
+          </p>
+
+          <div class="callout success-callout">
+
+            <p>
+              <strong>Nothing in these Terms excludes or limits
+              liability where doing so would be unlawful.</strong>
+              This includes liability that cannot legally be excluded
+              or restricted and your applicable statutory consumer
+              rights.
+            </p>
+
+          </div>
+
+        </section>
+
+
+
+        <!-- 13 -->
+
+        <section
+          class="terms-section"
+          id="responsibilities"
+        >
+
+          <span class="section-number">
+            13
+          </span>
+
+          <h2>
+            Your responsibilities
+          </h2>
+
+          <p>
+            When using MAP Energy, you are responsible for:
+          </p>
+
+          <ul>
+
+            <li>
+              Ensuring you have permission to connect each energy
+              system and third-party service
+            </li>
+
+            <li>
+              Keeping your accounts and devices secure
+            </li>
+
+            <li>
+              Reviewing automation settings before enabling them
+            </li>
+
+            <li>
+              Monitoring important automations and energy controls
+            </li>
+
+            <li>
+              Checking that your battery, solar, EV and energy
+              configuration remains appropriate
+            </li>
+
+            <li>
+              Checking your electricity supplier for definitive
+              tariff and billing information
+            </li>
+
+            <li>
+              Disconnecting services you no longer want MAP Energy to
+              access
+            </li>
+
+            <li>
+              Keeping third-party authentication current where
+              required
+            </li>
+
+            <li>
+              Using MAP Energy in accordance with these Terms and
+              applicable law
+            </li>
+
+          </ul>
+
+        </section>
+
+
+
+        <!-- 14 -->
+
+        <section
+          class="terms-section"
+          id="intellectual-property"
+        >
+
+          <span class="section-number">
+            14
+          </span>
+
+          <h2>
+            Intellectual property
+          </h2>
+
+          <p>
+            MAP Energy, its software, design, branding, documentation
+            and original content are owned by or licensed to Aptica
+            Ltd and are protected by applicable intellectual property
+            laws.
+          </p>
+
+          <p>
+            Your right to use MAP Energy is personal, limited,
+            non-exclusive and subject to these Terms.
+          </p>
+
+          <p>
+            These Terms do not transfer ownership of MAP Energy,
+            Aptica Ltd intellectual property or third-party
+            intellectual property to you.
+          </p>
+
+          <p>
+            Third-party names, trademarks and brands remain the
+            property of their respective owners.
+          </p>
+
+        </section>
+
+
+
+        <!-- 15 -->
+
+        <section
+          class="terms-section"
+          id="termination"
+        >
+
+          <span class="section-number">
+            15
+          </span>
+
+          <h2>
+            Suspension, termination and account deletion
+          </h2>
+
+          <p>
+            You may stop using MAP Energy at any time.
+          </p>
+
+          <p>
+            You may also disconnect supported third-party services
+            when you no longer want MAP Energy to access them.
+          </p>
+
+          <p>
+            If you want your MAP Energy account or associated personal
+            data deleted, you can use any account-deletion functionality
+            provided within MAP Energy or contact
+            <a href="mailto:support@aptica.uk">
+              support@aptica.uk
+            </a>.
+          </p>
+
+          <p>
+            We may suspend or restrict access where reasonably
+            necessary if:
+          </p>
+
+          <ul>
+
+            <li>
+              These Terms are materially breached
+            </li>
+
+            <li>
+              MAP Energy is being abused or attacked
+            </li>
+
+            <li>
+              Use of the service presents a security risk
+            </li>
+
+            <li>
+              Continued access could adversely affect other users or
+              third-party systems
+            </li>
+
+            <li>
+              We are required to do so by law
+            </li>
+
+          </ul>
+
+          <p>
+            If MAP Energy or a material part of the service is
+            discontinued, we will take reasonable steps to communicate
+            this where appropriate.
+          </p>
+
+        </section>
+
+
+
+        <!-- 16 -->
+
+        <section
+          class="terms-section"
+          id="changes"
+        >
+
+          <span class="section-number">
+            16
+          </span>
+
+          <h2>
+            Changes to MAP Energy and these Terms
+          </h2>
+
+          <p>
+            MAP Energy is actively developed and its functionality may
+            change over time.
+          </p>
+
+          <p>
+            We may add, modify or remove features, integrations,
+            automations or other functionality.
+          </p>
+
+          <p>
+            We may also update these Terms to reflect changes to MAP
+            Energy, applicable law, third-party services or our
+            business.
+          </p>
+
+          <p>
+            The latest version of these Terms will be published on
+            the MAP Energy website with the updated date shown at the
+            top of this page.
+          </p>
+
+          <p>
+            Where a change materially affects your rights or use of
+            the service, we will take reasonable steps to provide
+            appropriate notice where required.
+          </p>
+
+        </section>
+
+
+
+        <!-- 17 -->
+
+        <section
+          class="terms-section"
+          id="consumer-rights"
+        >
+
+          <span class="section-number">
+            17
+          </span>
+
+          <h2>
+            Consumer rights
+          </h2>
+
+          <p>
+            If you use MAP Energy as a consumer, you may have
+            statutory rights under the laws that apply where you live.
+          </p>
+
+          <p>
+            Nothing in these Terms is intended to remove, restrict or
+            replace consumer rights that cannot legally be excluded
+            or limited by contract.
+          </p>
+
+          <p>
+            If there is a conflict between these Terms and a mandatory
+            consumer protection that applies to you, the mandatory
+            legal protection will apply.
+          </p>
+
+        </section>
+
+
+
+        <!-- 18 -->
+
+        <section
+          class="terms-section"
+          id="law"
+        >
+
+          <span class="section-number">
+            18
+          </span>
+
+          <h2>
+            Governing law
+          </h2>
+
+          <p>
+            These Terms are governed by the laws of
+            <strong>England and Wales</strong>.
+          </p>
+
+          <p>
+            If you are a consumer living elsewhere, you may also
+            benefit from mandatory protections provided by the laws
+            of the country in which you live.
+          </p>
+
+          <p>
+            Nothing in this section is intended to deprive you of any
+            right to bring proceedings in a court that applicable
+            consumer law requires to be available to you.
+          </p>
+
+        </section>
+
+
+
+        <!-- 19 -->
+
+        <section
+          class="terms-section"
+          id="contact"
+        >
+
+          <span class="section-number">
+            19
+          </span>
+
+          <h2>
+            Contact us
+          </h2>
+
+          <p>
+            If you have questions about these Terms or the MAP Energy
+            service, contact Aptica Ltd.
+          </p>
+
+
+          <div class="contact-card">
+
+            <h2>
+              MAP Energy Support
+            </h2>
+
+            <p>
+              Questions about your account, subscription, connected
+              services or these Terms can be sent to the MAP Energy
+              support team.
+            </p>
+
+            <a
+              href="mailto:support@aptica.uk"
+              class="contact-button"
+            >
+              support@aptica.uk
+            </a>
+
+          </div>
+
+        </section>
+
+
+      </article>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         FOOTER
+         ===================================================== -->
+
+    <footer class="footer">
+
+      <div class="footer-top">
+
+
+        <div class="footer-brand">
+
+          <img
+            src="/map-energy/assets/map-energy-logo.PNG"
+            alt="MAP Energy"
+            class="footer-logo"
+          >
+
+          <span class="footer-brand-name">
+            MAP Energy by Aptica Ltd
+          </span>
+
+        </div>
+
+
+        <nav
+          class="footer-links"
+          aria-label="Footer navigation"
+        >
+
+          <a href="/">
+            Aptica
+          </a>
+
+          <a href="/map-energy/">
+            MAP Energy
+          </a>
+
+          <a href="/map-energy/documentation/">
+            Documentation
+          </a>
+
+          <a href="/map-energy/portal/">
+            Web Portal
+          </a>
+
+          <a href="/map-energy/privacy/">
+            Privacy
+          </a>
+
+          <a href="/map-energy/terms/">
+            Terms
+          </a>
+
+          <a href="mailto:support@aptica.uk">
+            Support
+          </a>
+
+        </nav>
+
+
+      </div>
+
+
+      <div class="footer-bottom">
+
+        <div>
+          MAP Energy is an independent app and is not affiliated with
+          Tesla, Inc. Availability of features depends on supported
+          services, account permissions, hardware compatibility and
+          region.
+        </div>
+
+        <div style="margin-top: 7px;">
+          © <span id="year"></span> Aptica Ltd. All rights reserved.
+        </div>
+
+      </div>
+
+    </footer>
+
+
+  </main>
+
+
+
+  <script>
+
+    document.getElementById("year").textContent =
+      new Date().getFullYear();
+
+  </script>
 
 </body>
+
 </html>
