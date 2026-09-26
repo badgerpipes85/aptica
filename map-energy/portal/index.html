@@ -7,9 +7,10 @@
   <meta name="description" content="Secure MAP Energy portal for Premium users.">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src https://powerwake-backend-production.mapenergy.workers.dev https://powerwake-backend-staging.mapenergy.workers.dev; base-uri 'none'; form-action 'self'">
   <title>MAP Energy Portal</title>
-  <link rel="stylesheet" href="portal.css?v=4">
-  <script src="portal.js?v=4" defer></script>
-  <script src="power-perks.js?v=4" defer></script>
+  <link rel="stylesheet" href="portal.css?v=5">
+  <script src="portal.js?v=5" defer></script>
+  <script src="power-perks.js?v=5" defer></script>
+  <script src="node-details.js?v=5" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#portal-main">Skip to portal content</a>
@@ -125,7 +126,7 @@
             </div>
           </article>
 
-          <p class="flow-hint">Select an energy node to explore today's readings.</p>
+          <p class="flow-hint">Select an energy node to explore its history and graphs.</p>
           <dialog id="powerPerksDialog" class="glass chart-dialog perks-dialog" aria-labelledby="powerPerksTitle">
             <div class="panel-heading"><div><h2 id="powerPerksTitle">Power Perks</h2><p>Free electricity events</p></div><button id="closePowerPerks" class="button button-quiet" type="button">Close</button></div>
             <img class="perks-banner" src="/map-energy/assets/power-perks-banner.jpg" alt="EDF Power Perks">
@@ -150,8 +151,8 @@
             </form>
           </dialog>
           <dialog id="nodeChart" class="glass chart-dialog" aria-labelledby="nodeChartTitle">
-            <div class="panel-heading"><div><span class="eyebrow">Today</span><h2 id="nodeChartTitle">Energy</h2><p id="nodeChartSub">30-minute intervals</p></div><button id="closeNodeChart" class="button button-quiet" type="button">Close</button></div>
-            <div id="nodeChartBars" class="node-timeline" role="status"></div>
+            <div class="panel-heading"><div><span class="eyebrow">Energy history</span><h2 id="nodeChartTitle">Energy</h2><p id="nodeChartSub">History and readings</p></div><button id="closeNodeChart" class="button button-quiet" type="button">Close</button></div>
+            <div id="nodeChartBars" class="node-timeline"></div>
           </dialog>
 
         </section>

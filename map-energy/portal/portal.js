@@ -510,40 +510,6 @@ function nodeValue(slot, node) {
   return value == null ? NaN : Number(value);
 }
 
-async function loadNodeChart(node) {
-  const siteKey = $("siteSelect").value;
-  if (!siteKey || !currentOverview?.day_start_utc) return;
-  const request = ++chartRequest;
-  setText("nodeChartTitle", nodeLabel(node));
-  setText("nodeChartSub", `Today · ${siteTimezone()} · ${node === "grid" ? "Net import above / net export below zero" : "30-minute readings"}`);
-  $("nodeChartBars").innerHTML = '<div class="empty">Loading readings…</div>';
-  if (!$("nodeChart").open) $("nodeChart").showModal();
-  try {
-    const data = await api(`/v1/web/history-day?site_key=${encodeURIComponent(siteKey)}&day_start_utc=${encodeURIComponent(currentOverview.day_start_utc)}`);
-    if (request !== chartRequest || !$("nodeChart").open) return;
-    const slots = data.slots || [];
-    const unit = node === "battery" ? "%" : node === "ev" ? "kW" : "kWh";
-    const values = slots.map(slot => nodeValue(slot, node));
-    if (!values.some(Number.isFinite)) {
-      $("nodeChartBars").innerHTML = '<div class="empty">No readings available for this part of your system today.</div>';
-      return;
-    }
-    const limit = Math.max(.01, ...values.filter(Number.isFinite).map(Math.abs));
-    const negative = values.some(v => v < 0);
-    const baseline = negative ? 110 : 200;
-    const scale = negative ? 90 : 180;
-    const step = 600 / Math.max(slots.length, 1);
-    const bars = values.map((value, i) => {
-      if (!Number.isFinite(value)) return "";
-      const height = Math.abs(value) / limit * scale;
-      const label = slots[i].start_ts ? fmtTime(slots[i].start_ts) : `Interval ${i + 1}`;
-      return `<rect class="timeline-bar ${node}" x="${(i * step + 1).toFixed(2)}" y="${(value < 0 ? baseline : baseline - height).toFixed(2)}" width="${Math.max(1, step - 2).toFixed(2)}" height="${height.toFixed(2)}" rx="2"><title>${escapeHtml(label)}: ${nf1.format(value)} ${unit}</title></rect>`;
-    }).join("");
-    $("nodeChartBars").innerHTML = `<div class="chart-scale"><span>${nf1.format(limit)} ${unit}</span><span>${negative ? "±" : "From zero"}</span></div><svg class="timeline-svg" viewBox="0 0 600 220" role="img" aria-label="${escapeHtml(nodeLabel(node))} over ${slots.length} intervals"><line x1="0" x2="600" y1="${baseline}" y2="${baseline}" class="chart-baseline"/>${bars}</svg><div class="chart-scale"><span>Start of day</span><span>End of day</span></div>`;
-  } catch (error) {
-    if (error.name !== "AbortError" && request === chartRequest) $("nodeChartBars").innerHTML = `<div class="empty">${escapeHtml(friendlyError(error))}. Close and select the node to retry.</div>`;
-  }
-}
 
 function siteHalfHourIndex(timeZone) {
   try {
