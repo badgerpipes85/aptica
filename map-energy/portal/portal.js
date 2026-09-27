@@ -537,6 +537,10 @@ function triggerText(payload) {
   if (trigger.type === "schedule") return "Scheduled automation";
   if (trigger.type === "ev") return trigger.event === "starts_charging" ? "EV started charging" : "EV stopped charging";
   if (trigger.type === "battery") return `Battery SOC went ${trigger.condition === "soc_below" ? "below" : "above"} ${trigger.value ?? 0}%`;
+  if (trigger.type === "price") return `${trigger.source === "export" ? "Export" : "Import"} price ${trigger.condition === "below" ? "below" : "above"} ${(Number(trigger.value) * 100).toFixed(1)} ${String(trigger.unit || "GBP").startsWith("GBP") ? "p" : "c"}/kWh`;
+  if (trigger.type === "power") return `${({home:"Home",solar:"Solar",import:"Import",export:"Export",powerwall_charge:"PW Charge",powerwall_discharge:"PW Discharge"})[trigger.source] || "Power"} ${trigger.condition === "below" ? "below" : "above"} ${trigger.value_kw} kW`;
+  if (trigger.type === "event_import_cap") return `Power Hour import reaches ${trigger.trigger_at_kwh} kWh`;
+  if (trigger.type === "edf_power_perks") return ({announced:"Power Perks event announced",starts:"Free electricity starts",ends:"Free electricity ends"})[trigger.event] || "Power Perks";
   if (trigger.type === "solar") return `Solar forecast ${trigger.condition === "below" ? "below" : "above"} ${trigger.value_kwh ?? 0} kWh`;
   return "Automation executed";
 }
@@ -569,7 +573,7 @@ function runSummary(run) {
 function ruleCard(rule) {
   const status = rule.paused ? "Paused" : "Active";
   const detail = `${rule.message || triggerText(rule.payload)}${rule.next_fire_at ? ` · Next ${fmtTime(rule.next_fire_at)}` : ""}`;
-  return `<article class="automation-rule-card"><span class="automation-rule-icon"><svg><use href="/map-energy/assets/map-energy-icons.svg#automation"></use></svg></span><div><strong>${escapeHtml(automationName(rule))}</strong><small>${escapeHtml(detail)}</small></div><span class="automation-status ${status.toLowerCase()}">${status}</span></article>`;
+  return `<article class="automation-rule-card"><span class="automation-rule-icon"><svg><use href="/map-energy/assets/map-energy-icons.svg#automation"></use></svg></span><div><strong>${escapeHtml(automationName(rule))}</strong><small>${escapeHtml(detail)}</small></div><span class="automation-status ${status.toLowerCase()}">${status}</span>${automationManaged(rule) ? '<small>Managed by smart charging settings</small>' : `<div class="automation-controls"><button type="button" class="button button-quiet" data-auto-edit="${escapeHtml(rule.id)}">Edit</button>${automationPausable(rule)?`<button type="button" class="button button-quiet" data-auto-pause="${escapeHtml(rule.id)}">${rule.paused?'Resume':'Pause'}</button>`:''}</div>`}</article>`;
 }
 
 function runCard(run, timezone) {
@@ -598,11 +602,12 @@ async function loadAutomations(siteKey) {
   const history = data.history || [];
   const smart = data.smart_charging;
   const smartCard = smart ? `<article class="smart-scheduling-card"><span class="smart-scheduling-icon"><svg><use href="/map-energy/assets/map-energy-icons.svg#car"></use></svg></span><div><h2>${escapeHtml(smart.title)}</h2><p>${escapeHtml(smart.summary)}</p></div><span class="automation-status ${smart.enabled ? "active" : "paused"}">${smart.enabled ? "Enabled" : "Paused"}</span></article>` : "";
-  const rulesContent = rules.length ? `<div class="automation-rules">${rules.map(ruleCard).join("")}</div>` : `<div class="automation-empty"><span><svg><use href="/map-energy/assets/map-energy-icons.svg#automation"></use></svg></span><h2>${smart ? "No other automations yet" : "No automations yet"}</h2><p>${smart ? "Create another automation in the MAP Energy app." : "Create your first automation in the MAP Energy app."}</p></div>`;
+  const rulesContent = rules.length ? `<div class="automation-rules">${rules.map(ruleCard).join("")}</div>` : `<div class="automation-empty"><span><svg><use href="/map-energy/assets/map-energy-icons.svg#automation"></use></svg></span><h2>${smart ? "No other automations yet" : "No automations yet"}</h2><p>${smart ? "Add another automation using the button above." : "Add your first automation using the button above."}</p></div>`;
   const groups = new Map();
   history.forEach(run => { const day = dayKeyAndLabel(run.executed_at, data.timezone); const group = groups.get(day.key) || { label: day.label, runs: [] }; group.runs.push(run); groups.set(day.key, group); });
   const historyContent = history.length ? Array.from(groups.values()).map(group => `<section class="run-day"><header><h3>${escapeHtml(group.label)}</h3><span>${group.runs.length}</span></header><div>${group.runs.map(run => runCard(run, data.timezone)).join("")}</div></section>`).join("") : `<div class="automation-empty compact"><h2>No automation history yet</h2><p>Executed automations will appear here.</p></div>`;
   $("automationList").innerHTML = `<div class="automation-overview"><div><strong>${rules.filter(rule => !rule.paused).length}</strong><span>Active rules</span></div><div><strong>${rules.filter(rule => rule.paused).length}</strong><span>Paused</span></div><div><strong>${history.filter(run => ["failed", "error", "partial", "blocked"].includes(run.status)).length}</strong><span>Runs to review</span></div></div><div class="automation-config">${smartCard}${rulesContent}</div><article class="run-log"><div class="run-log-heading"><span><svg><use href="/map-energy/assets/map-energy-icons.svg#history"></use></svg></span><div><h2>Run Log</h2><p>${history.length} recent run${history.length === 1 ? "" : "s"}</p></div></div><div class="segmented" aria-label="Filter automation activity"><button type="button" data-run-filter="all" aria-pressed="true">All activity</button><button type="button" data-run-filter="attention" aria-pressed="false">Needs attention</button></div>${historyContent}<p id="noAttention" class="empty hidden">No failed, partial or blocked runs in this history.</p></article>`;
+  bindAutomationControls(data);
   document.querySelectorAll("[data-run-filter]").forEach(button => button.addEventListener("click", () => {
     const attention = button.dataset.runFilter === "attention";
     document.querySelectorAll("[data-run-filter]").forEach(item => item.setAttribute("aria-pressed", String(item === button)));
@@ -632,7 +637,7 @@ const pageCopy = {
   live: ["Live energy", "A real-time view of power moving through your home"],
   supplier: ["Supplier", "Your current import and export tariff information"],
   history: ["Energy history", "Recent daily usage, generation and grid totals"],
-  automations: ["Automations", "View configured automations and their run history"],
+  automations: ["Automations", "Manage your automations and review their run history"],
   settings: ["Portal settings", "A read-only summary of your site configuration"]
 };
 
@@ -657,6 +662,11 @@ function resetSiteView() {
   resetPowerPerksView();
   currentOverview = null;
   pendingSetting = null;
+  if ($("automationEditor")?.open) $("automationEditor").close();
+  automationEditor = null;
+  automationData = null;
+  $("addAutomation").disabled = true;
+  showError("automationsStatus", "");
   settingEdit = null;
   if ($("settingEditor").open) $("settingEditor").close();
   showError("settingsStatus", "");

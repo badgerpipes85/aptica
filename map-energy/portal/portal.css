@@ -416,3 +416,19 @@ html { scroll-padding-bottom: 110px; }
 @media(max-width:480px){.history-split-content{gap:8px}.history-split svg{width:96px;height:96px}.history-slice{font-size:11px;gap:5px;grid-template-columns:1fr auto 30px}.history-controls{gap:8px}.history-controls .button{font-size:11px;padding:9px}.history-controls label{order:3;flex-basis:100%}.history-detail .history-summary-grid strong{font-size:17px}}
 
 @media(max-width:480px){.history-bars text{font-size:25px}}
+
+/* Automation editor shares the app's grouped trigger and action layout. */
+.automation-toolbar,.automation-controls,.auto-footer{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.automation-toolbar{margin-bottom:20px}.automation-toolbar p{margin:0}.automation-controls{grid-column:2/-1;justify-content:flex-end}
+.auto-dialog{width:min(680px,calc(100vw - 24px));max-height:90dvh;padding:24px;border:1px solid #344354;border-radius:24px;color:var(--text);background:#111b28;overflow:auto}
+.auto-dialog::backdrop{background:#020811bb;backdrop-filter:blur(6px)}
+.auto-dialog form{display:grid;gap:20px}.auto-dialog fieldset{margin:0;padding:16px;border:1px solid #344354;border-radius:16px;min-width:0}
+.auto-dialog legend{padding:0 8px;font-weight:700}.auto-dialog label{display:grid;gap:8px;margin:10px 0;font-size:.9rem;color:#c5cfda}
+.auto-dialog input:not([type=checkbox]):not([type=range]),.auto-dialog select{box-sizing:border-box;width:100%;min-width:0;background:#0a1421;color:#f4f7fc;border:1px solid #3b4d62;border-radius:10px;padding:12px;font:inherit;color-scheme:dark}
+.auto-dialog input[type=range]{width:100%;accent-color:#55aaff}.auto-dialog .auto-check{display:flex;align-items:center;gap:10px}.auto-check input{width:18px;height:18px;accent-color:#55aaff}
+.auto-fields{display:grid;grid-template-columns:1fr 1fr;column-gap:16px}.auto-fields>.auto-days,.auto-fields>.auto-check,.auto-fields>.muted{grid-column:1/-1}
+.auto-dialog .auto-days{display:flex;flex-wrap:wrap;gap:10px}.auto-dialog .auto-days label{margin:4px 0}.auto-actions{display:grid;gap:16px}.auto-dialog output{font-size:1.3rem;font-weight:700}
+.auto-dialog .muted{color:#a7b4c4;font-size:.85rem;line-height:1.5}.auto-footer{justify-content:flex-end}.auto-dialog button:disabled{opacity:.5}
+@media(max-width:500px){.auto-dialog{padding:16px}.auto-fields{grid-template-columns:1fr}.automation-toolbar{align-items:stretch}.automation-toolbar>.button{width:100%}.automation-controls .button{flex:1}.auto-dialog .panel-heading{align-items:flex-start}.auto-dialog h2{font-size:1.25rem}}
+
+.automation-rule-card>.automation-controls{display:flex}
