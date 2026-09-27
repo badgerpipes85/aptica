@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Web Portal | MAP Energy</title>
+  <meta name="description" content="Set up browser access, explore your energy, change Powerwall settings and manage the same automations you use in the MAP Energy app.">
+  <link rel="stylesheet" href="/map-energy/assets/documentation-guides.css?v=1">
+</head>
+<body>
+  <main class="page">
+    <header class="brand-header"><div class="brand">
+      <img src="/map-energy/assets/map-energy-logo.PNG" alt="MAP Energy" class="brand-logo">
+      <div class="brand-text"><span class="brand-name">MAP Energy</span><span class="brand-subtitle">Help &amp; Documentation</span></div>
+    </div><div class="support-pill">User Guide</div></header>
+    <nav class="docs-navigation" aria-label="Documentation navigation"><a href="/map-energy/documentation/" class="docs-home-link"><span class="docs-home-arrow">←</span><span>Documentation Home</span></a></nav>
+    <section class="hero"><div class="hero-content"><div class="eyebrow"><span class="eyebrow-dot"></span>MAP Energy</div><h1>Web Portal</h1><p class="hero-description">Set up browser access, explore your energy, change Powerwall settings and manage the same automations you use in the MAP Energy app.</p></div><img src="/map-energy/assets/mappy-docs.PNG" alt="Mappy, the MAP Energy assistant" class="mappy"></section>
+    <article class="content-card">
+      <p class="guide-updated">Updated 27 September 2026</p>
+      <nav class="guide-nav" aria-label="On this page"><a href="#access">Set up web access</a><a href="#live">Live energy and Powerwall controls</a><a href="#nodes">Explore the five energy nodes</a><a href="#supplier-history">Supplier and History</a><a href="#automations">Create and manage automations</a><a href="#settings">Connections and browser sessions</a><a href="#troubleshooting">Login and refresh help</a></nav>
+      <section id="access"><h2>Set up web access</h2>
+<p>The <a href="/map-energy/portal/">MAP Energy Web Portal</a> is included with <a href="premium-subscription.html">MAP Energy Premium</a>. Use it in a desktop or mobile browser to monitor your energy site, change supported Powerwall settings and manage your automations.</p>
+<ol><li>In the mobile app, open <strong>Settings → Account Management → Web Portal Access</strong>.</li><li>Create a separate web username and password. Passwords need at least 12 characters. Enter the password again to confirm it.</li><li>Select <strong>Create web login</strong>, or <strong>Update web login</strong> if you already have one. Wait for <strong>Web login saved</strong>.</li><li>Open <a href="/map-energy/portal/">aptica.uk/map-energy/portal/</a> and sign in using those web credentials.</li></ol>
+<p>Your web username and password are separate from your Apple, Google, Tesla and supplier sign-in details. Choose your <strong>Energy site</strong> after signing in. The selector uses the site name where it is available; a site-key label can appear when a name is not available.</p>
+</section>
+<section id="live"><h2>Live energy and Powerwall controls</h2>
+<p><strong>Live</strong> shows Solar, Battery, Home, Grid and EV energy flows, with daily energy totals. The visible portal refreshes its overview regularly; use <strong>Refresh</strong> to request another update. An unavailable or interrupted connection is shown rather than being presented as a current reading.</p>
+<p>Select <strong>Backup</strong>, <strong>Mode</strong> or <strong>Export</strong> to change a supported setting, then select <strong>Confirm</strong>. The portal waits for updated Powerwall readings to confirm the change. If confirmation is unavailable, refresh the current setting before retrying.</p><div class="guide-table-wrap"><table class="guide-table"><thead><tr><th scope="col">Control</th><th scope="col">Choices</th></tr></thead><tbody><tr><th scope="row">Backup Reserve</th><td>Move the slider through 0–80%, then directly to 100%. See <a href="backup-reserve.html">Backup Reserve</a>.</td></tr><tr><th scope="row">Operation Mode</th><td>Savings (Time-Based Control), Self-Powered or Backup, where supported.</td></tr><tr><th scope="row">Energy Exports</th><td>Don’t Export, Solar Only or Everything, where supported by the Tesla system.</td></tr></tbody></table></div><p>Tesla and your system configuration determine which controls are available and how the Powerwall responds. These controls do not override system export restrictions.</p>
+</section>
+<section id="nodes"><h2>Explore the five energy nodes</h2>
+<p>Select a node on Live to open its graph and detail view. Point at or tap a graph, or move <strong>Explore readings</strong>, to select an actual recorded point and see its time and values.</p><div class="guide-table-wrap"><table class="guide-table"><thead><tr><th scope="col">Node</th><th scope="col">Details</th></tr></thead><tbody><tr><th scope="row">Solar</th><td>Recorded power and energy, plus a forecast where available from your configured provider. Tomorrow is offered when forecast data is available.</td></tr><tr><th scope="row">Battery</th><td>Daily state-of-charge history and the reserve reference, plus charge/discharge energy by month or year. Daily SOC is estimated from Tesla energy history and the current charge, as in the app.</td></tr><tr><th scope="row">Home</th><td>Home / Vehicle energy usage, daily demand and longer-term totals.</td></tr><tr><th scope="row">Grid</th><td>Import and export with their own colours and values. Import and export are shown separately in the summaries.</td></tr><tr><th scope="row">EV</th><td>Charging power and estimated charging energy from the available EV readings. The daily view covers today and the previous six days; missing readings can limit the result.</td></tr></tbody></table></div><p>Solar, Home, Grid and Battery offer Day, Month and Year views. Battery daily SOC history is limited to today and the previous six days. Forecasts and reconstructed SOC are estimates, not additional meter readings.</p>
+</section>
+<section id="supplier-history"><h2>Supplier and History</h2>
+<p><strong>Supplier</strong> shows import first and export second: left/right on wider screens and top/bottom on phones. Hover over or tap a rate bar to see the time and rate to one decimal place. Open <strong>Rate information</strong> to distinguish when supplier data was checked from when saved rates were last updated. See <a href="supplier-tariffs.html">Supplier Tariffs &amp; Power Perks</a>.</p>
+<p><strong>History</strong> retrieves energy data from Tesla when you open it. It does not read the history stored on your phone. Browse completed days, open a daily detail, inspect half-hour slots and review the import usage ring, costs and available standing charges. See <a href="energy-history.html">Energy History &amp; Costs</a> for how rates, smart periods and free events are applied.</p>
+</section>
+<section id="automations"><h2>Create and manage automations</h2>
+<p>The portal and app use the same saved automations. In <strong>Automations</strong>, select <strong>Add automation</strong>, choose a trigger, configure its conditions and add up to four compatible actions. You can optionally give the rule a name, then save it.</p>
+<ul><li><strong>Edit</strong> changes the existing rule. A paused rule remains paused after editing.</li><li><strong>Pause / Resume</strong> is available for EV, battery, price, power, solar forecast and Power Perks triggers, and repeating schedules. One-off schedules and Power Hour rules do not offer this control.</li><li><strong>Delete automation</strong> is inside the editor. Select <strong>Confirm delete</strong> to remove the rule and its future runs.</li><li><strong>Run Log</strong> shows recent outcomes. Use <strong>Needs attention</strong> to review failed, partial or blocked runs.</li></ul>
+<p>Schedules use the energy site’s time zone, displayed in the editor. EV and Power Perks choices depend on the site’s setup; Home Assistant actions require an existing webhook connection. <a href="automations.html#portal-management">Read the full automation setup and editing guide</a>.</p>
+<p>Dedicated IOG / EDF Smart Bolt-On setup and automatically managed smart charging rules remain controlled through the mobile app. The portal shows their current scheduling status.</p>
+</section>
+<section id="settings"><h2>Connections and browser sessions</h2>
+<p><strong>Settings</strong> summarises connected services and tariff-sync information. Use the mobile app to connect or reconnect Tesla, suppliers, chargers, forecasting services and Home Assistant, or to configure smart charging.</p>
+<p>In the app’s <strong>Web Portal Access</strong> screen you can update the web login, revoke a listed browser, sign out all browsers or disable web access. Updating the login signs out existing browser sessions. Saving a new login after disabling access enables it again.</p>
+</section>
+<section id="troubleshooting"><h2>Login and refresh help</h2>
+<h3>“The username or password is incorrect”</h3><p>Use the separate web login saved in the app. If you reset it, wait for the saved confirmation, then sign in again with the new details.</p>
+<p>The normal portal address connects to production. If you are testing a staging build, use the staging portal address supplied for testing, which contains <code>?environment=staging</code>. Staging and production have separate accounts, web credentials and data; changing credentials in one does not update the other.</p>
+<h3>My session ended</h3><p>Sign in again. Updating web credentials, revoking a browser or disabling web access can end an existing session.</p>
+<h3>A value is missing or looks old</h3><p>Check the selected Energy site and its time zone, then use Refresh. For supplier rates, check Rate information as well as the page’s Loaded time. A dash means the required data is unavailable, not necessarily zero. Review the connection in the app if refreshing does not resolve it.</p>
+<p>For more help, see <a href="faq.html#portal-login">portal FAQs</a>, <a href="energy-history.html#missing">missing History data</a> and <a href="supplier-tariffs.html#freshness">supplier timestamps</a>.</p>
+</section>
+    </article>
+    <footer class="footer"><img src="/map-energy/assets/map-energy-logo.PNG" alt="MAP Energy" class="footer-logo"><span>MAP Energy • Powerwall control, insights &amp; automation</span></footer>
+  </main>
+</body>
+</html>

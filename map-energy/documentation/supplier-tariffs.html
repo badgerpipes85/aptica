@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Supplier Tariffs &amp; Power Perks | MAP Energy</title>
+  <meta name="description" content="Explore import and export rates, understand supplier timestamps and use the EDF Power Perks event view in the MAP Energy Web Portal.">
+  <link rel="stylesheet" href="/map-energy/assets/documentation-guides.css?v=1">
+</head>
+<body>
+  <main class="page">
+    <header class="brand-header"><div class="brand">
+      <img src="/map-energy/assets/map-energy-logo.PNG" alt="MAP Energy" class="brand-logo">
+      <div class="brand-text"><span class="brand-name">MAP Energy</span><span class="brand-subtitle">Help &amp; Documentation</span></div>
+    </div><div class="support-pill">User Guide</div></header>
+    <nav class="docs-navigation" aria-label="Documentation navigation"><a href="/map-energy/documentation/" class="docs-home-link"><span class="docs-home-arrow">←</span><span>Documentation Home</span></a></nav>
+    <section class="hero"><div class="hero-content"><div class="eyebrow"><span class="eyebrow-dot"></span>MAP Energy</div><h1>Supplier Tariffs &amp; Power Perks</h1><p class="hero-description">Explore import and export rates, understand supplier timestamps and use the EDF Power Perks event view in the MAP Energy Web Portal.</p></div><img src="/map-energy/assets/mappy-docs.PNG" alt="Mappy, the MAP Energy assistant" class="mappy"></section>
+    <article class="content-card">
+      <p class="guide-updated">Updated 27 September 2026</p>
+      <nav class="guide-nav" aria-label="On this page"><a href="#connections">Connect your supplier in the app</a><a href="#rate-cards">Read the Supplier tab</a><a href="#freshness">Understand update times</a><a href="#power-perks">EDF Power Perks in the portal</a><a href="#switching">Switching supplier</a><a href="#help">Related guides</a></nav>
+      <section id="connections"><h2>Connect your supplier in the app</h2>
+<p>Connect or update your supplier through the MAP Energy mobile app. The portal uses the connected site’s tariff information; it does not provide a separate supplier sign-in form.</p>
+<p>Supported integrations include Octopus Energy and EDF in the UK, and Amber Electric in Australia. The available rates and features depend on your account and tariff. Intelligent Octopus Go and EDF Smart Bolt-On features require their corresponding eligible account setup; Amber pricing does not imply the same smart charging events.</p>
+<p>If you use a custom tariff, maintain it in the app. Import and export can have separate rates and must be available separately for their respective cost calculations.</p>
+</section>
+<section id="rate-cards"><h2>Read the Supplier tab</h2>
+<p><strong>Import</strong> is on the left and <strong>Export</strong> on the right on wider screens. On phones they stack in that order. Each available card shows its tariff, rate graph, current rate, lowest/highest rates and a standing charge when provided.</p>
+<p>Hover over a bar with your mouse, or tap it on a touch screen, to see its time and rate to <strong>one decimal place</strong>. The rate display temporarily switches to the selected interval, then returns to the current rate. There is no separate Explore rates slider.</p>
+<p>Rates use the site’s time zone and the currency supplied with the data. Missing rates remain unavailable; genuine zero and negative rates remain visible. UK rate cards display VAT-inclusive prices.</p>
+<p>For an available Octopus Agile tariff, the <strong>Agile</strong> control opens its additional graph/table view. <a href="energy-history.html">History</a> applies dated rates to energy readings to calculate costs; Supplier is the place to inspect today’s rate information.</p>
+</section>
+<section id="freshness"><h2>Understand update times</h2>
+<p>The page’s <strong>Loaded</strong> time records when the portal retrieved that view. It is different from the age of the underlying supplier data.</p>
+<ul><li><strong>Supplier rates checked</strong> shows when a supported supplier rate lookup was performed.</li><li><strong>Saved rates</strong> shows when MAP Energy last saved those rates. Opening the page does not change that timestamp.</li><li>If a supplier refresh fails, the page can show saved data with a message explaining the fallback.</li><li>If only an older day’s rates are available, the card identifies the date and does not label them as current prices.</li></ul>
+<p>Open <strong>Rate information</strong> on a card to see these details. Use Refresh to try again, and check the supplier connection in the app if the data remains unavailable.</p>
+</section>
+<section id="power-perks"><h2>EDF Power Perks in the portal</h2>
+<p>For an eligible EDF site registered for Power Perks, the <strong>Power Perks</strong> icon appears on Live. Open it to review upcoming and previous events, their status, available free-energy totals and estimated savings.</p>
+<p>The event view follows the app’s status conventions, including Ready, In Progress, Missed and Unavailable. Energy and savings depend on available readings and tariff information; an unavailable figure is not treated as zero.</p>
+<p>Where the portal offers <strong>Confirm participation</strong> for a past event, review the event and confirmation carefully. The portal warns that this confirmation cannot be undone. It records participation in MAP Energy; use EDF’s own information to confirm your eligibility and bill treatment.</p>
+<p>Registered sites can also create custom Power Perks automations for <strong>Event Announced</strong>, <strong>Free Electricity Starts</strong> or <strong>Free Electricity Ends</strong>. Configure dedicated EDF Smart Bolt-On and automatic smart charging behaviour in the mobile app.</p>
+<p>For how recorded events affect historical energy costs and usage percentages, see <a href="energy-history.html#overlays">free and smart History overlays</a>.</p>
+</section>
+<section id="switching"><h2>Switching supplier</h2>
+<p>A <strong>Switching supplier?</strong> section can appear for supported UK supplier connections when the referral offer is enabled. It shows the current EDF referral information and opens EDF’s site.</p>
+<p>Follow the offer link for the current terms and eligibility. Opening the link does not change your supplier connection in MAP Energy. Update that connection in the app after a switch.</p>
+</section>
+<section id="help"><h2>Related guides</h2>
+<ul><li><a href="web-portal.html">Web Portal setup, controls and login help</a></li><li><a href="energy-history.html#costs">Historical rates, costs and standing charges</a></li><li><a href="automations.html">Price, EV and Power Perks automations</a></li><li><a href="ev-charger-integrations.html">EV charger integrations</a></li></ul>
+</section>
+    </article>
+    <footer class="footer"><img src="/map-energy/assets/map-energy-logo.PNG" alt="MAP Energy" class="footer-logo"><span>MAP Energy • Powerwall control, insights &amp; automation</span></footer>
+  </main>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Energy History &amp; Costs | MAP Energy</title>
+  <meta name="description" content="Understand Tesla history, import and export costs, standing charges, usage percentages and free or smart charging periods in the Web Portal.">
+  <link rel="stylesheet" href="/map-energy/assets/documentation-guides.css?v=1">
+</head>
+<body>
+  <main class="page">
+    <header class="brand-header"><div class="brand">
+      <img src="/map-energy/assets/map-energy-logo.PNG" alt="MAP Energy" class="brand-logo">
+      <div class="brand-text"><span class="brand-name">MAP Energy</span><span class="brand-subtitle">Help &amp; Documentation</span></div>
+    </div><div class="support-pill">User Guide</div></header>
+    <nav class="docs-navigation" aria-label="Documentation navigation"><a href="/map-energy/documentation/" class="docs-home-link"><span class="docs-home-arrow">←</span><span>Documentation Home</span></a></nav>
+    <section class="hero"><div class="hero-content"><div class="eyebrow"><span class="eyebrow-dot"></span>MAP Energy</div><h1>Energy History &amp; Costs</h1><p class="hero-description">Understand Tesla history, import and export costs, standing charges, usage percentages and free or smart charging periods in the Web Portal.</p></div><img src="/map-energy/assets/mappy-docs.PNG" alt="Mappy, the MAP Energy assistant" class="mappy"></section>
+    <article class="content-card">
+      <p class="guide-updated">Updated 27 September 2026</p>
+      <nav class="guide-nav" aria-label="On this page"><a href="#source">Where History comes from</a><a href="#daily-detail">Read the daily detail</a><a href="#costs">Rates, costs and standing charges</a><a href="#usage-split">The import usage ring</a><a href="#overlays">Free and smart periods</a><a href="#missing">If a total or rate is missing</a></nav>
+      <section id="source"><h2>Where History comes from</h2>
+<p>In the <a href="web-portal.html">Web Portal</a>, History retrieves energy readings from Tesla for the selected site and date. It does not access the history saved on your phone. The app and portal follow the same energy and usage-split conventions, but phone-only records or overrides can produce differences.</p>
+<p>History opens with the last seven completed days. Use <strong>Earlier days</strong>, <strong>Later days</strong> or <strong>Choose a day</strong> to browse. Open a day for its detail and use Previous day / Next day to move through dates. For today’s readings, use <strong>Live</strong> and its node detail views.</p>
+<p>Dates and slots use the energy site’s time zone. Daylight-saving changes can produce 46 or 50 half-hour slots instead of 48.</p>
+</section>
+<section id="daily-detail"><h2>Read the daily detail</h2>
+<p>The summary shows import, export, solar generation and the available cost information. Import appears before export throughout the portal.</p>
+<p>The <strong>30-minute grid flow</strong> chart shows import above the line and export below it. Hover, tap a bar or use the arrow keys after focusing the chart to inspect <strong>Slot Details</strong>: the time, energy, available rates and calculated costs. Rates are displayed to one decimal place.</p>
+<p>The chart uses grey for standard import, blue for off-peak / smart import, mint for free periods and cyan for export. A highlighted slot’s effective rate can differ from the usual tariff rate when a confirmed free or smart period applies.</p>
+<p>Daily headlines use the complete Tesla response. A reading at the midnight boundary can contribute to the daily total while falling outside that day’s plotted slots, so the chart and headline need not sum identically in every case.</p>
+</section>
+<section id="costs"><h2>Rates, costs and standing charges</h2>
+<p>Import energy is priced using the available rate for its time and date. Export energy is valued using the corresponding export rate. Supported Octopus Energy and EDF lookups use the tariff agreement applicable to the requested date; where those lookups are unavailable, exact-date saved rates can be used. Today’s rates are not substituted for missing historical prices.</p><div class="guide-table-wrap"><table class="guide-table"><thead><tr><th scope="col">Label</th><th scope="col">Meaning</th></tr></thead><tbody><tr><th scope="row">Import energy cost</th><td>Imported energy multiplied by its effective rates, excluding the daily standing charge.</td></tr><tr><th scope="row">Import cost (incl. standing)</th><td>Import energy cost plus the available daily import standing charge.</td></tr><tr><th scope="row">Export revenue</th><td>The value of exported energy. The portal deducts an export standing charge if one is provided in its data.</td></tr><tr><th scope="row">Avg import</th><td>Import energy cost divided by imported kWh. This excludes the standing charge.</td></tr><tr><th scope="row">Net / Net cost</th><td>Import energy cost minus export energy value, plus the standing charges available to the calculation.</td></tr><tr><th scope="row">Energy balance¹</th><td>Import energy cost minus export energy value, excluding standing charges when they are unavailable.</td></tr></tbody></table></div><p>The portal can retrieve historical import standing charges for supported EDF and Octopus Energy tariffs. Availability depends on the connected tariff and the date. A missing charge is shown as <strong>—</strong>, rather than assumed to be zero.</p>
+<p>For example, 10 kWh at 20.0p/kWh costs £2.00. With a 50p import standing charge and £1.00 of export revenue, the net cost is £1.50, assuming no export standing charge. Displayed rounding does not mean each underlying rate is rounded before calculating the total.</p>
+<p>These figures help explain energy usage; they are not a complete supplier bill. Supplier credits, account adjustments and differences in meter data can affect billing.</p>
+</section>
+<section id="usage-split"><h2>The import usage ring</h2>
+<p>The ring breaks imported kWh into categories and shows each share as a percentage. It describes <strong>energy imported</strong>, not the percentage of the day or a percentage saving.</p><div class="guide-table-wrap"><table class="guide-table"><thead><tr><th scope="col">Category</th><th scope="col">How the portal classifies it</th></tr></thead><tbody><tr><th scope="row">Free</th><td>A recorded qualifying EDF Power Perks period with participation recorded by MAP Energy.</td></tr><tr><th scope="row">Smart EV</th><td>A confirmed smart charging slot recorded for the site.</td></tr><tr><th scope="row">Off-peak</th><td>The lowest available import-rate band for that day. With a single-rate tariff, all priced periods can fall in this band.</td></tr><tr><th scope="row">Standard</th><td>Other imported energy.</td></tr></tbody></table></div><p>When categories overlap, Free takes priority, then Smart EV, then Off-peak, then Standard. Percentages are rounded, so displayed percentages may not add to exactly 100%. If the Tesla headline includes energy outside the classified chart samples, the ring apportions the difference across the known categories, following the app’s approach.</p>
+</section>
+<section id="overlays"><h2>Free and smart periods</h2>
+<p>History overlays confirmed smart charging slots and recorded <a href="supplier-tariffs.html#power-perks">EDF Power Perks participation</a>. Free periods use a zero effective import rate. Smart periods use the lowest available import rate for the day, following the current app calculation.</p>
+<ul><li>Smart charging slots are retained by the service for <strong>60 days</strong>. Older energy history may still be available from Tesla without its smart-slot overlay.</li><li>Power Perks overlays depend on participation recorded by MAP Energy, not just an event being announced.</li><li>Free periods marked manually only on your phone are not synced to the portal.</li></ul>
+</section>
+<section id="missing"><h2>If a total or rate is missing</h2>
+<p><strong>—</strong> means there is not enough data for that value. A real zero or a supported negative rate is kept as a value.</p>
+<ol><li>Check the site, date and time zone.</li><li>Open the day and inspect several slots. A rate on one bar does not prove there are rates for every interval contributing to the daily total.</li><li>Check the supplier connection in the app and inspect <a href="supplier-tariffs.html#freshness">Rate information</a> in Supplier.</li><li>Refresh History. If Tesla history was unavailable, selecting the day retries retrieval.</li></ol>
+<p>If energy costs are available but a standing charge is missing, the portal can show Energy balance instead of a complete Net figure. It does not fill missing historical charges with today’s charge.</p>
+<p>If the app and portal differ, also check whether the phone has older saved history or manual free-period overrides that the portal cannot access.</p>
+</section>
+    </article>
+    <footer class="footer"><img src="/map-energy/assets/map-energy-logo.PNG" alt="MAP Energy" class="footer-logo"><span>MAP Energy • Powerwall control, insights &amp; automation</span></footer>
+  </main>
+</body>
+</html>

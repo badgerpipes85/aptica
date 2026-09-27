@@ -1139,6 +1139,10 @@
           </span>
         </a>
 
+<a class="faq-link" href="#portal-login"><span class="faq-number">16</span><span class="faq-link-text">Why will my web login not work?</span></a>
+<a class="faq-link" href="#portal-history"><span class="faq-number">17</span><span class="faq-link-text">Why can portal History differ from my phone?</span></a>
+<a class="faq-link" href="#portal-costs"><span class="faq-number">18</span><span class="faq-link-text">Why is a History cost or standing charge shown as a dash?</span></a>
+<a class="faq-link" href="#portal-editing"><span class="faq-number">19</span><span class="faq-link-text">Can I change automations in the Web Portal?</span></a>
       </nav>
 
 
@@ -1322,7 +1326,7 @@
           <p>
             For example, an EDF Smart Bolt-On charging event can be
             used to apply configured Powerwall behaviour or trigger a
-            Home Assistant webhook.
+            Home Assistant webhook. Eligible registered sites also have a Power Perks icon on portal Live; see <a href="supplier-tariffs.html#power-perks">Power Perks in the portal</a>.
           </p>
 
         </section>
@@ -1800,6 +1804,10 @@
         </section>
 
 
+<section class="faq-item" id="portal-login"><span class="question-number">Question 16</span><h2>Why will my web login not work?</h2><p>Use the separate web login saved under Web Portal Access in the app, not your Apple, Google, Tesla or supplier password. After a reset, wait for Web login saved and sign in again. For testers, staging and production use separate credentials: the normal portal is production; a staging URL includes <code>?environment=staging</code>. See <a href="web-portal.html#troubleshooting">login help</a>.</p></section>
+<section class="faq-item" id="portal-history"><span class="question-number">Question 17</span><h2>Why can portal History differ from my phone?</h2><p>The portal retrieves Tesla energy history and uses the rates and confirmed free/smart records available to the service. It cannot read phone-only saved history or manual free-period overrides. Smart slots are retained for 60 days. See <a href="energy-history.html#source">History sources and limits</a>.</p></section>
+<section class="faq-item" id="portal-costs"><span class="question-number">Question 18</span><h2>Why is a History cost or standing charge shown as a dash?</h2><p>A dash means data is unavailable, not zero. Some slots can have a rate while the complete daily cost still lacks pricing for other energy. If only standing charges are missing, Energy balance can still show energy cost minus export value. See <a href="energy-history.html#missing">missing History data</a>.</p></section>
+<section class="faq-item" id="portal-editing"><span class="question-number">Question 19</span><h2>Can I change automations in the Web Portal?</h2><p>Yes. Add and edit custom rules, pause/resume supported trigger types, or delete a rule with confirmation. Editing a paused rule leaves it paused. Dedicated smart charging setup and connections remain in the app. See <a href="automations.html#portal-management">portal automation management</a>.</p></section>
       </div>
 
 

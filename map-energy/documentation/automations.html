@@ -1410,6 +1410,13 @@
 
 
 
+<section id="portal-management"><h2>Manage automations in the Web Portal</h2>
+<p>With Premium, open <strong>Automations</strong> in the <a href="web-portal.html">Web Portal</a> to manage the same rules saved by the mobile app.</p>
+<ol><li>Select <strong>Add automation</strong> or <strong>Edit</strong> on an existing rule.</li><li>Choose Schedule, EV, Battery, Price, Power, Solar, Power Hour or Power Perks, where available for your site.</li><li>Set the trigger details and any time window or blocking condition, then choose up to four compatible actions. A name is optional and can contain up to 20 characters.</li><li>Select <strong>Add automation</strong> or <strong>Save changes</strong>. Editing keeps the existing rule; a paused automation remains paused.</li></ol>
+<p><strong>Pause / Resume</strong> is supported for EV, battery, price, power, solar forecast and Power Perks rules, and for repeating schedules. One-off schedules and Power Hour rules do not offer pause/resume. To remove a rule, open Edit, select <strong>Delete automation</strong>, then <strong>Confirm delete</strong>.</p>
+<p>Schedules use the energy site’s time zone. Choose days, a time, and whether to repeat with an end date or no end date. The Run Log shows recent results; <strong>Needs attention</strong> filters failed, partial and blocked runs.</p>
+<p>Connections and dedicated Intelligent Octopus Go / EDF Smart Bolt-On setup remain in the mobile app. Their automatically managed rules are not ordinary editable portal rules. Home Assistant actions become available after the webhook is connected.</p>
+</section>
       <!-- TRIGGERS -->
 
       <section>
@@ -1645,6 +1652,10 @@
 
 
 
+<section id="trigger-details"><h2>Choose the right trigger</h2>
+<ul><li><strong>Power</strong> monitors a kW threshold for Home, Solar, Import, Export, PW Charge or PW Discharge.</li><li><strong>Solar</strong> checks forecast generation in kWh at a chosen daily time. One solar forecast automation is supported per site.</li><li><strong>Power Hour</strong> uses selected days, start/end times, an import cap and a trigger threshold at or below that cap. It is unavailable for an Other (Blind) charger setup where total import cannot be measured safely.</li><li><strong>Power Perks</strong> offers Event Announced, Free Electricity Starts and Free Electricity Ends for a registered EDF site.</li></ul>
+<p>EV, battery, price and power triggers can use an optional time window. Schedule rules can use a blocking condition based on battery SOC or import/export price; price conditions also have a look-ahead window. Availability follows the selected trigger rather than every condition being offered for every rule.</p>
+</section>
       <!-- CONDITIONS -->
 
       <section>
@@ -1691,7 +1702,7 @@
             </span>
 
             <span>
-              Battery and configured blocking conditions
+              Whether charging started inside the allowed time window
             </span>
 
           </div>
@@ -2523,9 +2534,7 @@
         </p>
 
         <p>
-          MAP Energy supports grouped automation behaviour where
-          compatible actions can be coordinated as part of the same
-          automation event.
+          MAP Energy supports up to four compatible actions in one automation. Each action type can appear once. Notification Only must be used on its own and is not offered for a custom schedule. Adjust Backup Reserve and Freeze Battery SOC cannot be combined in the same rule.
         </p>
 
         <p>
@@ -2661,9 +2670,7 @@
         </h2>
 
         <p>
-          No. MAP Energy automations are processed by the MAP Energy
-          service, so closing the app or locking your phone does not
-          stop your enabled automations from running.
+          No. MAP Energy automations are processed by the MAP Energy service, so closing the app, closing the portal or locking your phone does not stop your enabled automations from running.
         </p>
 
       </section>
