@@ -75,15 +75,19 @@ function validCsrf(request) {
 async function proxy(request, env, upstreamPath, method = "GET", body) {
   if (!env.ADMIN_SECRET) return json({ error: "admin_proxy_not_configured" }, 503);
   try {
-    const response = await fetch(`${env.UPSTREAM_ORIGIN}${upstreamPath}`, {
+    const target = new Request(`${env.UPSTREAM_ORIGIN}${upstreamPath}`, {
       method,
-      redirect: "error",
+      redirect: "manual",
       headers: { Accept: "application/json", "Content-Type": "application/json", "x-admin-secret": env.ADMIN_SECRET },
       body: body === undefined ? undefined : JSON.stringify(body),
     });
+    const response = env.STAGING_BACKEND
+      ? await env.STAGING_BACKEND.fetch(target)
+      : await fetch(target);
     const text = await response.text();
     return new Response(text, { status: response.status, headers: JSON_HEADERS });
-  } catch {
+  } catch (error) {
+    console.error("Admin messages upstream request failed", String(error));
     return json({ error: "admin_messages_unavailable" }, 503);
   }
 }

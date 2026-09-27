@@ -10,6 +10,12 @@
       "zone_name": "aptica.uk"
     }
   ],
+  "services": [
+    {
+      "binding": "STAGING_BACKEND",
+      "service": "powerwake-backend-staging"
+    }
+  ],
   "vars": {
     "UPSTREAM_ORIGIN": "https://powerwake-backend-staging.mapenergy.workers.dev",
     "ACCESS_TEAM_DOMAIN": "fragrant-breeze-4a53.cloudflareaccess.com",
