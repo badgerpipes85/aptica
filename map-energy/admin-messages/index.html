@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#050b14">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <meta name="description" content="Protected MAP Energy administrator notification console.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'">
+  <title>Admin messages · MAP Energy</title>
+  <link rel="stylesheet" href="admin-messages.css?v=1">
+  <script src="admin-messages.js?v=1" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to admin console</a>
+  <div class="ambient ambient-blue" aria-hidden="true"></div>
+  <div class="ambient ambient-orange" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <a class="brand" href="/map-energy/" aria-label="MAP Energy home">
+      <img src="/map-energy/assets/map-energy-portal-logo.png" alt="">
+      <span><strong>MAP Energy</strong><small>Administrator console</small></span>
+    </a>
+    <div class="header-actions">
+      <span class="environment-badge">STAGING</span>
+      <button id="signOutButton" class="button button-quiet hidden" type="button">Sign out</button>
+    </div>
+  </header>
+
+  <main id="main" class="shell">
+    <section id="loginView" class="login-layout" aria-labelledby="loginTitle">
+      <div class="login-intro">
+        <span class="eyebrow">Private administration</span>
+        <h1 id="loginTitle">Send a clear update to MAP Energy users.</h1>
+        <p>This console previews the exact audience before anything is queued. It is separate from subscriber Web Portal access.</p>
+        <div class="safety-points" aria-label="Safety features">
+          <span>✓ Preview before send</span>
+          <span>✓ Eligible devices counted</span>
+          <span>✓ Status retained for recovery</span>
+        </div>
+      </div>
+      <div class="glass login-card">
+        <div class="secure-pill"><span></span> Cloudflare Access protected</div>
+        <h2>Checking administrator access</h2>
+        <p>Your existing Aptica Cloudflare Access session is used for this console.</p>
+        <div id="loginError" class="notice notice-error hidden" role="alert"></div>
+        <div class="loading-state">Verifying secure access…</div>
+      </div>
+    </section>
+
+    <section id="consoleView" class="hidden" aria-labelledby="consoleTitle">
+      <div class="page-heading">
+        <div>
+          <span class="eyebrow">System messages</span>
+          <h1 id="consoleTitle">Admin messages</h1>
+          <p>Preview and queue push notifications through the staging backend.</p>
+        </div>
+        <button id="refreshButton" class="button button-quiet" type="button">Refresh status</button>
+      </div>
+
+      <div id="globalNotice" class="notice hidden" role="status" aria-live="polite"></div>
+
+      <div class="dashboard-grid">
+        <section class="glass compose-card" aria-labelledby="composeTitle">
+          <div class="card-heading">
+            <div><span class="step">1</span><h2 id="composeTitle">Compose</h2></div>
+            <span id="previewState" class="state-pill state-neutral">Not previewed</span>
+          </div>
+          <form id="messageForm">
+            <fieldset>
+              <legend>Audience</legend>
+              <div class="segmented-control">
+                <label><input type="radio" name="audience" value="site" checked><span>One site</span></label>
+                <label><input type="radio" name="audience" value="all"><span>All opted-in sites</span></label>
+              </div>
+            </fieldset>
+            <label id="siteKeyLabel" class="field-label" for="siteKeyInput">Site key
+              <input id="siteKeyInput" autocomplete="off" spellcheck="false" maxlength="64" placeholder="64-character hexadecimal site key">
+              <small id="siteKeyHint">0 / 64 characters</small>
+            </label>
+            <label class="field-label" for="titleInput">Title
+              <input id="titleInput" maxlength="100" required placeholder="MAP Energy update">
+              <small id="titleCount">0 / 100</small>
+            </label>
+            <label class="field-label" for="bodyInput">Message
+              <textarea id="bodyInput" maxlength="1000" required rows="7" placeholder="Write the notification exactly as users should see it."></textarea>
+              <small id="bodyCount">0 / 1000</small>
+            </label>
+            <div id="formError" class="notice notice-error hidden" role="alert"></div>
+            <button id="previewButton" class="button button-primary" type="submit">Preview message</button>
+          </form>
+        </section>
+
+        <section class="glass preview-card" aria-labelledby="previewTitle">
+          <div class="card-heading">
+            <div><span class="step">2</span><h2 id="previewTitle">Review</h2></div>
+            <span id="previewExpiry" class="muted"></span>
+          </div>
+          <div id="previewEmpty" class="empty-state">
+            <span class="empty-icon" aria-hidden="true">✦</span>
+            <h3>Preview before sending</h3>
+            <p>The exact message, audience and eligible-device count will appear here. Previewing does not send anything.</p>
+          </div>
+          <div id="previewContent" class="hidden">
+            <div class="phone-preview" aria-label="Push notification preview">
+              <img src="/map-energy/assets/map-energy-portal-logo.png" alt="">
+              <div><strong id="previewExactTitle"></strong><p id="previewExactBody"></p></div>
+              <time>now</time>
+            </div>
+            <dl class="preview-facts">
+              <div><dt>Audience</dt><dd id="previewAudience"></dd></div>
+              <div id="previewSiteRow"><dt>Site key</dt><dd id="previewSiteKey"></dd></div>
+              <div class="recipient-fact"><dt>Eligible devices</dt><dd id="previewRecipients">0</dd></div>
+            </dl>
+            <p class="explain">One person can have more than one eligible device. The audience is fixed when this preview is created.</p>
+            <button id="sendButton" class="button button-danger" type="button" disabled>Send notification</button>
+          </div>
+        </section>
+
+        <section class="glass status-card" aria-labelledby="statusTitle">
+          <div class="card-heading">
+            <div><span class="step">3</span><h2 id="statusTitle">Message status</h2></div>
+            <span id="messageStatus" class="state-pill state-neutral">No message</span>
+          </div>
+          <div id="statusEmpty" class="empty-state compact"><p>Preview a message or select one from recent activity.</p></div>
+          <div id="statusContent" class="hidden">
+            <div class="status-summary"><strong id="statusTitleText"></strong><span id="statusMeta"></span></div>
+            <div id="deliveryCounts" class="count-grid"></div>
+            <p id="statusExplanation" class="explain"></p>
+          </div>
+        </section>
+
+        <section class="glass recent-card" aria-labelledby="recentTitle">
+          <div class="card-heading">
+            <div><h2 id="recentTitle">Recent messages</h2><p>Newest first · up to 50</p></div>
+          </div>
+          <div id="recentLoading" class="loading-state">Loading recent messages…</div>
+          <div id="recentEmpty" class="empty-state compact hidden"><p>No staging messages yet.</p></div>
+          <div id="recentList" class="recent-list"></div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <dialog id="sendDialog" class="confirm-dialog glass" aria-labelledby="confirmTitle">
+    <form method="dialog">
+      <span class="eyebrow">Final confirmation</span>
+      <h2 id="confirmTitle">Send this notification?</h2>
+      <p id="confirmAudience"></p>
+      <div class="confirm-message"><strong id="confirmMessageTitle"></strong><p id="confirmMessageBody"></p></div>
+      <div id="confirmError" class="notice notice-error hidden" role="alert"></div>
+      <div class="dialog-actions">
+        <button id="cancelSendButton" class="button button-quiet" value="cancel" type="submit">Cancel</button>
+        <button id="confirmSendButton" class="button button-danger" value="default" type="button">Queue notification</button>
+      </div>
+    </form>
+  </dialog>
+
+  <footer><span>© <span id="year"></span> Aptica Ltd</span><span>MAP Energy · staging administration</span></footer>
+</body>
+</html>

@@ -1,0 +1,18 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "map-energy-admin-messages-proxy",
+  "main": "src/index.js",
+  "compatibility_date": "2026-09-27",
+  "workers_dev": false,
+  "routes": [
+    {
+      "pattern": "aptica.uk/map-energy/admin-messages/api/*",
+      "zone_name": "aptica.uk"
+    }
+  ],
+  "vars": {
+    "UPSTREAM_ORIGIN": "https://powerwake-backend-staging.mapenergy.workers.dev",
+    "ACCESS_TEAM_DOMAIN": "fragrant-breeze-4a53.cloudflareaccess.com",
+    "ACCESS_AUD": "2bd7b7a8fa96198aa4bf39d9474258bcf944375ce788ffb51cf122b3463a4975"
+  }
+}
