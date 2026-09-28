@@ -10,3 +10,37 @@ test('mutually exclusive actions and four-action limit use iOS choices',()=>{con
 
 test('Power Hour requires Octopus capability and measurable charger',()=>{assert.equal(context.automationPowerHourAvailable({power_hour:true}),true);for(const capabilities of [{},{power_hour:false},{power_hour:true,ev_charger_type:'otherBlind'},{power_hour:true,ev_charger_type:'other_blind'}])assert.equal(context.automationPowerHourAvailable(capabilities),false);});
 test('Power Perks card is exclusive to registered EDF capability data',()=>{assert.equal(context.powerPerksAutomationCard({power_perks:null}), '');const html=context.powerPerksAutomationCard({power_perks:{enabled:true,trigger_home_assistant:true,fallback_backup_reserve_percent:10},capabilities:{home_assistant:true}});assert.match(html,/Power Perks Action/);assert.match(html,/powerPerksEnabled/);assert.match(html,/checked/);assert.match(html,/powerPerksHA/);});
+
+test('re-use copies historical settings into a new draft and requires review',()=>{
+  const run={id:'history-id',automation_id:'original',type:'grouped_actions',payload:{type:'grouped_actions',name:'Evening export',trigger:{type:'schedule',hour:18,minute:30,days:[2,3]},blocking:{condition:'soc_below',value:40},actions:[{type:'tesla_export',export_policy:'battery_ok'},{type:'set_op_mode',op_mode:'autonomous'}]}};
+  const original=JSON.stringify(run);
+  const e=context.automationReuseEditor(run,{site_key:'site',capabilities:{}},7);
+  assert.equal(e.rule,null);assert.equal(e.repeating,false);
+  assert.throws(()=>context.automationSaveBody(e,'Europe/London'),/Review/);
+  e.reuseReviewed=true;
+  const body=plain(context.automationSaveBody(e,'Europe/London',1790496000));
+  assert.equal(body.automation_id,undefined);assert.equal(body.repeat_until,null);
+  assert.ok(body.fire_at>1790496000);
+  assert.deepEqual(body.payload.actions,run.payload.actions);
+  assert.deepEqual(body.payload.blocking,run.payload.blocking);
+  e.draft.actions[0].export_policy='pv_only';assert.equal(JSON.stringify(run),original);
+});
+test('re-use rejects managed, incomplete and unavailable history',()=>{
+  const base={type:'grouped_actions',payload:{type:'grouped_actions',trigger:{type:'schedule',hour:18,minute:0,days:[1]},actions:[{type:'set_op_mode',op_mode:'autonomous'}]}};
+  for(const extra of [{system:'mappy'},{iog:{enabled:true}},{power_perks:{managed:true}},{actions:[]},{actions:[{type:'restore_previous'}]},{trigger:{type:'unknown'}}])assert.equal(context.automationReusable({...base,payload:{...base.payload,...extra}}),false);
+  assert.equal(context.automationReusable({type:'accepted_mappy_export',payload:base.payload}),false);
+  const hour={...base,payload:{...base.payload,trigger:{type:'event_import_cap'}}};
+  assert.equal(context.automationReusable(hour,{power_hour:false}),false);
+});
+
+test('missing action values are not silently defaulted when re-used',()=>{
+  for(const type of ['adjust_backup_reserve','freeze_battery_soc','tesla_export','set_op_mode','set_grid_charging','home_assistant_event']) {
+    assert.equal(context.automationReusable({type:'grouped_actions',payload:{trigger:{type:'schedule'},actions:[{type}]}}),false);
+  }
+});
+test('legacy mobile schedules recover the time using the site timezone',()=>{
+  const run={type:'grouped_actions',executed_at:Date.parse('2026-09-28T17:30:00Z')/1000,payload:{trigger:{type:'schedule',days:[2]},actions:[{type:'set_grid_charging',enabled:false}]}};
+  const e=context.automationReuseEditor(run,{site_key:'site',timezone:'Europe/London'},1);
+  assert.equal(e.draft.trigger.hour,18);assert.equal(e.draft.trigger.minute,30);
+  assert.equal(run.payload.trigger.hour,undefined);
+});

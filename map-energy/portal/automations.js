@@ -47,6 +47,31 @@ function automationAvailableActions(draft,except=-1) {
     !(type==='tesla_export' && !['never','no_export','pv_only','battery_ok'].includes(currentOverview?.tesla_settings?.export_rule) && draft.actions[except]?.type!==type) &&
     !(type==='home_assistant_event' && !automationData?.capabilities?.home_assistant && draft.actions[except]?.type!==type)));
 }
+function automationReusable(run, capabilities = {}) {
+  const p=run?.payload,t=p?.trigger?.type;
+  if(!p || automationManaged(run) || !automationTriggers[t])return false;
+  if(run.type!=='grouped_actions' && !automationActions[run.type])return false;
+  const actions=run.type==='grouped_actions'?p.actions:[p];
+  if(!Array.isArray(actions)||!actions.length||actions.length>4||actions.some(a=>!automationActions[a?.type]))return false;
+  const fields={adjust_backup_reserve:['backup_reserve_percent'],freeze_battery_soc:['high_soc_preference'],tesla_export:['export_policy'],set_op_mode:['op_mode'],set_grid_charging:['enabled'],notification_only:[],home_assistant_event:['event_name']};
+  if(actions.some(a=>fields[a.type].some(key=>a[key]==null)))return false;
+  if(t==='event_import_cap'&&!automationPowerHourAvailable(capabilities))return false;
+  if(t==='edf_power_perks'&&!capabilities.power_perks)return false;
+  if(t==='ev'&&(!capabilities.ev_charger_type||capabilities.ev_charger_type==='none'))return false;
+  return true;
+}
+function automationReuseEditor(run, data, version) {
+  if(!automationReusable(run,data.capabilities))return null;
+  const p=autoClone(run.payload);
+  if(p.trigger.type==='schedule' && (p.trigger.hour==null || p.trigger.minute==null)) {
+    if(!Number.isFinite(Number(run.executed_at)))return null;
+    const parts=Object.fromEntries(new Intl.DateTimeFormat('en-GB',{timeZone:data.timezone,hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(new Date(Number(run.executed_at)*1000)).map(x=>[x.type,x.value]));
+    p.trigger.hour=Number(parts.hour);p.trigger.minute=Number(parts.minute);
+  }
+  return {rule:null,siteKey:data.site_key,version,saving:false,reusing:true,reuseReviewed:false,
+    draft:{name:p.name||'',trigger:autoClone(p.trigger),actions:autoClone(p.actions||[p]),blocking:autoClone(p.blocking||null)},
+    repeating:false,repeatUntil:7258118400};
+}
 function openAutomationEditor(rule=null) {
   if(!automationData)return;
   const payload=rule?.payload || {};
@@ -87,7 +112,7 @@ function renderAutomationEditor() {
     if(a.type==='home_assistant_event') input=autoInput(`haEvent${i}`,'Event name',a.event_name,'text','required pattern="[a-z][a-z0-9_]{0,63}" maxlength="64"')+autoInput(`haMessage${i}`,'Message (optional)',a.message,'text','maxlength="200"');
     return `<fieldset class="auto-action"><legend>Action ${i+1}</legend>${autoSelect(`action${i}`,'Action',automationAvailableActions(d,i),a.type)}${input}${d.actions.length>1?`<button type="button" class="button button-quiet" data-remove-action="${i}">Remove action</button>`:''}</fieldset>`;
   }).join('');
-  $('automationEditorContent').innerHTML=`<form id="automationForm"><div class="panel-heading"><div><span class="eyebrow">${e.rule?'Edit automation':'New automation'}</span><h2 id="automationEditorTitle">${e.rule?'Edit your rule':'Add an automation'}</h2></div><button type="button" class="button button-quiet" data-auto-close>Cancel</button></div><p class="muted">Times use ${escapeHtml(automationData.timezone)}.${e.rule?.paused?' This automation will remain paused.':''}</p><fieldset><legend>Trigger</legend>${autoSelect('triggerType','Trigger type',triggers,t.type)}<div class="auto-fields">${fields}</div></fieldset>${autoInput('name','Name (optional)',d.name,'text','maxlength="20"')}<div class="auto-actions">${actions}</div>${d.actions.length<4 && Object.keys(automationAvailableActions(d)).length?'<button type="button" class="button button-quiet" id="autoAddAction">＋ Add another action</button>':''}<p id="automationEditorError" class="error hidden" role="alert"></p><div class="auto-footer">${e.rule?'<button type="button" class="button button-quiet" id="autoDelete">Delete automation</button>':''}<button type="submit" class="button button-primary">${e.rule?'Save changes':'Add automation'}</button></div></form>`;
+  $('automationEditorContent').innerHTML=`<form id="automationForm"><div class="panel-heading"><div><span class="eyebrow">${e.rule?'Edit automation':'New automation'}</span><h2 id="automationEditorTitle">${e.rule?'Edit your rule':'Add an automation'}</h2></div><button type="button" class="button button-quiet" data-auto-close>Cancel</button></div><p class="muted">Times use ${escapeHtml(automationData.timezone)}.${e.rule?.paused?' This automation will remain paused.':''}</p><fieldset><legend>Trigger</legend>${autoSelect('triggerType','Trigger type',triggers,t.type)}<div class="auto-fields">${fields}</div></fieldset>${e.reusing?'<p class="muted">This is a new automation. Review its settings and choose the next run below. Schedules start as a single run; enable Repeat if needed.</p>'+autoCheck('reuseReviewed','I have reviewed this new automation',e.reuseReviewed):''}${autoInput('name','Name (optional)',d.name,'text','maxlength="20"')}<div class="auto-actions">${actions}</div>${d.actions.length<4 && Object.keys(automationAvailableActions(d)).length?'<button type="button" class="button button-quiet" id="autoAddAction">＋ Add another action</button>':''}<p id="automationEditorError" class="error hidden" role="alert"></p><div class="auto-footer">${e.rule?'<button type="button" class="button button-quiet" id="autoDelete">Delete automation</button>':''}<button type="submit" class="button button-primary">${e.rule?'Save changes':'Add automation'}</button></div></form>`;
   const f=$('automationForm');
   f.addEventListener('input',()=>{readAutomationForm();d.actions.forEach((a,i)=>{const o=f.querySelector(`[data-reserve="${i}"]`);if(o)o.textContent=`${a.backup_reserve_percent}%`;});});
   f.addEventListener('change',ev=>{
@@ -113,6 +138,7 @@ function readAutomationForm() {
   const e=automationEditor,d=e.draft,t=d.trigger,f=$('automationForm');
   const val=n=>f.elements.namedItem(n)?.value,checked=n=>Boolean(f.elements.namedItem(n)?.checked),num=n=>Number(val(n));
   d.name=val('name')||'';
+  if(e.reusing)e.reuseReviewed=checked('reuseReviewed');
   if(t.type==='schedule') {const parts=(val('scheduleTime')||'18:00').split(':').map(Number);t.hour=parts[0];t.minute=parts[1];e.repeating=checked('repeating');if(e.repeating){if(checked('noEnd')) e.repeatUntil=7258118400;else if(val('endDate')){const date=val('endDate').split('-').map(Number);e.repeatUntil=detailMidnight(detailShift(date,'day',1),automationData.timezone)-1;}else if(e.repeatUntil===7258118400)e.repeatUntil=Math.floor(Date.now()/1000)+30*86400;}}
   if(['schedule','event_import_cap'].includes(t.type))t.days=[1,2,3,4,5,6,7].filter(i=>checked(`day${i}`));
   if(['ev','edf_power_perks'].includes(t.type)) t.event=val('event');
@@ -134,6 +160,7 @@ function readAutomationForm() {
   });
 }
 function automationSaveBody(e,zone,now=Math.floor(Date.now()/1000)) {
+  if(e.reusing&&!e.reuseReviewed)throw new Error("Review the settings before creating this new automation.");
   const d=autoClone(e.draft),t=d.trigger;
   let fire=now,expires=now+5*365*86400,repeat=null;
   if(t.type==='schedule') {fire=automationNextTime(`${String(t.hour).padStart(2,'0')}:${String(t.minute).padStart(2,'0')}`,t.days,zone,now);expires=fire+600;repeat=e.repeating?e.repeatUntil:null;if(repeat!=null && repeat<fire)throw new Error('The end date must include the next scheduled run.');}
@@ -157,6 +184,12 @@ async function saveAutomationEditor(event) {
 }
 function bindAutomationControls(data) {
   automationData=data;
+  document.querySelectorAll('[data-auto-reuse]').forEach(b=>b.onclick=()=>{
+    const run=data.history.find(r=>String(r.id)===b.dataset.autoReuse);
+    const draft=automationReuseEditor(run,data,contextVersion);
+    if(!draft)return;
+    automationEditor=draft;renderAutomationEditor();$('automationEditor').showModal();
+  });
   $('addAutomation').disabled=false;
   $('addAutomation').onclick=()=>openAutomationEditor();
   document.querySelectorAll('[data-auto-edit]').forEach(b=>b.onclick=()=>openAutomationEditor(data.automations.find(r=>String(r.id)===b.dataset.autoEdit)));
