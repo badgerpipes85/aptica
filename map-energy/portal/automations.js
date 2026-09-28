@@ -4,10 +4,18 @@ const automationActions = {adjust_backup_reserve:'Adjust Backup Reserve',freeze_
 let automationEditor = null;
 let automationData = null;
 const autoClone = value => JSON.parse(JSON.stringify(value));
+function automationPowerHourAvailable(capabilities = {}) {
+  return capabilities.power_hour === true && !['otherBlind','other_blind'].includes(capabilities.ev_charger_type);
+}
 function automationPausable(rule) {
   return ['ev','battery','price','power','solar','edf_power_perks'].includes(rule.payload?.trigger?.type) || (rule.payload?.trigger?.type === 'schedule' && rule.repeat_until != null);
 }
 function automationManaged(rule) { return Boolean(rule.payload?.system || rule.payload?.iog?.enabled || rule.payload?.power_perks?.managed); }
+function powerPerksAutomationCard(data) {
+  const settings=data.power_perks;if(!settings)return '';
+  const enabled=Boolean(settings.enabled),ha=Boolean(data.capabilities?.home_assistant);
+  return `<article class="smart-scheduling-card power-perks-automation-card"><span class="smart-scheduling-icon"><svg><use href="/map-energy/assets/map-energy-icons.svg#automation"></use></svg></span><div><h2>Power Perks Action</h2><p>${enabled?'Charge your Powerwall during EDF free-electricity hours.':'Enable automatic actions for EDF Power Perks events.'}</p>${enabled?`<div class="power-perks-options"><label>Fallback reserve <select id="powerPerksFallback">${[0,5,10,15,20,25,30,40,50].map(value=>`<option value="${value}" ${Number(settings.fallback_backup_reserve_percent)===value?'selected':''}>${value}%</option>`).join('')}</select></label>${ha?autoCheck('powerPerksHA','Send event to Home Assistant',settings.trigger_home_assistant):''}</div>`:''}<small id="powerPerksStatus" class="muted"></small></div><label class="portal-switch" aria-label="Enable Power Perks automation"><input id="powerPerksEnabled" type="checkbox" ${enabled?'checked':''}><span></span></label></article>`;
+}
 function autoSelect(name,label,options,value) {
   return `<label>${escapeHtml(label)}<select name="${name}">${Object.entries(options).map(([v,text])=>`<option value="${escapeHtml(v)}" ${String(value)===v?'selected':''}>${escapeHtml(text)}</option>`).join('')}</select></label>`;
 }
@@ -53,7 +61,7 @@ function renderAutomationEditor() {
   const triggers={...automationTriggers};
   if(!c.ev_charger_type || c.ev_charger_type==='none') delete triggers.ev;
   if(!c.power_perks) delete triggers.edf_power_perks;
-  if(['otherBlind','other_blind'].includes(c.ev_charger_type)) delete triggers.event_import_cap;
+  if(!automationPowerHourAvailable(c)) delete triggers.event_import_cap;
   triggers[t.type]=automationTriggers[t.type];
   let fields='';
   if(t.type==='schedule') fields=autoInput('scheduleTime','Time',`${String(t.hour??18).padStart(2,'0')}:${String(t.minute??0).padStart(2,'0')}`,'time','required')+autoDays(t.days||[1,2,3,4,5,6,7])+autoCheck('repeating','Repeat',e.repeating)+(e.repeating?autoCheck('noEnd','No end date',e.repeatUntil===7258118400)+(e.repeatUntil!==7258118400?autoInput('endDate','Repeat until',new Date(e.repeatUntil*1000).toLocaleDateString('en-CA',{timeZone:automationData.timezone}),'date','required'):''):'');
@@ -157,6 +165,23 @@ function bindAutomationControls(data) {
     try{await api('/v1/web/automations/pause',{method:'POST',body:JSON.stringify({site_key:data.site_key,automation_id:rule.id,paused:!rule.paused})});await loadAutomations(data.site_key);showError('automationsStatus',rule.paused?'Automation resumed.':'Automation paused.');}
     catch(error){if(error.name!=='AbortError')showError('automationsStatus',friendlyError(error));}finally{b.disabled=false;}
   });
+  const powerPerksEnabled=$('powerPerksEnabled');
+  if(powerPerksEnabled){
+    const savePowerPerks=async()=>{
+      const enabled=powerPerksEnabled.checked;
+      powerPerksEnabled.disabled=true;
+      showError('powerPerksStatus',enabled?'Enabling…':'Disabling…');
+      try{
+        await api(`/v1/web/edf/power-perks/settings?site_key=${encodeURIComponent(data.site_key)}`,{method:'POST',body:JSON.stringify({enabled,action_mode:'charge_powerwall',trigger_home_assistant:Boolean(document.querySelector('[name="powerPerksHA"]')?.checked),fallback_backup_reserve_percent:Number($('powerPerksFallback')?.value??data.power_perks.fallback_backup_reserve_percent??10)})});
+        await loadAutomations(data.site_key);
+        showError('automationsStatus',enabled?'Power Perks automation enabled.':'Power Perks automation disabled.');
+      }catch(error){powerPerksEnabled.checked=!enabled;showError('powerPerksStatus',friendlyError(error));powerPerksEnabled.disabled=false;}
+    };
+    powerPerksEnabled.onchange=savePowerPerks;
+    const fallback=$('powerPerksFallback'),ha=$('automationList').querySelector('[name="powerPerksHA"]');
+    if(fallback)fallback.onchange=savePowerPerks;
+    if(ha)ha.onchange=savePowerPerks;
+  }
 }
 document.addEventListener('DOMContentLoaded',()=>{
   $('automationEditor').addEventListener('cancel',event=>{if(automationEditor?.saving)event.preventDefault();});
