@@ -89,7 +89,7 @@ function renderAutomationEditor() {
   if(!automationPowerHourAvailable(c)) delete triggers.event_import_cap;
   triggers[t.type]=automationTriggers[t.type];
   let fields='';
-  if(t.type==='schedule') fields=autoInput('scheduleTime','Time',`${String(t.hour??18).padStart(2,'0')}:${String(t.minute??0).padStart(2,'0')}`,'time','required')+autoDays(t.days||[1,2,3,4,5,6,7])+autoCheck('repeating','Repeat',e.repeating)+(e.repeating?autoCheck('noEnd','No end date',e.repeatUntil===7258118400)+(e.repeatUntil!==7258118400?autoInput('endDate','Repeat until',new Date(e.repeatUntil*1000).toLocaleDateString('en-CA',{timeZone:automationData.timezone}),'date','required'):''):'');
+  if(t.type==='schedule') fields=autoInput('scheduleTime','Time',`${String(t.hour??18).padStart(2,'0')}:${String(t.minute??0).padStart(2,'0')}`,'time','required')+autoCheck('repeating','Repeat',e.repeating)+(e.repeating?autoDays(t.days||[1,2,3,4,5,6,7]):'')+(e.repeating?autoCheck('noEnd','No end date',e.repeatUntil===7258118400)+(e.repeatUntil!==7258118400?autoInput('endDate','Repeat until',new Date(e.repeatUntil*1000).toLocaleDateString('en-CA',{timeZone:automationData.timezone}),'date','required'):''):'');
   if(t.type==='ev') fields=autoSelect('event','EV event',{starts_charging:'Charging Started',stops_charging:'Charging Stopped'},t.event||'starts_charging');
   if(t.type==='edf_power_perks') fields=autoSelect('event','Power Perks event',{announced:'Event Announced',starts:'Free Electricity Starts',ends:'Free Electricity Ends'},t.event||'starts');
   if(t.type==='battery') fields=autoSelect('condition','Battery',{soc_above:'Charges above',soc_below:'Discharges below'},t.condition||'soc_above')+autoInput('value','Battery SOC (%)',t.value??50,'number','min="0" max="100" step="1" required');
@@ -140,7 +140,7 @@ function readAutomationForm() {
   d.name=val('name')||'';
   if(e.reusing)e.reuseReviewed=checked('reuseReviewed');
   if(t.type==='schedule') {const parts=(val('scheduleTime')||'18:00').split(':').map(Number);t.hour=parts[0];t.minute=parts[1];e.repeating=checked('repeating');if(e.repeating){if(checked('noEnd')) e.repeatUntil=7258118400;else if(val('endDate')){const date=val('endDate').split('-').map(Number);e.repeatUntil=detailMidnight(detailShift(date,'day',1),automationData.timezone)-1;}else if(e.repeatUntil===7258118400)e.repeatUntil=Math.floor(Date.now()/1000)+30*86400;}}
-  if(['schedule','event_import_cap'].includes(t.type))t.days=[1,2,3,4,5,6,7].filter(i=>checked(`day${i}`));
+  if((t.type==='schedule' && f.elements.namedItem('day1')) || t.type==='event_import_cap')t.days=[1,2,3,4,5,6,7].filter(i=>checked(`day${i}`));
   if(['ev','edf_power_perks'].includes(t.type)) t.event=val('event');
   if(['battery','price','power','solar'].includes(t.type))t.condition=val('condition');
   if(t.type==='battery')t.value=num('value');
@@ -163,7 +163,7 @@ function automationSaveBody(e,zone,now=Math.floor(Date.now()/1000)) {
   if(e.reusing&&!e.reuseReviewed)throw new Error("Review the settings before creating this new automation.");
   const d=autoClone(e.draft),t=d.trigger;
   let fire=now,expires=now+5*365*86400,repeat=null;
-  if(t.type==='schedule') {fire=automationNextTime(`${String(t.hour).padStart(2,'0')}:${String(t.minute).padStart(2,'0')}`,t.days,zone,now);expires=fire+600;repeat=e.repeating?e.repeatUntil:null;if(repeat!=null && repeat<fire)throw new Error('The end date must include the next scheduled run.');}
+  if(t.type==='schedule') {if(!e.repeating)t.days=[1,2,3,4,5,6,7];fire=automationNextTime(`${String(t.hour).padStart(2,'0')}:${String(t.minute).padStart(2,'0')}`,t.days,zone,now);expires=fire+600;repeat=e.repeating?e.repeatUntil:null;if(repeat!=null && repeat<fire)throw new Error('The end date must include the next scheduled run.');}
   if(t.type==='solar'){fire=automationNextTime(t.check_time,[1,2,3,4,5,6,7],zone,now);expires=fire+600;repeat=7258118400;}
   if(t.type==='battery'){fire=0;expires=0;}
   if(t.type==='event_import_cap'){repeat=7258118400;if(!t.days.length)throw new Error('Choose at least one day.');if(t.trigger_at_kwh>t.import_cap_kwh)throw new Error('The trigger threshold cannot exceed the import cap.');}

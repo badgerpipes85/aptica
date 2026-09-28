@@ -44,3 +44,13 @@ test('legacy mobile schedules recover the time using the site timezone',()=>{
   assert.equal(e.draft.trigger.hour,18);assert.equal(e.draft.trigger.minute,30);
   assert.equal(run.payload.trigger.hour,undefined);
 });
+
+test('single-run schedules ignore hidden weekday restrictions',()=>{
+  const e={siteKey:'site',repeating:false,draft:{name:'Once',trigger:{type:'schedule',hour:18,minute:30,days:[1]},actions:[{type:'set_op_mode',op_mode:'self_consumption'}]}};
+  const now=Date.parse('2026-09-28T10:00:00Z')/1000;
+  const result=plain(context.automationSaveBody(e,'Europe/London',now));
+  assert.equal(new Date(result.fire_at*1000).toISOString(),'2026-09-28T17:30:00.000Z');
+  assert.equal(result.repeat_until,null);
+  assert.deepEqual(result.payload.trigger.days,[1,2,3,4,5,6,7]);
+  assert.deepEqual(e.draft.trigger.days,[1]);
+});
