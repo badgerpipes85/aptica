@@ -14,10 +14,15 @@
     {
       "binding": "STAGING_BACKEND",
       "service": "powerwake-backend-staging"
+    },
+    {
+      "binding": "PRODUCTION_BACKEND",
+      "service": "powerwake-backend-production"
     }
   ],
   "vars": {
-    "UPSTREAM_ORIGIN": "https://powerwake-backend-staging.mapenergy.workers.dev",
+    "STAGING_UPSTREAM_ORIGIN": "https://powerwake-backend-staging.mapenergy.workers.dev",
+    "PRODUCTION_UPSTREAM_ORIGIN": "https://powerwake-backend-production.mapenergy.workers.dev",
     "ACCESS_TEAM_DOMAIN": "fragrant-breeze-4a53.cloudflareaccess.com",
     "ACCESS_AUD": "2bd7b7a8fa96198aa4bf39d9474258bcf944375ce788ffb51cf122b3463a4975"
   }

@@ -22,7 +22,7 @@
       <span><strong>MAP Energy</strong><small>Administrator console</small></span>
     </a>
     <div class="header-actions">
-      <span class="environment-badge">STAGING</span>
+      <span class="environment-badge" data-environment="upper">PRODUCTION</span>
       <button id="signOutButton" class="button button-quiet hidden" type="button">Sign out</button>
     </div>
   </header>
@@ -53,7 +53,7 @@
         <div>
           <span class="eyebrow">System messages</span>
           <h1 id="consoleTitle">Admin messages</h1>
-          <p>Preview and queue push notifications through the staging backend.</p>
+          <p>Preview and queue push notifications through the <span data-environment>production</span> backend.</p>
         </div>
         <button id="refreshButton" class="button button-quiet" type="button">Refresh status</button>
       </div>
@@ -135,7 +135,7 @@
             <div><h2 id="recentTitle">Recent messages</h2><p>Newest first · up to 50</p></div>
           </div>
           <div id="recentLoading" class="loading-state">Loading recent messages…</div>
-          <div id="recentEmpty" class="empty-state compact hidden"><p>No staging messages yet.</p></div>
+          <div id="recentEmpty" class="empty-state compact hidden"><p>No <span data-environment>production</span> messages yet.</p></div>
           <div id="recentList" class="recent-list"></div>
         </section>
       </div>
@@ -156,6 +156,6 @@
     </form>
   </dialog>
 
-  <footer><span>© <span id="year"></span> Aptica Ltd</span><span>MAP Energy · staging administration</span></footer>
+  <footer><span>© <span id="year"></span> Aptica Ltd</span><span>MAP Energy · <span data-environment>production</span> administration</span></footer>
 </body>
 </html>

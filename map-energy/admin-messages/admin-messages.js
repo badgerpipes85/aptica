@@ -1,8 +1,9 @@
 (function () {
   "use strict";
 
-  const API = "/map-energy/admin-messages/api";
-  const STORAGE_KEY = "map-admin-active-message-id";
+  const ENVIRONMENT = new URLSearchParams(window.location.search).get("environment") === "staging" ? "staging" : "production";
+  const API = `/map-energy/admin-messages/api?environment=${encodeURIComponent(ENVIRONMENT)}`;
+  const STORAGE_KEY = `map-admin-active-message-id-${ENVIRONMENT}`;
   const POLL_INTERVAL_MS = 7000;
   const countNames = ["pending", "sending", "accepted", "failed", "skipped", "unknown"];
 
@@ -15,6 +16,9 @@
   document.addEventListener("DOMContentLoaded", initialise);
 
   function initialise() {
+    document.querySelectorAll("[data-environment]").forEach((element) => {
+      element.textContent = element.dataset.environment === "upper" ? ENVIRONMENT.toUpperCase() : ENVIRONMENT;
+    });
     [
       "loginView", "consoleView", "loginError",
       "signOutButton", "refreshButton", "globalNotice", "messageForm", "siteKeyInput", "siteKeyLabel", "siteKeyHint",
@@ -48,7 +52,7 @@
     if (options.method && options.method !== "GET" && csrfToken) headers["X-CSRF-Token"] = csrfToken;
     let response;
     try {
-      response = await fetch(`${API}${path}`, {
+      response = await fetch(`${API.replace("?", `${path}?`)}`, {
         credentials: "same-origin",
         cache: "no-store",
         ...options,
@@ -56,7 +60,7 @@
         body: options.body === undefined ? undefined : JSON.stringify(options.body),
       });
     } catch {
-      const error = new Error("The staging message service could not be reached. Check this message's status before retrying.");
+      const error = new Error(`The ${ENVIRONMENT} message service could not be reached. Check this message's status before retrying.`);
       error.code = "network_error";
       error.status = 0;
       throw error;
@@ -356,9 +360,9 @@
       no_eligible_recipients: "No enabled devices have opted in to system messages for this audience.",
       audience_too_large: "This audience is larger than the current 5,000-device limit. The backend must be extended before sending.",
       request_too_large: "This request is too large.",
-      admin_messages_unavailable: "The staging message service is temporarily unavailable. Check this message's status before retrying.",
-      admin_proxy_not_configured: "The website server is missing its private staging admin credential.",
-      invalid_upstream_response: "The staging message service returned an unexpected response.",
+      admin_messages_unavailable: `The ${ENVIRONMENT} message service is temporarily unavailable. Check this message's status before retrying.`,
+      admin_proxy_not_configured: `The website server is missing its private ${ENVIRONMENT} admin credential.`,
+      invalid_upstream_response: `The ${ENVIRONMENT} message service returned an unexpected response.`,
     };
     return messages[payload?.error] || payload?.message || `The request failed (${status}).`;
   }

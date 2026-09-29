@@ -72,17 +72,25 @@ function validCsrf(request) {
   return difference === 0;
 }
 
-async function proxy(request, env, upstreamPath, method = "GET", body) {
-  if (!env.ADMIN_SECRET) return json({ error: "admin_proxy_not_configured" }, 503);
+function selectedEnvironment(request) {
+  return new URL(request.url).searchParams.get("environment") === "staging" ? "staging" : "production";
+}
+
+async function proxy(request, env, environment, upstreamPath, method = "GET", body) {
+  const production = environment === "production";
+  const secret = production ? env.ADMIN_SECRET_PRODUCTION : env.ADMIN_SECRET;
+  const origin = production ? env.PRODUCTION_UPSTREAM_ORIGIN : env.STAGING_UPSTREAM_ORIGIN;
+  const backend = production ? env.PRODUCTION_BACKEND : env.STAGING_BACKEND;
+  if (!secret || !origin) return json({ error: "admin_proxy_not_configured", environment }, 503);
   try {
-    const target = new Request(`${env.UPSTREAM_ORIGIN}${upstreamPath}`, {
+    const target = new Request(`${origin}${upstreamPath}`, {
       method,
       redirect: "manual",
-      headers: { Accept: "application/json", "Content-Type": "application/json", "x-admin-secret": env.ADMIN_SECRET },
+      headers: { Accept: "application/json", "Content-Type": "application/json", "x-admin-secret": secret },
       body: body === undefined ? undefined : JSON.stringify(body),
     });
-    const response = env.STAGING_BACKEND
-      ? await env.STAGING_BACKEND.fetch(target)
+    const response = backend
+      ? await backend.fetch(target)
       : await fetch(target);
     const text = await response.text();
     return new Response(text, { status: response.status, headers: JSON_HEADERS });
@@ -98,28 +106,29 @@ export default {
     if (!identity) return json({ error: "access_required" }, 401);
     if (identity.denied) return json({ error: "admin_not_allowed" }, 403);
     const url = new URL(request.url);
+    const environment = selectedEnvironment(request);
     const base = "/map-energy/admin-messages/api";
     const path = url.pathname.slice(base.length) || "/";
 
     if (request.method === "GET" && path === "/session") {
       const csrf = randomToken();
-      return json({ authenticated: true, email: identity.email, csrf_token: csrf, environment: "staging" }, 200, {
+      return json({ authenticated: true, email: identity.email, csrf_token: csrf, environment }, 200, {
         "Set-Cookie": `${CSRF_COOKIE}=${csrf}; Path=/; Secure; SameSite=Strict; Max-Age=28800`,
       });
     }
-    if (request.method === "GET" && path === "/messages") return proxy(request, env, "/admin/messages");
+    if (request.method === "GET" && path === "/messages") return proxy(request, env, environment, "/admin/messages");
     if (request.method === "POST" && path === "/messages/preview") {
       if (!validCsrf(request)) return json({ error: "invalid_csrf" }, 403);
       let body;
       try { body = await request.json(); } catch { return json({ error: "invalid_json" }, 400); }
-      return proxy(request, env, "/admin/messages/preview", "POST", body);
+      return proxy(request, env, environment, "/admin/messages/preview", "POST", body);
     }
     const messageMatch = path.match(/^\/messages\/([0-9a-f-]{36})$/i);
-    if (request.method === "GET" && messageMatch) return proxy(request, env, `/admin/messages/${messageMatch[1]}`);
+    if (request.method === "GET" && messageMatch) return proxy(request, env, environment, `/admin/messages/${messageMatch[1]}`);
     const sendMatch = path.match(/^\/messages\/([0-9a-f-]{36})\/send$/i);
     if (request.method === "POST" && sendMatch) {
       if (!validCsrf(request)) return json({ error: "invalid_csrf" }, 403);
-      return proxy(request, env, `/admin/messages/${sendMatch[1]}/send`, "POST");
+      return proxy(request, env, environment, `/admin/messages/${sendMatch[1]}/send`, "POST");
     }
     return json({ error: "not_found" }, 404);
   },

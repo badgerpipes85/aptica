@@ -12,8 +12,9 @@ Store these only as encrypted Worker secrets:
 
 - `ADMIN_EMAILS`: comma-separated lower-case email addresses explicitly permitted to use this admin tool.
 - `ADMIN_SECRET`: the existing staging Worker's admin secret.
+- `ADMIN_SECRET_PRODUCTION`: the production Worker's admin secret.
 
-The proxy cryptographically validates the Cloudflare Access JWT, checks its audience and permitted email, applies same-origin double-submit CSRF protection, and only exposes the fixed admin-message routes. The upstream remains fixed to staging.
+The proxy cryptographically validates the Cloudflare Access JWT, checks its audience and permitted email, applies same-origin double-submit CSRF protection, and only exposes the fixed admin-message routes. Production is the default; `?environment=staging` selects staging.
 
 From `aptica-web/admin-messages-proxy`:
 
