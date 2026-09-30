@@ -582,7 +582,7 @@ function runCard(run, timezone, capabilities = {}) {
   const summary = runSummary(run);
   const status = run.status === "error" || run.status === "failed" ? "Failed" : `${run.status || "unknown"}`.replace(/^./, c => c.toUpperCase());
   const time = new Date(Number(run.executed_at) * 1000).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit", timeZone: timezone });
-  return `<article class="automation-run-card ${escapeHtml(String(run.status || "failed"))}"><span class="run-status-icon">${run.status === "success" ? "✓" : run.status === "skipped" ? "›" : "!"}</span><div class="run-copy"><strong>${escapeHtml(name)}</strong>${actions.map(line => `<small>${escapeHtml(line)}</small>`).join("")}${summary !== name ? `<small class="run-summary">${escapeHtml(summary)}</small>` : ""}<span class="run-time">●&nbsp; ${escapeHtml(time)}</span>${automationReusable(run,capabilities)?`<button type="button" class="button button-primary" data-auto-reuse="${escapeHtml(run.id)}">Re-use</button>`:""}</div><span class="automation-status ${escapeHtml(String(run.status || "failed"))}">${escapeHtml(status)}</span></article>`;
+  return `<article class="automation-run-card ${escapeHtml(String(run.status || "failed"))}"><span class="run-status-icon">${run.status === "success" ? "✓" : run.status === "skipped" ? "›" : "!"}</span><div class="run-copy"><strong>${escapeHtml(name)}</strong>${actions.map(line => `<small>${escapeHtml(line)}</small>`).join("")}${summary !== name ? `<small class="run-summary">${escapeHtml(summary)}</small>` : ""}<span class="run-time">●&nbsp; ${escapeHtml(time)}</span>${automationReusable(run,capabilities)?`<button type="button" class="button button-primary automation-reuse-button" data-auto-reuse="${escapeHtml(run.id)}">Re-use</button>`:""}</div><span class="automation-status ${escapeHtml(String(run.status || "failed"))}">${escapeHtml(status)}</span></article>`;
 }
 
 function dayKeyAndLabel(timestamp, timezone) {
@@ -601,7 +601,7 @@ async function loadAutomations(siteKey) {
   const rules = data.automations || [];
   const history = data.history || [];
   const smart = data.smart_charging;
-  const smartCard = smart ? `<article class="smart-scheduling-card"><span class="smart-scheduling-icon"><svg><use href="/map-energy/assets/map-energy-icons.svg#car"></use></svg></span><div><h2>${escapeHtml(smart.title)}</h2><p>${escapeHtml(smart.summary)}</p></div><span class="automation-status ${smart.enabled ? "active" : "paused"}">${smart.enabled ? "Enabled" : "Paused"}</span></article>` : "";
+  const smartCard = smartSchedulingAutomationCard(smart);
   const powerPerksCard = powerPerksAutomationCard(data);
   const rulesContent = rules.length ? `<div class="automation-rules">${rules.map(ruleCard).join("")}</div>` : `<div class="automation-empty"><span><svg><use href="/map-energy/assets/map-energy-icons.svg#automation"></use></svg></span><h2>${smart ? "No other automations yet" : "No automations yet"}</h2><p>${smart ? "Add another automation using the button above." : "Add your first automation using the button above."}</p></div>`;
   const groups = new Map();

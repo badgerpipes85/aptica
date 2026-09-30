@@ -16,6 +16,11 @@ function powerPerksAutomationCard(data) {
   const enabled=Boolean(settings.enabled),ha=Boolean(data.capabilities?.home_assistant);
   return `<article class="smart-scheduling-card power-perks-automation-card"><span class="smart-scheduling-icon"><svg><use href="/map-energy/assets/map-energy-icons.svg#automation"></use></svg></span><div><h2>Power Perks Action</h2><p>${enabled?'Charge your Powerwall during EDF free-electricity hours.':'Enable automatic actions for EDF Power Perks events.'}</p>${enabled?`<div class="power-perks-options"><label>Fallback reserve <select id="powerPerksFallback">${[0,5,10,15,20,25,30,40,50].map(value=>`<option value="${value}" ${Number(settings.fallback_backup_reserve_percent)===value?'selected':''}>${value}%</option>`).join('')}</select></label>${ha?autoCheck('powerPerksHA','Send event to Home Assistant',settings.trigger_home_assistant):''}</div>`:''}<small id="powerPerksStatus" class="muted"></small></div><label class="portal-switch" aria-label="Enable Power Perks automation"><input id="powerPerksEnabled" type="checkbox" ${enabled?'checked':''}><span></span></label></article>`;
 }
+function smartSchedulingAutomationCard(smart) {
+  if(!smart)return '';
+  const enabled=Boolean(smart.enabled);
+  return `<article class="smart-scheduling-card"><span class="smart-scheduling-icon"><svg><use href="/map-energy/assets/map-energy-icons.svg#car"></use></svg></span><div><h2>${escapeHtml(smart.title)}</h2><p>${escapeHtml(smart.summary)}</p><small id="smartSchedulingStatus" class="muted"></small></div><label class="portal-switch" aria-label="Enable ${escapeHtml(smart.title)}"><input id="smartSchedulingEnabled" type="checkbox" ${enabled?'checked':''}><span></span></label></article>`;
+}
 function autoSelect(name,label,options,value) {
   return `<label>${escapeHtml(label)}<select name="${name}">${Object.entries(options).map(([v,text])=>`<option value="${escapeHtml(v)}" ${String(value)===v?'selected':''}>${escapeHtml(text)}</option>`).join('')}</select></label>`;
 }
@@ -198,6 +203,19 @@ function bindAutomationControls(data) {
     try{await api('/v1/web/automations/pause',{method:'POST',body:JSON.stringify({site_key:data.site_key,automation_id:rule.id,paused:!rule.paused})});await loadAutomations(data.site_key);showError('automationsStatus',rule.paused?'Automation resumed.':'Automation paused.');}
     catch(error){if(error.name!=='AbortError')showError('automationsStatus',friendlyError(error));}finally{b.disabled=false;}
   });
+  const smartSchedulingEnabled=$('smartSchedulingEnabled');
+  if(smartSchedulingEnabled){
+    smartSchedulingEnabled.onchange=async()=>{
+      const enabled=smartSchedulingEnabled.checked;
+      smartSchedulingEnabled.disabled=true;
+      showError('smartSchedulingStatus',enabled?'Enabling…':'Disabling…');
+      try{
+        await api('/v1/web/automations/smart-charging',{method:'POST',body:JSON.stringify({site_key:data.site_key,enabled})});
+        await loadAutomations(data.site_key);
+        showError('automationsStatus',enabled?'Smart scheduling enabled.':'Smart scheduling disabled.');
+      }catch(error){smartSchedulingEnabled.checked=!enabled;showError('smartSchedulingStatus',friendlyError(error));smartSchedulingEnabled.disabled=false;}
+    };
+  }
   const powerPerksEnabled=$('powerPerksEnabled');
   if(powerPerksEnabled){
     const savePowerPerks=async()=>{

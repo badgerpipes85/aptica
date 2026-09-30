@@ -433,3 +433,6 @@ html { scroll-padding-bottom: 110px; }
 @media(max-width:500px){.auto-dialog{padding:16px}.auto-fields{grid-template-columns:1fr}.automation-toolbar{align-items:stretch}.automation-toolbar>.button{width:100%}.automation-controls .button{flex:1}.auto-dialog .panel-heading{align-items:flex-start}.auto-dialog h2{font-size:1.25rem}}
 
 .automation-rule-card>.automation-controls{display:flex}
+.smart-scheduling-card #smartSchedulingStatus{display:block;margin-top:8px}
+.automation-reuse-button{width:max-content;min-height:32px;margin-top:5px;padding:6px 12px;border-radius:10px;font-size:12px;box-shadow:none}
+@media(max-width:700px){.smart-scheduling-card .portal-switch{grid-column:2}}
