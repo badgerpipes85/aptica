@@ -23,7 +23,7 @@
       "loginView", "consoleView", "loginError",
       "signOutButton", "refreshButton", "globalNotice", "messageForm", "siteKeyInput", "siteKeyLabel", "siteKeyHint",
       "titleInput", "bodyInput", "titleCount", "bodyCount", "formError", "previewButton", "previewState",
-      "previewEmpty", "previewContent", "previewExactTitle", "previewExactBody", "previewAudience", "previewSiteRow",
+      "previewEmpty", "previewContent", "previewExactTitle", "previewExactBody", "previewAudience", "previewPlatform", "previewSiteRow",
       "previewSiteKey", "previewRecipients", "previewExpiry", "sendButton", "messageStatus", "statusEmpty", "statusContent",
       "statusTitleText", "statusMeta", "deliveryCounts", "statusExplanation", "recentLoading", "recentEmpty", "recentList",
       "sendDialog", "confirmAudience", "confirmMessageTitle", "confirmMessageBody", "confirmError", "confirmSendButton",
@@ -114,8 +114,10 @@
 
   function formPayload() {
     const audience = document.querySelector('input[name="audience"]:checked').value;
+    const targetPlatform = document.querySelector('input[name="targetPlatform"]:checked').value;
     const payload = {
       audience,
+      target_platform: targetPlatform,
       title: elements.titleInput.value.trim(),
       body: elements.bodyInput.value.trim(),
     };
@@ -181,6 +183,7 @@
     elements.previewExactTitle.textContent = message.title || "";
     elements.previewExactBody.textContent = message.body || "";
     elements.previewAudience.textContent = message.audience === "all" ? "All opted-in sites" : "One site";
+    elements.previewPlatform.textContent = platformLabel(message.target_platform);
     elements.previewSiteRow.classList.toggle("hidden", message.audience !== "site");
     elements.previewSiteKey.textContent = message.site_key || "";
     elements.previewRecipients.textContent = String(message.recipient_count || 0);
@@ -199,9 +202,8 @@
   function showSendConfirmation() {
     if (!canSend(currentMessage)) return;
     const count = Number(currentMessage.recipient_count || 0);
-    elements.confirmAudience.textContent = currentMessage.audience === "all"
-      ? `All opted-in sites · ${count} eligible ${count === 1 ? "device" : "devices"}.`
-      : `One site · ${count} eligible ${count === 1 ? "device" : "devices"}.`;
+    const audience = currentMessage.audience === "all" ? "All opted-in sites" : "One site";
+    elements.confirmAudience.textContent = `${audience} · ${platformLabel(currentMessage.target_platform)} · ${count} eligible ${count === 1 ? "device" : "devices"}.`;
     elements.confirmMessageTitle.textContent = currentMessage.title || "";
     elements.confirmMessageBody.textContent = currentMessage.body || "";
     hide(elements.confirmError);
@@ -270,7 +272,7 @@
     const title = document.createElement("strong");
     title.textContent = message.title || "Untitled message";
     const detail = document.createElement("span");
-    detail.textContent = `${message.audience === "all" ? "All opted-in sites" : "One site"} · ${formatTime(message.created_at)}`;
+    detail.textContent = `${message.audience === "all" ? "All opted-in sites" : "One site"} · ${platformLabel(message.target_platform)} · ${formatTime(message.created_at)}`;
     main.append(title, detail);
     const count = document.createElement("span");
     count.className = "recent-count";
@@ -296,7 +298,7 @@
     elements.messageStatus.textContent = humanStatus(message.status);
     setStateClass(elements.messageStatus, message.status);
     elements.statusTitleText.textContent = message.title || "Untitled message";
-    elements.statusMeta.textContent = `Created ${formatTime(message.created_at)} · ${Number(message.recipient_count || 0)} eligible devices`;
+    elements.statusMeta.textContent = `Created ${formatTime(message.created_at)} · ${platformLabel(message.target_platform)} · ${Number(message.recipient_count || 0)} eligible devices`;
     clear(elements.deliveryCounts);
     const counts = message.counts || {};
     countNames.forEach((name) => {
@@ -377,6 +379,10 @@
 
   function humanStatus(status) {
     return ({ building: "Building", draft: "Draft", queued: "Queued", completed: "Completed" })[status] || "Unknown";
+  }
+
+  function platformLabel(platform) {
+    return ({ ios: "iOS only", android: "Android only", all: "All devices" })[platform] || "All devices";
   }
 
   function setStateClass(element, status) {
