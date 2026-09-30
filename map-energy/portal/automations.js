@@ -21,6 +21,21 @@ function smartSchedulingAutomationCard(smart) {
   const enabled=Boolean(smart.enabled);
   return `<article class="smart-scheduling-card"><span class="smart-scheduling-icon"><svg><use href="/map-energy/assets/map-energy-icons.svg#car"></use></svg></span><div><h2>${escapeHtml(smart.title)}</h2><p>${escapeHtml(smart.summary)}</p><small id="smartSchedulingStatus" class="muted"></small></div><label class="portal-switch" aria-label="Enable ${escapeHtml(smart.title)}"><input id="smartSchedulingEnabled" type="checkbox" ${enabled?'checked':''}><span></span></label></article>`;
 }
+function openSmartSchedulingSetup(data) {
+  const smart=data.smart_charging,brand=smart.brand;
+  const title=brand==='edf_smart_bolt_on'?'Choose EDF Smart Bolt-On behaviour':'Choose IOG behaviour';
+  $('automationEditorContent').innerHTML=`<form id="smartSchedulingForm"><div class="panel-heading"><div><span class="eyebrow">Smart scheduling</span><h2 id="automationEditorTitle">${escapeHtml(title)}</h2></div><button type="button" class="button button-quiet" data-smart-close>Cancel</button></div><p class="muted">Choose what should happen when EV charging starts during a smart schedule. MAP Energy will create matching start and stop automations.</p><fieldset><legend>Powerwall action</legend>${autoSelect('smartMode','Action',{charge_powerwall:'Charge Powerwall to 100%',freeze_current_soc_prefer_80:'Freeze current SOC · prefer 80%',freeze_current_soc_prefer_100:'Freeze current SOC · prefer 100%'},smart.mode||'charge_powerwall')}${autoSelect('smartFallback','Fallback reserve',Object.fromEntries([0,5,10,15,20,25,30,40,50].map(v=>[v,`${v}%`])),String(smart.fallback_backup_reserve_percent??10))}${data.capabilities?.home_assistant?autoCheck('smartHA','Send events to Home Assistant',smart.trigger_home_assistant):''}</fieldset><p id="smartSchedulingSetupError" class="error hidden" role="alert"></p><div class="auto-footer"><button type="submit" class="button button-primary">Enable smart scheduling</button></div></form>`;
+  $('automationEditor').showModal();
+  const form=$('smartSchedulingForm');
+  form.querySelector('[data-smart-close]').onclick=()=>$('automationEditor').close();
+  form.onsubmit=async event=>{
+    event.preventDefault();form.querySelectorAll('button,input,select').forEach(x=>x.disabled=true);
+    try{
+      await api('/v1/web/automations/smart-charging',{method:'POST',body:JSON.stringify({site_key:data.site_key,enabled:true,brand,mode:form.elements.smartMode.value,fallback_backup_reserve_percent:Number(form.elements.smartFallback.value),trigger_home_assistant:Boolean(form.elements.smartHA?.checked)})});
+      $('automationEditor').close();await loadAutomations(data.site_key);showError('automationsStatus','Smart scheduling enabled.');
+    }catch(error){showError('smartSchedulingSetupError',friendlyError(error));form.querySelectorAll('button,input,select').forEach(x=>x.disabled=false);}
+  };
+}
 function autoSelect(name,label,options,value) {
   return `<label>${escapeHtml(label)}<select name="${name}">${Object.entries(options).map(([v,text])=>`<option value="${escapeHtml(v)}" ${String(value)===v?'selected':''}>${escapeHtml(text)}</option>`).join('')}</select></label>`;
 }
@@ -207,13 +222,14 @@ function bindAutomationControls(data) {
   if(smartSchedulingEnabled){
     smartSchedulingEnabled.onchange=async()=>{
       const enabled=smartSchedulingEnabled.checked;
+      if(enabled){smartSchedulingEnabled.checked=false;openSmartSchedulingSetup(data);return;}
       smartSchedulingEnabled.disabled=true;
-      showError('smartSchedulingStatus',enabled?'Enabling…':'Disabling…');
+      showError('smartSchedulingStatus','Disabling…');
       try{
-        await api('/v1/web/automations/smart-charging',{method:'POST',body:JSON.stringify({site_key:data.site_key,enabled})});
+        await api('/v1/web/automations/smart-charging',{method:'POST',body:JSON.stringify({site_key:data.site_key,enabled:false})});
         await loadAutomations(data.site_key);
-        showError('automationsStatus',enabled?'Smart scheduling enabled.':'Smart scheduling disabled.');
-      }catch(error){smartSchedulingEnabled.checked=!enabled;showError('smartSchedulingStatus',friendlyError(error));smartSchedulingEnabled.disabled=false;}
+        showError('automationsStatus','Smart scheduling disabled.');
+      }catch(error){smartSchedulingEnabled.checked=true;showError('smartSchedulingStatus',friendlyError(error));smartSchedulingEnabled.disabled=false;}
     };
   }
   const powerPerksEnabled=$('powerPerksEnabled');
