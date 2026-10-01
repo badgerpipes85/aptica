@@ -436,3 +436,23 @@ html { scroll-padding-bottom: 110px; }
 .smart-scheduling-card #smartSchedulingStatus{display:block;margin-top:8px}
 .automation-reuse-button{width:max-content;min-height:32px;margin-top:5px;padding:6px 12px;border-radius:10px;font-size:12px;box-shadow:none}
 @media(max-width:700px){.smart-scheduling-card .portal-switch{grid-column:2}}
+
+/* Keep the sidebar's navigation in one column until the mobile bottom bar takes over. */
+@media (min-width: 761px) {
+  body.portal-active .portal-nav { display: grid; grid-template-columns: minmax(0, 1fr); min-width: 0; width: 100%; }
+  body.portal-active .nav-button { display: flex; flex-direction: row; justify-content: flex-start; gap: 8px; padding-inline: 8px; text-align: left; }
+  body.portal-active .nav-button span { flex-shrink: 0; width: 24px; height: 24px; }
+  body.portal-active .nav-button b { overflow-wrap: anywhere; }
+}
+/* Size circles from the diagram, including narrow in-car browser windows. */
+.flow-board .energy-node { width: clamp(76px, 23%, 108px); height: clamp(76px, 23%, 108px); }
+@media (min-width: 761px) and (max-width: 1180px) {
+  .flow-board { max-width: clamp(280px, 46vh, 380px); }
+  .flow-board .energy-node { border-width: 3px; gap: 2px; }
+  .flow-board .energy-node .node-icon { width: 23px; height: 23px; }
+  .flow-board .energy-node strong { font-size: 13px; }
+  .flow-board .energy-node .node-label { font-size: 9px; }
+}
+@media (max-width: 760px) {
+  body.portal-active .nav-button b { max-width: 100%; overflow-wrap: anywhere; }
+}
